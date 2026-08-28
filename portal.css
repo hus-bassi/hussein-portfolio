@@ -1,0 +1,150 @@
+/* ============================================================
+   PORTAL.CSS
+   Styles specific to the root portal page only. Reuses design
+   tokens, reset, starfield/glow classes and the .reveal animation
+   from academic/css/main.css (loaded before this file) instead of
+   redefining them — the portal is neutral ground, not a third
+   design system.
+   ============================================================= */
+
+.portal-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.portal-starfield,
+.portal-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.portal-starfield {
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 15%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 32% 68%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 55% 22%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 78% 48%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 90% 80%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 15% 90%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 65% 5%, #ffffff 100%, transparent);
+  background-repeat: repeat;
+  background-size: 340px 340px;
+  opacity: 0.45;
+}
+
+.portal-glow {
+  background:
+    radial-gradient(700px circle at 20% 30%, rgba(155, 110, 243, 0.14), transparent 70%),
+    radial-gradient(600px circle at 80% 70%, rgba(217, 184, 114, 0.07), transparent 70%);
+}
+
+.portal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 900px;
+  margin-inline: auto;
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.portal-portrait {
+  position: relative;
+  width: min(160px, 40%);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.portal-intro h1 {
+  margin-top: var(--space-4);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.portal-subtitle {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.portal-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.portal-card {
+  position: relative;
+  padding: var(--space-5);
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  text-align: start;
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+
+.portal-card:hover,
+.portal-card:focus-visible {
+  transform: translateY(-4px);
+}
+
+.portal-card-eyebrow {
+  display: block;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.portal-card h2 {
+  margin-top: var(--space-2);
+  font-size: var(--fs-h3);
+}
+
+.portal-card p {
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+}
+
+.portal-card-cta {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* Academic card keeps the site's real violet/gold identity */
+.portal-card--academic .portal-card-eyebrow {
+  color: var(--color-accent);
+}
+
+.portal-card--academic:hover {
+  border-color: var(--color-accent);
+}
+
+.portal-card--academic .portal-card-cta {
+  color: var(--color-accent);
+}
+
+/* Volleyball card previews its own upcoming identity (warm, athletic
+   orange) even from the portal — a small taste of the distinct style
+   the Sports side will fully use once it's built out. */
+.portal-card--sports .portal-card-eyebrow {
+  color: #E8804A;
+}
+
+.portal-card--sports:hover {
+  border-color: #E8804A;
+}
+
+.portal-card--sports .portal-card-cta {
+  color: #E8804A;
+}
+
+@media (max-width: 640px) {
+  .portal-cards {
+    grid-template-columns: 1fr;
+  }
+}

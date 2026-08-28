@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Day / Night — apply the saved theme before first paint, so a
+       Day-mode visitor never sees a flash of the dark (Night) default.
+       Dark stays the default: a first-time visitor still lands on Night. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('preferredTheme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) { /* storage blocked — keep the Night default */ }
+    })();
+  </script>
+
+  <!--
+    PHASE 13.1 — PORTAL (site root)
+    The very first thing a visitor sees: a choice between two
+    completely separate sides of the site — Academic/Professional
+    (academic/) and Volleyball/Sports (sports/). This page borrows
+    the Academic side's design tokens (css/main.css) as a shared
+    visual base, since it's neutral ground between both sides, but
+    lives entirely on its own — it isn't part of either site.
+  -->
+
+  <title>Hussein ElBassiouni</title>
+  <meta name="description" content="Hussein ElBassiouni — Academic & Professional, and Volleyball." />
+  <!-- SEO: canonical + Open Graph + Twitter Card.
+        DOMAIN is a placeholder — replace https://YOUR_DOMAIN.com
+        everywhere once the site has a real domain. -->
+  <link rel="canonical" href="https://YOUR_DOMAIN.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hussein ElBassiouni" />
+  <meta property="og:title" content="Hussein ElBassiouni" />
+  <meta property="og:description" content="Hussein ElBassiouni — Academic & Professional, and Volleyball." />
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/" />
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Hussein ElBassiouni" />
+  <meta name="twitter:description" content="Hussein ElBassiouni — Academic & Professional, and Volleyball." />
+  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+
+
+  <link rel="icon" type="image/svg+xml" href="academic/assets/icons/favicon.svg" />
+  <link rel="stylesheet" href="academic/css/main.css" />
+  <link rel="stylesheet" href="portal.css" />
+  <link rel="stylesheet" href="transition.css" />
+</head>
+<body class="portal-body">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+
+  <div class="portal-starfield" aria-hidden="true"></div>
+  <div class="portal-glow" aria-hidden="true"></div>
+
+  <main class="portal" id="main-content">
+    <div class="portal-intro reveal">
+      <div class="portal-portrait">
+        <div class="portrait-orbit" aria-hidden="true">
+          <span class="orbit-dot"></span>
+        </div>
+        <div class="portrait-frame">
+          <img
+            src="academic/assets/images/profile.jpg"
+            alt="Portrait of Hussein ElBassiouni"
+            class="portrait-image"
+            id="portrait-image"
+            decoding="async"
+          />
+          <div class="portrait-placeholder" id="portrait-placeholder" aria-hidden="true">HE</div>
+        </div>
+      </div>
+
+      <h1>Hussein ElBassiouni</h1>
+      <p class="portal-subtitle">Which side are you here for?</p>
+    </div>
+
+    <div class="portal-cards">
+      <a href="academic/index.html" class="portal-card portal-card--academic reveal">
+        <span class="portal-card-eyebrow">Academic &amp; Professional</span>
+        <h2>Data Science &amp; Astronomy</h2>
+        <p>Certificates, academic journey, projects, research, and the long-term path toward Astroinformatics.</p>
+        <span class="portal-card-cta">Enter →</span>
+      </a>
+
+      <a href="sports/index.html" class="portal-card portal-card--sports reveal">
+        <span class="portal-card-eyebrow">Volleyball &amp; Sports</span>
+        <h2>Volleyball</h2>
+        <p>Training, matches, and progress — starting soon in Russia.</p>
+        <span class="portal-card-cta">Enter →</span>
+      </a>
+    </div>
+  </main>
+
+  <script src="transition.js"></script>
+  <script src="academic/js/animations.js"></script>
+  <script src="academic/js/theme.js"></script>
+  <script>
+    // Same portrait-fallback pattern used across the Academic site —
+    // shows initials instead of a broken image icon until a real
+    // photo is added at academic/assets/images/profile.jpg.
+    document.addEventListener('DOMContentLoaded', () => {
+      const image = document.getElementById('portrait-image');
+      const placeholder = document.getElementById('portrait-placeholder');
+      if (!image || !placeholder) return;
+      image.addEventListener('error', () => {
+        image.style.display = 'none';
+        placeholder.style.display = 'flex';
+      });
+    });
+  </script>
+  <script src="academic/js/ambient.js"></script>
+</body>
+</html>

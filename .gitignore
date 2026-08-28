@@ -1,0 +1,13 @@
+.claude/
+node_modules/
+.env
+.env.*
+openclaw-workspace-state.json
+opencode.json
+AGENTS.md
+BOOTSTRAP.md
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md

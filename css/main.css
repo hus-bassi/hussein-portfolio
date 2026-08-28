@@ -1,0 +1,1865 @@
+/* ============================================================
+   MAIN.CSS — Foundation layer
+   Contains: CSS reset, design tokens (custom properties), and
+   base element styling. This file is the single source of truth
+   for the visual language of the whole site.
+
+   Later phases add:
+   - css/animations.css  → keyframes, orbit/glow/parallax effects
+   - css/responsive.css  → breakpoint-specific overrides
+   ============================================================= */
+
+/* ------------------------------------------------------------
+   1. RESET
+   A light, modern reset — not a full Normalize.css. Keeps
+   default browser behavior where it's harmless, removes it
+   where it fights our design.
+------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* Respect users who prefer reduced motion — required from Phase 01 onward,
+   not bolted on later. Every animation we add in future phases must honor this. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus everywhere — required from Phase 01 onward
+   per the accessibility brief, not just on nav links. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------
+   2. DESIGN TOKENS
+   Every color, font and spacing value used anywhere on the site
+   should come from here. Nothing should be hardcoded in a
+   component's own styles — that's what keeps the design
+   consistent as the site grows across 18 phases.
+------------------------------------------------------------- */
+:root {
+
+  /* --- Color: "Violet Nebula" palette ---
+     Your personal identity colors: deep violet as the space itself,
+     gold reserved specifically for achievement/highlight moments
+     (like the gold numbers in the Russian-study-portal reference you
+     shared), soft violet for interactive glow, white for text only. */
+  --color-bg-primary:     #0D0817;   /* deep violet-black — main background, the "nebula" */
+  --color-bg-secondary:   #150F26;   /* slightly lighter violet-black — section separation */
+  --color-surface:        #1E1638;   /* card / panel surfaces */
+  --color-border:         rgba(196, 178, 230, 0.12);
+
+  --color-accent:           #D9B872;   /* champagne gold — achievement/highlight only: CTAs, eyebrows, active nav */
+  --color-accent-secondary: #9B6EF3;   /* nebula violet — interactive glow: hovers, orbit rings */
+  --color-accent-muted:     #B4A8D6;   /* soft lavender — secondary labels, less prominent accents */
+
+  --color-text-primary:   #F6F3FC;   /* warm white — headings, primary text */
+  --color-text-secondary: #ACA1C9;   /* lavender-gray — body copy, captions */
+  --color-text-faint:     #6E6488;   /* muted violet-gray — labels, disabled states */
+
+  /* --- Typography ---
+     Font FILES are loaded starting Phase 02 / finalized in Phase 12
+     (multilingual). For now these are system-font stacks so the
+     page renders correctly without external requests. */
+  --font-display: 'Space Grotesk', 'Segoe UI', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-body:    'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+
+  --fs-h1: clamp(2.25rem, 5vw, 4rem);
+  --fs-h2: clamp(1.75rem, 3.5vw, 2.75rem);
+  --fs-h3: clamp(1.25rem, 2.5vw, 1.75rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+
+  /* --- Spacing scale (used for margin/padding/gap everywhere) --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+
+  /* --- Layout --- */
+  --container-max: 1200px;
+  --container-padding: var(--space-4);
+
+  /* --- Motion (durations only — actual keyframes come in Phase 14) --- */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+}
+
+/* ------------------------------------------------------------
+   3. BASE TYPOGRAPHY
+------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+p {
+  color: var(--color-text-secondary);
+  font-size: var(--fs-body);
+}
+
+.eyebrow {
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------
+   4. LAYOUT UTILITIES
+------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* ------------------------------------------------------------
+   5. HEADER / NAVIGATION
+------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid transparent;
+  background-color: transparent;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+/* Added by js/navigation.js once the user scrolls past a small threshold.
+   Gives the header a solid, slightly blurred surface so nav text stays
+   readable over whatever content scrolls underneath it. */
+.site-header.is-scrolled {
+  background-color: rgba(13, 8, 23, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom-color: var(--color-border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  z-index: 101; /* stays above the mobile overlay */
+}
+
+/* Small link pair (Portal / Volleyball) next to the logo — lets a
+   visitor jump back to the portal or across to the Volleyball side
+   from anywhere on the Academic site without hunting for it. */
+.site-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-inline-start: var(--space-4);
+  z-index: 101;
+}
+
+.site-switch-link {
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+  border-bottom: 1px dashed transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.site-switch-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .site-switch {
+    display: none;
+  }
+}
+
+/* --- Navigation: desktop --- */
+.primary-nav {
+  display: flex;
+  align-items: center;
+}
+
+.primary-nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.nav-link {
+  position: relative;
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+  padding-block: var(--space-2);
+  transition: color var(--transition-fast);
+}
+
+/* Underline that grows in from the center on hover/active — a small,
+   deliberate signature touch instead of a plain color change. */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50%;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--color-accent);
+  transition: width var(--transition-base), inset-inline-start var(--transition-base);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--color-text-primary);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  width: 100%;
+  inset-inline-start: 0;
+}
+
+/* .active-page is set by js/navigation.js based on the current URL,
+   not hardcoded in the HTML — so it works correctly on every page. */
+.nav-link.active-page {
+  color: var(--color-accent);
+}
+
+.nav-link.active-page::after {
+  width: 100%;
+  inset-inline-start: 0;
+  background-color: var(--color-accent);
+}
+
+/* --- Navigation: language switcher (AR / EN / RU) --- */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: var(--space-5);
+  padding-inline-start: var(--space-5);
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.lang-switcher button {
+  padding: 0.3em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-faint);
+  border-radius: 6px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.lang-switcher button:hover {
+  color: var(--color-text-primary);
+}
+
+.lang-switcher button.is-active {
+  color: var(--color-bg-primary);
+  background-color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .lang-switcher {
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+    border-inline-start: none;
+    margin-top: var(--space-5);
+    justify-content: center;
+  }
+}
+
+/* --- Navigation: "Work" dropdown ---
+   Groups Certificates/Volunteering/Projects/Research/Skills under
+   one trigger — the fix for the "navigation feels crowded" feedback,
+   cutting the nav from 10 top-level links down to 6. */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.nav-dropdown-arrow {
+  font-size: 0.7em;
+  transition: transform var(--transition-fast);
+}
+
+.nav-dropdown.is-open .nav-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + var(--space-3));
+  inset-inline-start: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 200px;
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+}
+
+.nav-dropdown.is-open .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown-menu li + li {
+  margin-top: var(--space-1);
+}
+
+.nav-dropdown-menu .nav-link {
+  display: block;
+  padding: 0.5em 0.85em;
+  border-radius: 8px;
+  font-size: var(--fs-small);
+}
+
+.nav-dropdown-menu .nav-link:hover,
+.nav-dropdown-menu .nav-link:focus-visible {
+  background-color: var(--color-bg-secondary);
+}
+
+/* .nav-link::after (the underline) doesn't make sense inside a
+   dropdown menu item — switch off that pseudo-element here only. */
+.nav-dropdown-menu .nav-link::after {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* On mobile the dropdown expands inline within the full-screen
+     overlay instead of floating — there's no "below the trigger"
+     space to float into on a small screen. */
+  .nav-dropdown-menu {
+    position: static;
+    transform: none;
+    max-height: 0;
+    padding: 0;
+    opacity: 1;
+    visibility: visible;
+    overflow: hidden;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    transition: max-height var(--transition-base);
+  }
+
+  .nav-dropdown.is-open .nav-dropdown-menu {
+    max-height: 400px;
+    padding: var(--space-3) 0 0;
+  }
+
+  .nav-dropdown-menu .nav-link {
+    text-align: center;
+    font-size: var(--fs-body);
+  }
+}
+
+/* --- Navigation: mobile toggle button (hidden on desktop) --- */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  z-index: 101;
+}
+
+.nav-toggle-bar {
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+/* Toggled by js/navigation.js — turns the three bars into an "X" */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Navigation: mobile (full-screen overlay, see Option B decision)
+   Basic functional responsiveness only. Full breakpoint polish
+   across all sections happens in Phase 13. --- */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .primary-nav {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-primary);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+  }
+
+  /* Added by js/navigation.js when the toggle button is pressed */
+  .primary-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .primary-nav ul {
+    flex-direction: column;
+    gap: var(--space-5);
+    text-align: center;
+  }
+
+  .nav-link {
+    font-size: var(--fs-h3);
+  }
+}
+
+/* ------------------------------------------------------------
+   6. HERO SECTION
+------------------------------------------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 73px); /* full viewport minus the header's height */
+  display: flex;
+  align-items: center;
+  padding-block: var(--space-6);
+}
+
+/* --- Starfield: two tiled layers of pure-CSS radial gradients.
+   No images, no JS, no per-frame cost — the browser paints this
+   once like any other background. Two tile sizes give a sense of
+   depth (small distant stars + fewer, slightly larger near ones)
+   without any scroll-linked JavaScript. --- */
+.hero-starfield {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 15%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 32% 68%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 55% 22%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 78% 48%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 90% 80%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 15% 90%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 65% 5%, #ffffff 100%, transparent);
+  background-repeat: repeat;
+  background-size: 340px 340px;
+  opacity: 0.45;
+}
+
+.hero-starfield::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 25% 40%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 70% 60%, var(--color-accent) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 45% 85%, #ffffff 100%, transparent);
+  background-repeat: repeat;
+  background-size: 500px 500px;
+  opacity: 0.6;
+}
+
+/* --- Soft "moonlight" glow behind the content — large, very faint
+   white blobs made of gradients rather than a real blur filter,
+   which is cheaper for the browser to paint over a big area.
+   No color here on purpose — just light against the dark, like
+   a black-and-white long-exposure night photograph. --- */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(600px circle at 15% 25%, rgba(155, 110, 243, 0.16), transparent 70%),
+    radial-gradient(500px circle at 85% 75%, rgba(217, 184, 114, 0.08), transparent 70%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.hero-content {
+  max-width: 46ch;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  margin-top: var(--space-2);
+}
+
+.hero-subtitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  color: var(--color-text-primary);
+  margin-top: var(--space-3);
+  font-weight: 500;
+}
+
+.hero-lead {
+  margin-top: var(--space-4);
+  font-size: 1.0625rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+/* --- Portrait: the page's signature element.
+   A circular portrait with a slow-orbiting dot around it,
+   tying identity (Hussein) to subject (astronomy) directly. --- */
+.hero-portrait {
+  position: relative;
+  width: min(340px, 80%);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.portrait-frame {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 0 60px rgba(155, 110, 243, 0.3);
+}
+
+.portrait-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Shown by js/main.js only if profile.jpg fails to load */
+.portrait-placeholder {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+}
+
+.portrait-orbit {
+  position: absolute;
+  inset: 0;
+  border: 1px dashed var(--color-border);
+  border-radius: 50%;
+  animation: orbit-spin 40s linear infinite;
+}
+
+.orbit-dot {
+  position: absolute;
+  top: -3px;
+  inset-inline-start: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px 3px rgba(217, 184, 114, 0.6);
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Below 768px the hero switches from a 2-column grid to a single
+   centered column, portrait above the text. Full responsive audit
+   happens in Phase 13; this is the minimum needed for Hero to work now. */
+@media (max-width: 768px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-portrait {
+    order: -1;
+    width: min(240px, 70%);
+  }
+
+  .hero-content {
+    max-width: none;
+    margin-inline: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+}
+
+/* ------------------------------------------------------------
+   7. BUTTONS
+------------------------------------------------------------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85em 1.75em;
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: transform var(--transition-fast), box-shadow var(--transition-base), background-color var(--transition-base), border-color var(--transition-base);
+}
+
+/* "Nested frame" hover effect: a second, larger outline echoing
+   the button's own pill shape appears just outside it on hover —
+   a frame around the button's frame, matching Hussein's request.
+   Pure CSS, one shared rule — applies to every .btn on every page
+   automatically. */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 1px solid var(--color-accent);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  pointer-events: none;
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(217, 184, 114, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ------------------------------------------------------------
+   8. SHORT INTRODUCTION
+------------------------------------------------------------- */
+.intro {
+  padding-block: var(--space-7);
+  border-top: 1px solid var(--color-border);
+}
+
+.intro-grid {
+  max-width: 68ch;
+}
+
+.intro-text h2 {
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.intro-text p + p {
+  margin-top: var(--space-3);
+}
+
+/* ------------------------------------------------------------
+   9. CURRENT MISSION
+------------------------------------------------------------- */
+.mission {
+  padding-block: var(--space-7);
+  background-color: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.mission h2 {
+  margin-top: var(--space-2);
+}
+
+.section-lead {
+  max-width: 60ch;
+  margin-top: var(--space-3);
+  font-size: 1.0625rem;
+}
+
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.focus-item {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.focus-item:hover {
+  border-color: var(--color-accent-secondary);
+  transform: translateY(-3px);
+}
+
+.focus-item h3 {
+  font-size: 1.0625rem;
+  color: var(--color-accent-muted);
+}
+
+.focus-item p {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+}
+
+/* ------------------------------------------------------------
+   10. CERTIFICATES PREVIEW
+------------------------------------------------------------- */
+.certificates-preview {
+  padding-block: var(--space-7);
+}
+
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.cert-card {
+  position: relative;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.cert-card:hover {
+  border-color: var(--color-accent-secondary);
+  transform: translateY(-3px);
+}
+
+.cert-category {
+  color: var(--color-accent-muted);
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cert-title {
+  font-size: 1.125rem;
+  margin-top: var(--space-2);
+}
+
+.cert-provider {
+  font-size: var(--fs-small);
+  color: var(--color-text-faint);
+  margin-top: var(--space-1);
+}
+
+.cert-description {
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+}
+
+/* Shared "Demo" badge — used on both certificate and volunteering
+   cards wherever an entry's `isDemo` flag is true. Disappears
+   automatically the moment real data replaces a demo entry. */
+.demo-badge {
+  position: absolute;
+  top: var(--space-3);
+  inset-inline-end: var(--space-3);
+  padding: 0.2em 0.7em;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-faint);
+  border: 1px dashed var(--color-border);
+  border-radius: 999px;
+}
+
+.view-all-link {
+  margin-top: var(--space-6);
+}
+
+/* ------------------------------------------------------------
+   11. VOLUNTEER EXPERIENCE PREVIEW
+------------------------------------------------------------- */
+.volunteering-preview {
+  padding-block: var(--space-7);
+  background-color: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.volunteering-list {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.volunteer-item {
+  position: relative;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-inline-start: 3px solid var(--color-accent-secondary);
+  border-radius: 8px;
+}
+
+.volunteer-role {
+  font-size: 1.0625rem;
+}
+
+.volunteer-date {
+  font-size: var(--fs-small);
+  color: var(--color-text-faint);
+  margin-top: var(--space-1);
+}
+
+.volunteer-description {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+}
+
+.volunteer-skills {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--color-accent-muted);
+}
+
+/* ------------------------------------------------------------
+   12. SCROLL REVEAL
+   Sections and cards fade + rise into place as they enter the
+   viewport. Triggered by js/animations.js (IntersectionObserver).
+   Pulled forward from Phase 14 at your request — this is a first,
+   simple version. Fuller motion work (parallax etc.) still happens
+   in Phase 14. Already covered by the prefers-reduced-motion rule
+   at the top of this file, since that rule forces every transition
+   duration to near-zero for people who've asked for less motion.
+------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered entrance for grouped cards — each one fires slightly
+   after the last, instead of all popping in at once. */
+.focus-grid .reveal:nth-child(1) { transition-delay: 0ms; }
+.focus-grid .reveal:nth-child(2) { transition-delay: 80ms; }
+.focus-grid .reveal:nth-child(3) { transition-delay: 160ms; }
+.focus-grid .reveal:nth-child(4) { transition-delay: 240ms; }
+.focus-grid .reveal:nth-child(5) { transition-delay: 320ms; }
+.focus-grid .reveal:nth-child(6) { transition-delay: 400ms; }
+
+.certificates-grid .reveal:nth-child(1) { transition-delay: 0ms; }
+.certificates-grid .reveal:nth-child(2) { transition-delay: 120ms; }
+.certificates-grid .reveal:nth-child(3) { transition-delay: 240ms; }
+
+.volunteering-list .reveal:nth-child(1) { transition-delay: 0ms; }
+.volunteering-list .reveal:nth-child(2) { transition-delay: 120ms; }
+.volunteering-list .reveal:nth-child(3) { transition-delay: 240ms; }
+
+.timeline .reveal:nth-child(1) { transition-delay: 0ms; }
+.timeline .reveal:nth-child(2) { transition-delay: 100ms; }
+.timeline .reveal:nth-child(3) { transition-delay: 200ms; }
+.timeline .reveal:nth-child(4) { transition-delay: 300ms; }
+.timeline .reveal:nth-child(5) { transition-delay: 400ms; }
+
+/* ------------------------------------------------------------
+   13. ACADEMIC JOURNEY — TIMELINE
+------------------------------------------------------------- */
+.journey {
+  padding-block: var(--space-7);
+}
+
+.timeline {
+  position: relative;
+  margin-top: var(--space-6);
+  padding-inline-start: var(--space-5);
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-block-end: var(--space-6);
+}
+
+.timeline-item:last-child {
+  padding-block-end: 0;
+}
+
+/* The dot marking each stage on the vertical line. Its fill signals
+   status at a glance: solid white = done, white ring = happening
+   now, faint dashed ring = still just a plan. */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 0.4em;
+  inset-inline-start: calc(-1 * var(--space-5) - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  border: 2px solid var(--color-border);
+}
+
+.timeline-item.is-completed::before {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.timeline-item.is-current::before {
+  border-color: var(--color-accent-secondary);
+}
+
+.timeline-status {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2em 0.7em;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-faint);
+}
+
+.timeline-item.is-completed .timeline-status {
+  color: var(--color-bg-primary);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.timeline-item.is-current .timeline-status {
+  color: var(--color-accent-secondary);
+  border-color: var(--color-accent-secondary);
+}
+
+/* Volunteering entries don't carry a Completed/Current/Planned status —
+   every entry is simply a real experience, so it gets one consistent
+   gold "achievement" dot rather than the status-driven colors above. */
+.timeline-item.is-experience::before {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.volunteer-event {
+  color: var(--color-text-faint);
+  font-size: var(--fs-small);
+  margin-top: var(--space-1);
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.skill-chip {
+  padding: 0.3em 0.85em;
+  font-size: 0.75rem;
+  color: var(--color-accent-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.volunteer-cert-link {
+  margin-top: var(--space-4);
+  display: inline-flex;
+}
+
+.timeline-date {
+  margin-inline-start: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--color-text-faint);
+}
+
+.timeline-item h3 {
+  margin-top: var(--space-2);
+  font-size: 1.1875rem;
+}
+
+.timeline-item p {
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+  max-width: 60ch;
+}
+
+/* ------------------------------------------------------------
+   14. FUTURE VISION — "BEYOND THE STARS"
+------------------------------------------------------------- */
+.vision {
+  padding-block: var(--space-7);
+  background-color: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.vision-inner {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.vision-text p {
+  margin-top: var(--space-3);
+  max-width: 58ch;
+}
+
+/* Concentric rings expanding outward — visually echoes the
+   Hero's orbit motif, standing in for "reach" and ambition
+   rather than a literal planet/galaxy illustration. */
+.vision-graphic {
+  position: relative;
+  width: min(320px, 100%);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.vision-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+}
+
+.vision-ring-2 {
+  inset: 15%;
+  border-color: rgba(155, 110, 243, 0.2);
+}
+
+.vision-ring-3 {
+  inset: 30%;
+  border-color: rgba(217, 184, 114, 0.25);
+  animation: orbit-spin 60s linear infinite;
+}
+
+.vision-core {
+  position: absolute;
+  inset: 44%;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 40px 6px rgba(217, 184, 114, 0.4);
+}
+
+@media (max-width: 768px) {
+  .vision-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* ------------------------------------------------------------
+   15. INTERNAL PAGE HEADER
+   Shared by every page under pages/ (About now, Certificates/
+   Volunteering/Journey/Goals in later phases) — a lighter version
+   of the homepage Hero: same starfield/glow, no portrait, much
+   less vertical space since it isn't the site's front door.
+------------------------------------------------------------- */
+.page-header {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--space-7) var(--space-6);
+}
+
+.page-header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 60ch;
+}
+
+.page-header h1 {
+  margin-top: var(--space-2);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+}
+
+.page-header .section-lead {
+  margin-top: var(--space-3);
+}
+
+/* ------------------------------------------------------------
+   16. CERTIFICATES TOOLBAR (search + filters)
+------------------------------------------------------------- */
+.certificates-toolbar {
+  padding-block: var(--space-4) var(--space-5);
+}
+
+.toolbar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.search-field input {
+  width: 100%;
+  max-width: 480px;
+  padding: 0.75em 1.25em;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  transition: border-color var(--transition-fast);
+}
+
+.search-field input::placeholder {
+  color: var(--color-text-faint);
+}
+
+.search-field input:focus-visible {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.filter-chip {
+  padding: 0.45em 1.1em;
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.filter-chip:hover {
+  border-color: var(--color-accent-secondary);
+  color: var(--color-text-primary);
+}
+
+.filter-chip.is-active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg-primary);
+  font-weight: 600;
+}
+
+/* Visually hidden but still readable by screen readers — used for
+   the search field's label, which is redundant on screen next to
+   its placeholder but required for accessibility. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------
+   17. FULL CERTIFICATES GRID
+------------------------------------------------------------- */
+.certificates-full {
+  padding-block: var(--space-5) var(--space-7);
+}
+
+.cert-card--clickable {
+  cursor: pointer;
+}
+
+.cert-card--clickable:hover,
+.cert-card--clickable:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.empty-state {
+  text-align: center;
+  padding-block: var(--space-6);
+  color: var(--color-text-faint);
+}
+
+.project-links {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.project-links .btn {
+  padding: 0.5em 1.2em;
+  font-size: 0.8125rem;
+}
+
+/* ------------------------------------------------------------
+   SKILLS SYSTEM
+------------------------------------------------------------- */
+.skills-section {
+  padding-block: var(--space-6) var(--space-7);
+}
+
+.skills-category {
+  margin-top: var(--space-6);
+}
+
+.skills-category:first-child {
+  margin-top: 0;
+}
+
+.skills-category h3 {
+  font-size: 1.0625rem;
+  color: var(--color-accent-muted);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skills-list {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skill-entry:last-child {
+  border-bottom: none;
+}
+
+.skill-name {
+  color: var(--color-text-primary);
+  font-size: var(--fs-body);
+}
+
+.skill-level-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-faint);
+  white-space: nowrap;
+}
+
+/* Level colors progress from muted (just starting) toward gold
+   (the "achievement" color used everywhere else on the site) as
+   honest proficiency grows — new level words fall back to the
+   default gray styling above until a color is added for them here. */
+.skill-level-badge.level-learning {
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.skill-level-badge.level-familiar {
+  color: var(--color-accent-secondary);
+  border-color: var(--color-accent-secondary);
+}
+
+.skill-level-badge.level-comfortable {
+  color: var(--color-accent-muted);
+  border-color: var(--color-accent-muted);
+}
+
+.skill-level-badge.level-proficient,
+.skill-level-badge.level-advanced {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ------------------------------------------------------------
+   CV
+------------------------------------------------------------- */
+.cv-print-btn {
+  margin-top: var(--space-4);
+}
+
+.cv-section {
+  padding-block: var(--space-6) var(--space-7);
+}
+
+.cv-document {
+  max-width: 72ch;
+}
+
+.cv-block {
+  margin-top: var(--space-6);
+}
+
+.cv-block:first-child {
+  margin-top: 0;
+}
+
+.cv-block h2 {
+  font-size: var(--fs-h3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cv-block > p {
+  margin-top: var(--space-3);
+}
+
+.cv-list {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cv-list-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.cv-list-date {
+  color: var(--color-text-faint);
+  font-weight: 400;
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+.cv-list p {
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+}
+
+.cv-skill-group {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+}
+
+.cv-skill-category {
+  color: var(--color-accent-muted);
+  font-weight: 600;
+}
+
+.cv-skill-names {
+  color: var(--color-text-secondary);
+}
+
+.cv-empty {
+  color: var(--color-text-faint);
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------
+   PRINT — used when the "Print / Save as PDF" button is pressed.
+   Dark, glowing, animated design doesn't print well or read well
+   on paper, so this strips it all down: white background, black
+   text, no header/nav/footer/decorative elements, no shadows or
+   glows. Only .cv-document and its contents are meant to print.
+----------------------------------------------------------------- */
+@media print {
+  .site-header,
+  .primary-nav,
+  .nav-toggle,
+  .site-footer,
+  .hero-starfield,
+  .hero-glow,
+  .cv-print-btn,
+  .page-header .eyebrow {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #111111;
+  }
+
+  .page-header {
+    padding-block: 0 var(--space-4);
+  }
+
+  .page-header h1,
+  .cv-block h2,
+  .cv-list-heading,
+  .cv-skill-category {
+    color: #111111;
+  }
+
+  .section-lead,
+  .cv-list p,
+  .cv-skill-names,
+  .cv-list-date {
+    color: #333333;
+  }
+
+  .cv-block h2,
+  .skill-entry,
+  .cv-list li {
+    border-color: #dddddd;
+  }
+
+  /* Scroll-reveal is a screen-only effect — force everything
+     visible immediately so nothing is missing from the printout. */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   18. CERTIFICATE MODAL
+------------------------------------------------------------- */
+.cert-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.cert-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cert-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(5, 3, 10, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.cert-modal-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--space-5);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transform: translateY(12px) scale(0.98);
+  transition: transform var(--transition-base);
+}
+
+.cert-modal.is-open .cert-modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.cert-modal-close {
+  position: absolute;
+  top: var(--space-3);
+  inset-inline-end: var(--space-3);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  border-radius: 50%;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.cert-modal-close:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.cert-modal-image-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--color-bg-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.cert-modal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cert-modal-image-placeholder {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-4);
+  font-size: var(--fs-small);
+  color: var(--color-text-faint);
+}
+
+.cert-modal-content h3 {
+  margin-top: var(--space-2);
+  font-size: 1.375rem;
+}
+
+.cert-modal-content .cert-provider {
+  margin-top: var(--space-1);
+}
+
+.cert-modal-content .cert-description {
+  margin-top: var(--space-3);
+}
+
+.cert-modal-content .btn {
+  margin-top: var(--space-4);
+}
+
+/* ------------------------------------------------------------
+   19. ABOUT — FULL STORY
+------------------------------------------------------------- */
+.about-story {
+  padding-block: var(--space-6) var(--space-7);
+}
+
+.about-story-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 68ch;
+}
+
+.about-story h2 {
+  font-size: var(--fs-h3);
+}
+
+.about-story p {
+  margin-top: var(--space-3);
+}
+
+/* ------------------------------------------------------------
+   20. FINAL CTA
+------------------------------------------------------------- */
+.final-cta {
+  padding-block: var(--space-7);
+  text-align: center;
+}
+
+.final-cta-inner {
+  max-width: 60ch;
+  margin-inline: auto;
+}
+
+.final-cta h2 {
+  margin-top: var(--space-2);
+}
+
+.final-cta .section-lead {
+  margin-inline: auto;
+}
+
+.final-cta-actions {
+  justify-content: center;
+}
+
+/* ------------------------------------------------------------
+   21. FOOTER
+------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-inner {
+  padding-block: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.footer-brand {
+  max-width: 40ch;
+}
+
+.footer-mission {
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+}
+
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.social-link {
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  color: var(--color-accent);
+}
+
+.footer-bottom {
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-size: var(--fs-small);
+  color: var(--color-text-faint);
+}
+
+/* ------------------------------------------------------------
+   CUSTOM CURSOR (desktop / fine-pointer only)
+   js/cursor.js only creates .custom-cursor-dot/.custom-cursor-ring
+   and adds .has-custom-cursor to <html> on devices with a real
+   mouse — this CSS only takes effect when that class is present,
+   so touch devices are completely unaffected and keep their normal
+   cursor (nothing here needs a touch-specific override).
+------------------------------------------------------------- */
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button {
+  cursor: none;
+}
+
+.custom-cursor-dot,
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  pointer-events: none;
+  border-radius: 50%;
+  transition: opacity var(--transition-fast);
+}
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background-color: var(--color-accent);
+}
+
+.custom-cursor-ring {
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 1px solid var(--color-accent);
+  transition: width var(--transition-fast), height var(--transition-fast),
+    margin var(--transition-fast), border-color var(--transition-fast),
+    background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+/* Grown, filled state over anything clickable — the cursor itself
+   announces "this is interactive" before the person reads a label. */
+.custom-cursor-ring.is-hovering-interactive {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  background-color: rgba(217, 184, 114, 0.12);
+  border-color: var(--color-accent);
+}
+
+/* ------------------------------------------------------------
+   NESTED-FRAME BUTTON HOVER
+   A smaller frame appears just inside the button's own border on
+   hover — a "frame within a frame," echoing the page's own bordered
+   panels (cards, modal) at button scale. Pure CSS pseudo-element,
+   no extra markup needed on any button anywhere in the site.
+------------------------------------------------------------- */
+.btn {
+  position: relative;
+  isolation: isolate;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  pointer-events: none;
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Dark inner frame reads clearly against the solid gold fill */
+.btn-primary::before {
+  border: 1px solid var(--color-bg-primary);
+}
+
+/* Gold inner frame matches the button's own hover accent */
+.btn-secondary::before {
+  border: 1px solid var(--color-accent);
+}
+
+/* ------------------------------------------------------------
+   ANIMATED STARFIELD DRIFT
+   Moves the starfield layers via `transform`, not `background-
+   position` — transform is GPU-composited, so this costs nothing
+   extra during scroll or interaction. Each layer drifts exactly
+   one tile-width/height so the loop has no visible seam. Two
+   layers at different speeds/directions give a subtle sense of
+   depth (distant stars drift slower, near ones faster).
+   Respects prefers-reduced-motion automatically via the global
+   rule at the top of this file.
+------------------------------------------------------------- */
+@keyframes starfield-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-340px, -340px, 0); }
+}
+
+@keyframes starfield-drift-reverse {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(500px, -500px, 0); }
+}
+
+.hero-starfield {
+  animation: starfield-drift 140s linear infinite;
+  will-change: transform;
+}
+
+.hero-starfield::after {
+  animation: starfield-drift-reverse 100s linear infinite;
+  will-change: transform;
+}

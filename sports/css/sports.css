@@ -1,0 +1,625 @@
+/* ============================================================
+   SPORTS/CSS/SPORTS.CSS — the Volleyball premium sports-editorial skin
+   ------------------------------------------------------------
+   Loaded ONLY by sports/index.html, AFTER academic/css/main.css.
+   Every rule is scoped under `body.page-volleyball`, so this skin can
+   never leak into the Academic / Portal sides of the site.
+
+   Concept — "The journey is played here."
+   A premium Japanese-style sports editorial skin, its OWN universe:
+   Warm White + Black + Volleyball Orange (+ Soft Gray). NO stars, no
+   nebula, no meteors, no cosmic glow. Abstract court geometry only.
+
+   INSPIRED BY the energy of Japanese sports storytelling — never a
+   copy of any show or brand. Honest by design: numbers shown are the
+   real, declared ones (01 first tournament, 03 third place, MB middle
+   blocker). No invented matches, scores, or stats anywhere.
+   ============================================================= */
+
+/* ------------------------------------------------------------
+   1. VOLLEYBALL TOKENS — scoped to the page, layered over the shared
+   academic tokens so the page reads as its own sports-universe while
+   keeping the same Day/Night mechanism. Override the astronomy tokens
+   (gold/cyan/violet) with the Warm-White/Black/Orange sports set.
+------------------------------------------------------------ */
+body.page-volleyball {
+  --volley-orange:    #E84A2D;   /* the "volleyball orange" — signature energy */
+  --volley-orange-deep:#C23A20;
+  --volley-black:     #12100D;   /* ink / near-black */
+  --volley-warmwhite: #F7F4EE;   /* warm white editorial background */
+  --volley-softgray:  #A9A094;   /* soft gray — secondary text / hairlines */
+
+  --color-bg-primary:    #0E0D0B;   /* near black — Night Sports Arena */
+  --color-bg-secondary:  #15120F;
+  --color-surface:       #1C1815;
+  --color-border:        rgba(247, 244, 238, 0.12);
+
+  --color-accent:           var(--volley-orange);
+  --color-accent-secondary: var(--volley-warmwhite);
+  --color-accent-muted:     var(--volley-softgray);
+
+  --color-text-primary:   var(--volley-warmwhite);
+  --color-text-secondary: #CCC5B8;
+  --color-text-faint:     var(--volley-softgray);
+
+  /* extra volleyball vocabulary */
+  --volley-border:           rgba(247, 244, 238, 0.14);
+  --volley-border-strong:    rgba(247, 244, 238, 0.34);
+  --volley-mono: 'Space Grotesk', 'IBM Plex Mono', 'Segoe UI', monospace;
+  --volley-num: clamp(3rem, 9vw, 6.5rem);
+}
+
+/* LIGHT theme override — "Warm White + Black + Volleyball Orange" */
+:root[data-theme="light"] body.page-volleyball {
+  --color-bg-primary:    var(--volley-warmwhite);
+  --color-bg-secondary:  #EFEAE1;
+  --color-surface:       #FFFFFF;
+  --color-border:        rgba(18, 16, 13, 0.12);
+
+  --color-accent:           var(--volley-orange);
+  --color-accent-secondary: var(--volley-black);
+  --color-accent-muted:     var(--volley-softgray);
+
+  --color-text-primary:   var(--volley-black);
+  --color-text-secondary: #4A443C;
+  --color-text-faint:     var(--volley-softgray);
+
+  --volley-border:           rgba(18, 16, 13, 0.14);
+  --volley-border-strong:    rgba(18, 16, 13, 0.34);
+}
+
+/* Kill the shared cosmic background on the volleyball page entirely:
+   no nebula, no starfield. Replace with a quiet court-arena shadow. */
+body.page-volleyball::before,
+body.page-volleyball::after {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   2. HERO — big editorial type + abstract court geometry.
+------------------------------------------------------------ */
+.page-volleyball .volley-hero {
+  position: relative;
+  overflow: hidden;
+  border-block-end: 1px solid var(--volley-border);
+  padding-block: clamp(4.5rem, 11vw, 9rem) clamp(3rem, 7vw, 5rem);
+}
+
+/* Abstract court geometry — thin partially-drawn court read in
+   perspective: boundary, attack line, net. Never a literal court;
+   a signal, drawn in the page accent at low opacity. */
+.hero-court {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-court-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-court .court-boundary { stroke: var(--color-accent);    opacity: 0.14; }
+.hero-court .court-attack   { stroke: var(--color-accent);    opacity: 0.10; }
+.hero-court .court-net      { stroke: var(--color-accent-secondary); opacity: 0.10; stroke-linecap: round; }
+
+.volley-hero-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.volley-kicker {
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin-block-end: var(--space-3);
+}
+
+.volley-hero-title {
+  margin: 0;
+  font-size: clamp(2.75rem, 9vw, 7rem);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08em;
+}
+.volley-hero-word { color: var(--color-text-primary); }
+.volley-hero-word--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-accent);
+  -webkit-text-stroke-width: max(1.5px, 0.055em);
+}
+
+.volley-hero-sub {
+  max-width: 56ch;
+  margin-top: var(--space-4);
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+}
+.volley-hero-actions {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.btn-secondary-volley {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.72em 1.4em;
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent-secondary);
+  border: 1px solid var(--volley-border-strong);
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    color var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-base);
+}
+.btn-secondary-volley:hover,
+.btn-secondary-volley:focus-visible {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+/* ---- Editorial ticker band ---- */
+.volley-ticker {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--volley-border);
+  overflow: hidden;
+}
+.volley-ticker-track {
+  display: flex;
+  white-space: nowrap;
+  font-family: var(--volley-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  will-change: transform;
+}
+.volley-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  padding-inline-end: 3.5rem;
+}
+.volley-ticker-item::after {
+  content: '·';
+  color: var(--color-accent);
+  margin-inline-end: 3.5rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .volley-ticker-track { animation: volley-ticker 28s linear infinite; }
+  [dir="rtl"] .volley-ticker-track { animation-direction: reverse; }
+}
+@keyframes volley-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ------------------------------------------------------------
+   3. THE SIGNATURE EYE — one abstract minimal geometric eye.
+   Closed by default. The lids (painted to match the section bg) slide
+   apart on hover/focus to REVEAL the open eye (almond + pupil), then
+   blink once and close when you leave. aria-hidden entirely — purely
+   decorative.
+------------------------------------------------------------ */
+.volley-signature {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--space-5);
+}
+.volley-eye {
+  display: block;
+  width: 72px;
+  height: 72px;
+  --volley-lid: var(--color-bg-primary);
+}
+.volley-signature--sm .volley-eye { width: 40px; height: 40px; }
+
+.volley-eye .eye-open { opacity: 0; }
+.volley-eye .eye-line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.volley-eye .eye-pupil {
+  fill: var(--color-accent);
+}
+.volley-eye .ve-pupil { fill: var(--color-accent); }
+
+/* lids — same colour as the background, so when they are at rest they
+   hide the eye and the eye reads "closed". */
+.volley-eye .eye-lids .lid {
+  fill: var(--volley-lid);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.volley-eye .eye-lids .lid-top    { transform: translateY(0); }
+.volley-eye .eye-lids .lid-bottom { transform: translateY(0); }
+.volley-eye .eye-lash {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* hover / focus / keyboard focus on the whole signature chip */
+.volley-signature:hover .volley-eye .eye-lids .lid-top,
+.volley-signature:focus-within .volley-eye .eye-lids .lid-top,
+.volley-signature.is-open .volley-eye .eye-lids .lid-top {
+  transform: translateY(-26px);
+}
+.volley-signature:hover .volley-eye .eye-lids .lid-bottom,
+.volley-signature:focus-within .volley-eye .eye-lids .lid-bottom,
+.volley-signature.is-open .volley-eye .eye-lids .lid-bottom {
+  transform: translateY(26px);
+}
+.volley-signature:hover .volley-eye .eye-open,
+.volley-signature:focus-within .volley-eye .eye-open,
+.volley-signature.is-open .volley-eye .eye-open {
+  opacity: 1;
+}
+.volley-signature .volley-eye .eye-open {
+  transition: opacity 0.4s ease;
+}
+.volley-signature:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* The hero signature opens gently on load (a "remember me" beat) */
+@media (prefers-reduced-motion: no-preference) {
+  .volley-signature--hero {
+    animation: volley-eye-open-on-load 5s ease 0.8s 1;
+  }
+}
+@keyframes volley-eye-open-on-load {
+  0%, 6%   { opacity: 1; }
+}
+.page-volleyball .volley-signature--hero .volley-eye {
+  margin-inline: auto;
+}
+
+/* ------------------------------------------------------------
+   4. SECTIONS — shared editorial rhythm + honest muted styling.
+------------------------------------------------------------ */
+.page-volleyball .volley-section {
+  padding-block: var(--space-7);
+  border-block-start: 1px solid var(--volley-border);
+}
+.volley-section-head {
+  margin-block-end: var(--space-5);
+}
+.volley-section-title {
+  margin-top: var(--space-2);
+  font-size: var(--fs-h2);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.volley-section-lead {
+  margin-top: var(--space-3);
+  max-width: 52ch;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Player profile ---- */
+.volley-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--color-bg-secondary);
+}
+.volley-profile-cell {
+  padding: var(--space-5) var(--space-4);
+}
+.volley-profile-cell + .volley-profile-cell {
+  border-block-start: 1px solid var(--volley-border);
+}
+.volley-profile-label {
+  font-size: var(--fs-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-block-end: var(--space-2);
+}
+.volley-profile-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  color: var(--color-text-primary);
+}
+
+/* ---- Stats (honest numbers) ---- */
+.volley-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  margin-top: var(--space-4);
+}
+.volley-stat {
+  position: relative;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 2px solid var(--color-accent);
+}
+.volley-stat-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--volley-num);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-accent);
+}
+.volley-stat-label {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.volley-stat-label::before {
+  content: '';
+  width: 2.2em;
+  height: 1px;
+  background: var(--volley-border-strong);
+}
+.volley-stat--code .volley-stat-num { color: var(--color-accent-secondary); }
+
+/* ---- Grassroots ---- */
+.volley-grass .volley-section-lead {
+  font-size: 1.15rem;
+}
+
+/* ---- First tournament facts ---- */
+.volley-first-facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-block: var(--space-5);
+}
+.volley-first-fact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 0.9em;
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--volley-border);
+}
+.volley-fact-label {
+  font-size: var(--fs-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.volley-fact-value {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.volley-first-story {
+  max-width: 60ch;
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+}
+.volley-first-actions { margin-top: var(--space-4); }
+
+/* ---- Journey grid (the universal EventSystem cards) ---- */
+.page-volleyball .volley-journey .event-card {
+  background: var(--color-surface);
+  border-color: var(--volley-border);
+}
+.page-volleyball .event-type-badge {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.page-volleyball .event-role { color: var(--color-accent); }
+
+/* ---- Timeline (honest 6 stages) ---- */
+.volley-timeline-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-inline-start: var(--space-5);
+  list-style: none;
+}
+.volley-timeline-list::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 6px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--color-accent), var(--volley-border));
+}
+.volley-tl-node {
+  position: relative;
+}
+.volley-tl-node::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--space-5) + 3px);
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 16%, transparent);
+}
+.volley-tl-time {
+  font-family: var(--volley-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-muted);
+}
+.volley-tl-title {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+}
+.volley-tl-sub {
+  margin-top: var(--space-1);
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+}
+.volley-tl-node--solid::before { background: var(--color-accent-secondary); }
+.volley-tl-node--future::before {
+  background: transparent;
+  border: 1.5px dashed var(--color-accent-secondary);
+  box-shadow: none;
+}
+
+/* ---- Turning point ---- */
+.volley-turning-inner { text-align: center; max-width: 58ch; margin-inline: auto; }
+.volley-turning-message {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--color-text-primary);
+}
+.volley-turning-sub {
+  margin-top: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+}
+
+/* ---- Athletic development ---- */
+.volley-dev-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.volley-dev-status-label {
+  font-size: var(--fs-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-muted);
+}
+.volley-dev-status-value {
+  padding: 0.35em 0.9em;
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.volley-dev-body {
+  margin-top: var(--space-4);
+  max-width: 60ch;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Next chapter ---- */
+.volley-next-inner { text-align: center; max-width: 60ch; margin-inline: auto; }
+.volley-next-lead { margin-top: var(--space-3); color: var(--color-text-secondary); font-size: 1.05rem; }
+.volley-following {
+  margin-top: var(--space-4);
+  font-family: var(--volley-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ---- Memories (film-contact-print archive) ---- */
+.volley-memories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+.volley-memory-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-bg-secondary);
+  aspect-ratio: 1 / 1.1;
+  box-shadow: inset 0 0 0 1px var(--volley-border);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.volley-memory-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.volley-memory-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23m)' opacity='0.4'/></svg>");
+  background-size: 140px 140px;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+}
+@media (hover: hover) {
+  .volley-memory-frame:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px var(--color-accent);
+    z-index: 2;
+  }
+}
+.volley-memory-frame:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+.volley-memory-frame.is-empty { display: none; }
+
+/* ---- Footer ---- */
+.page-volleyball .site-footer {
+  border-block-start: 1px solid var(--volley-border);
+}
+
+/* ------------------------------------------------------------
+   5. RESPONSIVE — stack cleanly down to phones (320–430 works).
+------------------------------------------------------------ */
+@media (min-width: 700px) {
+  .volley-profile-grid { grid-template-columns: repeat(3, 1fr); }
+  .volley-profile-cell + .volley-profile-cell {
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--volley-border);
+  }
+  .volley-first-facts { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+}
+
+@media (min-width: 900px) {
+  .volley-stats-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+  .volley-hero { padding-block: clamp(5rem, 12vw, 10rem) clamp(3.5rem, 7vw, 5rem); }
+}
+
+@media (max-width: 620px) {
+  .volley-hero-title { letter-spacing: -0.01em; }
+  .volley-hero-word--outline { -webkit-text-stroke-width: 1px; }
+  .volley-memory-frame { aspect-ratio: 1 / 1.05; }
+  .volley-section { padding-block: var(--space-6); }
+}

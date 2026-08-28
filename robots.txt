@@ -1,0 +1,8 @@
+# robots.txt
+# Everything on this site is public — no section is blocked from crawling.
+
+User-agent: *
+Allow: /
+
+# Replace https://YOUR_DOMAIN.com with the real domain once deployed.
+Sitemap: https://YOUR_DOMAIN.com/sitemap.xml

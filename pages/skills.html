@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Day / Night — apply the saved theme before first paint, so a
+       Day-mode visitor never sees a flash of the dark (Night) default.
+       Dark stays the default: a first-time visitor still lands on Night. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('preferredTheme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) { /* storage blocked — keep the Night default */ }
+    })();
+  </script>
+
+  <!--
+    PHASE 10 — SKILLS SYSTEM
+    Skills grouped by category, each with an honest text-label
+    level (never a percentage). See data/skills.js for the scale
+    and how to add or update a skill.
+  -->
+
+  <title>Skills — Hussein ElBassiouni</title>
+  <meta name="description" content="Skills — Hussein ElBassiouni's academic portfolio." />
+  <!-- SEO: canonical + Open Graph + Twitter Card.
+       DOMAIN is a placeholder — replace https://YOUR_DOMAIN.com
+       everywhere once the site has a real domain. -->
+  <link rel="canonical" href="https://YOUR_DOMAIN.com/academic/pages/skills.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hussein ElBassiouni" />
+  <meta property="og:title" content="Skills — Hussein ElBassiouni" />
+  <meta property="og:description" content="Skills — Hussein ElBassiouni's academic portfolio." />
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/academic/pages/skills.html" />
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Skills — Hussein ElBassiouni" />
+  <meta name="twitter:description" content="Skills — Hussein ElBassiouni's academic portfolio." />
+  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+
+
+  <link rel="icon" type="image/svg+xml" href="../academic/assets/icons/favicon.svg" />
+  <link rel="stylesheet" href="../academic/css/main.css" />
+  <link rel="stylesheet" href="../transition.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
+
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <div class="header-brand">
+        <a href="../academic/index.html" class="logo" data-i18n="siteName">Hussein ElBassiouni</a>
+        <div class="site-switch">
+        <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+          <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+          <span data-i18n="navPortal">Portal</span>
+        </a>
+        <a href="../sports/index.html" class="site-switch-link" data-i18n-aria-label="navVolleyball" aria-label="Volleyball">
+          <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 9-3 9-3 18"/><path d="M12 3c6 3 9 9 9 18"/><path d="M3 12h18"/></svg>
+          <span data-i18n="navVolleyball">Volleyball</span>
+        </a>
+      </div>
+      </div>
+
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="../academic/index.html" class="nav-link" data-nav-link data-i18n="navHome">Home</a></li>
+          <li><a href="about.html" class="nav-link" data-nav-link data-i18n="navAbout">About</a></li>
+          <li><a href="journey.html" class="nav-link" data-nav-link data-i18n="navJourney">Journey</a></li>
+          <li><a href="goals.html" class="nav-link" data-nav-link data-i18n="navGoals">Goals</a></li>
+          <li class="nav-dropdown" id="work-dropdown">
+            <button type="button" class="nav-link nav-dropdown-trigger" id="work-dropdown-trigger" aria-expanded="false" aria-controls="work-dropdown-menu" data-i18n="navWork">
+              Work <span class="nav-dropdown-arrow" aria-hidden="true">&#9662;</span>
+            </button>
+            <ul class="nav-dropdown-menu" id="work-dropdown-menu">
+              <li><a href="certificates.html" class="nav-link" data-nav-link data-i18n="navCertificates">Certificates</a></li>
+              <li><a href="volunteering.html" class="nav-link" data-nav-link data-i18n="navVolunteering">Volunteering</a></li>
+              <li><a href="projects.html" class="nav-link" data-nav-link data-i18n="navProjects">Projects</a></li>
+              <li><a href="research.html" class="nav-link" data-nav-link data-i18n="navResearch">Research</a></li>
+              <li><a href="skills.html" class="nav-link" data-nav-link data-i18n="navSkills">Skills</a></li>
+            </ul>
+          </li>
+          <li><a href="cv.html" class="nav-link" data-nav-link data-i18n="navCv">CV</a></li>
+        </ul>
+        <div class="site-switch-mobile" aria-label="Site navigation">
+          <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+            <span data-i18n="navPortal">Portal</span>
+          </a>
+          <a href="../sports/index.html" class="site-switch-link" data-i18n-aria-label="navVolleyball" aria-label="Volleyball">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 9-3 9-3 18"/><path d="M12 3c6 3 9 9 9 18"/><path d="M3 12h18"/></svg>
+            <span data-i18n="navVolleyball">Volleyball</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="page-header">
+      <div class="hero-starfield" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <div class="container page-header-inner reveal">
+        <p class="eyebrow" data-i18n="navSkills">Skills</p>
+        <h1 data-i18n="navSkills">Skills</h1>
+        <p class="section-lead" data-i18n="skillsPageLead">
+          Honest self-assessment, not a sales pitch — levels here are
+          text labels, never invented percentages.
+        </p>
+      </div>
+    </section>
+
+    <section class="skills-section">
+      <div class="container">
+        <div id="skills-groups"></div>
+        <p class="empty-state" id="skills-empty-state" hidden data-i18n="skillsEmpty">
+          No skill levels recorded yet.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner reveal">
+      <div class="footer-brand">
+        <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
+        <p class="footer-mission" data-i18n="footerMission">
+          Building a path from Economics to Data Science, and eventually
+          toward Astroinformatics.
+        </p>
+      </div>
+
+      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; <span id="current-year"></span> <span data-i18n="siteName">Hussein ElBassiouni</span></p>
+    </div>
+  </footer>
+
+  <script src="../transition.js"></script>
+  <script src="../academic/js/cursor.js"></script>
+  <script src="../academic/data/skills.js"></script>
+  <script src="../academic/js/skills.js"></script>
+  <script src="../academic/data/translations.js"></script>
+  <script src="../academic/js/language.js"></script>
+  <script src="../academic/js/animations.js"></script>
+  <script src="../academic/js/navigation.js"></script>
+  <script src="../academic/js/main.js"></script>
+  <script src="../academic/data/social.js"></script>
+  <script src="../academic/js/theme.js"></script>
+  <script src="../academic/js/social.js"></script>
+  <script src="../academic/js/media-system.js"></script>
+  <script src="../academic/js/ambient.js"></script>
+</body>
+</html>

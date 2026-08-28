@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Day / Night — apply the saved theme before first paint, so a
+       Day-mode visitor never sees a flash of the dark (Night) default.
+       Dark stays the default: a first-time visitor still lands on Night. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('preferredTheme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) { /* storage blocked — keep the Night default */ }
+    })();
+  </script>
+
+  <!--
+    PHASE 03 — ABOUT PAGE
+    A longer, more detailed version of the homepage's Short
+    Introduction section. Same honesty rules apply: nothing here
+    is phrased as an achievement that hasn't happened yet.
+  -->
+
+  <title>About — Hussein ElBassiouni</title>
+  <meta name="description" content="About Hussein ElBassiouni — his story so far, how he works, and why Astroinformatics." />
+  <!-- SEO: canonical + Open Graph + Twitter Card.
+       DOMAIN is a placeholder — replace https://YOUR_DOMAIN.com
+       everywhere once the site has a real domain. -->
+  <link rel="canonical" href="https://YOUR_DOMAIN.com/academic/pages/about.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hussein ElBassiouni" />
+  <meta property="og:title" content="About — Hussein ElBassiouni" />
+  <meta property="og:description" content="About Hussein ElBassiouni — his story so far, how he works, and why Astroinformatics." />
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/academic/pages/about.html" />
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="About — Hussein ElBassiouni" />
+  <meta name="twitter:description" content="About Hussein ElBassiouni — his story so far, how he works, and why Astroinformatics." />
+  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+
+
+  <link rel="icon" type="image/svg+xml" href="../academic/assets/icons/favicon.svg" />
+
+  <!-- Structured Data (JSON-LD) — helps Google understand this is a
+       personal academic portfolio, not a company or product page.
+       Only real, currently-true fields are included — no jobTitle
+       or affiliation claimed, since none exist yet. sameAs (social
+       links) is left out until the real profile URLs replace the
+       YOUR_..._URL placeholders in the footer. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Hussein ElBassiouni",
+    "alternateName": ["حسين محمد مصطفى أحمد البسيوني", "Хуссейн Мохамед Мостафа Ахмед Эльбассиуни"],
+    "description": "Aspiring Data Scientist focused on Astroinformatics — currently building a foundation in programming, mathematics, and data science ahead of a Bachelor's degree in Economics in Russia.",
+    "url": "https://YOUR_DOMAIN.com/academic/",
+    "image": "https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg"
+  }
+  </script>
+
+  <!-- One level up from pages/, since css/ lives at the project root -->
+  <link rel="stylesheet" href="../academic/css/main.css" />
+  <link rel="stylesheet" href="../transition.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
+
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       Identical structure to index.html. Paths are adjusted for
+       this file's location inside pages/. js/navigation.js sets
+       the active link automatically — no need to hardcode it here.
+  ============================================================= -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <div class="header-brand">
+        <a href="../academic/index.html" class="logo" data-i18n="siteName">Hussein ElBassiouni</a>
+        <div class="site-switch">
+        <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+          <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+          <span data-i18n="navPortal">Portal</span>
+        </a>
+        <a href="../sports/index.html" class="site-switch-link" data-i18n-aria-label="navVolleyball" aria-label="Volleyball">
+          <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 9-3 9-3 18"/><path d="M12 3c6 3 9 9 9 18"/><path d="M3 12h18"/></svg>
+          <span data-i18n="navVolleyball">Volleyball</span>
+        </a>
+      </div>
+      </div>
+
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="../academic/index.html" class="nav-link" data-nav-link data-i18n="navHome">Home</a></li>
+          <li><a href="about.html" class="nav-link" data-nav-link data-i18n="navAbout">About</a></li>
+          <li><a href="journey.html" class="nav-link" data-nav-link data-i18n="navJourney">Journey</a></li>
+          <li><a href="goals.html" class="nav-link" data-nav-link data-i18n="navGoals">Goals</a></li>
+          <li class="nav-dropdown" id="work-dropdown">
+            <button type="button" class="nav-link nav-dropdown-trigger" id="work-dropdown-trigger" aria-expanded="false" aria-controls="work-dropdown-menu" data-i18n="navWork">
+              Work <span class="nav-dropdown-arrow" aria-hidden="true">&#9662;</span>
+            </button>
+            <ul class="nav-dropdown-menu" id="work-dropdown-menu">
+              <li><a href="certificates.html" class="nav-link" data-nav-link data-i18n="navCertificates">Certificates</a></li>
+              <li><a href="volunteering.html" class="nav-link" data-nav-link data-i18n="navVolunteering">Volunteering</a></li>
+              <li><a href="projects.html" class="nav-link" data-nav-link data-i18n="navProjects">Projects</a></li>
+              <li><a href="research.html" class="nav-link" data-nav-link data-i18n="navResearch">Research</a></li>
+              <li><a href="skills.html" class="nav-link" data-nav-link data-i18n="navSkills">Skills</a></li>
+            </ul>
+          </li>
+          <li><a href="cv.html" class="nav-link" data-nav-link data-i18n="navCv">CV</a></li>
+        </ul>
+        <div class="site-switch-mobile" aria-label="Site navigation">
+          <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+            <span data-i18n="navPortal">Portal</span>
+          </a>
+          <a href="../sports/index.html" class="site-switch-link" data-i18n-aria-label="navVolleyball" aria-label="Volleyball">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 9-3 9-3 18"/><path d="M12 3c6 3 9 9 9 18"/><path d="M3 12h18"/></svg>
+            <span data-i18n="navVolleyball">Volleyball</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         PAGE HEADER
+         A lighter version of the homepage Hero — same starfield/glow
+         classes reused for visual continuity across the site, but
+         no portrait and a much smaller footprint since this isn't
+         the front door of the site.
+    ============================================================= -->
+    <section class="page-header">
+      <div class="hero-starfield" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <div class="container page-header-inner reveal">
+        <p class="eyebrow" data-i18n="aboutEyebrow">About</p>
+        <h1 data-i18n="aboutPageTitle">The story so far</h1>
+        <p class="section-lead" data-i18n="aboutPageLead">
+          Not a finished résumé — a clear account of where things stand
+          today, and how Hussein is approaching the path ahead.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FULL STORY
+    ============================================================= -->
+    <section class="about-story">
+      <div class="container about-story-inner">
+        <div class="reveal">
+          <h2 data-i18n="aboutStory1Title">Where it started</h2>
+          <p data-i18n="aboutStory1Body">
+            Hussein graduated Egyptian high school in 2022. Since then,
+            the focus has been on building — deliberately and honestly —
+            toward a long-term goal that's still years away: working at
+            the intersection of data science and astronomy.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2 data-i18n="aboutStory2Title">Why Economics first</h2>
+          <p data-i18n="aboutStory2Body">
+            The next academic step is a Bachelor's degree in Economics
+            in Russia. It isn't the destination, and it isn't pretended
+            to be. Economics was chosen deliberately as a foundation —
+            a structured environment to build real strength in
+            programming, mathematics, statistics, and analytical
+            thinking, alongside English, Russian, and the language
+            requirements the path ahead calls for.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2 data-i18n="aboutStory3Title">Why Astroinformatics</h2>
+          <p data-i18n="aboutStory3Body">
+            Data science is a broad field. Astronomy is where curiosity
+            has consistently pulled toward — the scale of the questions
+            it asks, and the amount of real, complex data behind every
+            answer. Astroinformatics sits exactly at that intersection:
+            using data science methods to actually do astronomy. That's
+            the long-term direction, approached one honest stage at a
+            time rather than claimed in advance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         HOW I WORK — VALUES
+         Reuses .focus-grid / .focus-item from css/main.css (built
+         for the homepage's Current Mission section) — same visual
+         language, different content, no duplicated CSS.
+    ============================================================= -->
+    <section class="mission">
+      <div class="container">
+        <p class="eyebrow reveal" data-i18n="aboutValuesEyebrow">How I Work</p>
+        <h2 class="reveal" data-i18n="aboutValuesHeading">What guides the process</h2>
+
+        <ul class="focus-grid">
+          <li class="focus-item reveal">
+            <h3 data-i18n="aboutValue1Title">Curiosity</h3>
+            <p data-i18n="aboutValue1Body">Asking why something works, not just learning that it does.</p>
+          </li>
+          <li class="focus-item reveal">
+            <h3 data-i18n="aboutValue2Title">Discipline</h3>
+            <p data-i18n="aboutValue2Body">Consistent, unglamorous effort over long periods of time.</p>
+          </li>
+          <li class="focus-item reveal">
+            <h3 data-i18n="aboutValue3Title">Academic Excellence</h3>
+            <p data-i18n="aboutValue3Body">Taking the fundamentals seriously before rushing toward specialization.</p>
+          </li>
+          <li class="focus-item reveal">
+            <h3 data-i18n="aboutValue4Title">Exploration</h3>
+            <p data-i18n="aboutValue4Body">Staying open to what a field actually needs, not just what looks impressive.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINAL CTA
+    ============================================================= -->
+    <section class="final-cta">
+      <div class="container final-cta-inner reveal">
+        <p class="eyebrow" data-i18n="aboutCtaEyebrow">Keep Exploring</p>
+        <h2 data-i18n="aboutCtaHeading">See the journey in more detail</h2>
+        <div class="hero-actions final-cta-actions">
+          <a href="../academic/index.html#journey" class="btn btn-primary" data-i18n="ctaAcademicJourney">Academic Journey</a>
+          <a href="certificates.html" class="btn btn-secondary" data-i18n="viewCertificates">View Certificates</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER — identical to index.html, paths adjusted
+  ============================================================= -->
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner reveal">
+      <div class="footer-brand">
+        <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
+        <p class="footer-mission" data-i18n="footerMission">
+          Building a path from Economics to Data Science, and eventually
+          toward Astroinformatics.
+        </p>
+      </div>
+
+      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; <span id="current-year"></span> <span data-i18n="siteName">Hussein ElBassiouni</span></p>
+    </div>
+  </footer>
+
+  <!-- No data/certificates.js or data/volunteering.js here — this
+       page doesn't render either preview, so there's nothing for
+       those scripts to do. Keeps the page loading only what it needs. -->
+  <script src="../transition.js"></script>
+  <script src="../academic/js/cursor.js"></script>
+  <script src="../academic/data/translations.js"></script>
+  <script src="../academic/js/language.js"></script>
+  <script src="../academic/js/animations.js"></script>
+  <script src="../academic/js/navigation.js"></script>
+  <script src="../academic/js/main.js"></script>
+  <script src="../academic/data/social.js"></script>
+  <script src="../academic/js/theme.js"></script>
+  <script src="../academic/js/social.js"></script>
+  <script src="../academic/js/media-system.js"></script>
+  <script src="../academic/js/ambient.js"></script>
+</body>
+</html>

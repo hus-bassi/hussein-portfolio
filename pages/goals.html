@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Day / Night — apply the saved theme before first paint, so a
+       Day-mode visitor never sees a flash of the dark (Night) default.
+       Dark stays the default: a first-time visitor still lands on Night. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('preferredTheme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) { /* storage blocked — keep the Night default */ }
+    })();
+  </script>
+
+  <!--
+    PHASE 07 — FUTURE GOALS PAGE
+    The expanded version of the homepage's "Beyond the Stars"
+    section. Every goal here is phrased as an aim, not a claim.
+    This is the last of the core v1 pages (About, Certificates,
+    Volunteering, Journey, Goals) — Phase 08 onward adds new
+    systems (Projects, Research, Skills, CV) rather than new
+    core pages.
+  -->
+
+  <title>Future Goals — Hussein ElBassiouni</title>
+  <meta name="description" content="Long-term goals and mission — Hussein ElBassiouni's academic portfolio." />
+  <!-- SEO: canonical + Open Graph + Twitter Card.
+       DOMAIN is a placeholder — replace https://YOUR_DOMAIN.com
+       everywhere once the site has a real domain. -->
+  <link rel="canonical" href="https://YOUR_DOMAIN.com/academic/pages/goals.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hussein ElBassiouni" />
+  <meta property="og:title" content="Future Goals — Hussein ElBassiouni" />
+  <meta property="og:description" content="Long-term goals and mission — Hussein ElBassiouni's academic portfolio." />
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/academic/pages/goals.html" />
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Future Goals — Hussein ElBassiouni" />
+  <meta name="twitter:description" content="Long-term goals and mission — Hussein ElBassiouni's academic portfolio." />
+  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+
+
+  <link rel="icon" type="image/svg+xml" href="../academic/assets/icons/favicon.svg" />
+  <link rel="stylesheet" href="../academic/css/main.css" />
+  <link rel="stylesheet" href="../transition.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
+
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <div class="header-brand">
+        <a href="../academic/index.html" class="logo" data-i18n="siteName">Hussein ElBassiouni</a>
+        <div class="site-switch">
+        <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+          <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+          <span data-i18n="navPortal">Portal</span>
+        </a>
+        <a href="../sports/index.html" class="site-switch-link" data-i18n-aria-label="navVolleyball" aria-label="Volleyball">
+          <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 9-3 9-3 18"/><path d="M12 3c6 3 9 9 9 18"/><path d="M3 12h18"/></svg>
+          <span data-i18n="navVolleyball">Volleyball</span>
+        </a>
+      </div>
+      </div>
+
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="../academic/index.html" class="nav-link" data-nav-link data-i18n="navHome">Home</a></li>
+          <li><a href="about.html" class="nav-link" data-nav-link data-i18n="navAbout">About</a></li>
+          <li><a href="journey.html" class="nav-link" data-nav-link data-i18n="navJourney">Journey</a></li>
+          <li><a href="goals.html" class="nav-link" data-nav-link data-i18n="navGoals">Goals</a></li>
+          <li class="nav-dropdown" id="work-dropdown">
+            <button type="button" class="nav-link nav-dropdown-trigger" id="work-dropdown-trigger" aria-expanded="false" aria-controls="work-dropdown-menu" data-i18n="navWork">
+              Work <span class="nav-dropdown-arrow" aria-hidden="true">&#9662;</span>
+            </button>
+            <ul class="nav-dropdown-menu" id="work-dropdown-menu">
+              <li><a href="certificates.html" class="nav-link" data-nav-link data-i18n="navCertificates">Certificates</a></li>
+              <li><a href="volunteering.html" class="nav-link" data-nav-link data-i18n="navVolunteering">Volunteering</a></li>
+              <li><a href="projects.html" class="nav-link" data-nav-link data-i18n="navProjects">Projects</a></li>
+              <li><a href="research.html" class="nav-link" data-nav-link data-i18n="navResearch">Research</a></li>
+              <li><a href="skills.html" class="nav-link" data-nav-link data-i18n="navSkills">Skills</a></li>
+            </ul>
+          </li>
+          <li><a href="cv.html" class="nav-link" data-nav-link data-i18n="navCv">CV</a></li>
+        </ul>
+        <div class="site-switch-mobile" aria-label="Site navigation">
+          <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+            <span data-i18n="navPortal">Portal</span>
+          </a>
+          <a href="../sports/index.html" class="site-switch-link" data-i18n-aria-label="navVolleyball" aria-label="Volleyball">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 9-3 9-3 18"/><path d="M12 3c6 3 9 9 9 18"/><path d="M3 12h18"/></svg>
+            <span data-i18n="navVolleyball">Volleyball</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="page-header">
+      <div class="hero-starfield" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <div class="container page-header-inner reveal">
+        <p class="eyebrow" data-i18n="goalsEyebrow">Future Goals</p>
+        <h1 data-i18n="goalsTitle">Beyond the Stars</h1>
+        <p class="section-lead" data-i18n="goalsLead">
+          Ambitious, honestly stated, and not yet achieved. This page
+          is a direction, not a résumé line.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MISSION — expanded version of the homepage Vision section
+    ============================================================= -->
+    <section class="vision">
+      <div class="container vision-inner">
+        <div class="vision-graphic reveal" aria-hidden="true">
+          <span class="vision-ring vision-ring-1"></span>
+          <span class="vision-ring vision-ring-2"></span>
+          <span class="vision-ring vision-ring-3"></span>
+          <span class="vision-core"></span>
+        </div>
+
+        <div class="vision-text reveal">
+          <p class="eyebrow" data-i18n="goalsMissionEyebrow">My Mission</p>
+          <h2 data-i18n="goalsMissionHeading">From Economics, to Data Science, to Astronomy</h2>
+          <p data-i18n="goalsMissionPara1">
+            That's the direction stated as plainly as possible — not a
+            claim of having arrived anywhere on it yet. Every stage
+            before this one exists to make the next stage possible.
+          </p>
+          <p data-i18n="goalsMissionPara2">
+            The long-term aim is to do real, meaningful work in
+            Astroinformatics: using data science methods to help answer
+            genuine astronomical questions, at a level serious enough to
+            matter to the field itself.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHAT I'M AIMING FOR
+         Reuses .focus-grid / .focus-item — same visual language as
+         the homepage's Current Mission and the About page's Values.
+    ============================================================= -->
+    <section class="mission">
+      <div class="container">
+        <p class="eyebrow reveal" data-i18n="goalsAimEyebrow">What I'm Aiming For</p>
+        <h2 class="reveal" data-i18n="goalsAimHeading">Long-term, not yet reached</h2>
+        <p class="section-lead reveal" data-i18n="goalsAimLead">
+          Stated as goals because that's what they are — not
+          achievements, not credentials, not promises.
+        </p>
+
+        <ul class="focus-grid">
+          <li class="focus-item reveal">
+            <h3 data-i18n="goalsAim1Title">Contribute to Astroinformatics Research</h3>
+            <p data-i18n="goalsAim1Body">Do work that genuinely helps answer real astronomical questions using data science methods.</p>
+          </li>
+          <li class="focus-item reveal">
+            <h3 data-i18n="goalsAim2Title">Work Alongside Serious Institutions</h3>
+            <p data-i18n="goalsAim2Body">Collaborate with research groups and universities doing real work in this space — earned, not assumed.</p>
+          </li>
+          <li class="focus-item reveal">
+            <h3 data-i18n="goalsAim3Title">Reach for NASA-Adjacent Research</h3>
+            <p data-i18n="goalsAim3Body">A distant, honestly-stated reach — a direction to grow toward, not a claim being made today.</p>
+          </li>
+          <li class="focus-item reveal">
+            <h3 data-i18n="goalsAim4Title">Publish Meaningful Work</h3>
+            <p data-i18n="goalsAim4Body">Contribute research that holds up on its own merit, once there's something real to contribute.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINAL CTA — closes out the v1 core pages
+    ============================================================= -->
+    <section class="final-cta">
+      <div class="container final-cta-inner reveal">
+        <p class="eyebrow" data-i18n="goalsCtaEyebrow">See the Full Picture</p>
+        <h2 data-i18n="goalsCtaHeading">None of this happens without the steps before it</h2>
+        <div class="hero-actions final-cta-actions">
+          <a href="journey.html" class="btn btn-primary" data-i18n="ctaAcademicJourney">Academic Journey</a>
+          <a href="certificates.html" class="btn btn-secondary" data-i18n="viewCertificates">View Certificates</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner reveal">
+      <div class="footer-brand">
+        <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
+        <p class="footer-mission" data-i18n="footerMission">
+          Building a path from Economics to Data Science, and eventually
+          toward Astroinformatics.
+        </p>
+      </div>
+
+      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; <span id="current-year"></span> <span data-i18n="siteName">Hussein ElBassiouni</span></p>
+    </div>
+  </footer>
+
+  <script src="../transition.js"></script>
+  <script src="../academic/js/cursor.js"></script>
+  <script src="../academic/data/translations.js"></script>
+  <script src="../academic/js/language.js"></script>
+  <script src="../academic/js/animations.js"></script>
+  <script src="../academic/js/navigation.js"></script>
+  <script src="../academic/js/main.js"></script>
+  <script src="../academic/data/social.js"></script>
+  <script src="../academic/js/theme.js"></script>
+  <script src="../academic/js/social.js"></script>
+  <script src="../academic/js/media-system.js"></script>
+  <script src="../academic/js/ambient.js"></script>
+</body>
+</html>

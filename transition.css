@@ -1,0 +1,58 @@
+/* ============================================================
+   TRANSITION.CSS
+   One shared overlay used everywhere a link jumps between the
+   Portal, Academic, and Sports sides. Deliberately colored only
+   with CSS custom properties (--color-bg-primary, --color-accent,
+   --color-border) instead of literal hex values — since every side
+   defines those same variable names with its own values, this one
+   file automatically renders in violet/gold on the Academic side
+   and orange/charcoal on the Sports side, with zero duplication.
+
+   Hidden by default (opacity:0, visibility:hidden, pointer-events:
+   none) — transition.js only ADDS the .is-active class right before
+   navigating away. If JavaScript fails to load for any reason, links
+   just navigate normally with no animation — nothing is ever
+   permanently blocked behind this overlay.
+   ============================================================= */
+
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-primary);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 400ms ease, visibility 400ms ease;
+}
+
+.page-transition-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.page-transition-mark {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: page-transition-spin 800ms linear infinite;
+}
+
+@keyframes page-transition-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-mark {
+    animation-duration: 0.01ms !important;
+  }
+  .page-transition-overlay {
+    transition-duration: 0.01ms !important;
+  }
+}

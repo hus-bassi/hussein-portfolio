@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Day / Night — apply the saved theme before first paint. Dark stays
+       the default; the volleyball skin re-tunes its OWN tokens in BOTH
+       themes: Warm White + Black + Volleyball Orange. NO astronomy, no
+       stars, no meteors — a clean "sports editorial" court-inspired
+       space, never a cosmic one. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('preferredTheme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) { /* storage blocked — keep the default */ }
+    })();
+  </script>
+
+  <!--
+    VOLLEYBALL SIDE — "The journey is played here."
+    Premium sports-editorial skin, built ON the academic design system
+    (../academic/css/main.css + the scoped volley skin below). It reads
+    as its OWN universe: Warm White + Black + Volleyball Orange. INSPIRED
+    BY the energy of Japanese sports storytelling — never a copy of any
+    show or brand. Abstract court geometry; motion is editorial, not arcade.
+  -->
+
+  <title>Volleyball — Hussein ElBassiouni</title>
+  <meta name="description" content="Volleyball — Hussein ElBassiouni." />
+  <link rel="canonical" href="https://YOUR_DOMAIN.com/sports/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hussein ElBassiouni" />
+  <meta property="og:title" content="Volleyball — Hussein ElBassiouni" />
+  <meta property="og:description" content="Volleyball — Hussein ElBassiouni." />
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/sports/" />
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Volleyball — Hussein ElBassiouni" />
+  <meta name="twitter:description" content="Volleyball — Hussein ElBassiouni." />
+  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg" />
+
+  <link rel="icon" type="image/svg+xml" href="../academic/assets/icons/favicon.svg" />
+  <!-- Shared academic design system (self-contained, portable). -->
+  <link rel="stylesheet" href="../academic/css/main.css" />
+  <!-- Scoped volleyball skin — ONLY rules under body.page-volleyball. -->
+  <link rel="stylesheet" href="../sports/css/sports.css" />
+  <link rel="stylesheet" href="../transition.css" />
+</head>
+<body class="page-volleyball">
+  <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
+
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <div class="header-brand">
+        <a class="logo" href="../academic/index.html" data-i18n="siteName">Hussein ElBassiouni</a>
+        <div class="site-switch">
+          <a href="../index.html" class="site-switch-link" data-i18n-aria-label="navPortal" aria-label="Portal">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 6.5v7L12 22l-8-6.5v-7z"/><circle cx="12" cy="12" r="2.5"/></svg>
+            <span data-i18n="navPortal">Portal</span>
+          </a>
+          <a href="../academic/index.html" class="site-switch-link" data-i18n-aria-label="navAcademic" aria-label="Academic">
+            <svg class="site-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span data-i18n="navAcademic">Academic</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Language switcher — js/language.js wires the clicks and sets
+           <html lang>/<html dir> (RTL for Arabic). -->
+      <div class="lang-switcher" aria-label="Language switcher">
+        <button type="button" data-lang-switch="ar" aria-label="العربية">AR</button>
+        <button type="button" data-lang-switch="en" aria-label="English">EN</button>
+        <button type="button" data-lang-switch="ru" aria-label="Русский">RU</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         HERO — Warm White + Black + Volleyball Orange editorial opening,
+         with the abstract signature eye (closed, opens on hover / on the
+         journey reveal). No stars here.
+    ============================================================= -->
+    <section class="volley-hero" aria-labelledby="volley-hero-title">
+      <div class="hero-court" aria-hidden="true">
+        <svg class="hero-court-svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+          <path class="court-boundary" d="M620 120 h520 v360 h-520 z" fill="none" stroke-width="2" />
+          <path class="court-attack"  d="M800 120 v360" fill="none" stroke-width="1.5" />
+          <path class="court-net"     d="M620 300 h520" fill="none" stroke-width="1.5" stroke-dasharray="2 6" />
+        </svg>
+      </div>
+
+      <div class="container">
+        <div class="volley-hero-inner reveal">
+          <p class="volley-kicker" data-i18n="volleyKicker">Volleyball — an honest journey.</p>
+          <h1 class="volley-hero-title" id="volley-hero-title">
+            <span class="volley-hero-word" data-i18n="volleyTitleB">Volleyball</span>
+            <span class="volley-hero-word volley-hero-word--outline" data-i18n="volleyTitleA">Journey</span>
+          </h1>
+          <p class="volley-hero-sub" data-i18n="volleySub">A developing player, a grassroots background, a middle blocker's love for attacking and blocking, and a long-term commitment to the road ahead.</p>
+          <div class="volley-hero-actions">
+            <a class="btn btn-primary" href="#timeline" data-i18n="volleyCtaStory">The journey</a>
+            <a class="btn-secondary-volley" href="../academic/index.html" data-i18n="volleyCtaAcademic">Academic journey</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- The signature: ONE abstract geometric eye — closed by default,
+           opens gently on hover / focus, blinks once when you leave -->
+      <div class="volley-signature volley-signature--hero reveal" aria-hidden="true">
+        <svg class="volley-eye" viewBox="0 0 96 96" focusable="false">
+          <g class="eye-open">
+            <path class="eye-line" d="M12 48 C 28 22, 68 22, 84 48 C 68 74, 28 74, 12 48 Z" />
+            <circle class="eye-pupil" cx="48" cy="48" r="9" />
+          </g>
+          <g class="eye-lids">
+            <path class="lid lid-top"    d="M12 46 C 32 18, 64 18, 84 46 L 96 0 L 0 0 Z" />
+            <path class="lid lid-bottom" d="M12 50 C 32 78, 64 78, 84 50 L 96 96 L 0 96 Z" />
+          </g>
+          <path class="eye-lash" d="M14 48 C 34 20, 62 20, 82 48" />
+          <path class="eye-lash" d="M14 48 C 34 76, 62 76, 82 48" />
+        </svg>
+      </div>
+
+      <!-- Editorial ticker band -->
+      <div class="volley-ticker" aria-hidden="true">
+        <div class="volley-ticker-track">
+          <span class="volley-ticker-item" data-i18n="volleyTicker">First tournament · Third place · Next chapter</span>
+          <span class="volley-ticker-item" data-i18n="volleyTicker">First tournament · Third place · Next chapter</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PLAYER PROFILE — an honest, language-aware athlete snapshot.
+    ============================================================= -->
+    <section class="volley-section volley-profile" aria-label="Player profile">
+      <div class="container">
+        <div class="volley-section-head reveal">
+          <p class="volley-kicker" data-i18n="volleyProfileTitle">Player profile</p>
+          <p class="volley-section-lead" data-i18n="volleyRoleLine">A developing player with a grassroots background. Not yet a professional athlete.</p>
+        </div>
+        <div class="volley-profile-grid">
+          <div class="volley-profile-cell reveal">
+            <p class="volley-profile-label" data-i18n="volleyPosLabel">Position</p>
+            <p class="volley-profile-value" data-i18n="volleyPos">Middle Blocker</p>
+          </div>
+          <div class="volley-profile-cell reveal">
+            <p class="volley-profile-label" data-i18n="volleyNameLabel">Identity</p>
+            <p class="volley-profile-value" data-i18n="siteName">Hussein ElBassiouni</p>
+          </div>
+          <div class="volley-profile-cell reveal">
+            <p class="volley-profile-label" data-i18n="volleyDobLabel">Born</p>
+            <p class="volley-profile-value" data-i18n="volleyDob">June 9, 2004</p>
+          </div>
+          <div class="volley-profile-cell reveal">
+            <p class="volley-profile-label" data-i18n="volleyHeightLabel">Height</p>
+            <p class="volley-profile-value" data-i18n="volleyHeight">188 cm</p>
+          </div>
+          <div class="volley-profile-cell reveal">
+            <p class="volley-profile-label" data-i18n="volleyStyleLabel">Preference</p>
+            <p class="volley-profile-value" data-i18n="volleyStyle">Versatile — anywhere except Libero. At home attacking and blocking.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS — honest, declared numbers only (01 / 03 / MB).
+    ============================================================= -->
+    <section class="volley-section volley-stats" aria-label="Volleyball milestones">
+      <div class="container">
+        <p class="volley-kicker reveal" data-i18n="volleyStatsTitle">In numbers</p>
+        <div class="volley-stats-grid">
+          <div class="volley-stat reveal">
+            <p class="volley-stat-num" data-i18n="volleyStatFirstNum">01</p>
+            <p class="volley-stat-label" data-i18n="volleyStatFirstLabel">First tournament</p>
+          </div>
+          <div class="volley-stat reveal">
+            <p class="volley-stat-num" data-i18n="volleyStatPlaceNum">03</p>
+            <p class="volley-stat-label" data-i18n="volleyStatPlaceLabel">Third place</p>
+          </div>
+          <div class="volley-stat volley-stat--code reveal">
+            <p class="volley-stat-num" data-i18n="volleyStatPosNum">MB</p>
+            <p class="volley-stat-label" data-i18n="volleyStatPosLabel">Middle blocker</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         GRASSROOTS — where it began.
+    ============================================================= -->
+    <section class="volley-section volley-grass" aria-label="Where it began">
+      <div class="container">
+        <div class="volley-section-head reveal">
+          <p class="volley-kicker" data-i18n="volleyGrassTitle">Where it began</p>
+          <h2 class="volley-section-title" data-i18n="volleyGrassTitle">Where it began</h2>
+          <p class="volley-section-lead" data-i18n="volleyGrassLead">It did not begin in a professional club. It began on local courts, in youth centers, with friends, informal teams, and a genuine love for volleyball.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         JOURNEY — the first tournament card, driven by the SAME real data
+         in volleyball.js. Each card opens the universal EventSystem detail
+         modal (which now also shows the Position row), including the
+         fullscreen certificate and the photo gallery.
+    ============================================================= -->
+    <section class="volley-section volley-journey" id="first">
+      <div class="container">
+        <div class="volley-section-head reveal">
+          <p class="volley-kicker" data-i18n="volleyFirstEyebrow">First tournament</p>
+          <h2 class="volley-section-title" data-i18n="volleyFirstTitle">My First Friendly Volleyball Tournament</h2>
+          <p class="volley-section-lead" data-i18n="volleyFirstYear">Ramadan 2023</p>
+        </div>
+
+        <div class="volley-first-facts reveal">
+          <div class="volley-first-fact">
+            <span class="volley-fact-label" data-i18n="volleyFirstTeamLabel">Team</span>
+            <span class="volley-fact-value" data-i18n="volleyFirstTeam">Al Taawoon Sporting Club — Al Haram</span>
+          </div>
+          <div class="volley-first-fact">
+            <span class="volley-fact-label" data-i18n="volleyFirstVenueLabel">Venue</span>
+            <span class="volley-fact-value" data-i18n="volleyFirstVenue">Engineering Syndicate Club</span>
+          </div>
+          <div class="volley-first-fact">
+            <span class="volley-fact-label" data-i18n="volleyFirstPosLabel">Position</span>
+            <span class="volley-fact-value" data-i18n="volleyFirstPos">Middle Blocker</span>
+          </div>
+          <div class="volley-first-fact">
+            <span class="volley-fact-label" data-i18n="volleyFirstResLabel">Result</span>
+            <span class="volley-fact-value" data-i18n="volleyFirstRes">Third Place</span>
+          </div>
+        </div>
+
+        <p class="volley-first-story reveal" data-i18n="volleyFirstStory">I played my first friendly tournament during Ramadan — a real, honest first chapter. After the matches we gathered together to share Iftar.</p>
+
+        <div class="certificates-grid" data-events-grid data-events-source="volleyballData"></div>
+        <p class="empty-state" data-events-empty hidden data-i18n="volleyFirstEyebrow">
+          First tournament
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TIMELINE — an honest 6-stage read of the journey. No invented
+         events: a clean progress line of what really happened.
+    ============================================================= -->
+    <section class="volley-section volley-timeline" id="timeline">
+      <div class="container">
+        <div class="volley-section-head reveal">
+          <p class="volley-kicker" data-i18n="volleyTimelineTitle">The road so far</p>
+          <h2 class="volley-section-title" data-i18n="volleyTimelineTitle">The road so far</h2>
+        </div>
+        <ol class="volley-timeline-list">
+          <li class="volley-tl-node reveal">
+            <p class="volley-tl-time" data-i18n="volleyTl1Time">GRASSROOTS BEGINNINGS</p>
+            <h3 class="volley-tl-title" data-i18n="volleyTl1Title">The beginning</h3>
+            <p class="volley-tl-sub" data-i18n="volleyTl1Sub">Local courts, youth centers, friends, and informal teams.</p>
+          </li>
+          <li class="volley-tl-node volley-tl-node--solid reveal">
+            <p class="volley-tl-time" data-i18n="volleyTl2Time">2023</p>
+            <h3 class="volley-tl-title" data-i18n="volleyTl2Title">First friendly tournament</h3>
+            <p class="volley-tl-sub" data-i18n="volleyTl2Sub">My first friendly tournament — played during Ramadan, with my team.</p>
+          </li>
+          <li class="volley-tl-node reveal">
+            <p class="volley-tl-time" data-i18n="volleyTl3Time">2023–2025</p>
+            <h3 class="volley-tl-title" data-i18n="volleyTl3Title">Local &amp; community play</h3>
+            <p class="volley-tl-sub" data-i18n="volleyTl3Sub">Booked games and community teams — the love for the game kept growing.</p>
+          </li>
+          <li class="volley-tl-node reveal">
+            <p class="volley-tl-time" data-i18n="volleyTl4Time">After 2025</p>
+            <h3 class="volley-tl-title" data-i18n="volleyTl4Title">A turning point</h3>
+            <p class="volley-tl-sub" data-i18n="volleyTl4Sub">Stopped due to an eye injury and travel circumstances.</p>
+          </li>
+          <li class="volley-tl-node reveal">
+            <p class="volley-tl-time" data-i18n="volleyTl5Time">Current</p>
+            <h3 class="volley-tl-title" data-i18n="volleyTl5Title">Athletic development</h3>
+            <p class="volley-tl-sub" data-i18n="volleyTl5Sub">Preparing on and off the court — no claims, just readiness.</p>
+          </li>
+          <li class="volley-tl-node volley-tl-node--future reveal">
+            <p class="volley-tl-time" data-i18n="volleyTl6Time">Future</p>
+            <h3 class="volley-tl-title" data-i18n="volleyTl6Title">Continue volleyball</h3>
+            <p class="volley-tl-sub" data-i18n="volleyTl6Sub">Keep playing and developing — with a goal of continuing the journey outside Egypt.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TURNING POINT — the honest message.
+    ============================================================= -->
+    <section class="volley-section volley-turning">
+      <div class="container volley-turning-inner reveal">
+        <p class="volley-turning-message" data-i18n="volleyTurnMsg">The path changed after 2025, but the goal did not.</p>
+        <p class="volley-turning-sub" data-i18n="volleyTurnSub">After 2025 I stepped back from competitive play because of an eye injury and my travel circumstances. The goal — to keep growing as a player and continue the journey — did not change.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ATHLETIC DEVELOPMENT — honest "In progress" status.
+    ============================================================= -->
+    <section class="volley-section volley-dev" aria-label="Athletic development">
+      <div class="container">
+        <div class="volley-section-head reveal">
+          <p class="volley-kicker" data-i18n="volleyDevTitle">Athletic development</p>
+          <h2 class="volley-section-title" data-i18n="volleyDevTitle">Athletic development</h2>
+        </div>
+        <div class="volley-dev-status reveal">
+          <span class="volley-dev-status-label" data-i18n="volleyDevStatus">Status</span>
+          <span class="volley-dev-status-value" data-i18n="volleyDevStatusVal">In progress</span>
+        </div>
+        <p class="volley-dev-body reveal" data-i18n="volleyDevBody">Building the foundation for the next chapter — strength, mobility, conditioning, plyometrics, and volleyball-specific training. No claims yet, just steady work.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         NEXT CHAPTER — volleyball continues, including outside Egypt.
+    ============================================================= -->
+    <section class="volley-section volley-next" aria-label="The next chapter">
+      <div class="container volley-next-inner reveal">
+        <h2 class="volley-section-title" data-i18n="volleyNextTitle">The next chapter</h2>
+        <p class="volley-next-lead" data-i18n="volleyNextLead">Continue to develop as an athlete — to keep playing volleyball, including outside Egypt.</p>
+        <p class="volley-following" data-i18n="volleyFollowing">Developing athlete · Middle Blocker · Long-haul commitment</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MEMORIES — an editorial archive. Photos come from the real event
+         data in volleyball.js, framed like film contact prints. Each
+         frame opens in the universal MediaViewer.
+    ============================================================= -->
+    <section class="volley-section volley-memories" id="memories">
+      <div class="container">
+        <div class="volley-section-head reveal">
+          <p class="volley-kicker" data-i18n="volleyMemTitle">Memories</p>
+          <h2 class="volley-section-title" data-i18n="volleyMemTitle">Memories</h2>
+          <p class="volley-section-lead" data-i18n="volleyMemLead">Old photos are part of the story too — grainy, imperfect, real. From the early days.</p>
+        </div>
+        <div class="volley-memories-grid" data-memories></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner reveal">
+      <div class="footer-brand">
+        <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
+        <p class="footer-mission" data-i18n="footerMission">
+          Developing as a volleyball player — on and off the court, with the
+          same care for the journey as the academic side.
+        </p>
+      </div>
+
+      <!-- The abstract eye signature, once more, quietly closed -->
+      <div class="volley-signature volley-signature--sm" aria-hidden="true">
+        <svg class="volley-eye" viewBox="0 0 96 96" focusable="false">
+          <g class="eye-open">
+            <path class="eye-line" d="M12 48 C 28 22, 68 22, 84 48 C 68 74, 28 74, 12 48 Z" />
+            <circle class="eye-pupil" cx="48" cy="48" r="9" />
+          </g>
+          <g class="eye-lids">
+            <path class="lid lid-top"    d="M12 46 C 32 18, 64 18, 84 46 L 96 0 L 0 0 Z" />
+            <path class="lid lid-bottom" d="M12 50 C 32 78, 64 78, 84 50 L 96 96 L 0 96 Z" />
+            <path class="eye-lash" d="M14 48 C 34 20, 62 20, 82 48" />
+            <path class="eye-lash" d="M14 48 C 34 76, 62 76, 82 48" />
+          </g>
+        </svg>
+      </div>
+
+      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; <span id="current-year"></span> <span data-i18n="siteName">Hussein ElBassiouni</span></p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- The memories renderer — uses the SAME real data in volleyball.js,
+       localized via the shared translations, wired into the universal
+       MediaViewer so each memory opens at the matching image. The journey
+       grid above is rendered by the EventSystem via
+       [data-events-source="volleyballData"]. -->
+  <script>
+    (function () {
+      'use strict';
+      function lang() { return document.documentElement.lang || 'en'; }
+      function L(v) {
+        if (v && typeof v === 'object' && !Array.isArray(v)) return v[lang()] || v.en || Object.values(v)[0] || '';
+        return v == null ? '' : v;
+      }
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function renderMemories() {
+        var host = document.querySelector('[data-memories]');
+        if (!host) return;
+        var ev = (window.volleyballData && window.volleyballData[0]) || {};
+        var items = (ev && Array.isArray(ev.images)) ? ev.images : [];
+        if (!items.length) {
+          host.innerHTML = '<p class="volley-empty">' + esc(L(ev.title) || 'Volleyball') + '</p>';
+          return;
+        }
+        var rows = [];
+        items.forEach(function (m, i) {
+          var src = window.EventSystem ? window.EventSystem.resolveMediaPath(m.src) : m.src;
+          var cap = L(m.caption) || 'Volleyball';
+          rows.push(
+            '<button type="button" class="volley-memory-frame" data-i="' + i + '" aria-label="' + esc(cap) + '">' +
+              '<img src="' + esc(src) + '" alt="" loading="lazy" decoding="async" ' +
+              'onerror="this.closest(\'.volley-memory-frame\').classList.add(\'is-empty\')"></button>'
+          );
+        });
+        host.innerHTML = rows.join('');
+        var gallery = items.map(function (m) {
+          return {
+            src: window.EventSystem ? window.EventSystem.resolveMediaPath(m.src) : m.src,
+            alt: esc(L(m.caption) || 'Volleyball'),
+            caption: L(m.caption) || 'Volleyball'
+          };
+        });
+        host.querySelectorAll('.volley-memory-frame').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var i = Number(btn.getAttribute('data-i')) || 0;
+            if (window.MediaViewer) window.MediaViewer.open(gallery, i);
+          });
+        });
+      }
+
+      function boot() { renderMemories(); }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+      else boot();
+      document.addEventListener('i18n:languagechange', renderMemories);
+    })();
+  </script>
+
+  <script src="../transition.js"></script>
+  <script src="../academic/js/cursor.js"></script>
+  <script src="../academic/data/social.js"></script>
+  <script src="../academic/data/volleyball.js"></script>
+  <script src="../academic/data/translations.js"></script>
+  <script src="../academic/js/language.js"></script>
+  <script src="../academic/js/animations.js"></script>
+  <script src="../academic/js/social.js"></script>
+  <script src="../academic/js/theme.js"></script>
+  <script src="../academic/js/media-system.js"></script>
+  <script src="../academic/js/ambient.js"></script>
+</body>
+</html>
