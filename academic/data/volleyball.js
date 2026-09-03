@@ -47,7 +47,7 @@ const volleyballData = [
     },
     role: {
       en: 'Middle Blocker',
-      ar: 'الحاجز المركزي',
+      ar: 'حائط الصد',
       ru: 'Центральный блокирующий',
     },
     position: {
@@ -105,7 +105,6 @@ const volleyballData = [
       { src: 'assets/volleyball/tournaments/first-friendly-tournament/photo-07.jpg', caption: { en: 'Tournament moment', ar: 'لحظة من البطولة', ru: 'Момент турнира' } },
       { src: 'assets/volleyball/tournaments/first-friendly-tournament/photo-08.jpg', caption: { en: 'Tournament moment', ar: 'لحظة من البطولة', ru: 'Момент турнира' } },
       { src: 'assets/volleyball/tournaments/first-friendly-tournament/photo-09.jpg', caption: { en: 'Tournament moment', ar: 'لحظة من البطولة', ru: 'Момент турнира' } },
-      { src: 'assets/volleyball/tournaments/first-friendly-tournament/photo-10.jpg', caption: { en: 'Tournament moment', ar: 'لحظة من البطولة', ru: 'Момент турнира' } },
     ],
   },
 ];

@@ -132,8 +132,7 @@ function initLanguageSwitcher() {
  * WHY:   index.html hard-codes the switcher in its nav, but the
  *        internal pages don't — rather than paste the same markup
  *        into every one, this injects it once (a single source of
- *        truth, the same approach js/theme.js takes for the theme
- *        toggle). A page that already has a switcher is left alone,
+ *        truth). A page that already has a switcher is left alone,
  *        so index.html is untouched.
  * HOW:   Appends it to .primary-nav, mirroring index.html's structure
  *        so the existing .lang-switcher CSS applies with no changes.

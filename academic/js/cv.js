@@ -3,9 +3,10 @@
    Two jobs:
    1. Wire up the "Print / Save as PDF" button.
    2. Render compact summaries of skills, certificates, and
-      volunteering onto the CV — reusing the same data arrays as
-      the rest of the site (certificatesData, volunteeringData,
-      skillsData), so the CV can never drift out of sync with them.
+      volunteering onto the CV — reusing the same data as the rest
+      of the site (skillsData, certificatesData, and the real
+      type:'volunteering' entries from data/events.js), so the CV
+      can never drift out of sync with them.
    ============================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,24 +16,48 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCvVolunteering();
 });
 
-// The certificate list can hold multilingual titles, so re-render it
-// when the language changes at runtime. (Skills and volunteering data
-// are still single-language, so they don't need re-rendering here.)
-document.addEventListener('i18n:languagechange', renderCvCertificates);
+// The certificate AND volunteering lists can hold multilingual fields, so
+// re-render both when the language changes at runtime. (Skills are still
+// single-language, so they don't need re-rendering here.)
+document.addEventListener('i18n:languagechange', () => {
+  renderCvCertificates();
+  renderCvVolunteering();
+});
 
 /**
- * WHAT:  Resolves a possibly-multilingual certificate field to a single
- *        string for the CV list.
- * WHY:   The CV reuses certificatesData, whose title/description can now
- *        be a { en, ar, ru } object (see data/certificates.js).
- * HOW:   Reuses js/certificates.js's localizeCertField() when it's
- *        loaded (it always is on the CV page, which includes
- *        data + js/certificates.js before this file); falls back to a
- *        small local resolver so cv.js is still safe on its own.
+ * WHAT:  Returns the active language code ('ar' | 'en' | 'ru').
+ * WHY:   The CV renders on its own DOMContentLoaded and re-renders on
+ *        i18n:languagechange; it needs the current language to resolve
+ *        multilingual fields. js/certificates.js (which exposes
+ *        localizeCertField) is NOT loaded on the CV page, so cv.js
+ *        resolves the language itself — the same way certificates.js
+ *        does: the saved choice first, then <html lang>, then English.
+ */
+function cvActiveLang() {
+  try {
+    const saved = localStorage.getItem('preferredLanguage');
+    if (saved === 'ar' || saved === 'en' || saved === 'ru') return saved;
+  } catch (e) { /* storage blocked — fall through to the DOM/default */ }
+  const htmlLang = document.documentElement.lang;
+  if (htmlLang === 'ar' || htmlLang === 'en' || htmlLang === 'ru') return htmlLang;
+  return 'en';
+}
+
+/**
+ * WHAT:  Resolves a possibly-multilingual field to a single string in the
+ *        active language.
+ * WHY:   certificatesData titles and the events.js volunteering fields can
+ *        be { en, ar, ru } objects; this keeps the CV's certificate and
+ *        volunteering lists in the same language as the rest of the page.
+ * HOW:   Plain string → returned unchanged (legacy single-language data).
+ *        { en, ar, ru } → active language, falling back to English, then to
+ *        any value present — so it can never render "[object Object]".
  */
 function cvLocalizeCert(value) {
-  if (typeof localizeCertField === 'function') return localizeCertField(value);
-  if (value && typeof value === 'object') return value.en || Object.values(value)[0] || '';
+  if (value && typeof value === 'object') {
+    const lang = cvActiveLang();
+    return value[lang] || value.en || Object.values(value)[0] || '';
+  }
   return value;
 }
 
@@ -127,28 +152,62 @@ function renderCvCertificates() {
 }
 
 /**
- * WHAT:  Renders volunteeringData as a compact CV-style list.
+ * WHAT:  Returns the volunteering entries to show on the CV, in order.
+ * WHY:   The Volunteering PAGE renders every type:'volunteering' entry from
+ *        data/events.js (through the EventSystem). The CV must show those
+ *        SAME real entries, in the same order — so it reads that same array,
+ *        the single source of truth, rather than a separate list that can
+ *        silently drift (which is exactly how a stale placeholder used to
+ *        surface here).
+ * HOW:   Prefers window.eventsData filtered to type:'volunteering'. Falls
+ *        back to the legacy volunteeringData array only if events.js hasn't
+ *        loaded, so cv.js is still safe on its own.
+ */
+function getCvVolunteeringEntries() {
+  if (typeof window !== 'undefined' && Array.isArray(window.eventsData)) {
+    const fromEvents = window.eventsData.filter((e) => e && e.type === 'volunteering');
+    if (fromEvents.length) return fromEvents;
+  }
+  if (typeof volunteeringData !== 'undefined' && Array.isArray(volunteeringData)) {
+    return volunteeringData;
+  }
+  return [];
+}
+
+/**
+ * WHAT:  Renders the real volunteering entries as a compact CV-style list.
+ * HOW:   Each field (role / organization / date / description) may be a
+ *        { en, ar, ru } object (events.js) or a plain string (legacy data);
+ *        cvLocalizeCert resolves either to the active language, so the CV
+ *        volunteering list localizes exactly like the certificate list.
  */
 function renderCvVolunteering() {
   const list = document.getElementById('cv-volunteering');
-  if (!list || typeof volunteeringData === 'undefined') return;
+  if (!list) return;
 
-  if (volunteeringData.length === 0) {
+  const entries = getCvVolunteeringEntries();
+
+  if (entries.length === 0) {
     list.innerHTML = '<li><p class="cv-empty">Nothing recorded yet.</p></li>';
     return;
   }
 
-  list.innerHTML = volunteeringData
-    .map(
-      (entry) => `
+  list.innerHTML = entries
+    .map((entry) => {
+      const role = cvLocalizeCert(entry.role) || '';
+      const organization = cvLocalizeCert(entry.organization) || '';
+      const date = cvLocalizeCert(entry.date) || '';
+      const description = cvLocalizeCert(entry.description) || '';
+      const heading = [role, organization].filter(Boolean).join(' &middot; ');
+      return `
         <li>
           <div class="cv-list-heading">
-            <span>${entry.role} &middot; ${entry.organization}</span>
-            <span class="cv-list-date">${entry.date}</span>
+            <span>${heading}</span>
+            <span class="cv-list-date">${date}</span>
           </div>
-          <p>${entry.description}</p>
+          <p>${description}</p>
         </li>
-      `
-    )
+      `;
+    })
     .join('');
 }

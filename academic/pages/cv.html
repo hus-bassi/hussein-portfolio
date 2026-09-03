@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 11 — CV
@@ -29,7 +18,7 @@
   -->
 
   <title>CV — Hussein ElBassiouni</title>
-  <meta name="description" content="CV — Hussein ElBassiouni's academic portfolio." />
+  <meta name="description" content="Curriculum Vitae of Hussein ElBassiouni — education, skills, certificates, and volunteer experience in data science and astronomy." />
   <!-- SEO: canonical + Open Graph + Twitter Card.
        DOMAIN is a placeholder — replace https://YOUR_DOMAIN.com
        everywhere once the site has a real domain. -->
@@ -138,15 +127,16 @@
     <section class="cv-section">
       <div class="container cv-document">
 
-        <h1 class="cv-name" data-i18n="siteName">Hussein ElBassiouni</h1>
+        <p class="cv-name" data-i18n="siteName">Hussein ElBassiouni</p>
 
         <div class="cv-block reveal">
           <h2 data-i18n="cvProfile">Profile</h2>
           <p data-i18n="cvProfileBody">
-            2022 Egyptian high-school graduate, preparing to begin a
-            Bachelor's degree in Economics in Russia as a deliberate
-            first step toward Data Science, and eventually
-            Astroinformatics.
+            2022 Egyptian high-school graduate, pursuing a university
+            scholarship in Russia — in business, economics, or statistics
+            — as a deliberate first step toward Data Science, and eventually
+            Astroinformatics. No specific scholarship is secured yet;
+            actively preparing and collecting certificates toward the goal.
           </p>
         </div>
 
@@ -162,10 +152,10 @@
             </li>
             <li>
               <div class="cv-list-heading">
-                <span data-i18n="cvEduBscTitle">Bachelor's in Economics</span>
+                <span data-i18n="cvEduBscTitle">Undergraduate Scholarship</span>
                 <span class="cv-list-date" data-i18n="statusPlanned">Planned</span>
               </div>
-              <p data-i18n="cvEduBscBody">Russia — not yet started.</p>
+              <p data-i18n="cvEduBscBody">Russia — business, economics, or statistics; not yet secured.</p>
             </li>
           </ul>
         </div>
@@ -195,12 +185,12 @@
       <div class="footer-brand">
         <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
         <p class="footer-mission" data-i18n="footerMission">
-          Building a path from Economics to Data Science, and eventually
+          Building a path from strong foundations to Data Science, and eventually
           toward Astroinformatics.
         </p>
       </div>
 
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -208,21 +198,21 @@
     </div>
   </footer>
 
-  <script src="../../transition.js"></script>
-  <script src="../js/cursor.js"></script>
-  <script src="../data/certificates.js"></script>
-  <script src="../data/volunteering.js"></script>
-  <script src="../data/skills.js"></script>
-  <script src="../js/cv.js"></script>
-  <script src="../data/translations.js"></script>
-  <script src="../js/language.js"></script>
-  <script src="../js/animations.js"></script>
-  <script src="../js/navigation.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../data/social.js"></script>
-  <script src="../js/theme.js"></script>
-  <script src="../js/social.js"></script>
-  <script src="../js/media-system.js"></script>
-  <script src="../js/ambient.js"></script>
+  <script src="../../transition.js" defer></script>
+  <script src="../js/cursor.js" defer></script>
+  <script src="../data/certificates.js" defer></script>
+  <script src="../data/volunteering.js" defer></script>
+  <script src="../data/events.js" defer></script>
+  <script src="../data/skills.js" defer></script>
+  <script src="../js/cv.js" defer></script>
+  <script src="../data/translations.js" defer></script>
+  <script src="../js/language.js" defer></script>
+  <script src="../js/animations.js" defer></script>
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../data/social.js" defer></script>
+  <script src="../js/social.js" defer></script>
+  <script src="../js/media-system.js" defer></script>
+  <script src="../js/ambient.js" defer></script>
 </body>
 </html>

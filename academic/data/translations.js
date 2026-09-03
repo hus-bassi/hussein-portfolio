@@ -49,14 +49,14 @@ const translations = {
     // Hero
     heroEyebrow: 'Current Journey',
     heroSubtitle: 'Aspiring Data Scientist — with a Vision for Astronomy',
-    heroLead: 'Building my path from Economics to Data Science, and, eventually, toward Astroinformatics.',
+    heroLead: 'Building my path from strong foundations to Data Science, and, eventually, toward Astroinformatics.',
     heroCtaPrimary: 'Explore My Journey',
     heroCtaSecondary: 'View Certificates',
 
     // Short Introduction
     aboutEyebrow: 'About',
     aboutHeading: 'A clear starting point, aimed at a defined direction.',
-    aboutPara1: "Hussein is a 2022 Egyptian high-school graduate, currently preparing to begin a Bachelor's degree in Economics in Russia. Economics is a deliberate first step, not the destination — it's the foundation he's using to build real strength in programming, mathematics, statistics, and data science before specializing further.",
+    aboutPara1: "Hussein is a 2022 Egyptian high-school graduate, currently pursuing a university scholarship in Russia — in business, economics, statistics, or any field that serves the bigger goal. No specific scholarship is secured yet; it's a deliberate first step, not the destination — the foundation he's using to build real strength in programming, mathematics, statistics, and data science, while collecting certificates toward the goal before specializing further.",
     aboutPara2: "The long-term direction is Astroinformatics: applying data science to astronomy. It's an ambitious goal, and one he's approaching one deliberate stage at a time, starting from where he actually stands today.",
 
     // Current Mission
@@ -96,7 +96,7 @@ const translations = {
     // Future Vision
     visionEyebrow: 'Beyond the Stars',
     visionHeading: 'My Mission',
-    visionPara1: "From Economics, to Data Science, to Astronomy — that's the direction, not a claim of having arrived.",
+    visionPara1: "From foundations, to Data Science, to Astronomy — that's the direction, not a claim of having arrived.",
     visionPara2: "The long-term ambition is real: contributing to serious research in Astroinformatics, and one day working alongside international scientific institutions — with NASA as a distant, honest reach rather than a promise. It's approached one deliberate stage at a time, starting from exactly where things stand today.",
     readFullVision: 'Read the Full Vision',
 
@@ -107,7 +107,7 @@ const translations = {
     finalCtaContact: 'Contact Me',
 
     // Footer
-    footerMission: 'Building a path from Economics to Data Science, and eventually toward Astroinformatics.',
+    footerMission: 'Building a path from strong foundations to Data Science, and eventually toward Astroinformatics.',
 
     // ---- Internal pages (Phase 12.2) ----
 
@@ -121,8 +121,8 @@ const translations = {
     aboutPageLead: 'Not a finished résumé — a clear account of where things stand today, and how Hussein is approaching the path ahead.',
     aboutStory1Title: 'Where it started',
     aboutStory1Body: "Hussein graduated Egyptian high school in 2022. Since then, the focus has been on building — deliberately and honestly — toward a long-term goal that's still years away: working at the intersection of data science and astronomy.",
-    aboutStory2Title: 'Why Economics first',
-    aboutStory2Body: "The next academic step is a Bachelor's degree in Economics in Russia. It isn't the destination, and it isn't pretended to be. Economics was chosen deliberately as a foundation — a structured environment to build real strength in programming, mathematics, statistics, and analytical thinking, alongside English, Russian, and the language requirements the path ahead calls for.",
+    aboutStory2Title: 'Why foundations first',
+    aboutStory2Body: "The next academic step is a university scholarship in Russia — in business, economics, statistics, or any field that serves the bigger goal. No specific scholarship is secured yet, and it isn't the destination — it's chosen deliberately as a foundation: a structured environment to build real strength in programming, mathematics, statistics, and analytical thinking, alongside English, Russian, and the language requirements the path ahead calls for. In the meantime, the work continues — preparing and collecting certificates toward that goal.",
     aboutStory3Title: 'Why Astroinformatics',
     aboutStory3Body: "Data science is a broad field. Astronomy is where curiosity has consistently pulled toward — the scale of the questions it asks, and the amount of real, complex data behind every answer. Astroinformatics sits exactly at that intersection: using data science methods to actually do astronomy. That's the long-term direction, approached one honest stage at a time rather than claimed in advance.",
     aboutValuesEyebrow: 'How I Work',
@@ -143,7 +143,7 @@ const translations = {
     goalsTitle: 'Beyond the Stars',
     goalsLead: 'Ambitious, honestly stated, and not yet achieved. This page is a direction, not a résumé line.',
     goalsMissionEyebrow: 'My Mission',
-    goalsMissionHeading: 'From Economics, to Data Science, to Astronomy',
+    goalsMissionHeading: 'From Foundations, to Data Science, to Astronomy',
     goalsMissionPara1: "That's the direction stated as plainly as possible — not a claim of having arrived anywhere on it yet. Every stage before this one exists to make the next stage possible.",
     goalsMissionPara2: 'The long-term aim is to do real, meaningful work in Astroinformatics: using data science methods to help answer genuine astronomical questions, at a level serious enough to matter to the field itself.',
     goalsAimEyebrow: "What I'm Aiming For",
@@ -176,8 +176,8 @@ const translations = {
     journeyItem1Body: 'Graduated from an Egyptian high school, closing out secondary education and opening the question of what comes next.',
     journeyItem2Title: 'Building the Academic Foundation',
     journeyItem2Body: 'Actively preparing ahead of starting university — not waiting for a formal program to begin before doing the work.',
-    journeyItem3Title: "Bachelor's in Economics — Russia",
-    journeyItem3Body: 'A deliberate first academic step, not the destination — a structured environment to build real analytical and quantitative strength.',
+    journeyItem3Title: 'University Scholarship — Russia',
+    journeyItem3Body: 'A deliberate first academic step, not the destination — a university scholarship in business, economics, statistics, or any field that builds real analytical and quantitative strength toward the bigger goal. No specific scholarship is secured yet; I am actively preparing for it and collecting certificates toward it.',
     journeyItem4Title: 'Skills Development',
     journeyItem4Body: 'Python, Mathematics, Statistics, English, and Russian — developed in parallel with the degree itself, not deferred until after it.',
     journeyItem5Title: "Master's in Data Science",
@@ -188,6 +188,11 @@ const translations = {
     journeyItem7Body: 'A distant, honestly-stated ambition, not a certainty — pursued only if the path up to this point earns it.',
     journeyItem8Title: 'Research Career — Global Scientific Research',
     journeyItem8Body: 'Contributing to serious international research, potentially alongside institutions like NASA — the farthest point on this map, and the reason for every step before it.',
+    homeTlBody1: 'Graduated from an Egyptian high school.',
+    homeTlBody2: 'Actively developing the skills covered in the Current Mission section above.',
+    homeTlBody3: 'A scholarship for university study — business, economics, statistics, or any field that serves the bigger goal. Not secured yet; actively preparing and collecting certificates toward it.',
+    homeTlBody4: 'Specializing formally in the field this whole path is building toward.',
+    homeTlBody5: 'Applying data science to astronomy, and contributing to research alongside serious scientific institutions.',
 
     // Certificates page
     certificatesPageTitle: 'All Certificates',
@@ -220,15 +225,26 @@ const translations = {
     cvPageLead: 'Stays current automatically — pulled from the same data as the rest of the site.',
     cvPrintBtn: 'Print / Save as PDF',
     cvProfile: 'Profile',
-    cvProfileBody: "2022 Egyptian high-school graduate, preparing to begin a Bachelor's degree in Economics in Russia as a deliberate first step toward Data Science, and eventually Astroinformatics.",
+    cvProfileBody: "2022 Egyptian high-school graduate, pursuing a university scholarship in Russia — in business, economics, or statistics — as a deliberate first step toward Data Science, and eventually Astroinformatics. No specific scholarship is secured yet; actively preparing and collecting certificates toward the goal.",
     cvEducation: 'Education',
     cvEduHsTitle: 'High School Diploma',
     cvEduHsBody: 'Egyptian high school — completed.',
-    cvEduBscTitle: "Bachelor's in Economics",
-    cvEduBscBody: 'Russia — not yet started.',
+    cvEduBscTitle: 'Undergraduate Scholarship',
+    cvEduBscBody: 'Russia — business, economics, or statistics; not yet secured.',
 
     // Volunteering empty state (shared: homepage preview + page)
     volunteeringEmpty: 'More volunteering experiences are on the way.',
+
+    // Portal (gateway) — the site-root choice screen
+    portalPrompt: 'Which side are you here for?',
+    portalConnect: 'Connect with me',
+    portalAcademicEyebrow: 'Academic & Professional',
+    portalAcademicTitle: 'Data Science & Astronomy',
+    portalAcademicDesc: 'Certificates, academic journey, projects, research, and the long-term path toward Astroinformatics.',
+    portalSportsEyebrow: 'Volleyball & Sports',
+    portalSportsTitle: 'Volleyball',
+    portalSportsDesc: 'Training, matches, and progress — starting soon in Russia.',
+    portalEnter: 'Enter',
 
     // Digital Presence (homepage) + Discord community CTA
     digitalEyebrow: 'Digital Presence',
@@ -391,20 +407,20 @@ const translations = {
     // Hero
     heroEyebrow: 'المسار الحالي',
     heroSubtitle: 'طموح ليكون عالِم بيانات — برؤية نحو الفلك',
-    heroLead: 'أبني مساري من الاقتصاد إلى علم البيانات، وصولًا — يومًا ما — إلى علم البيانات الفلكية.',
+    heroLead: 'أبني مساري من أساسٍ متين إلى علم البيانات، وصولًا — يومًا ما — إلى علم البيانات الفلكية.',
     heroCtaPrimary: 'اكتشف مساري',
     heroCtaSecondary: 'اطّلع على الشهادات',
 
     // Short Introduction
     aboutEyebrow: 'نبذة عني',
     aboutHeading: 'نقطة بداية واضحة، باتجاه محدد.',
-    aboutPara1: 'حسين خريج ثانوية عامة مصرية عام 2022، ويستعد حاليًا لبدء دراسة بكالوريوس الاقتصاد في روسيا. الاقتصاد خطوة أولى مقصودة، وليس الوجهة النهائية — إنه الأساس الذي يستخدمه لبناء قوة حقيقية في البرمجة والرياضيات والإحصاء وعلم البيانات قبل التخصص أكثر.',
+    aboutPara1: 'حسين خريج ثانوية عامة مصرية عام 2022، ويسعى حاليًا للحصول على منحة دراسية جامعية في روسيا — في إدارة الأعمال أو الاقتصاد أو الإحصاء أو أي مجال يخدم الهدف الأكبر. لم تُحسم منحة بعينها بعد؛ وهي خطوة أولى مقصودة وليست الوجهة النهائية — الأساس الذي يستخدمه لبناء قوة حقيقية في البرمجة والرياضيات والإحصاء وعلم البيانات، مع جمع الشهادات نحو الهدف قبل التخصص أكثر.',
     aboutPara2: 'الاتجاه بعيد المدى هو علم البيانات الفلكية: تطبيق علم البيانات على الفلك. هدف طموح، يقترب منه على مراحل مدروسة، بدءًا من حيث يقف فعليًا اليوم.',
 
     // Current Mission
     missionEyebrow: 'المهمة الحالية',
     missionHeading: 'ما أبنيه الآن',
-    missionLead: 'قبل التخصص، الأولوية هي أساس قوي وصادق في المهارات التي يتطلبها علم البيانات وعلم الفلك البياناتي فعليًا.',
+    missionLead: 'قبل التخصص، الأولوية هي أساس قوي وصادق في المهارات التي يتطلبها علم البيانات وعلم البيانات الفلكية فعليًا.',
     missionItem1Title: 'البرمجة وPython',
     missionItem1Body: 'بناء طلاقة برمجية أساسية كقاعدة لكل ما سيأتي بعدها.',
     missionItem2Title: 'الرياضيات والإحصاء',
@@ -438,7 +454,7 @@ const translations = {
     // Future Vision
     visionEyebrow: 'ما وراء النجوم',
     visionHeading: 'مهمّتي',
-    visionPara1: 'من الاقتصاد، إلى علم البيانات، إلى الفلك — هذا هو الاتجاه، وليس ادّعاء بأنني وصلت إليه.',
+    visionPara1: 'من الأساس، إلى علم البيانات، إلى الفلك — هذا هو الاتجاه، وليس ادّعاء بأنني وصلت إليه.',
     visionPara2: 'الطموح بعيد المدى حقيقي: المساهمة في أبحاث جادة في علم البيانات الفلكية، والعمل يومًا ما مع مؤسسات علمية دولية — مع اعتبار NASA هدفًا بعيدًا وصادقًا وليس وعدًا. يُقترب منه على مراحل مدروسة، بدءًا من حيث تقف الأمور بالضبط اليوم.',
     readFullVision: 'اقرأ الرؤية الكاملة',
 
@@ -449,7 +465,7 @@ const translations = {
     finalCtaContact: 'تواصل معي',
 
     // Footer
-    footerMission: 'أبني مسارًا من الاقتصاد إلى علم البيانات، وصولًا — يومًا ما — إلى علم البيانات الفلكية.',
+    footerMission: 'أبني مسارًا من أساسٍ متين إلى علم البيانات، وصولًا — يومًا ما — إلى علم البيانات الفلكية.',
 
     // ---- Internal pages (Phase 12.2) ----
 
@@ -463,8 +479,8 @@ const translations = {
     aboutPageLead: 'ليست سيرة ذاتية مكتملة — بل وصف واضح لأين تقف الأمور اليوم، وكيف يتعامل حسين مع الطريق أمامه.',
     aboutStory1Title: 'من أين بدأت',
     aboutStory1Body: 'تخرّج حسين من الثانوية العامة المصرية عام 2022. ومنذ ذلك الحين، انصبّ التركيز على البناء — بعناية وصدق — نحو هدف بعيد المدى لا يزال يبعد سنوات: العمل عند تقاطع علم البيانات وعلم الفلك.',
-    aboutStory2Title: 'لماذا الاقتصاد أولًا',
-    aboutStory2Body: 'الخطوة الأكاديمية التالية هي بكالوريوس الاقتصاد في روسيا. إنها ليست الوجهة النهائية، ولا يُدّعى ذلك. اختير الاقتصاد عن قصد كأساس — بيئة منظّمة لبناء قوة حقيقية في البرمجة والرياضيات والإحصاء والتفكير التحليلي، إلى جانب الإنجليزية والروسية ومتطلبات اللغة التي يستلزمها الطريق أمامه.',
+    aboutStory2Title: 'لماذا الأساس أولًا',
+    aboutStory2Body: 'الخطوة الأكاديمية التالية هي منحة دراسية جامعية في روسيا — في إدارة الأعمال أو الاقتصاد أو الإحصاء أو أي مجال يخدم الهدف الأكبر. لم تُحسم منحة بعينها بعد، وهي ليست الوجهة النهائية — اختيرت عن قصد كأساس: بيئة منظّمة لبناء قوة حقيقية في البرمجة والرياضيات والإحصاء والتفكير التحليلي، إلى جانب الإنجليزية والروسية ومتطلبات اللغة التي يستلزمها الطريق أمامه. وفي هذه الأثناء يستمر العمل — الاستعداد وجمع الشهادات نحو ذلك الهدف.',
     aboutStory3Title: 'لماذا علم البيانات الفلكية',
     aboutStory3Body: 'علم البيانات مجال واسع. وعلم الفلك هو ما جذب الفضول إليه باستمرار — حجم الأسئلة التي يطرحها، وكمّ البيانات الحقيقية والمعقّدة خلف كل إجابة. ويقع علم البيانات الفلكية عند هذا التقاطع تمامًا: استخدام أساليب علم البيانات لممارسة الفلك فعليًا. هذا هو الاتجاه بعيد المدى، يُقترب منه مرحلة صادقة تلو الأخرى بدلًا من ادّعائه مسبقًا.',
     aboutValuesEyebrow: 'أسلوبي في العمل',
@@ -485,7 +501,7 @@ const translations = {
     goalsTitle: 'ما وراء النجوم',
     goalsLead: 'طموحة، ومُصرَّح بها بصدق، ولم تتحقق بعد. هذه الصفحة اتجاه، وليست سطرًا في سيرة ذاتية.',
     goalsMissionEyebrow: 'مهمّتي',
-    goalsMissionHeading: 'من الاقتصاد، إلى علم البيانات، إلى الفلك',
+    goalsMissionHeading: 'من الأساس، إلى علم البيانات، إلى الفلك',
     goalsMissionPara1: 'هذا هو الاتجاه مذكورًا بأوضح ما يمكن — وليس ادّعاءً بالوصول إلى أي نقطة عليه بعد. كل مرحلة قبل هذه موجودة لتجعل المرحلة التالية ممكنة.',
     goalsMissionPara2: 'الهدف بعيد المدى هو القيام بعمل حقيقي وذي قيمة في علم البيانات الفلكية: استخدام أساليب علم البيانات للمساعدة في الإجابة عن أسئلة فلكية حقيقية، بمستوى جادّ بما يكفي ليكون مهمًّا للمجال نفسه.',
     goalsAimEyebrow: 'ما أطمح إليه',
@@ -518,8 +534,8 @@ const translations = {
     journeyItem1Body: 'التخرّج من ثانوية عامة مصرية، ليُغلق مرحلة التعليم الثانوي ويفتح سؤال ما القادم.',
     journeyItem2Title: 'بناء الأساس الأكاديمي',
     journeyItem2Body: 'استعداد فعّال قبل بدء الجامعة — دون انتظار برنامج رسمي كي يبدأ العمل.',
-    journeyItem3Title: 'بكالوريوس الاقتصاد — روسيا',
-    journeyItem3Body: 'خطوة أكاديمية أولى مقصودة، وليست الوجهة — بيئة منظّمة لبناء قوة تحليلية وكمّية حقيقية.',
+    journeyItem3Title: 'منحة دراسية جامعية — روسيا',
+    journeyItem3Body: 'خطوة أكاديمية أولى مقصودة، وليست الوجهة — منحة دراسية جامعية في إدارة الأعمال أو الاقتصاد أو الإحصاء أو أي مجال يبني قوة تحليلية وكمّية حقيقية تخدم الهدف الأكبر. لم تُحسم منحة بعينها بعد؛ أستعدّ لها فعليًا وأجمع الشهادات من أجلها.',
     journeyItem4Title: 'تطوير المهارات',
     journeyItem4Body: 'Python والرياضيات والإحصاء والإنجليزية والروسية — تُطوَّر بالتوازي مع الدرجة نفسها، لا مؤجَّلة إلى ما بعدها.',
     journeyItem5Title: 'ماجستير في علم البيانات',
@@ -530,6 +546,11 @@ const translations = {
     journeyItem7Body: 'طموح بعيد ومُصرَّح به بصدق، لا يقين به — يُسعى إليه فقط إذا استحقّه المسار حتى هذه النقطة.',
     journeyItem8Title: 'مسار بحثي — بحث علمي عالمي',
     journeyItem8Body: 'الإسهام في بحث دولي جادّ، وربما إلى جانب مؤسسات مثل ناسا — أبعد نقطة على هذه الخريطة، وسبب كل خطوة قبلها.',
+    homeTlBody1: 'التخرّج من ثانوية عامة مصرية.',
+    homeTlBody2: 'تطوير فعلي للمهارات المذكورة في قسم المهمة الحالية بالأعلى.',
+    homeTlBody3: 'منحة دراسية جامعية — في إدارة الأعمال أو الاقتصاد أو الإحصاء أو أي مجال يخدم الهدف الأكبر. لم تُحسم بعد؛ استعداد فعلي وجمع للشهادات من أجلها.',
+    homeTlBody4: 'تخصص رسمي في المجال الذي يبني نحوه هذا المسار بأكمله.',
+    homeTlBody5: 'تطبيق علم البيانات على الفلك، والإسهام في البحث إلى جانب مؤسسات علمية جادّة.',
 
     // Certificates page
     certificatesPageTitle: 'كل الشهادات',
@@ -562,15 +583,26 @@ const translations = {
     cvPageLead: 'تبقى محدَّثة تلقائيًا — مسحوبة من البيانات نفسها التي يستخدمها بقية الموقع.',
     cvPrintBtn: 'طباعة / حفظ كـ PDF',
     cvProfile: 'نبذة',
-    cvProfileBody: 'خريج ثانوية عامة مصرية عام 2022، يستعد لبدء بكالوريوس الاقتصاد في روسيا كخطوة أولى مقصودة نحو علم البيانات، وصولًا إلى علم البيانات الفلكية.',
+    cvProfileBody: 'خريج ثانوية عامة مصرية عام 2022، يسعى للحصول على منحة دراسية جامعية في روسيا — في إدارة الأعمال أو الاقتصاد أو الإحصاء — كخطوة أولى مقصودة نحو علم البيانات، وصولًا إلى علم البيانات الفلكية. لم تُحسم منحة بعينها بعد؛ استعداد فعلي وجمع للشهادات نحو الهدف.',
     cvEducation: 'التعليم',
     cvEduHsTitle: 'شهادة الثانوية العامة',
     cvEduHsBody: 'ثانوية عامة مصرية — مكتملة.',
-    cvEduBscTitle: 'بكالوريوس الاقتصاد',
-    cvEduBscBody: 'روسيا — لم يبدأ بعد.',
+    cvEduBscTitle: 'منحة دراسية جامعية (بكالوريوس)',
+    cvEduBscBody: 'روسيا — إدارة أعمال أو اقتصاد أو إحصاء؛ لم تُحسم بعد.',
 
     // Volunteering empty state (shared: homepage preview + page)
     volunteeringEmpty: 'المزيد من تجارب التطوع في الطريق.',
+
+    // Portal (gateway) — the site-root choice screen
+    portalPrompt: 'لأي جانب أتيت؟',
+    portalConnect: 'تواصل معي',
+    portalAcademicEyebrow: 'أكاديمي ومهني',
+    portalAcademicTitle: 'علم البيانات والفلك',
+    portalAcademicDesc: 'الشهادات، والمسيرة الأكاديمية، والمشاريع، والبحث، والطريق طويل المدى نحو علم البيانات الفلكية.',
+    portalSportsEyebrow: 'الكرة الطائرة والرياضة',
+    portalSportsTitle: 'الكرة الطائرة',
+    portalSportsDesc: 'تدريب ومباريات وتطوّر — قريبًا في روسيا.',
+    portalEnter: 'ادخل',
 
     // Digital Presence (homepage) + Discord community CTA
     digitalEyebrow: 'الحضور الرقمي',
@@ -733,14 +765,14 @@ const translations = {
     // Hero
     heroEyebrow: 'Текущий путь',
     heroSubtitle: 'Будущий специалист по данным — со взглядом на астрономию',
-    heroLead: 'Строю свой путь от экономики к науке о данных и, в перспективе, к астроинформатике.',
+    heroLead: 'Строю свой путь от прочного фундамента к науке о данных и, в перспективе, к астроинформатике.',
     heroCtaPrimary: 'Мой путь',
     heroCtaSecondary: 'Сертификаты',
 
     // Short Introduction
     aboutEyebrow: 'Обо мне',
     aboutHeading: 'Чёткая отправная точка, направленная к ясной цели.',
-    aboutPara1: 'Хусейн — выпускник египетской школы 2022 года, готовится начать обучение по специальности "Экономика" в России. Экономика — осознанный первый шаг, а не конечная цель: это основа для развития реальных навыков в программировании, математике, статистике и науке о данных перед дальнейшей специализацией.',
+    aboutPara1: 'Хусейн — выпускник египетской школы 2022 года, сейчас добивается университетской стипендии в России — по бизнесу, экономике, статистике или любому направлению, ведущему к большой цели. Конкретная стипендия пока не получена; это осознанный первый шаг, а не конечная цель — основа для развития реальных навыков в программировании, математике, статистике и науке о данных, с параллельным сбором сертификатов на пути к цели, перед дальнейшей специализацией.',
     aboutPara2: 'Долгосрочное направление — астроинформатика: применение науки о данных в астрономии. Амбициозная цель, к которой он подходит поэтапно, начиная с того, где он находится сегодня.',
 
     // Current Mission
@@ -780,7 +812,7 @@ const translations = {
     // Future Vision
     visionEyebrow: 'За звёздами',
     visionHeading: 'Моя миссия',
-    visionPara1: 'От экономики — к науке о данных — к астрономии. Это направление, а не заявление о том, что цель уже достигнута.',
+    visionPara1: 'От фундамента — к науке о данных — к астрономии. Это направление, а не заявление о том, что цель уже достигнута.',
     visionPara2: 'Долгосрочная амбиция реальна: внести вклад в серьёзные исследования в области астроинформатики и однажды работать вместе с международными научными организациями — рассматривая NASA как далёкую, честно обозначенную цель, а не обещание. Путь к ней — поэтапный, начиная ровно с того места, где всё находится сегодня.',
     readFullVision: 'Читать полностью',
 
@@ -791,7 +823,7 @@ const translations = {
     finalCtaContact: 'Связаться со мной',
 
     // Footer
-    footerMission: 'Строю путь от экономики к науке о данных и, в перспективе, к астроинформатике.',
+    footerMission: 'Строю путь от прочного фундамента к науке о данных и, в перспективе, к астроинформатике.',
 
     // ---- Internal pages (Phase 12.2) ----
 
@@ -805,8 +837,8 @@ const translations = {
     aboutPageLead: 'Это не готовое резюме, а честное описание того, где всё находится сегодня и как Хусейн подходит к пути впереди.',
     aboutStory1Title: 'С чего всё началось',
     aboutStory1Body: 'Хусейн окончил египетскую среднюю школу в 2022 году. С тех пор всё внимание сосредоточено на том, чтобы аккуратно и честно двигаться к долгосрочной цели, до которой ещё годы пути: работать на стыке науки о данных и астрономии.',
-    aboutStory2Title: 'Почему сначала экономика',
-    aboutStory2Body: 'Следующий академический шаг — бакалавриат по экономике в России. Это не конечная точка, и так это не подаётся. Экономика выбрана осознанно как фундамент — структурированная среда, чтобы выстроить реальную силу в программировании, математике, статистике и аналитическом мышлении, наряду с английским, русским и языковыми требованиями, которые ставит путь впереди.',
+    aboutStory2Title: 'Почему сначала фундамент',
+    aboutStory2Body: 'Следующий академический шаг — университетская стипендия в России, по бизнесу, экономике, статистике или любому направлению, ведущему к большой цели. Конкретная стипендия пока не получена, и это не конечная точка — она выбрана осознанно как фундамент: структурированная среда, чтобы выстроить реальную силу в программировании, математике, статистике и аналитическом мышлении, наряду с английским, русским и языковыми требованиями, которые ставит путь впереди. А тем временем работа продолжается — подготовка и сбор сертификатов на пути к этой цели.',
     aboutStory3Title: 'Почему астроинформатика',
     aboutStory3Body: 'Наука о данных обширна. Именно астрономия всё время притягивала любопытство — масштаб её вопросов и объём реальных, сложных данных за каждым ответом. Астроинформатика лежит ровно на этом стыке: применение методов науки о данных, чтобы заниматься астрономией по-настоящему. Это и есть долгосрочное направление, к которому идут честными этапами, а не заявляют о нём заранее.',
     aboutValuesEyebrow: 'Как я работаю',
@@ -827,7 +859,7 @@ const translations = {
     goalsTitle: 'За пределами звёзд',
     goalsLead: 'Амбициозные, честно заявленные и ещё не достигнутые. Эта страница — направление, а не строка в резюме.',
     goalsMissionEyebrow: 'Моя миссия',
-    goalsMissionHeading: 'От экономики к науке о данных и к астрономии',
+    goalsMissionHeading: 'От фундамента к науке о данных и к астрономии',
     goalsMissionPara1: 'Это направление, изложенное максимально ясно, — а не заявление о том, что какая-либо его точка уже достигнута. Каждый этап до него существует, чтобы сделать возможным следующий.',
     goalsMissionPara2: 'Долгосрочная цель — вести настоящую, значимую работу в астроинформатике: применять методы науки о данных, чтобы помогать отвечать на реальные астрономические вопросы, на уровне серьёзном настолько, чтобы это было важно самой области.',
     goalsAimEyebrow: 'К чему я стремлюсь',
@@ -860,8 +892,8 @@ const translations = {
     journeyItem1Body: 'Окончание египетской средней школы — закрытие ступени среднего образования и открытие вопроса о том, что дальше.',
     journeyItem2Title: 'Построение академического фундамента',
     journeyItem2Body: 'Активная подготовка до начала университета — без ожидания официальной программы, чтобы начать работать.',
-    journeyItem3Title: 'Бакалавриат по экономике — Россия',
-    journeyItem3Body: 'Осознанный первый академический шаг, а не конечная точка, — структурированная среда для построения реальной аналитической и количественной силы.',
+    journeyItem3Title: 'Университетская стипендия — Россия',
+    journeyItem3Body: 'Осознанный первый академический шаг, а не конечная точка, — университетская стипендия по бизнесу, экономике, статистике или любому направлению, дающему реальную аналитическую и количественную силу для большой цели. Конкретная стипендия пока не получена; идёт активная подготовка и сбор сертификатов.',
     journeyItem4Title: 'Развитие навыков',
     journeyItem4Body: 'Python, математика, статистика, английский и русский — развиваются параллельно с самой учёбой, а не откладываются на потом.',
     journeyItem5Title: 'Магистратура по науке о данных',
@@ -872,6 +904,11 @@ const translations = {
     journeyItem7Body: 'Далёкое, честно заявленное устремление без гарантий — к нему идут, только если путь до этой точки его заслужит.',
     journeyItem8Title: 'Исследовательский путь — мировая наука',
     journeyItem8Body: 'Вклад в серьёзные международные исследования, возможно, рядом с институтами вроде NASA, — самая дальняя точка на этой карте и причина каждого шага перед ней.',
+    homeTlBody1: 'Окончание египетской средней школы.',
+    homeTlBody2: 'Активное развитие навыков из раздела «Текущая миссия» выше.',
+    homeTlBody3: 'Университетская стипендия — по бизнесу, экономике, статистике или любому направлению, ведущему к большой цели. Пока не получена; идёт подготовка и сбор сертификатов.',
+    homeTlBody4: 'Формальная специализация в области, к которой ведёт весь этот путь.',
+    homeTlBody5: 'Применение науки о данных к астрономии и вклад в исследования рядом с серьёзными научными институтами.',
 
     // Certificates page
     certificatesPageTitle: 'Все сертификаты',
@@ -904,15 +941,26 @@ const translations = {
     cvPageLead: 'Остаётся актуальным автоматически — берётся из тех же данных, что использует остальной сайт.',
     cvPrintBtn: 'Печать / Сохранить как PDF',
     cvProfile: 'О себе',
-    cvProfileBody: 'Выпускник египетской средней школы 2022 года, готовится начать бакалавриат по экономике в России как осознанный первый шаг к науке о данных и, в перспективе, к астроинформатике.',
+    cvProfileBody: 'Выпускник египетской средней школы 2022 года, добивается университетской стипендии в России — по бизнесу, экономике или статистике — как осознанный первый шаг к науке о данных и, в перспективе, к астроинформатике. Конкретная стипендия пока не получена; идёт активная подготовка и сбор сертификатов на пути к цели.',
     cvEducation: 'Образование',
     cvEduHsTitle: 'Аттестат о среднем образовании',
     cvEduHsBody: 'Египетская средняя школа — завершено.',
-    cvEduBscTitle: 'Бакалавриат по экономике',
-    cvEduBscBody: 'Россия — ещё не начато.',
+    cvEduBscTitle: 'Университетская стипендия (бакалавриат)',
+    cvEduBscBody: 'Россия — бизнес, экономика или статистика; пока не получена.',
 
     // Volunteering empty state (shared: homepage preview + page)
     volunteeringEmpty: 'Скоро будет больше волонтёрского опыта.',
+
+    // Portal (gateway) — the site-root choice screen
+    portalPrompt: 'За какой стороной вы пришли?',
+    portalConnect: 'Связаться со мной',
+    portalAcademicEyebrow: 'Академическое и профессиональное',
+    portalAcademicTitle: 'Наука о данных и астрономия',
+    portalAcademicDesc: 'Сертификаты, академический путь, проекты, исследования и долгосрочная дорога к астроинформатике.',
+    portalSportsEyebrow: 'Волейбол и спорт',
+    portalSportsTitle: 'Волейбол',
+    portalSportsDesc: 'Тренировки, матчи и прогресс — скоро в России.',
+    portalEnter: 'Войти',
 
     // Digital Presence (homepage) + Discord community CTA
     digitalEyebrow: 'Цифровое присутствие',

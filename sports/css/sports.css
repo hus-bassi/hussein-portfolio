@@ -18,9 +18,9 @@
 
 /* ------------------------------------------------------------
    1. VOLLEYBALL TOKENS — scoped to the page, layered over the shared
-   academic tokens so the page reads as its own sports-universe while
-   keeping the same Day/Night mechanism. Override the astronomy tokens
-   (gold/cyan/violet) with the Warm-White/Black/Orange sports set.
+   academic tokens so the page reads as its own sports-universe.
+   Override the astronomy tokens (gold/cyan/violet) with the
+   Warm-White/Black/Orange sports set.
 ------------------------------------------------------------ */
 body.page-volleyball {
   --volley-orange:    #E84A2D;   /* the "volleyball orange" — signature energy */
@@ -35,6 +35,7 @@ body.page-volleyball {
   --color-border:        rgba(247, 244, 238, 0.12);
 
   --color-accent:           var(--volley-orange);
+  --color-accent-bright:    #F0703F;   /* lighter orange — keeps the shared gradient tokens on-palette */
   --color-accent-secondary: var(--volley-warmwhite);
   --color-accent-muted:     var(--volley-softgray);
 
@@ -47,25 +48,16 @@ body.page-volleyball {
   --volley-border-strong:    rgba(247, 244, 238, 0.34);
   --volley-mono: 'Space Grotesk', 'IBM Plex Mono', 'Segoe UI', monospace;
   --volley-num: clamp(3rem, 9vw, 6.5rem);
-}
 
-/* LIGHT theme override — "Warm White + Black + Volleyball Orange" */
-:root[data-theme="light"] body.page-volleyball {
-  --color-bg-primary:    var(--volley-warmwhite);
-  --color-bg-secondary:  #EFEAE1;
-  --color-surface:       #FFFFFF;
-  --color-border:        rgba(18, 16, 13, 0.12);
-
-  --color-accent:           var(--volley-orange);
-  --color-accent-secondary: var(--volley-black);
-  --color-accent-muted:     var(--volley-softgray);
-
-  --color-text-primary:   var(--volley-black);
-  --color-text-secondary: #4A443C;
-  --color-text-faint:     var(--volley-softgray);
-
-  --volley-border:           rgba(18, 16, 13, 0.14);
-  --volley-border-strong:    rgba(18, 16, 13, 0.34);
+  /* Re-derive the shared elegance gradients IN THIS SCOPE. Custom
+     properties bake their inner var()s in at the scope where they're
+     defined, so the academic :root versions carry gold/teal. Redefining
+     them here — where --color-accent is orange — makes the shared button,
+     card top-accent, and scroll-progress hairline read in the volleyball
+     palette (orange → warm white) instead. */
+  --gradient-accent:   linear-gradient(135deg, var(--color-accent-bright), var(--color-accent) 45%, var(--color-accent-secondary));
+  --gradient-hairline: linear-gradient(90deg, transparent, var(--color-accent) 22%, var(--color-accent-secondary) 82%, transparent);
+  --gradient-text:     linear-gradient(100deg, var(--color-text-primary) 8%, var(--color-accent-bright) 46%, var(--color-accent-secondary) 84%);
 }
 
 /* Kill the shared cosmic background on the volleyball page entirely:
@@ -482,7 +474,21 @@ body.page-volleyball::after {
   font-size: var(--fs-small);
   color: var(--color-text-secondary);
 }
-.volley-tl-node--solid::before { background: var(--color-accent-secondary); }
+.volley-tl-node--solid::before {
+  background: var(--color-accent-secondary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent-secondary) 20%, transparent);
+}
+/* The "الآن" node is a living "you are here" marker — a slow, calm ripple.
+   Reduced-motion keeps the static ring above, no pulsing. */
+@media (prefers-reduced-motion: no-preference) {
+  .volley-tl-node--solid::before {
+    animation: volley-tl-pulse 2.8s ease-in-out infinite;
+  }
+}
+@keyframes volley-tl-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-secondary) 26%, transparent); }
+  50%      { box-shadow: 0 0 0 9px color-mix(in srgb, var(--color-accent-secondary) 0%, transparent); }
+}
 .volley-tl-node--future::before {
   background: transparent;
   border: 1.5px dashed var(--color-accent-secondary);
@@ -622,4 +628,397 @@ body.page-volleyball::after {
   .volley-hero-word--outline { -webkit-text-stroke-width: 1px; }
   .volley-memory-frame { aspect-ratio: 1 / 1.05; }
   .volley-section { padding-block: var(--space-6); }
+}
+
+/* ============================================================
+   6. NAV CLARITY + ELEGANCE & MOTION  (v1.4)
+   ------------------------------------------------------------
+   The volleyball page deliberately does NOT load navigation.js, so
+   its shared .site-header never receives the academic `.is-scrolled`
+   state — it used to stay fully transparent, which left the top bar
+   floating and hard to read while scrolling over the dark arena
+   sections. Give it a permanent, unmistakable arena backing with a
+   signature orange hairline, so the nav is crystal-clear at every
+   scroll position, in every browser — no JS, no scroll listener.
+   Everything below is scoped to body.page-volleyball and stays on
+   the Warm-White / Black / Orange palette. All motion is
+   reduced-motion-safe and honest — no invented content.
+------------------------------------------------------------ */
+body.page-volleyball .site-header {
+  background-color: rgba(12, 11, 9, 0.82);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom: 1px solid var(--volley-border-strong);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, var(--volley-orange) 30%, transparent);
+}
+/* If the shared scroll state ever does fire, deepen it a touch more
+   for extra separation. Harmless when it never fires. */
+body.page-volleyball .site-header.is-scrolled {
+  background-color: rgba(10, 9, 8, 0.92);
+  border-bottom-color: color-mix(in srgb, var(--volley-orange) 42%, var(--volley-border-strong));
+}
+/* Keep the logo + switch links legible against the new solid bar. */
+body.page-volleyball .logo { color: var(--color-text-primary); }
+
+/* ---- Section title: an orange bar that draws in on scroll-reveal ----
+   Each .volley-section-title lives inside a .volley-section-head.reveal,
+   so it grows its underline the moment the head becomes visible — a
+   deliberate editorial beat, not decoration for its own sake. */
+.page-volleyball .volley-section-title {
+  position: relative;
+  display: inline-block;
+}
+.page-volleyball .volley-section-title::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin-top: var(--space-3);
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--volley-orange), transparent);
+  transition: width 900ms var(--ease-out-soft, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.page-volleyball .volley-section-head.reveal.is-visible .volley-section-title::after {
+  width: 72px;
+}
+
+/* ---- Stats: kinetic hover — the honest numbers lift and glow ---- */
+.page-volleyball .volley-stat {
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+.page-volleyball .volley-stat-num {
+  transition: transform var(--transition-base), text-shadow var(--transition-base);
+}
+@media (hover: hover) {
+  .page-volleyball .volley-stat:hover {
+    transform: translateY(-3px);
+    border-inline-start-color: var(--color-accent-secondary);
+  }
+  .page-volleyball .volley-stat:hover .volley-stat-num {
+    transform: scale(1.04);
+    text-shadow: 0 0 26px color-mix(in srgb, var(--volley-orange) 55%, transparent);
+  }
+}
+
+/* ---- Timeline nodes: dot pulses out on hover ---- */
+.page-volleyball .volley-tl-node::before {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+@media (hover: hover) {
+  .page-volleyball .volley-tl-node:hover::before {
+    transform: scale(1.5);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--volley-orange) 18%, transparent);
+  }
+}
+
+/* ---- Profile cells: quiet surface lift ---- */
+.page-volleyball .volley-profile-cell {
+  transition: background-color var(--transition-base);
+}
+@media (hover: hover) {
+  .page-volleyball .volley-profile-cell:hover {
+    background-color: color-mix(in srgb, var(--volley-orange) 6%, var(--color-bg-secondary));
+  }
+}
+
+/* ---- Primary CTA: keep the shared gradient button's glow orange ---- */
+.page-volleyball .btn-primary:hover,
+.page-volleyball .btn-primary:focus-visible {
+  box-shadow: 0 12px 32px -12px color-mix(in srgb, var(--volley-orange) 60%, transparent);
+}
+.page-volleyball .btn-secondary-volley:hover,
+.page-volleyball .btn-secondary-volley:focus-visible {
+  box-shadow: 0 0 30px -10px color-mix(in srgb, var(--volley-orange) 45%, transparent);
+}
+
+/* ---- Motion-only flourishes (held perfectly still for reduced motion) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  /* The abstract court net breathes slowly behind the hero. */
+  .page-volleyball .hero-court .court-net {
+    animation: volley-net-pulse 6s ease-in-out infinite;
+  }
+  /* The outline hero word glows faintly, like stadium light catching it. */
+  .page-volleyball .volley-hero-word--outline {
+    animation: volley-outline-glow 5.5s ease-in-out infinite;
+  }
+}
+@keyframes volley-net-pulse {
+  0%, 100% { opacity: 0.10; }
+  50%      { opacity: 0.24; }
+}
+@keyframes volley-outline-glow {
+  0%, 100% { -webkit-text-stroke-color: var(--color-accent); filter: drop-shadow(0 0 0 transparent); }
+  50%      { -webkit-text-stroke-color: var(--color-accent-bright); filter: drop-shadow(0 0 14px color-mix(in srgb, var(--volley-orange) 35%, transparent)); }
+}
+
+/* ------------------------------------------------------------
+   7. MOBILE NAV — hamburger overlay, parity with the Academic side
+   ------------------------------------------------------------
+   The volleyball page is a single page with no separate routes, and on
+   phones its inline world-switch (.site-switch) is hidden for space — which
+   left phone visitors with no way to leave the volleyball world or cleanly
+   change language. It now shares the Academic overlay markup, main.css's
+   ≤768px overlay styles, and navigation.js. The rules below only resolve
+   the desktop/mobile split so nothing is shown twice. The overlay itself
+   inherits the volleyball tokens: near-black backdrop (--color-bg-primary),
+   warm text (--color-text-secondary), orange accent.
+------------------------------------------------------------ */
+
+/* Desktop keeps the inline .site-switch + .lang-switcher in the bar, so the
+   shared overlay must NOT also render inline (the base .primary-nav is
+   display:flex). Hide it above the phone breakpoint; main.css turns it into
+   the fixed overlay at ≤768px, below where this rule applies. */
+@media (min-width: 769px) {
+  body.page-volleyball .primary-nav { display: none; }
+}
+
+/* On phones, hand language to the overlay's switcher: hide the inline one in
+   the bar (a direct child of .header-inner) so it isn't shown twice. The
+   overlay copy lives inside .primary-nav, so it stays untouched here. */
+@media (max-width: 768px) {
+  body.page-volleyball .header-inner > .lang-switcher { display: none; }
+}
+
+/* "You are here" — tint the current world orange inside the menu. */
+body.page-volleyball .primary-nav .nav-link[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+/* ============================================================
+   8. HAIKYUU ENERGY LAYER  (v2.0)
+   ------------------------------------------------------------
+   A decorative, aria-hidden manga skin laid OVER the honest editorial
+   base: a warm screentone backdrop, a bold diagonal ember wedge + radial
+   speed lines behind the hero, a small flock of soaring crows (the "fly"
+   motif, echoing the world-transition gate), and impact bursts behind the
+   real declared numbers. It changes ZERO real content — every element
+   here is aria-hidden decoration or a pure restyle. All motion is
+   reduced-motion-safe.
+------------------------------------------------------------ */
+
+/* ---- Fixed manga-page backdrop (behind everything) ---- */
+.volley-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 88% at 92% -12%, color-mix(in srgb, var(--volley-orange) 13%, transparent), transparent 58%),
+    radial-gradient(96% 72% at -12% 112%, color-mix(in srgb, var(--volley-orange-deep) 11%, transparent), transparent 60%);
+}
+/* Orange screentone dots, masked into the two warm corners only. */
+.volley-bg-halftone {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--volley-orange) 30%, transparent) 1px, transparent 1.7px);
+  background-size: 13px 13px;
+  opacity: 0.5;
+  -webkit-mask:
+    radial-gradient(60% 55% at 100% 0%, #000, transparent 62%),
+    radial-gradient(52% 50% at 0% 100%, #000, transparent 62%);
+          mask:
+    radial-gradient(60% 55% at 100% 0%, #000, transparent 62%),
+    radial-gradient(52% 50% at 0% 100%, #000, transparent 62%);
+  -webkit-mask-composite: source-over;
+          mask-composite: add;
+}
+
+/* ---- Hero energy: wedge + speed lines + halftone + soaring crows ---- */
+.volley-hero-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 1;               /* over .hero-court (0), under content (2) */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Bold diagonal ember wedge slicing across the hero — the manga panel cut. */
+.volley-hero-wedge {
+  position: absolute;
+  inset: -10%;
+  background: linear-gradient(
+    114deg,
+    transparent 44%,
+    color-mix(in srgb, var(--volley-orange) 18%, transparent) 49%,
+    color-mix(in srgb, var(--volley-orange-deep) 12%, transparent) 55%,
+    transparent 60%
+  );
+}
+
+/* Radial speed lines converging on the upper-right "sky" (where crows fly). */
+.volley-hero-speed {
+  position: absolute;
+  inset: -30%;
+  background: repeating-conic-gradient(
+    from 0deg at 74% 22%,
+    transparent 0deg 1.1deg,
+    color-mix(in srgb, var(--volley-orange) 15%, transparent) 1.1deg 1.5deg,
+    transparent 1.5deg 3.4deg
+  );
+  -webkit-mask: radial-gradient(62% 62% at 74% 22%, #000 4%, transparent 66%);
+          mask: radial-gradient(62% 62% at 74% 22%, #000 4%, transparent 66%);
+  opacity: 0.75;
+}
+
+/* A warm glow pooling in that same upper-right sky so the crows read. */
+.volley-hero-halftone {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(38% 42% at 74% 22%, color-mix(in srgb, var(--volley-orange) 22%, transparent), transparent 70%);
+}
+
+/* ---- The soaring flock (the "fly" motif) ---- */
+.volley-hero-crows {
+  position: absolute;
+  inset: 0;
+}
+.volley-crow {
+  position: absolute;
+  color: var(--volley-orange);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+  will-change: transform;
+}
+.volley-crow svg { display: block; width: 100%; height: auto; }
+
+.volley-crow--1 { top: 12%; left: 62%; width: clamp(52px, 8vw, 104px); opacity: 0.95; }
+.volley-crow--2 { top: 24%; left: 74%; width: clamp(32px, 5vw, 62px); opacity: 0.78; color: color-mix(in srgb, var(--volley-orange) 82%, var(--volley-black)); }
+.volley-crow--3 { top: 18%; left: 84%; width: clamp(20px, 3.4vw, 40px); opacity: 0.6;  color: color-mix(in srgb, var(--volley-orange) 70%, var(--volley-black)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .volley-crow--1 { animation: volley-crow-a 9s  ease-in-out infinite; }
+  .volley-crow--2 { animation: volley-crow-b 11s ease-in-out infinite; }
+  .volley-crow--3 { animation: volley-crow-a 13s ease-in-out infinite reverse; }
+}
+@keyframes volley-crow-a {
+  0%, 100% { transform: translate(0, 0) rotate(-3deg); }
+  50%      { transform: translate(-16px, -12px) rotate(2deg); }
+}
+@keyframes volley-crow-b {
+  0%, 100% { transform: translate(0, 0) rotate(3deg); }
+  50%      { transform: translate(13px, -9px) rotate(-2deg); }
+}
+
+/* RTL: the hero content flips to the right, so send the flock + the speed
+   burst to the upper-LEFT sky instead, clear of the type. */
+[dir="rtl"] .volley-crow--1 { left: auto; right: 62%; }
+[dir="rtl"] .volley-crow--2 { left: auto; right: 74%; }
+[dir="rtl"] .volley-crow--3 { left: auto; right: 84%; }
+[dir="rtl"] .volley-hero-speed {
+  -webkit-mask: radial-gradient(62% 62% at 26% 22%, #000 4%, transparent 66%);
+          mask: radial-gradient(62% 62% at 26% 22%, #000 4%, transparent 66%);
+  background: repeating-conic-gradient(
+    from 0deg at 26% 22%,
+    transparent 0deg 1.1deg,
+    color-mix(in srgb, var(--volley-orange) 15%, transparent) 1.1deg 1.5deg,
+    transparent 1.5deg 3.4deg
+  );
+}
+[dir="rtl"] .volley-hero-halftone {
+  background: radial-gradient(38% 42% at 26% 22%, color-mix(in srgb, var(--volley-orange) 22%, transparent), transparent 70%);
+}
+
+/* ---- Impact bursts behind the honest numbers (01 / 03 / MB) ---- */
+.page-volleyball .volley-stat-num {
+  position: relative;
+  isolation: isolate;
+}
+.page-volleyball .volley-stat-num::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 0.34em;
+  width: 1.7em;
+  height: 1.7em;
+  transform: translate(-50%, -50%) scale(0.7);
+  z-index: -1;
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg 5deg,
+    color-mix(in srgb, var(--volley-orange) 30%, transparent) 5deg 7deg,
+    transparent 7deg 13deg
+  );
+  -webkit-mask: radial-gradient(circle, #000 26%, transparent 68%);
+          mask: radial-gradient(circle, #000 26%, transparent 68%);
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out-soft), transform 700ms var(--ease-out-soft);
+}
+.page-volleyball .volley-stat--code .volley-stat-num::before {
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg 5deg,
+    color-mix(in srgb, var(--volley-warmwhite) 24%, transparent) 5deg 7deg,
+    transparent 7deg 13deg
+  );
+}
+.page-volleyball .volley-stat.reveal.is-visible .volley-stat-num::before {
+  opacity: 0.5;
+  transform: translate(-50%, -50%) scale(1);
+}
+@media (hover: hover) {
+  .page-volleyball .volley-stat:hover .volley-stat-num::before {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-volleyball .volley-stat.reveal.is-visible .volley-stat-num::before {
+    animation: volley-burst-spin 24s linear infinite;
+  }
+}
+@keyframes volley-burst-spin {
+  to { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+}
+
+/* ---- A lone crow ascending through the "next chapter" section ---- */
+.page-volleyball .volley-next { position: relative; overflow: hidden; }
+.volley-next-fx { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.page-volleyball .volley-next .container { position: relative; z-index: 1; }
+.volley-crow--rise {
+  position: absolute;
+  top: 20%;
+  right: 8%;
+  width: clamp(30px, 5vw, 66px);
+  color: color-mix(in srgb, var(--volley-orange) 74%, var(--volley-black));
+  opacity: 0.5;
+}
+[dir="rtl"] .volley-crow--rise { right: auto; left: 8%; }
+
+/* RTL: Arabic is cursive — letter-spacing shatters the joins and
+   text-transform:uppercase is a no-op on it. Reset both on every label
+   that sets them for the Latin display face, so Arabic reads naturally. */
+[dir="rtl"] .volley-kicker,
+[dir="rtl"] .btn-secondary-volley,
+[dir="rtl"] .volley-ticker-track,
+[dir="rtl"] .volley-profile-label,
+[dir="rtl"] .volley-stat-label,
+[dir="rtl"] .volley-fact-label,
+[dir="rtl"] .event-type-badge,
+[dir="rtl"] .volley-tl-time,
+[dir="rtl"] .volley-dev-status-label,
+[dir="rtl"] .volley-following {
+  letter-spacing: normal;
+  text-transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .volley-crow--rise { animation: volley-crow-rise 14s ease-in-out infinite; }
+}
+@keyframes volley-crow-rise {
+  0%, 100% { transform: translate(0, 6px) rotate(-4deg); }
+  50%      { transform: translate(-10px, -10px) rotate(1deg); }
+}
+
+/* ---- Section titles: a bolder manga slash beside the kicker ---- */
+.page-volleyball .volley-section-head .volley-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.page-volleyball .volley-section-head .volley-kicker::before {
+  content: '';
+  width: 1.6em;
+  height: 2px;
+  background: var(--volley-orange);
+  transform: skewX(-24deg);
 }

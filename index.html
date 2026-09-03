@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 13.1 — PORTAL (site root)
@@ -50,16 +39,45 @@
   <link rel="stylesheet" href="academic/css/main.css" />
   <link rel="stylesheet" href="portal.css" />
   <link rel="stylesheet" href="transition.css" />
+  <script>
+    /* Anti-flash pre-cover: if we arrived through a world transition, paint an
+       opaque curtain BEFORE first paint so the reveal in transition.js has no
+       white flash to fight. Self-removing failsafe in case transition.js is
+       ever missing. Kept tiny + dependency-free on purpose. */
+    (function () {
+      try {
+        var t = sessionStorage.getItem('he-transition');
+        if (!t) return;
+        var bg = t === 'volleyball' ? '#0A0A0C' : (t === 'portal' ? '#0B1022' : '#05070F');
+        var d = document.createElement('div');
+        d.id = 'he-transition-precover';
+        d.style.cssText = 'position:fixed;inset:0;z-index:2147483646;background:' + bg + ';';
+        (document.body || document.documentElement).appendChild(d);
+        setTimeout(function () { if (d && d.parentNode) d.parentNode.removeChild(d); }, 1600);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body class="portal-body">
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
 
+  <!-- Language switcher (AR / EN / RU). Hardcoded so language.js wires it
+       directly (its ensureLanguageSwitcher() no-ops when one already exists),
+       and reuses the shared .lang-switcher styling from academic/css/main.css. -->
+  <div class="portal-lang">
+    <div class="lang-switcher" aria-label="Language switcher">
+      <button type="button" data-lang-switch="ar" aria-label="العربية">AR</button>
+      <button type="button" data-lang-switch="en" aria-label="English">EN</button>
+      <button type="button" data-lang-switch="ru" aria-label="Русский">RU</button>
+    </div>
+  </div>
 
   <div class="portal-starfield" aria-hidden="true"></div>
   <div class="portal-glow" aria-hidden="true"></div>
+  <div class="portal-grain" aria-hidden="true"></div>
 
   <main class="portal" id="main-content">
-    <div class="portal-intro reveal">
+    <div class="portal-intro">
       <div class="portal-portrait">
         <div class="portrait-orbit" aria-hidden="true">
           <span class="orbit-dot"></span>
@@ -76,44 +94,73 @@
         </div>
       </div>
 
-      <h1>Hussein ElBassiouni</h1>
-      <p class="portal-subtitle">Which side are you here for?</p>
+      <h1 data-i18n="siteName">Hussein ElBassiouni</h1>
+      <p class="portal-subtitle" data-i18n="portalPrompt">Which side are you here for?</p>
+
+      <!-- Connect: real social links + the Discord community button. Both are
+           rendered data-driven by academic/js/social.js from the single source
+           of truth (academic/data/social.js) — no links are hardcoded here, and
+           labels follow the language via i18n:languagechange. -->
+      <div class="portal-connect">
+        <span class="portal-connect-kicker" data-i18n="portalConnect">Connect with me</span>
+        <nav class="portal-socials" data-footer-socials aria-label="Social media"></nav>
+        <div class="portal-discord" data-discord-cta></div>
+      </div>
     </div>
 
     <div class="portal-cards">
-      <a href="academic/index.html" class="portal-card portal-card--academic reveal">
-        <span class="portal-card-eyebrow">Academic &amp; Professional</span>
-        <h2>Data Science &amp; Astronomy</h2>
-        <p>Certificates, academic journey, projects, research, and the long-term path toward Astroinformatics.</p>
-        <span class="portal-card-cta">Enter →</span>
+      <a href="academic/index.html" class="portal-card portal-card--academic">
+        <span class="portal-card-index" aria-hidden="true">01</span>
+        <span class="portal-card-emblem" aria-hidden="true">
+          <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="27" cy="26" r="10"></circle>
+            <ellipse cx="27" cy="26" rx="20" ry="7" transform="rotate(-22 27 26)"></ellipse>
+            <path d="M43.5 11.5 v6 M40.5 14.5 h6"></path>
+            <circle cx="12.5" cy="41" r="1.1" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </span>
+        <span class="portal-card-eyebrow" data-i18n="portalAcademicEyebrow">Academic &amp; Professional</span>
+        <h2 data-i18n="portalAcademicTitle">Data Science &amp; Astronomy</h2>
+        <p data-i18n="portalAcademicDesc">Certificates, academic journey, projects, research, and the long-term path toward Astroinformatics.</p>
+        <span class="portal-card-cta">
+          <span class="portal-card-cta-text" data-i18n="portalEnter">Enter</span>
+          <span class="portal-card-cta-arrow" aria-hidden="true">→</span>
+        </span>
       </a>
 
-      <a href="sports/index.html" class="portal-card portal-card--sports reveal">
-        <span class="portal-card-eyebrow">Volleyball &amp; Sports</span>
-        <h2>Volleyball</h2>
-        <p>Training, matches, and progress — starting soon in Russia.</p>
-        <span class="portal-card-cta">Enter →</span>
+      <a href="sports/index.html" class="portal-card portal-card--sports">
+        <span class="portal-card-index" aria-hidden="true">02</span>
+        <span class="portal-card-emblem" aria-hidden="true">
+          <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="28" cy="28" r="18"></circle>
+            <path d="M28 10 C 20 20, 20 36, 28 46"></path>
+            <path d="M28 10 C 36 20, 36 36, 28 46"></path>
+            <path d="M11 22 C 22 25, 34 24, 45 31"></path>
+          </svg>
+        </span>
+        <span class="portal-card-eyebrow" data-i18n="portalSportsEyebrow">Volleyball &amp; Sports</span>
+        <h2 data-i18n="portalSportsTitle">Volleyball</h2>
+        <p data-i18n="portalSportsDesc">Training, matches, and progress — starting soon in Russia.</p>
+        <span class="portal-card-cta">
+          <span class="portal-card-cta-text" data-i18n="portalEnter">Enter</span>
+          <span class="portal-card-cta-arrow" aria-hidden="true">→</span>
+        </span>
       </a>
     </div>
   </main>
 
-  <script src="transition.js"></script>
-  <script src="academic/js/animations.js"></script>
-  <script src="academic/js/theme.js"></script>
-  <script>
-    // Same portrait-fallback pattern used across the Academic site —
-    // shows initials instead of a broken image icon until a real
-    // photo is added at academic/assets/images/profile.jpg.
-    document.addEventListener('DOMContentLoaded', () => {
-      const image = document.getElementById('portrait-image');
-      const placeholder = document.getElementById('portrait-placeholder');
-      if (!image || !placeholder) return;
-      image.addEventListener('error', () => {
-        image.style.display = 'none';
-        placeholder.style.display = 'flex';
-      });
-    });
-  </script>
-  <script src="academic/js/ambient.js"></script>
+  <!-- i18n + social: reused from the Academic side (single source of truth).
+       Load order: data globals (translations, socialData) before their readers
+       (language.js wires the AR/EN/RU switcher; social.js renders the links +
+       Discord CTA and re-renders on i18n:languagechange). All deferred, so they
+       run in order before DOMContentLoaded. -->
+  <script src="academic/data/translations.js" defer></script>
+  <script src="academic/data/social.js" defer></script>
+  <script src="academic/js/language.js" defer></script>
+  <script src="academic/js/social.js" defer></script>
+
+  <script src="transition.js" defer></script>
+  <script src="portal.js" defer></script>
+  <script src="academic/js/ambient.js" defer></script>
 </body>
 </html>

@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 04 — CERTIFICATES SYSTEM
@@ -175,34 +164,9 @@
 
   </main>
 
-  <!-- ============================================================
-       CERTIFICATE MODAL
-       Hidden by default (.cert-modal without .is-open). Populated
-       and toggled entirely by js/certificates.js.
-  ============================================================= -->
-  <div class="cert-modal" id="cert-modal" aria-hidden="true">
-    <div class="cert-modal-backdrop" data-modal-close></div>
-    <div class="cert-modal-content" role="dialog" aria-modal="true" aria-labelledby="cert-modal-title">
-      <button class="cert-modal-close" id="cert-modal-close-btn" aria-label="Close" data-i18n-aria-label="certModalClose">&times;</button>
-
-      <div class="cert-modal-image-wrap">
-        <img class="cert-modal-image" id="cert-modal-image" src="" alt="" loading="lazy" decoding="async" />
-        <!-- Shown instead of the image if it fails to load — same
-             fallback pattern as the Hero portrait in js/main.js -->
-        <div class="cert-modal-image-placeholder" id="cert-modal-image-placeholder" data-i18n="certModalNoImage">
-          Certificate image not added yet
-        </div>
-      </div>
-
-      <p class="cert-category" id="cert-modal-category"></p>
-      <h3 id="cert-modal-title"></h3>
-      <p class="cert-provider" id="cert-modal-provider"></p>
-      <p class="cert-description" id="cert-modal-description"></p>
-      <a href="#" class="btn btn-secondary" id="cert-modal-credential-link" target="_blank" rel="noopener" data-i18n="certModalCredential">
-        View Credential
-      </a>
-    </div>
-  </div>
+  <!-- Certificate detail now opens the ONE universal MediaViewer
+       (EventSystem.openDetail in js/media-system.js). The old bespoke
+       #cert-modal markup was retired — see the note in js/certificates.js. -->
 
   <!-- ============================================================
        FOOTER
@@ -212,12 +176,12 @@
       <div class="footer-brand">
         <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
         <p class="footer-mission" data-i18n="footerMission">
-          Building a path from Economics to Data Science, and eventually
+          Building a path from strong foundations to Data Science, and eventually
           toward Astroinformatics.
         </p>
       </div>
 
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -225,19 +189,18 @@
     </div>
   </footer>
 
-  <script src="../../transition.js"></script>
-  <script src="../js/cursor.js"></script>
-  <script src="../data/certificates.js"></script>
-  <script src="../js/certificates.js"></script>
-  <script src="../data/translations.js"></script>
-  <script src="../js/language.js"></script>
-  <script src="../js/animations.js"></script>
-  <script src="../js/navigation.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../data/social.js"></script>
-  <script src="../js/theme.js"></script>
-  <script src="../js/social.js"></script>
-  <script src="../js/media-system.js"></script>
-  <script src="../js/ambient.js"></script>
+  <script src="../../transition.js" defer></script>
+  <script src="../js/cursor.js" defer></script>
+  <script src="../data/certificates.js" defer></script>
+  <script src="../js/certificates.js" defer></script>
+  <script src="../data/translations.js" defer></script>
+  <script src="../js/language.js" defer></script>
+  <script src="../js/animations.js" defer></script>
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../data/social.js" defer></script>
+  <script src="../js/social.js" defer></script>
+  <script src="../js/media-system.js" defer></script>
+  <script src="../js/ambient.js" defer></script>
 </body>
 </html>

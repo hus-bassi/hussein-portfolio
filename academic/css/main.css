@@ -4,9 +4,10 @@
    base element styling. This file is the single source of truth
    for the visual language of the whole site.
 
-   Later phases add:
-   - css/animations.css  → keyframes, orbit/glow/parallax effects
-   - css/responsive.css  → breakpoint-specific overrides
+   This is the SINGLE stylesheet for the Academic world and the
+   Portal: tokens, base, layout, components, world-specific rules,
+   responsive breakpoints, and motion all live here — no separate
+   animations/responsive files.
    ============================================================= */
 
 /* ------------------------------------------------------------
@@ -29,15 +30,14 @@ html {
 }
 
 body {
-  position: relative; /* establishes the stacking context the site-wide
-                          cosmic backdrop (below) relies on */
+  position: relative;
   z-index: 0;
-  min-height: 100vh;
   font-family: var(--font-body);
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 /* ------------------------------------------------------------
@@ -83,10 +83,10 @@ body::after {
    echoes the achievement accent. Kept faint for contrast. */
 body::before {
   background:
-    radial-gradient(1200px circle at 12% 18%, rgba(92, 191, 207, 0.08), transparent 60%),
-    radial-gradient(1000px circle at 88% 10%, rgba(212, 168, 67, 0.05), transparent 55%),
-    radial-gradient(1100px circle at 82% 82%, rgba(139, 123, 184, 0.07), transparent 60%),
-    radial-gradient(900px circle at 22% 96%, rgba(92, 191, 207, 0.06), transparent 65%);
+    radial-gradient(1200px circle at 12% 18%, rgba(90, 184, 196, 0.06), transparent 60%),
+    radial-gradient(1000px circle at 88% 10%, rgba(201, 168, 76, 0.04), transparent 55%),
+    radial-gradient(1100px circle at 82% 82%, rgba(126, 114, 168, 0.05), transparent 60%),
+    radial-gradient(900px circle at 22% 96%, rgba(90, 184, 196, 0.04), transparent 65%);
 }
 
 /* Far starfield / cosmic dust: one tiled layer of tiny points.
@@ -96,16 +96,16 @@ body::before {
    its own denser, animated multi-layer starfield on top of this. */
 body::after {
   background-image:
-    radial-gradient(1px 1px at 8% 12%, rgba(255, 255, 255, 0.9) 100%, transparent),
-    radial-gradient(1px 1px at 33% 62%, rgba(255, 255, 255, 0.8) 100%, transparent),
-    radial-gradient(1.5px 1.5px at 61% 28%, rgba(255, 255, 255, 0.9) 100%, transparent),
-    radial-gradient(1px 1px at 82% 74%, rgba(255, 255, 255, 0.75) 100%, transparent),
-    radial-gradient(1px 1px at 47% 88%, rgba(255, 255, 255, 0.7) 100%, transparent),
-    radial-gradient(1.5px 1.5px at 72% 46%, rgba(255, 255, 255, 0.85) 100%, transparent),
-    radial-gradient(1px 1px at 18% 40%, rgba(255, 255, 255, 0.7) 100%, transparent);
+    radial-gradient(1px 1px at 8% 12%, rgba(232, 236, 248, 0.8) 100%, transparent),
+    radial-gradient(1px 1px at 33% 62%, rgba(232, 236, 248, 0.7) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 61% 28%, rgba(232, 236, 248, 0.8) 100%, transparent),
+    radial-gradient(1px 1px at 82% 74%, rgba(232, 236, 248, 0.65) 100%, transparent),
+    radial-gradient(1px 1px at 47% 88%, rgba(232, 236, 248, 0.6) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 72% 46%, rgba(232, 236, 248, 0.75) 100%, transparent),
+    radial-gradient(1px 1px at 18% 40%, rgba(232, 236, 248, 0.6) 100%, transparent);
   background-repeat: repeat;
   background-size: 320px 320px;
-  opacity: 0.5;
+  opacity: 0.35;
 }
 
 img,
@@ -152,13 +152,19 @@ ol {
   outline-offset: 3px;
 }
 
+/* Text selection — carries the cosmic identity into a native UI detail. */
+::selection {
+  background: rgba(90, 184, 196, 0.30);
+  color: var(--color-text-primary);
+}
+
 /* Skip-to-content link: invisible until a keyboard user Tabs to it —
    the very first focusable thing on every page, letting them jump
    straight past the header/nav to the actual content. */
 .skip-link {
   position: absolute;
   top: -100%;
-  left: var(--space-3);
+  inset-inline-start: var(--space-3);
   z-index: 1000;
   padding: 0.75em 1.25em;
   background-color: var(--color-accent);
@@ -185,18 +191,21 @@ ol {
      A personal scientific identity: deep midnight navy as the cosmos,
      champagne gold for achievement, icy cyan for data/science,
      muted violet as personal cosmic accent. */
-  --color-bg-primary:     #0B1026;   /* deep midnight navy — main background */
-  --color-bg-secondary:   #111833;   /* slightly lighter navy — section separation */
-  --color-surface:        #1A2240;   /* dark navy card / panel surfaces */
-  --color-border:         rgba(140, 170, 210, 0.12);
+  --color-bg-primary:     #0B1022;   /* deep midnight navy — main background (deepened for drama) */
+  --color-bg-secondary:   #111935;   /* slightly lighter navy — section separation */
+  --color-surface:        #1A2447;   /* card / panel surfaces */
+  --color-surface-raised:  #212C52;   /* nested / elevated surfaces — a touch lighter for depth */
+  --color-border:         rgba(160, 180, 220, 0.10);
+  --color-border-strong:  rgba(170, 190, 230, 0.22);
 
-  --color-accent:           #D4A843;   /* champagne gold — achievement/highlight: CTAs, eyebrows, active nav */
-  --color-accent-secondary: #5CBFCF;   /* icy cyan — data/science/interactive: hovers, links, indicators */
-  --color-accent-muted:     #8B7BB8;   /* muted violet — personal identity: secondary labels, subtle accents */
+  --color-accent:           #D2AF57;   /* warm gold — achievement/highlight (more luminous) */
+  --color-accent-bright:    #E6C878;   /* brighter gold — highlights, gradient stops */
+  --color-accent-secondary: #5FC4D2;   /* teal — data/science/interactive (more vivid) */
+  --color-accent-muted:     #857BB0;   /* muted violet — secondary labels */
 
-  --color-text-primary:   #F0F2F8;   /* soft white — headings, primary text */
-  --color-text-secondary: #9AA5BE;   /* silver-mist — body copy, captions */
-  --color-text-faint:     #6B7A96;   /* muted blue-gray — labels, disabled states (tuned for 4.5:1+ contrast) */
+  --color-text-primary:   #EAEEF6;   /* warm white — headings */
+  --color-text-secondary: #9CA8BE;   /* silver — body copy (easier to read) */
+  --color-text-faint:     #6C7CA4;   /* muted blue-gray — labels */
 
   /* --- Typography ---
      Font FILES are loaded starting Phase 02 / finalized in Phase 12
@@ -222,11 +231,23 @@ ol {
 
   /* --- Layout --- */
   --container-max: 1200px;
-  --container-padding: var(--space-4);
+  --container-padding: var(--space-5);
 
   /* --- Motion (durations only — actual keyframes come in Phase 14) --- */
-  --transition-fast: 150ms ease;
-  --transition-base: 300ms ease;
+  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);   /* premium "settle" easing for lifts/reveals */
+
+  /* --- Elevation & light (v1.4 elegance layer) ---
+     Reusable gradients and glows so the whole site shares one
+     luminous vocabulary instead of scattering rgba() literals. */
+  --gradient-accent:   linear-gradient(135deg, var(--color-accent-bright), var(--color-accent) 45%, var(--color-accent-secondary));
+  --gradient-text:     linear-gradient(100deg, var(--color-text-primary) 8%, var(--color-accent-bright) 42%, var(--color-accent-secondary) 82%);
+  --gradient-hairline: linear-gradient(90deg, transparent, var(--color-accent) 20%, var(--color-accent-secondary) 80%, transparent);
+  --glow-gold:  0 0 32px -6px rgba(210, 175, 87, 0.45);
+  --glow-cyan:  0 0 34px -8px rgba(95, 196, 210, 0.42);
+  --shadow-elev-1: 0 2px 8px -4px rgba(0, 0, 0, 0.45);
+  --shadow-elev-2: 0 16px 40px -22px rgba(0, 0, 0, 0.6);
 }
 
 /* ------------------------------------------------------------
@@ -235,8 +256,9 @@ ol {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   color: var(--color-text-primary);
-  line-height: 1.2;
+  line-height: 1.25;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 h1 { font-size: var(--fs-h1); }
@@ -246,6 +268,12 @@ h3 { font-size: var(--fs-h3); }
 p {
   color: var(--color-text-secondary);
   font-size: var(--fs-body);
+  line-height: 1.75;
+  max-width: 68ch;
+}
+
+p + p {
+  margin-top: var(--space-3);
 }
 
 .eyebrow {
@@ -273,7 +301,7 @@ p {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding-block: var(--space-3);
+  padding-block: var(--space-2);
   border-bottom: 1px solid transparent;
   background-color: transparent;
   transition: background-color var(--transition-base), border-color var(--transition-base);
@@ -283,9 +311,9 @@ p {
    Gives the header a solid, slightly blurred surface so nav text stays
    readable over whatever content scrolls underneath it. */
 .site-header.is-scrolled {
-  background-color: rgba(11, 16, 38, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(14, 20, 40, 0.82);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   border-bottom-color: var(--color-border);
 }
 
@@ -293,19 +321,29 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: nowrap;
+  /* No overflow:hidden here — it used to clip the "Work" dropdown menu
+     (position:absolute, drops below the bar), which made the trigger feel
+     dead. Horizontal fit is handled by the child min-width:0 + breakpoints. */
 }
 
 .header-brand {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
 .logo {
   font-family: var(--font-display);
-  font-size: var(--fs-h3);
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-text-primary);
-  z-index: 101; /* stays above the mobile overlay */
+  z-index: 101;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Small link pair (Portal / Volleyball) next to the logo — lets a
@@ -314,24 +352,25 @@ p {
 .site-switch {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  margin-inline-start: var(--space-4);
+  gap: var(--space-1);
+  margin-inline-start: var(--space-3);
   z-index: 101;
 }
 
 .site-switch-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
-  font-size: 0.72rem;
+  gap: 0.25em;
+  font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--color-text-faint);
-  padding: 0.3em 0.7em;
+  padding: 0.25em 0.5em;
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
   text-decoration: none;
+  white-space: nowrap;
   transition:
     color var(--transition-fast),
     border-color var(--transition-fast),
@@ -381,51 +420,168 @@ p {
   background: rgba(212, 168, 67, 0.08);
 }
 
-:root[data-theme="light"] .site-switch-link:hover {
-  background: rgba(250, 246, 238, 0.65);
-  border-color: rgba(30, 50, 80, 0.15);
-  box-shadow: 0 0 12px rgba(92, 191, 207, 0.06), 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-:root[data-theme="light"] .site-switch-link[aria-current="page"] {
-  background: rgba(212, 168, 67, 0.1);
-  border-color: rgba(212, 168, 67, 0.3);
-}
-
-:root[data-theme="light"] .site-switch-link--active {
-  background: rgba(212, 168, 67, 0.1);
-  border-color: rgba(212, 168, 67, 0.3);
-}
 
 @media (max-width: 768px) {
   .site-switch {
     display: none;
   }
-}
 
-/* Site-switch chips for mobile menu — hidden on desktop */
-.site-switch-mobile {
-  display: none;
+  /* Scoped to .site-header for higher specificity than the base
+     `.nav-toggle { display: none }` rule further down the file: that base
+     rule has equal specificity but appears LATER in source order, so a bare
+     `.nav-toggle { display: flex }` here would lose and the hamburger would
+     stay hidden on phones. The descendant selector tips the balance. */
+  .site-header .nav-toggle {
+    display: flex;
+  }
+
+  .primary-nav {
+    position: fixed;
+    inset: 0;
+    height: 100dvh;
+    height: 100vh; /* fallback for older browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-primary);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-inline: var(--space-4);
+    /* z-index:99 — BELOW the header (z:100) so the hamburger/X
+       toggle stays clickable above the overlay. The nav covers all
+       page content (z:auto) but the header bar + toggle remain
+       on top. */
+    z-index: 99;
+  }
+
+  /* Revealed when js/navigation.js toggles `.is-open` on the overlay.
+     `.primary-nav.is-open` (0,2,0) outranks the `.primary-nav` block above
+     (0,1,0), so it reliably flips the overlay visible regardless of source
+     order. Without this rule the menu opened in JS but stayed at opacity:0
+     / visibility:hidden — i.e. it never actually appeared on phones. */
+  .primary-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .primary-nav ul {
+    flex-direction: column;
+    gap: var(--space-5);
+    text-align: center;
+  }
+
+  /* Bigger, tap-friendly links in the mobile overlay. Scoped to .primary-nav
+     so it beats the base `.nav-link { font-size: 0.8rem }` that appears LATER
+     in the file with equal specificity — without the bump the overlay links
+     (and the Work chevron, which scales off this) stay at the tiny 12.8px
+     desktop size. */
+  .primary-nav .nav-link {
+    font-size: var(--fs-h3);
+  }
+
+  /* Center the AR/EN/RU switcher in the mobile overlay and drop the desktop
+     divider (the border/margin/padding on the inline-start side). Scoped to
+     .primary-nav so it beats the base `.lang-switcher` rule that appears LATER
+     in the file with equal specificity — same source-order trap as the nav
+     toggle. Without the bump the divider line stays and pushes it ~8px off
+     center. Applies to the academic AND volleyball overlays (both .primary-nav). */
+  .primary-nav .lang-switcher {
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+    border-inline-start: none;
+    margin-top: var(--space-5);
+    justify-content: center;
+  }
+
+  /* Mobile: the Work submenu expands INLINE (pushing the links below it
+     down the overlay), NOT as the desktop floating card. Scoped to
+     .site-header so these win over the desktop `.nav-dropdown-menu` rules
+     that appear LATER in the file with equal specificity — the same
+     source-order trap that hid the hamburger. Without the bump the desktop
+     `position:absolute` card wins and overlaps the CV link. */
+  .site-header .nav-dropdown-menu {
+    position: static;
+    transform: none;
+    max-height: 0;
+    min-width: 0;
+    padding: 0;
+    opacity: 1;
+    visibility: visible;
+    overflow: hidden;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    transition: max-height var(--transition-base);
+  }
+
+  .site-header .nav-dropdown.is-open .nav-dropdown-menu {
+    max-height: 400px;
+    padding: var(--space-3) 0 0;
+    /* Beat the desktop `.is-open` rule's translateX(-50%) — on a now-static
+       element that would shove the submenu sideways. */
+    transform: none;
+  }
+
+  .nav-dropdown-menu .nav-link {
+    text-align: center;
+    font-size: var(--fs-body);
+  }
+
+  /* Site-switch chips inside the mobile menu — shown below the nav links */
+  .primary-nav .site-switch-mobile {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  .primary-nav .site-switch-mobile .site-switch-link {
+    font-size: var(--fs-small);
+    padding: 0.45em 0.9em;
+  }
+
+  /* Fallback for browsers without :has() — JS adds body.menu-open */
+  body.menu-open .site-header.is-scrolled {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 /* --- Navigation: desktop --- */
 .primary-nav {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .primary-nav ul {
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-3);
+  flex-wrap: nowrap;
 }
 
 .nav-link {
   position: relative;
-  font-size: var(--fs-small);
+  font-size: 0.8rem;
   color: var(--color-text-secondary);
   padding-block: var(--space-2);
+  padding-inline: var(--space-1);
   transition: color var(--transition-fast);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 /* Underline that grows in from the center on hover/active — a small,
@@ -468,18 +624,18 @@ p {
 .lang-switcher {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  margin-inline-start: var(--space-5);
-  padding-inline-start: var(--space-5);
+  gap: 2px;
+  margin-inline-start: var(--space-3);
+  padding-inline-start: var(--space-3);
   border-inline-start: 1px solid var(--color-border);
 }
 
 .lang-switcher button {
-  padding: 0.3em 0.6em;
-  font-size: 0.75rem;
+  padding: 0.2em 0.45em;
+  font-size: 0.65rem;
   font-weight: 600;
   color: var(--color-text-faint);
-  border-radius: 6px;
+  border-radius: 4px;
   transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
@@ -490,16 +646,6 @@ p {
 .lang-switcher button.is-active {
   color: var(--color-bg-primary);
   background-color: var(--color-accent);
-}
-
-@media (max-width: 768px) {
-  .lang-switcher {
-    margin-inline-start: 0;
-    padding-inline-start: 0;
-    border-inline-start: none;
-    margin-top: var(--space-5);
-    justify-content: center;
-  }
 }
 
 /* --- Navigation: "Work" dropdown ---
@@ -513,24 +659,49 @@ p {
 .nav-dropdown-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
+  gap: 0.25em;
 }
 
+/* The dropdown chevron is a pseudo-element, NOT the DOM <span>: the trigger
+   carries data-i18n="navWork", and language.js runs `el.textContent = "Work"`
+   on every load / language switch, which wipes out any child arrow span. A
+   ::after survives that. The selector is deliberately more specific than
+   `.nav-link::after` (the hover underline) so it replaces that underline on
+   the trigger with the chevron — a clearer "this opens a menu" affordance. */
 .nav-dropdown-arrow {
-  font-size: 0.7em;
+  display: none; /* dead span (i18n destroys it) — hidden to avoid a flash before i18n runs */
+}
+
+.nav-dropdown .nav-dropdown-trigger::after {
+  content: '\25BE'; /* ▾ down-pointing triangle */
+  position: static;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  margin: 0;
+  background: none;
+  font-size: 0.72em;
+  line-height: 1;
+  opacity: 0.8;
   transition: transform var(--transition-fast);
 }
 
-.nav-dropdown.is-open .nav-dropdown-arrow {
+.nav-dropdown.is-open .nav-dropdown-trigger::after {
   transform: rotate(180deg);
 }
 
 .nav-dropdown-menu {
   position: absolute;
   top: calc(100% + var(--space-3));
-  inset-inline-start: 50%;
+  /* Center under the trigger in BOTH directions. `inset-inline-start:50%`
+     resolves to `right:50%` in RTL, but the physical `translateX(-50%)`
+     does NOT flip — so in Arabic the closed menu landed ~400px off-screen
+     to the left, adding a 70px horizontal scroll to every academic page.
+     Physical `left:50%` + `right:auto` centers identically in LTR and RTL. */
+  left: 50%;
+  right: auto;
   transform: translateX(-50%) translateY(-6px);
-  min-width: 200px;
+  min-width: 180px;
   padding: var(--space-2);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -553,9 +724,9 @@ p {
 
 .nav-dropdown-menu .nav-link {
   display: block;
-  padding: 0.5em 0.85em;
+  padding: 0.4em 0.75em;
   border-radius: 8px;
-  font-size: var(--fs-small);
+  font-size: 0.75rem;
 }
 
 .nav-dropdown-menu .nav-link:hover,
@@ -567,35 +738,6 @@ p {
    dropdown menu item — switch off that pseudo-element here only. */
 .nav-dropdown-menu .nav-link::after {
   display: none;
-}
-
-@media (max-width: 768px) {
-  /* On mobile the dropdown expands inline within the full-screen
-     overlay instead of floating — there's no "below the trigger"
-     space to float into on a small screen. */
-  .nav-dropdown-menu {
-    position: static;
-    transform: none;
-    max-height: 0;
-    padding: 0;
-    opacity: 1;
-    visibility: visible;
-    overflow: hidden;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-    transition: max-height var(--transition-base);
-  }
-
-  .nav-dropdown.is-open .nav-dropdown-menu {
-    max-height: 400px;
-    padding: var(--space-3) 0 0;
-  }
-
-  .nav-dropdown-menu .nav-link {
-    text-align: center;
-    font-size: var(--fs-body);
-  }
 }
 
 /* --- Navigation: mobile toggle button (hidden on desktop) --- */
@@ -628,95 +770,77 @@ p {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* --- Navigation: mobile (full-screen viewport overlay) ---
-   The <nav> lives inside <header>. When the header gets
-   backdrop-filter (via .is-scrolled), it creates a containing block
-   that BREAKS position:fixed on the nav. Fix: strip backdrop-filter
-   from the header while the mobile overlay is open. --- */
-@media (max-width: 768px) {
-  .nav-toggle {
-    display: flex;
+/* Tablet breakpoint — hide site-switch to make room */
+@media (max-width: 1024px) {
+  .site-switch {
+    display: none;
+  }
+}
+
+/* --- Wide desktop (>1024px): single world-switch + balanced bar ---
+   Above 1024px the left `.site-switch` (next to the logo) is visible and acts
+   as the world-switch, so the in-nav `.site-switch-mobile` copy must be hidden
+   here — otherwise Portal/Volleyball render on BOTH sides of the bar (the
+   reported duplicate). Below 1024px the left switch is hidden for space and
+   this in-nav copy stands in, so it is only hidden at this width. */
+/* --- Wide desktop (>1024px): a single world-switch + centered links ---
+   Above 1024px the left `.site-switch` (by the logo) IS the world-switch, so
+   hide the in-nav copy — otherwise Portal/Volleyball render on BOTH sides of
+   the bar (the reported duplicate). Below 1024px the left switch is hidden for
+   space and this in-nav copy stands in, so it is only hidden here.
+
+   Centering runs in two tiers because the link list is far wider in some
+   languages (Arabic ~464px vs English ~336px): from 1025px up, auto side-
+   margins centre the links in the leftover space — these can NEVER overlap the
+   brand (they simply collapse when space is tight). Then once the viewport is
+   wide enough for a truly symmetric layout in every language (>=1150px), a
+   `1fr auto 1fr` grid takes over and pins the links to the EXACT header centre
+   regardless of how wide the brand or switcher are. */
+@media (min-width: 1025px) {
+  .primary-nav .site-switch-mobile {
+    display: none;
   }
 
   .primary-nav {
-    position: fixed;
-    inset: 0;
-    height: 100dvh;
-    height: 100vh; /* fallback for older browsers */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-bg-primary);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    padding-inline: var(--space-4);
-    /* z-index:99 — BELOW the header (z:100) so the hamburger/X
-       toggle stays clickable above the overlay. The nav covers all
-       page content (z:auto) but the header bar + toggle remain
-       on top. */
-    z-index: 99;
+    flex: 1;
   }
 
-  /* Added by js/navigation.js when the toggle button is pressed */
-  .primary-nav.is-open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(0);
+  .primary-nav > ul {
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 1150px) {
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
   }
 
-  /* ROOT CAUSE FIX: backdrop-filter on the header creates a new
-     containing block that constrains position:fixed descendants.
-     Strip it while the mobile overlay is open so the nav is
-     positioned relative to the viewport, not the header. */
-  .site-header.is-scrolled:has(.primary-nav.is-open) {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  /* Lift the nav's own children (link <ul> + language switcher) into the grid
+     so they can occupy the side/centre columns directly. Only >=1150px — the
+     mobile overlay needs primary-nav to stay a real positioned box. */
+  .primary-nav {
+    display: contents;
   }
 
-  .primary-nav ul {
-    flex-direction: column;
-    gap: var(--space-5);
-    text-align: center;
+  .header-brand {
+    justify-self: start;
   }
 
-  .nav-link {
-    font-size: var(--fs-h3);
+  .primary-nav > ul {
+    justify-self: center;
   }
 
-  /* Site-switch chips inside the mobile menu — shown below the nav links */
-  .primary-nav .site-switch-mobile {
-    display: flex;
-    gap: var(--space-3);
-    margin-top: var(--space-4);
+  .primary-nav > .lang-switcher {
+    justify-self: end;
   }
+}
 
-  .primary-nav .site-switch-mobile .site-switch-link {
-    font-size: var(--fs-small);
-    padding: 0.45em 0.9em;
-  }
-
-  /* Fallback for browsers without :has() — JS adds body.menu-open */
-  body.menu-open .site-header.is-scrolled {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
-  /* Reduced motion: skip slide, keep fade */
-  @media (prefers-reduced-motion: reduce) {
-    .primary-nav {
-      transform: none;
-      transition: opacity 0.01ms, visibility 0.01ms;
-    }
+/* Reduced motion: skip slide, keep fade */
+@media (prefers-reduced-motion: reduce) {
+  .primary-nav {
+    transform: none;
+    transition: opacity 0.01ms, visibility 0.01ms;
   }
 }
 
@@ -726,7 +850,7 @@ p {
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 73px); /* full viewport minus the header's height */
+  min-height: 80vh;
   display: flex;
   align-items: center;
   padding-block: var(--space-6);
@@ -1059,6 +1183,16 @@ p {
   color: var(--color-accent);
 }
 
+/* Pressed state — a small tactile "push" while the button is held,
+   shared by both styles. Placed after the :hover rules (equal
+   specificity) so it overrides the hover lift during an active press.
+   Purely a transform, so the global reduced-motion rule still governs
+   whether the change is tweened or instant. */
+.btn:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: var(--transition-fast);
+}
+
 /* ------------------------------------------------------------
    8. SHORT INTRODUCTION
 ------------------------------------------------------------- */
@@ -1108,7 +1242,7 @@ p {
 }
 
 .focus-item {
-  padding: var(--space-4);
+  padding: var(--space-5);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -1146,7 +1280,7 @@ p {
 
 .cert-card {
   position: relative;
-  padding: var(--space-4);
+  padding: var(--space-5);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -1221,7 +1355,7 @@ p {
 
 .volunteer-item {
   position: relative;
-  padding: var(--space-4);
+  padding: var(--space-5);
   background-color: var(--color-surface);
   border-inline-start: 3px solid var(--color-accent-secondary);
   border-radius: 8px;
@@ -1260,8 +1394,8 @@ p {
 ------------------------------------------------------------- */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 700ms ease, transform 700ms ease;
+  transform: translateY(20px);
+  transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1), transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reveal.is-visible {
@@ -1538,7 +1672,10 @@ p {
 
 .search-field input:focus-visible {
   border-color: var(--color-accent);
-  outline: none;
+  /* Keep a visible keyboard-focus ring (transparent outline stays visible in
+     forced-colors / high-contrast mode; the box-shadow shows it otherwise). */
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 .filter-chips {
@@ -1647,7 +1784,7 @@ p {
 }
 
 .skill-card {
-  padding: var(--space-4);
+  padding: var(--space-5);
   text-align: center;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -2026,7 +2163,7 @@ p {
    20. FINAL CTA
 ------------------------------------------------------------- */
 .final-cta {
-  padding-block: var(--space-7);
+  padding-block: var(--space-5);
   text-align: center;
 }
 
@@ -2052,15 +2189,23 @@ p {
 ------------------------------------------------------------- */
 .site-footer {
   border-top: 1px solid var(--color-border);
+  margin-bottom: 0;
+  padding-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer > * {
+  margin-bottom: 0;
 }
 
 .footer-inner {
-  padding-block: var(--space-6);
+  padding-block: var(--space-3);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-5);
+  gap: var(--space-3);
 }
 
 .footer-brand {
@@ -2068,14 +2213,14 @@ p {
 }
 
 .footer-mission {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
   font-size: var(--fs-small);
 }
 
 .footer-socials {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .social-link {
@@ -2090,7 +2235,7 @@ p {
 }
 
 .footer-bottom {
-  padding-block: var(--space-4);
+  padding-block: var(--space-2);
   border-top: 1px solid var(--color-border);
   text-align: center;
 }
@@ -2098,6 +2243,23 @@ p {
 .footer-bottom p {
   font-size: var(--fs-small);
   color: var(--color-text-faint);
+}
+
+/* Sticky footer — short pages (e.g. the projects / research empty states)
+   must still fill the viewport, so the footer is never left floating above
+   a dead gap on tall screens. main grows to absorb the slack and pins the
+   footer to the bottom; on tall pages main is naturally tall, so nothing
+   changes. The portal runs its own centered flex layout, so it's excluded. */
+body:not(.portal-body) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+body:not(.portal-body) > main {
+  flex: 1 0 auto;
 }
 
 /* ------------------------------------------------------------
@@ -2238,220 +2400,6 @@ p {
   }
 }
 
-/* ------------------------------------------------------------
-   DAY / NIGHT MODE — added v1.4.0
-   The entire dark design above is Night mode (the default). Below
-   is Day mode: the SAME universe seen in warm daylight, keyed off
-   data-theme="light" on <html> (set by js/theme.js, and by a tiny
-   inline <head> script on every page that runs before first paint,
-   so there's no flash on load). Because every component pulls its
-   colors from the tokens in :root, Day mode is mostly a re-declaration
-   of those same tokens — no component rule has to change. The few
-   hardcoded dark values (scrolled header, modal backdrop, portal
-   starfield) get explicit Day overrides afterward.
-
-   Palette: "Warm Sunrise" — cream sky, a warm gold sun glow, deep
-   violet ink for text, keeping the site's violet + gold identity.
-   Values tuned to hold WCAG AA contrast, same standard as Night.
-------------------------------------------------------------- */
-:root[data-theme="light"] {
-  --color-bg-primary:     #FAF6EE;   /* warm ivory — daylight sky */
-  --color-bg-secondary:   #F0E8D8;   /* soft sand — section separation */
-  --color-surface:        #FFFFFF;   /* clean white card / panel surfaces */
-  --color-border:         rgba(30, 50, 80, 0.12);
-
-  --color-accent:           #8B6914;   /* deep gold — 5.14:1 on cream (AA) for CTAs, eyebrows, links */
-  --color-accent-secondary: #1A8A8A;   /* deep teal — interactive: hovers, data indicators */
-  --color-accent-muted:     #6B5AA0;   /* medium violet — secondary labels */
-
-  --color-text-primary:   #1A2540;   /* deep navy ink — headings, primary text */
-  --color-text-secondary: #4A5670;   /* navy-gray — body copy */
-  --color-text-faint:     #6B7A8E;   /* muted blue-gray — labels (tuned for 4.5:1+ on ivory) */
-}
-
-/* A gentle whole-page color cross-fade — the FALLBACK for browsers
-   without the View Transitions API (those get the circular reveal
-   instead, see the bottom of this section). The global
-   prefers-reduced-motion rule near the top of this file forces these
-   durations to ~0ms, so reduced-motion users switch instantly. */
-body {
-  transition: background-color var(--transition-base), color var(--transition-base);
-}
-
-.site-header,
-.mission,
-.volunteering-preview,
-.vision,
-.skill-card,
-.cert-card,
-.focus-item {
-  transition: background-color var(--transition-base), border-color var(--transition-base), color var(--transition-base);
-}
-
-/* --- Day sky backdrop: warm ivory base with subtle blue atmospheric
-   glow, gold sun warmth, and faint cyan/violet cosmic traces. --- */
-:root[data-theme="light"] body::before {
-  background:
-    radial-gradient(1100px circle at 88% 6%, rgba(255, 210, 130, 0.45), transparent 58%),
-    radial-gradient(900px circle at 92% 2%, rgba(212, 168, 67, 0.25), transparent 45%),
-    radial-gradient(1000px circle at 8% 14%, rgba(92, 191, 207, 0.18), transparent 60%),
-    radial-gradient(1050px circle at 82% 90%, rgba(139, 123, 184, 0.14), transparent 62%),
-    radial-gradient(900px circle at 16% 98%, rgba(212, 168, 67, 0.18), transparent 65%);
-}
-
-:root[data-theme="light"] body::after {
-  opacity: 0; /* far starfield hidden in daylight */
-}
-
-/* --- Hero cosmic elements adapted for daylight --- */
-:root[data-theme="light"] .hero-starfield,
-:root[data-theme="light"] .cosmic-dust {
-  opacity: 0; /* white stars/dust read as nothing (or noise) on a light sky */
-}
-
-:root[data-theme="light"] .hero-glow {
-  background:
-    radial-gradient(600px circle at 82% 18%, rgba(255, 210, 130, 0.30), transparent 68%),
-    radial-gradient(520px circle at 15% 30%, rgba(92, 191, 207, 0.10), transparent 70%),
-    radial-gradient(440px circle at 55% 88%, rgba(139, 123, 184, 0.08), transparent 70%);
-}
-
-/* Constellation + orbit arcs stay as elegant line motifs, recolored
-   so they read against a light sky instead of vanishing. */
-:root[data-theme="light"] .constellation-lines {
-  opacity: 0.55;
-}
-:root[data-theme="light"] .constellation-lines line {
-  stroke: rgba(26, 37, 64, 0.45);
-}
-:root[data-theme="light"] .constellation-lines circle {
-  fill: rgba(139, 105, 20, 0.75);
-}
-:root[data-theme="light"] .cosmic-orbit-arc-2 {
-  border-color: rgba(139, 105, 20, 0.28);
-}
-
-:root[data-theme="light"] .portrait-frame {
-  box-shadow: 0 0 55px rgba(212, 168, 67, 0.22); /* warm gold halo */
-}
-
-/* --- Hardcoded dark values that need an explicit Day override --- */
-:root[data-theme="light"] .site-header.is-scrolled {
-  background-color: rgba(250, 246, 238, 0.88);
-}
-
-:root[data-theme="light"] .cert-modal-backdrop {
-  background-color: rgba(11, 16, 38, 0.45);
-}
-
-/* Portal (root index.html) paints its own fixed starfield/glow from
-   portal.css — fade the stars and warm the glow so the Portal follows
-   Day mode too. These win over portal.css by specificity, not order. */
-:root[data-theme="light"] .portal-starfield {
-  opacity: 0;
-}
-:root[data-theme="light"] .portal-glow {
-  background:
-    radial-gradient(700px circle at 80% 20%, rgba(255, 210, 130, 0.35), transparent 70%),
-    radial-gradient(600px circle at 20% 75%, rgba(92, 191, 207, 0.10), transparent 70%);
-}
-
-/* ------------------------------------------------------------
-   HEADER CONTROLS + THEME TOGGLE (theme-agnostic)
-   js/theme.js groups the mobile menu button and the new theme
-   toggle into .header-controls, appended after the nav, so both
-   stay pinned to the end of the top bar on every screen size. On
-   desktop only the theme toggle shows (the hamburger is hidden by
-   its own existing rule); on mobile both show in the bar while the
-   nav links live in the full-screen overlay.
-------------------------------------------------------------- */
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* With the controls group appended after it, the auto margin keeps
-   the nav (and the controls after it) hugging the end of the bar —
-   exactly the alignment space-between gave before, and harmless
-   before js runs since space-between already right-aligns the nav. */
-.header-inner > .primary-nav {
-  margin-inline-start: auto;
-}
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  transition: color var(--transition-fast), border-color var(--transition-fast),
-    background-color var(--transition-fast), transform var(--transition-fast);
-}
-
-.theme-toggle:hover,
-.theme-toggle:focus-visible {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-  transform: translateY(-1px);
-}
-
-.theme-toggle svg {
-  width: 20px;
-  height: 20px;
-}
-
-/* Show the icon of the CURRENT mode — moon at night, sun by day.
-   The accessible label (set in js/theme.js) states the action. */
-.theme-toggle .icon-sun {
-  display: none;
-}
-.theme-toggle .icon-moon {
-  display: block;
-}
-:root[data-theme="light"] .theme-toggle .icon-sun {
-  display: block;
-}
-:root[data-theme="light"] .theme-toggle .icon-moon {
-  display: none;
-}
-
-/* Portal has no header bar — theme.js floats the button top-corner. */
-.theme-toggle--floating {
-  position: fixed;
-  top: var(--space-4);
-  inset-inline-end: var(--space-4);
-  z-index: 101;
-  background-color: var(--color-surface);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* ------------------------------------------------------------
-   VIEW TRANSITION — the circular reveal for the theme switch.
-   js/theme.js animates a growing clip-path circle on the incoming
-   theme's snapshot, expanding from the toggle button. Turning off
-   the default cross-fade here keeps that reveal crisp, and putting
-   the new snapshot on top makes it reveal OVER the old one. Wrapped
-   in no-preference so reduced-motion users never see the effect
-   (they get the instant switch from js/theme.js).
-------------------------------------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-  ::view-transition-new(root) {
-    z-index: 1; /* incoming theme reveals on top */
-  }
-  ::view-transition-old(root) {
-    z-index: 0;
-  }
-}
 
 /* ============================================================
    PREMIUM MEDIA & EVENT SYSTEM  (added v1.7.0)
@@ -3247,16 +3195,10 @@ body {
   }
 }
 
-/* --- H. Theme-aware scrollbars (site + modal/viewer) -------
-   One set of tokens drives the page scrollbar AND the in-viewer /
-   in-modal scrollbars, so both recolour instantly on the Day/Night
-   switch (§11–14) — no default gray bar left inside the viewer.
-   Dark defaults live in section A (:root); light overrides here. */
-:root[data-theme="light"] {
-  --scrollbar-track: rgba(30, 50, 80, 0.08);
-  --scrollbar-thumb: rgba(92, 191, 207, 0.35);
-  --scrollbar-thumb-hover: rgba(139, 105, 20, 0.72);
-}
+/* --- H. Scrollbars (site + modal/viewer) -------------------
+   One set of tokens (defined in the media :root above) drives the
+   page scrollbar AND the in-viewer / in-modal scrollbars, so no
+   default gray bar is ever left inside the viewer. */
 html,
 .cert-modal-content,
 .media-viewer-stage,
@@ -3303,7 +3245,7 @@ html::-webkit-scrollbar-thumb:hover,
    Warm-Sunrise palette. Theme-aware and reduced-motion friendly.
    ============================================================ */
 .digital-presence {
-  padding: var(--space-9) 0;
+  padding: var(--space-7) 0;
 }
 .digital-creator-line {
   margin-top: var(--space-2);
@@ -3320,7 +3262,7 @@ html::-webkit-scrollbar-thumb:hover,
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: 14px;
   background: var(--color-surface);
@@ -3510,15 +3452,6 @@ html::-webkit-scrollbar-thumb:hover,
 .sky-layer[data-hue="4"] .meteor { --mc-core: rgba(255, 230, 235, 0.95); --mc-glow: rgba(212, 168, 67, 0.90); }
 .sky-layer[data-hue="5"] .meteor { --mc-core: rgba(230, 240, 255, 0.98); --mc-glow: rgba(92, 191, 207, 0.95); }
 
-/* Day analogue: warm golden glints under a light sky. */
-:root[data-theme="light"] .meteor {
-  --mc-core: rgba(180, 140, 40, 0.85);
-  --mc-glow: rgba(212, 168, 67, 0.80);
-  height: 1.5px;
-}
-:root[data-theme="light"] .meteor::after {
-  box-shadow: 0 0 10px 3px rgba(212, 168, 67, 0.65);
-}
 
 /* ---- Per-section motif fields ---------------------------- */
 .ambient-field {
@@ -3575,10 +3508,6 @@ html::-webkit-scrollbar-thumb:hover,
   100% { opacity: 0;    transform: rotate(360deg) scale(0.85); }
 }
 
-/* Day mode: the accent tokens already recolour the glyphs to the
-   warm gold/violet daylight palette; nudge them a touch stronger so
-   they still read as a faint watermark over the cream sky. */
-:root[data-theme="light"] .ambient-glyph { font-weight: 500; }
 
 /* Belt-and-braces: never animate for reduced-motion users, and keep
    the atmosphere out of print (the backdrop is already print-hidden). */
@@ -3590,3 +3519,464 @@ html::-webkit-scrollbar-thumb:hover,
   .sky-layer,
   .ambient-field { display: none !important; }
 }
+
+
+/* ============================================================
+   23. ELEGANCE & MOTION LAYER  (v1.4)
+   ------------------------------------------------------------
+   A cohesive polish pass layered on top of everything above. It
+   only ADDS refinement — luminous gradient headlines, a scroll
+   progress hairline, richer card/link/button micro-interactions,
+   and a more premium reveal. Nothing here changes structure or
+   content; every motion rule is gated behind
+   prefers-reduced-motion so the reduced-motion experience stays
+   calm and identical in meaning. The living atmosphere
+   (sky-layer meteors + ambient motifs) is untouched.
+   ============================================================ */
+
+/* --- Luminous gradient headlines ---------------------------------
+   The three "arrival" headings on each view — the hero title, every
+   internal page header, and the closing call-to-action — are painted
+   with the shared --gradient-text so they read as warm gold-into-teal
+   light rather than flat white. A solid fallback colour is set first;
+   the gradient only takes over where background-clip:text is supported. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-title,
+  .page-header h1,
+  .final-cta h2 {
+    background: var(--gradient-text);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    /* Arabic descenders — e.g. the tails of و / ي in "البسيوني" — sit
+       below the Latin-tuned line box. With background-clip:text the
+       paint area is the element's own box, so any ink below it isn't
+       painted and the glyph looks cut off. A roomier line-height plus a
+       little bottom padding extends that box so the full glyph is
+       painted, in every language (harmless for Latin/Cyrillic). */
+    line-height: 1.32;
+    padding-bottom: 0.16em;
+  }
+  /* Gentle left-to-right shimmer — the light drifts across the letters
+     once settled. Purely decorative, so reduced-motion users get the
+     static gradient with no drift. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-title {
+      animation: aurora-text 9s ease-in-out infinite;
+    }
+  }
+}
+@keyframes aurora-text {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* --- Nav underline → gradient ------------------------------------
+   Reuse the same gold→teal hairline the rest of the layer uses, so
+   the growing nav underline matches the headline light. */
+.nav-link::after {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-hairline);
+}
+
+/* --- Eyebrow accent tick -----------------------------------------
+   Each section's uppercase label gets a short luminous dash after it,
+   a small typographic signature that ties labels to the accent light. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.eyebrow::after {
+  content: '';
+  width: 2.2em;
+  height: 1px;
+  background: var(--gradient-hairline);
+}
+
+/* --- Scroll-progress hairline under the header -------------------
+   A thin gold→teal line at the header's bottom edge that fills as the
+   page scrolls. Pure CSS via a scroll-driven timeline — no JS, no
+   per-frame cost. Progressive enhancement: browsers without
+   scroll-timeline simply never show it, and reduced-motion opts out. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .site-header::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: -1px;
+      height: 2px;
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      background: var(--gradient-hairline);
+      animation: header-scroll-progress linear;
+      animation-timeline: scroll(root block);
+      pointer-events: none;
+    }
+    [dir="rtl"] .site-header::after { transform-origin: 100% 50%; }
+  }
+}
+@keyframes header-scroll-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* --- Card top-edge accent ----------------------------------------
+   On hover the cards already lift, glow and catch a cursor-follow
+   light. This adds one more refined beat: a luminous gradient line
+   draws across the top edge. It lives inside the card bounds (top:0,
+   height 2px) so it needs no overflow clipping and never touches the
+   absolutely-positioned demo badge. */
+.cert-card,
+.skill-card,
+.focus-item,
+.u-card,
+.event-card {
+  --edge-scale: 0;
+}
+.cert-card::before,
+.skill-card::before,
+.focus-item::before,
+.u-card::before,
+.event-card::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  border-radius: inherit;
+  background: var(--gradient-hairline);
+  transform: scaleX(var(--edge-scale));
+  transform-origin: 0 50%;
+  transition: transform var(--transition-base) var(--ease-out-soft);
+  pointer-events: none;
+  z-index: 2;
+}
+[dir="rtl"] .cert-card::before,
+[dir="rtl"] .skill-card::before,
+[dir="rtl"] .focus-item::before,
+[dir="rtl"] .u-card::before,
+[dir="rtl"] .event-card::before { transform-origin: 100% 50%; }
+
+/* RTL: Arabic is cursive — letter-spacing breaks the joins and
+   text-transform:uppercase does nothing. Reset both on the eyebrow/badge
+   labels that carry Latin-display tracking, so Arabic renders naturally. */
+[dir="rtl"] .eyebrow,
+[dir="rtl"] .cert-category,
+[dir="rtl"] .demo-badge,
+[dir="rtl"] .timeline-status,
+[dir="rtl"] .event-type-badge,
+[dir="rtl"] .event-section-title {
+  letter-spacing: normal;
+  text-transform: none;
+}
+@media (hover: hover) {
+  .cert-card:hover,
+  .skill-card:hover,
+  .focus-item:hover,
+  .u-card:hover,
+  .event-card:hover { --edge-scale: 1; }
+}
+
+/* --- Premium reveal ----------------------------------------------
+   Extends the existing scroll-reveal (§ reveal) with a whisper of
+   scale and a soft blur that clears as the element settles, on the
+   premium easing. Same JS hook (.is-visible), same reduced-motion
+   safety (the global rule collapses the transition to ~0ms). */
+.reveal {
+  transform: translateY(22px) scale(0.985);
+  filter: blur(6px);
+  transition:
+    opacity 800ms var(--ease-out-soft),
+    transform 800ms var(--ease-out-soft),
+    filter 800ms var(--ease-out-soft);
+  will-change: opacity, transform, filter;
+}
+.reveal.is-visible {
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* --- Richer primary button ---------------------------------------
+   The primary button becomes a warm gold gradient with a deeper,
+   more luminous glow on hover — a clear "this is the main action"
+   without changing its shape or the existing inner-frame beat. */
+.btn-primary {
+  background: var(--gradient-accent);
+  background-size: 160% auto;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-base),
+    background-position var(--transition-base);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background-position: right center;
+  box-shadow: 0 10px 30px -10px rgba(210, 175, 87, 0.5), var(--glow-gold);
+}
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  box-shadow: var(--glow-cyan);
+}
+
+/* --- Hero portrait: gentle float + glow breath -------------------
+   A slow vertical drift and a breathing ring give the portrait a
+   living, premium presence. Motion-only; reduced-motion holds it
+   perfectly still. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-portrait {
+    animation: portrait-float 7s ease-in-out infinite;
+  }
+}
+@keyframes portrait-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+/* --- Footer social links: accent lift ----------------------------- */
+.footer-socials a {
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+@media (hover: hover) {
+  .footer-socials a:hover {
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+}
+
+/* ============================================================
+   SECTION K. DEEP-SPACE REALISM — Milky Way + real planets
+   ------------------------------------------------------------
+   An observatory-grade upgrade to the Academic universe: a soft
+   galactic band across the whole site, and photoreal pure-CSS
+   planets in the Hero (and one distant world on every internal
+   page header). Every planet is a real lit SPHERE — a directional
+   light from the upper-right gives each a bright rim and a dark
+   terminator crescent, so they read as worlds catching starlight,
+   never flat discs. No images, no canvas, no WebGL — just layered
+   gradients + inset shadows, painted once.
+
+   PRESERVED, never touched: the living atmosphere (shooting stars
+   + section motifs from ambient.js) and every real bit of content.
+   All nodes here are aria-hidden + pointer-events:none, and every
+   motion collapses to a still frame under prefers-reduced-motion.
+   ============================================================ */
+
+/* ---- Site-wide galactic backdrop (richer than the base nebula) ----
+   Appended last so it refines body::before everywhere the Academic
+   stylesheet loads. Adds a faint diagonal Milky-Way band + two very
+   distant planet glows for real depth, keeping the original nebula
+   fields. The volleyball page disables body::before entirely, so it
+   is unaffected. */
+body::before {
+  background:
+    linear-gradient(117deg,
+      transparent 33%,
+      rgba(150, 170, 220, 0.045) 44%,
+      rgba(196, 184, 232, 0.075) 50%,
+      rgba(150, 170, 220, 0.045) 56%,
+      transparent 67%),
+    radial-gradient(1200px circle at 12% 18%, rgba(90, 184, 196, 0.07), transparent 60%),
+    radial-gradient(1000px circle at 88% 10%, rgba(201, 168, 76, 0.05), transparent 55%),
+    radial-gradient(1100px circle at 82% 82%, rgba(126, 114, 168, 0.06), transparent 60%),
+    radial-gradient(900px circle at 22% 96%, rgba(90, 184, 196, 0.05), transparent 65%),
+    radial-gradient(360px circle at 92% 40%, rgba(150, 130, 200, 0.05), transparent 70%),
+    radial-gradient(300px circle at 6% 62%, rgba(95, 196, 210, 0.05), transparent 70%);
+}
+
+/* ---- Planet stage — sits above the starfields, below the content -- */
+.cosmic-planets {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 900px;         /* gives the ringed giant true 3D tilt */
+}
+
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+
+/* The lit-sphere recipe, shared by every world:
+     • a surface gradient with the highlight biased to the upper-right
+     • one dark inset shadow at the lower-left = the terminator crescent
+     • a soft outer glow = the atmosphere / starlight halo            */
+.planet-body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset 22px -18px 52px 4px rgba(0, 0, 0, 0.62),   /* terminator (lower-left) */
+    inset -10px 8px 22px rgba(255, 255, 255, 0.10);  /* faint lit fill (upper-right) */
+}
+
+/* --- The ringed gas giant (pale-gold banded world) --------------- */
+.planet--giant {
+  top: 4%;
+  right: 3%;
+  width: clamp(150px, 20vw, 230px);
+  aspect-ratio: 1;
+}
+.planet--giant .planet-body {
+  background:
+    linear-gradient(178deg,
+      #e7d6ad 0%, #cdb079 14%, #e9dcbb 26%, #bd9a63 40%,
+      #ddc999 54%, #b58e54 68%, #d3bd8a 82%, #b1894f 100%);
+  box-shadow:
+    inset 26px -20px 60px 6px rgba(40, 24, 8, 0.66),
+    inset -12px 10px 26px rgba(255, 246, 224, 0.16),
+    0 0 60px rgba(226, 205, 158, 0.16);
+}
+/* Rings: a wide, hard-tilted ellipse. The back arc emerges from
+   behind the sphere; the front arc (clipped to its lower half)
+   crosses in front of the lower hemisphere — that overlap is what
+   makes it unmistakably a ringed planet, not a halo. */
+.planet-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 208%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 11px solid rgba(228, 210, 164, 0.34);
+  border-top-color: rgba(228, 210, 164, 0.10);
+  border-bottom-color: rgba(232, 214, 168, 0.52);
+  transform: translate(-50%, -50%) rotateX(76deg) rotate(-17deg);
+  box-shadow: 0 0 24px rgba(226, 205, 158, 0.12);
+}
+.planet-ring--front {
+  clip-path: polygon(-20% 50%, 120% 50%, 120% 130%, -20% 130%);
+}
+
+/* --- The blue marble (ocean world with landmasses + atmosphere) --- */
+.planet--earth {
+  bottom: 6%;
+  left: 2%;
+  width: clamp(96px, 12vw, 138px);
+  aspect-ratio: 1;
+}
+.planet--earth .planet-body {
+  background:
+    radial-gradient(circle at 30% 26%, rgba(190, 232, 255, 0.9) 0%, transparent 26%),
+    radial-gradient(22px 15px at 60% 42%, rgba(120, 170, 110, 0.85), transparent 70%),
+    radial-gradient(16px 12px at 38% 66%, rgba(132, 176, 116, 0.8), transparent 72%),
+    radial-gradient(13px 10px at 72% 72%, rgba(150, 188, 128, 0.7), transparent 72%),
+    radial-gradient(circle at 34% 30%, #6fb2e6 0%, #2f7cc4 30%, #1c599f 52%, #123f77 74%, #0a2950 100%);
+  box-shadow:
+    inset 18px -15px 44px 3px rgba(2, 10, 26, 0.7),
+    inset -8px 7px 20px rgba(190, 230, 255, 0.18),
+    0 0 34px rgba(86, 158, 226, 0.28);
+}
+/* Thin atmospheric halo hugging the lit limb. */
+.planet-atmos {
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 14px 2px rgba(150, 205, 255, 0.45);
+  opacity: 0.8;
+}
+
+/* --- The red planet (small, rusty) ------------------------------- */
+.planet--mars {
+  top: 20%;
+  left: 44%;
+  width: clamp(34px, 4.6vw, 52px);
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle at 34% 30%, #eaa079 0%, #cd5f31 34%, #a2401d 66%, #6d2811 100%);
+  box-shadow:
+    inset 8px -7px 20px 2px rgba(0, 0, 0, 0.6),
+    inset -5px 4px 12px rgba(255, 214, 180, 0.2),
+    0 0 20px rgba(203, 96, 49, 0.22);
+}
+
+/* --- A pale moon near the giant ---------------------------------- */
+.planet--moon {
+  top: 1%;
+  right: 25%;
+  width: clamp(24px, 3vw, 36px);
+  aspect-ratio: 1;
+  background:
+    radial-gradient(9px 9px at 60% 40%, rgba(0, 0, 0, 0.14), transparent 70%),
+    radial-gradient(6px 6px at 38% 62%, rgba(0, 0, 0, 0.12), transparent 70%),
+    radial-gradient(circle at 36% 32%, #eef0f4 0%, #c3c7d0 40%, #8f95a3 72%, #5c6270 100%);
+  box-shadow:
+    inset 6px -5px 14px 1px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(200, 210, 230, 0.18);
+}
+
+/* ---- Slow, weightless orbital drift (motion-only) --------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .planet--giant { animation: planet-drift-a 26s ease-in-out infinite; }
+  .planet--earth { animation: planet-drift-b 22s ease-in-out infinite; }
+  .planet--mars  { animation: planet-drift-a 18s ease-in-out infinite; }
+  .planet--moon  { animation: planet-orbit-moon 30s linear infinite; }
+}
+@keyframes planet-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(-10px, 12px, 0); }
+}
+@keyframes planet-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(12px, -10px, 0); }
+}
+@keyframes planet-orbit-moon {
+  from { transform: rotate(0deg) translateX(14px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(14px) rotate(-360deg); }
+}
+
+/* ---- Phones: keep only the two hero worlds, smaller + calmer ----- */
+@media (max-width: 768px) {
+  .planet--mars,
+  .planet--moon { display: none; }
+  .planet--giant { width: clamp(110px, 34vw, 150px); top: 2%; right: -6%; opacity: 0.9; }
+  .planet--earth { width: clamp(76px, 24vw, 100px); bottom: 4%; left: -6%; opacity: 0.9; }
+}
+
+/* ---- Every internal page header gets one distant ringed world,
+   so the whole Academic side feels like deep space, not just home.
+   Pure CSS (no per-page markup): a small sphere painted into the
+   header's own ::after, tucked into the upper-right. --------------- */
+.page-header { isolation: isolate; }
+.page-header::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  right: 6%;
+  width: clamp(70px, 11vw, 120px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  z-index: 0;
+  background:
+    linear-gradient(178deg,
+      #e7d6ad 0%, #cdb079 16%, #e4d3a6 34%, #bd9a63 52%,
+      #d8c491 72%, #b1894f 100%);
+  box-shadow:
+    inset 16px -13px 40px 4px rgba(40, 24, 8, 0.6),
+    inset -8px 6px 18px rgba(255, 246, 224, 0.14),
+    0 0 40px rgba(226, 205, 158, 0.14);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.page-header-inner { position: relative; z-index: 1; }
+@media (max-width: 768px) {
+  .page-header::after { width: clamp(56px, 18vw, 84px); right: -4%; opacity: 0.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .planet--giant,
+  .planet--earth,
+  .planet--mars,
+  .planet--moon { animation: none !important; }
+}
+@media print {
+  .cosmic-planets,
+  .page-header::after { display: none !important; }
+}
+

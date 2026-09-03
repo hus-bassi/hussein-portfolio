@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 08 — PROJECTS SYSTEM
@@ -28,7 +17,7 @@
   -->
 
   <title>Projects — Hussein ElBassiouni</title>
-  <meta name="description" content="Projects — Hussein ElBassiouni's academic portfolio." />
+  <meta name="description" content="Academic and programming projects by Hussein ElBassiouni — a growing collection of data science, Python, and research work." />
   <!-- SEO: canonical + Open Graph + Twitter Card.
        DOMAIN is a placeholder — replace https://YOUR_DOMAIN.com
        everywhere once the site has a real domain. -->
@@ -122,7 +111,6 @@
       <div class="hero-glow" aria-hidden="true"></div>
 
       <div class="container page-header-inner reveal">
-        <p class="eyebrow" data-i18n="navProjects">Projects</p>
         <h1 data-i18n="navProjects">Projects</h1>
         <p class="section-lead" data-i18n="projectsPageLead">
           This section will grow as real, substantial work exists to
@@ -147,12 +135,12 @@
       <div class="footer-brand">
         <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
         <p class="footer-mission" data-i18n="footerMission">
-          Building a path from Economics to Data Science, and eventually
+          Building a path from strong foundations to Data Science, and eventually
           toward Astroinformatics.
         </p>
       </div>
 
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -160,19 +148,18 @@
     </div>
   </footer>
 
-  <script src="../../transition.js"></script>
-  <script src="../js/cursor.js"></script>
-  <script src="../data/projects.js"></script>
-  <script src="../js/projects.js"></script>
-  <script src="../data/translations.js"></script>
-  <script src="../js/language.js"></script>
-  <script src="../js/animations.js"></script>
-  <script src="../js/navigation.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../data/social.js"></script>
-  <script src="../js/theme.js"></script>
-  <script src="../js/social.js"></script>
-  <script src="../js/media-system.js"></script>
-  <script src="../js/ambient.js"></script>
+  <script src="../../transition.js" defer></script>
+  <script src="../js/cursor.js" defer></script>
+  <script src="../data/projects.js" defer></script>
+  <script src="../js/projects.js" defer></script>
+  <script src="../data/translations.js" defer></script>
+  <script src="../js/language.js" defer></script>
+  <script src="../js/animations.js" defer></script>
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../data/social.js" defer></script>
+  <script src="../js/social.js" defer></script>
+  <script src="../js/media-system.js" defer></script>
+  <script src="../js/ambient.js" defer></script>
 </body>
 </html>

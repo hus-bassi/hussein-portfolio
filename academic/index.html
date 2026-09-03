@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 12.1 — MULTILINGUAL SYSTEM (homepage fully migrated)
@@ -48,6 +37,24 @@
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="../transition.css" />
+  <script>
+    /* Anti-flash pre-cover: if we arrived through a world transition, paint an
+       opaque curtain BEFORE first paint so the reveal in transition.js has no
+       white flash to fight. Self-removing failsafe in case transition.js is
+       ever missing. Kept tiny + dependency-free on purpose. */
+    (function () {
+      try {
+        var t = sessionStorage.getItem('he-transition');
+        if (!t) return;
+        var bg = t === 'volleyball' ? '#0A0A0C' : (t === 'portal' ? '#0B1022' : '#05070F');
+        var d = document.createElement('div');
+        d.id = 'he-transition-precover';
+        d.style.cssText = 'position:fixed;inset:0;z-index:2147483646;background:' + bg + ';';
+        (document.body || document.documentElement).appendChild(d);
+        setTimeout(function () { if (d && d.parentNode) d.parentNode.removeChild(d); }, 1600);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -165,13 +172,31 @@
         <circle cx="80" cy="48" r="0.6" />
       </svg>
 
+      <!-- Real, lit planetary bodies — pure-CSS spheres with a single
+           upper-right light source (bright rim + dark terminator), so
+           they read as worlds catching starlight. Decorative, aria-hidden,
+           behind the content. See "SECTION K" in css/main.css. -->
+      <div class="cosmic-planets" aria-hidden="true">
+        <div class="planet planet--giant">
+          <span class="planet-ring planet-ring--back"></span>
+          <span class="planet-body"></span>
+          <span class="planet-ring planet-ring--front"></span>
+        </div>
+        <div class="planet planet--earth">
+          <span class="planet-body"></span>
+          <span class="planet-atmos"></span>
+        </div>
+        <div class="planet planet--mars"></div>
+        <div class="planet planet--moon"></div>
+      </div>
+
       <div class="container hero-inner">
         <div class="hero-content">
           <p class="eyebrow" data-i18n="heroEyebrow">Current Journey</p>
           <h1 class="hero-title"><span data-i18n="siteName">Hussein ElBassiouni</span></h1>
           <p class="hero-subtitle" data-i18n="heroSubtitle">Aspiring Data Scientist — with a Vision for Astronomy</p>
           <p class="hero-lead" data-i18n="heroLead">
-            Building my path from Economics to Data Science, and,
+            Building my path from strong foundations to Data Science, and,
             eventually, toward Astroinformatics.
           </p>
           <div class="hero-actions">
@@ -208,11 +233,13 @@
           <h2 data-i18n="aboutHeading">A clear starting point, aimed at a defined direction.</h2>
           <p data-i18n="aboutPara1">
             Hussein is a 2022 Egyptian high-school graduate, currently
-            preparing to begin a Bachelor's degree in Economics in Russia.
-            Economics is a deliberate first step, not the destination — it's
-            the foundation he's using to build real strength in programming,
-            mathematics, statistics, and data science before specializing
-            further.
+            pursuing a university scholarship in Russia — in business,
+            economics, statistics, or any field that serves the bigger goal.
+            No specific scholarship is secured yet; it's a deliberate first
+            step, not the destination — the foundation he's using to build
+            real strength in programming, mathematics, statistics, and data
+            science, while collecting certificates toward the goal before
+            specializing further.
           </p>
           <p data-i18n="aboutPara2">
             The long-term direction is Astroinformatics: applying data
@@ -304,9 +331,9 @@
 
     <!-- ============================================================
          ACADEMIC JOURNEY
-         Timeline stage titles/descriptions stay English-only for now
-         (Phase 12.1 scope is section chrome, not every timeline item) —
-         these get their own translation keys in a later 12.x step.
+         Timeline items reuse the shared status/date + journeyItem*
+         title keys and their own short homeTlBody* preview strings,
+         so every stage translates (en/ar/ru) like the rest of the page.
     ============================================================= -->
     <section class="journey" id="journey">
       <div class="container">
@@ -319,38 +346,38 @@
 
         <ol class="timeline">
           <li class="timeline-item reveal is-completed">
-            <span class="timeline-status">Completed</span>
+            <span class="timeline-status" data-i18n="statusCompleted">Completed</span>
             <span class="timeline-date">2022</span>
-            <h3>High School Graduation</h3>
-            <p>Graduated from an Egyptian high school.</p>
+            <h3 data-i18n="journeyItem1Title">High School Graduation</h3>
+            <p data-i18n="homeTlBody1">Graduated from an Egyptian high school.</p>
           </li>
 
           <li class="timeline-item reveal is-current">
-            <span class="timeline-status">In Progress</span>
-            <span class="timeline-date">Now</span>
-            <h3>Building the Academic Foundation</h3>
-            <p>Actively developing the skills covered in the Current Mission section above.</p>
+            <span class="timeline-status" data-i18n="statusInProgress">In Progress</span>
+            <span class="timeline-date" data-i18n="dateNow">Now</span>
+            <h3 data-i18n="journeyItem2Title">Building the Academic Foundation</h3>
+            <p data-i18n="homeTlBody2">Actively developing the skills covered in the Current Mission section above.</p>
           </li>
 
           <li class="timeline-item reveal is-planned">
-            <span class="timeline-status">Planned</span>
-            <span class="timeline-date">Next</span>
-            <h3>Bachelor's in Economics — Russia</h3>
-            <p>A deliberate first academic step, not the destination.</p>
+            <span class="timeline-status" data-i18n="statusPlanned">Planned</span>
+            <span class="timeline-date" data-i18n="dateNext">Next</span>
+            <h3 data-i18n="journeyItem3Title">University Scholarship — Russia</h3>
+            <p data-i18n="homeTlBody3">A scholarship for university study — business, economics, statistics, or any field that serves the bigger goal. Not secured yet; actively preparing and collecting certificates toward it.</p>
           </li>
 
           <li class="timeline-item reveal is-planned">
-            <span class="timeline-status">Planned</span>
-            <span class="timeline-date">Goal</span>
-            <h3>Master's in Data Science</h3>
-            <p>Specializing formally in the field this whole path is building toward.</p>
+            <span class="timeline-status" data-i18n="statusPlanned">Planned</span>
+            <span class="timeline-date" data-i18n="dateGoal">Goal</span>
+            <h3 data-i18n="journeyItem5Title">Master's in Data Science</h3>
+            <p data-i18n="homeTlBody4">Specializing formally in the field this whole path is building toward.</p>
           </li>
 
           <li class="timeline-item reveal is-planned">
-            <span class="timeline-status">Vision</span>
-            <span class="timeline-date">Long-Term</span>
-            <h3>Astroinformatics Research</h3>
-            <p>Applying data science to astronomy, and contributing to research alongside serious scientific institutions.</p>
+            <span class="timeline-status" data-i18n="statusVision">Vision</span>
+            <span class="timeline-date" data-i18n="dateLongTerm">Long-Term</span>
+            <h3 data-i18n="journeyItem6Title">Research in Astroinformatics</h3>
+            <p data-i18n="homeTlBody5">Applying data science to astronomy, and contributing to research alongside serious scientific institutions.</p>
           </li>
         </ol>
 
@@ -374,7 +401,7 @@
           <p class="eyebrow" data-i18n="visionEyebrow">Beyond the Stars</p>
           <h2 data-i18n="visionHeading">My Mission</h2>
           <p data-i18n="visionPara1">
-            From Economics, to Data Science, to Astronomy — that's the
+            From foundations, to Data Science, to Astronomy — that's the
             direction, not a claim of having arrived.
           </p>
           <p data-i18n="visionPara2">
@@ -442,14 +469,14 @@
       <div class="footer-brand">
         <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
         <p class="footer-mission" data-i18n="footerMission">
-          Building a path from Economics to Data Science, and eventually
+          Building a path from strong foundations to Data Science, and eventually
           toward Astroinformatics.
         </p>
       </div>
 
       <!-- Data-driven (js/social.js): populated from data/social.js so
            the footer row matches the Digital Presence panel everywhere. -->
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -460,22 +487,21 @@
   <!-- Scripts: data/translations.js and js/language.js load early
        (right after the other data files) so the language is applied
        as soon as possible. -->
-  <script src="../transition.js"></script>
-  <script src="js/cursor.js"></script>
-  <script src="data/certificates.js"></script>
-  <script src="data/volunteering.js"></script>
-  <script src="data/social.js"></script>
-  <script src="data/events.js"></script>
-  <script src="data/translations.js"></script>
-  <script src="js/certificates.js"></script>
-  <script src="js/volunteering.js"></script>
-  <script src="js/language.js"></script>
-  <script src="js/animations.js"></script>
-  <script src="js/navigation.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/theme.js"></script>
-  <script src="js/social.js"></script>
-  <script src="js/media-system.js"></script>
-  <script src="js/ambient.js"></script>
+  <script src="../transition.js" defer></script>
+  <script src="js/cursor.js" defer></script>
+  <script src="data/certificates.js" defer></script>
+  <script src="data/volunteering.js" defer></script>
+  <script src="data/social.js" defer></script>
+  <script src="data/events.js" defer></script>
+  <script src="data/translations.js" defer></script>
+  <script src="js/certificates.js" defer></script>
+  <script src="js/volunteering.js" defer></script>
+  <script src="js/language.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/navigation.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/social.js" defer></script>
+  <script src="js/media-system.js" defer></script>
+  <script src="js/ambient.js" defer></script>
 </body>
 </html>

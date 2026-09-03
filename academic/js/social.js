@@ -142,7 +142,8 @@
 
   // Compact footer row: icon + name, same active-platform list.
   function renderFooter(nav) {
-    nav.innerHTML = activePlatforms().map(function (p) {
+    var links = activePlatforms();
+    nav.innerHTML = links.map(function (p) {
       return (
         '<a class="social-link" href="' + esc(p.url) + '" target="_blank" rel="noopener" ' +
         'style="--platform-accent:' + ACCENTS[p.key] + '">' +
@@ -151,6 +152,11 @@
         '</a>'
       );
     }).join('');
+    // HTML ships the row `hidden` so an empty nav never flashes before JS
+    // runs. Reveal it once it actually has links (and re-hide if none, so a
+    // page with no active platforms shows no bare gap).
+    if (links.length) nav.removeAttribute('hidden');
+    else nav.setAttribute('hidden', '');
   }
 
   function renderAll() {

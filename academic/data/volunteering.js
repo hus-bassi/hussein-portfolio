@@ -3,44 +3,45 @@
    Pure data — same philosophy as data/certificates.js. No HTML,
    no styling, no logic beyond the array itself.
 
-   ⚠ DEMO DATA — every entry below is a placeholder to preview
-   the UI. Replace with real volunteer experience whenever ready.
-   `isDemo: true` drives the visible "Demo" badge on each card.
-
    ------------------------------------------------------------
-   TO ADD A REAL EXPERIENCE LATER:
-   1. Copy one of the objects below.
-   2. Fill in the real organization, role, event, date, description
-      and skillsGained.
-   3. If you have a certificate for it, set certificateUrl to the
-      file path (e.g. 'assets/documents/my-certificate.pdf').
-      Leave it as an empty string if there isn't one — the "View
-      Certificate" link simply won't show up.
-   4. Set `isDemo` to `false`.
-   5. Save the file. No other file needs to change — both the
-      homepage preview and the full Volunteering page read from
-      this same array automatically.
+   ⚠ SOURCE OF TRUTH: data/events.js
+   The live Volunteering page and the CV both render the real
+   type:'volunteering' entries from data/events.js (through the
+   EventSystem / cv.js). This array is now only a lightweight,
+   English-only FALLBACK that cv.js reads if events.js hasn't
+   loaded — so keep the two in sync when adding an experience,
+   but treat events.js as canonical (it also holds AR/RU, images,
+   galleries, video and certificate paths).
    ------------------------------------------------------------ */
 
 const volunteeringData = [
   {
-    organization: 'YOUR_VOLUNTEER_ORGANIZATION',
-    role: 'YOUR_ROLE',
-    event: 'YOUR_EVENT_NAME',
-    date: 'YOUR_DATE',
-    description: 'A short, honest description of what you did and why it mattered.',
-    skillsGained: ['Teamwork', 'Communication'],
-    certificateUrl: '',
-    isDemo: true,
+    organization: 'Russian House in Cairo',
+    role: 'Volunteer · Event Setup & Coordination',
+    event: 'Volunteering at the Russian House in Cairo',
+    date: 'June 2, 2026',
+    description:
+      'A volunteering experience at the Russian House in Cairo, where I helped prepare and organize the stage, arrange chairs and microphones, guide young participants, and support the event setup and coordination.',
+    skillsGained: ['Teamwork', 'Event Setup', 'Coordination', 'Communication'],
+    certificateUrl: 'assets/volunteering/russian-house/certificate.jpg',
+    isDemo: false,
   },
   {
-    organization: 'YOUR_VOLUNTEER_ORGANIZATION',
-    role: 'YOUR_ROLE',
-    event: 'YOUR_EVENT_NAME',
-    date: 'YOUR_DATE',
-    description: 'A short, honest description of what you did and why it mattered.',
-    skillsGained: ['Organization', 'Public Speaking'],
+    organization: 'Russian House in Cairo',
+    role: 'Volunteer · Event Support',
+    event: 'Chess Tournament Volunteering at the Russian House in Cairo',
+    date: 'June 14, 2026',
+    description:
+      'I volunteered in the organization of a chess tournament at the Russian House in Cairo. My responsibilities included preparing the library hall, arranging chess tables and chairs, setting up chessboards and chess clocks, responding to organizational needs during the tournament, calling the referee when match-related issues arose, assisting participants and visitors, and helping direct people to designated photo and commemorative areas.',
+    skillsGained: [
+      'Event Organization',
+      'Attention to Detail',
+      'On-site Coordination',
+      'Communication',
+      'Responsibility',
+      'Problem Response',
+    ],
     certificateUrl: '',
-    isDemo: true,
+    isDemo: false,
   },
 ];

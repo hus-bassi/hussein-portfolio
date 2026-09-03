@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 07 — FUTURE GOALS PAGE
@@ -146,7 +135,7 @@
 
         <div class="vision-text reveal">
           <p class="eyebrow" data-i18n="goalsMissionEyebrow">My Mission</p>
-          <h2 data-i18n="goalsMissionHeading">From Economics, to Data Science, to Astronomy</h2>
+          <h2 data-i18n="goalsMissionHeading">From Foundations, to Data Science, to Astronomy</h2>
           <p data-i18n="goalsMissionPara1">
             That's the direction stated as plainly as possible — not a
             claim of having arrived anywhere on it yet. Every stage
@@ -218,12 +207,12 @@
       <div class="footer-brand">
         <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
         <p class="footer-mission" data-i18n="footerMission">
-          Building a path from Economics to Data Science, and eventually
+          Building a path from strong foundations to Data Science, and eventually
           toward Astroinformatics.
         </p>
       </div>
 
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -231,17 +220,16 @@
     </div>
   </footer>
 
-  <script src="../../transition.js"></script>
-  <script src="../js/cursor.js"></script>
-  <script src="../data/translations.js"></script>
-  <script src="../js/language.js"></script>
-  <script src="../js/animations.js"></script>
-  <script src="../js/navigation.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../data/social.js"></script>
-  <script src="../js/theme.js"></script>
-  <script src="../js/social.js"></script>
-  <script src="../js/media-system.js"></script>
-  <script src="../js/ambient.js"></script>
+  <script src="../../transition.js" defer></script>
+  <script src="../js/cursor.js" defer></script>
+  <script src="../data/translations.js" defer></script>
+  <script src="../js/language.js" defer></script>
+  <script src="../js/animations.js" defer></script>
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../data/social.js" defer></script>
+  <script src="../js/social.js" defer></script>
+  <script src="../js/media-system.js" defer></script>
+  <script src="../js/ambient.js" defer></script>
 </body>
 </html>

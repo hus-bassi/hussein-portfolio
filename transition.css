@@ -1,58 +1,640 @@
 /* ============================================================
-   TRANSITION.CSS
-   One shared overlay used everywhere a link jumps between the
-   Portal, Academic, and Sports sides. Deliberately colored only
-   with CSS custom properties (--color-bg-primary, --color-accent,
-   --color-border) instead of literal hex values — since every side
-   defines those same variable names with its own values, this one
-   file automatically renders in violet/gold on the Academic side
-   and orange/charcoal on the Sports side, with zero duplication.
+   TRANSITION.CSS — Cinematic, world-specific page transitions
+   ------------------------------------------------------------
+   Two completely separate "loading gates", chosen by DESTINATION
+   (transition.js sets data-transition-theme on the overlay):
 
-   Hidden by default (opacity:0, visibility:hidden, pointer-events:
-   none) — transition.js only ADDS the .is-active class right before
-   navigating away. If JavaScript fails to load for any reason, links
-   just navigate normally with no animation — nothing is ever
-   permanently blocked behind this overlay.
+     • academic  → a realistic BLACK HOLE / wormhole in deep space.
+                   Stars streak inward, an accretion ring spins, the
+                   singularity forms (cover) → then collapses and the
+                   space clears to reveal the page (reveal).
+
+     • volleyball → a HAIKYUU-style gymnasium GATE. Manga speed lines
+                   burst, two diagonal panels (ember / black) slam
+                   shut as a volleyball spikes in (cover) → then the
+                   gate slides apart and the ball flies out (reveal).
+
+   Each transition has two phases driven by a state class:
+     .is-active     → COVER  (playing out of the current page)
+     .is-revealing  → REVEAL (playing in on the destination page)
+
+   The overlay container is transparent; dedicated full-bleed layers
+   (space / panels) are the actual curtain, so the REVEAL can open to
+   show the real page through them. Colours are hard-coded per theme
+   so the transition looks identical no matter which world triggered
+   it. Everything animates transform/opacity only (compositor-cheap),
+   and prefers-reduced-motion collapses it to an instant, still cover.
    ============================================================= */
 
 .page-transition-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-bg-primary);
-  opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 400ms ease, visibility 400ms ease;
+  /* transparent — the .th-* curtain layers below do the covering */
 }
 
-.page-transition-overlay.is-active {
-  opacity: 1;
+.page-transition-overlay.is-active,
+.page-transition-overlay.is-revealing {
   visibility: visible;
   pointer-events: all;
 }
 
-.page-transition-mark {
-  width: 44px;
-  height: 44px;
-  border: 2px solid var(--color-border);
-  border-top-color: var(--color-accent);
+.page-transition-overlay .th {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.page-transition-overlay .th > * {
+  position: absolute;
+}
+
+/* Brand monogram, shared shell (themed per world below). */
+.th-mark {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 220%);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 3.4vw, 1.6rem);
+  letter-spacing: 0.42em;
+  padding-inline-start: 0.42em;
+  z-index: 6;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+/* =============================================================
+   THEME 1 — ACADEMIC  ·  BLACK HOLE / WORMHOLE
+   ============================================================= */
+.th--academic {
+  background: #05070F; /* safety base behind the space layer */
+}
+
+/* --- Deep-space curtain: nebula + scattered stars over the void. */
+.th-space {
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  background:
+    /* a few brighter hero stars */
+    radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.95), transparent),
+    radial-gradient(2px 2px at 78% 68%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1.6px 1.6px at 66% 15%, rgba(212, 236, 255, 0.9), transparent),
+    /* fine star dust */
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(234, 238, 246, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 28% 62%, rgba(234, 238, 246, 0.8), transparent),
+    radial-gradient(1px 1px at 52% 28%, rgba(234, 238, 246, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 74% 46%, rgba(234, 238, 246, 0.85), transparent),
+    radial-gradient(1px 1px at 88% 76%, rgba(234, 238, 246, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 18% 86%, rgba(234, 238, 246, 0.8), transparent),
+    radial-gradient(1px 1px at 64% 8%, rgba(234, 238, 246, 0.7), transparent),
+    radial-gradient(1px 1px at 42% 52%, rgba(234, 238, 246, 0.6), transparent),
+    radial-gradient(1px 1px at 82% 22%, rgba(234, 238, 246, 0.7), transparent),
+    /* a distant hazy planet, lower-left */
+    radial-gradient(220px circle at 13% 83%, rgba(95, 196, 210, 0.20), rgba(95, 196, 210, 0.05) 40%, transparent 72%),
+    /* faint Milky-Way band cutting diagonally */
+    linear-gradient(122deg, transparent 34%, rgba(150, 170, 220, 0.05) 43%, rgba(196, 184, 232, 0.11) 50%, rgba(150, 170, 220, 0.05) 57%, transparent 66%),
+    /* layered nebula tints */
+    radial-gradient(60% 55% at 50% 50%, rgba(133, 123, 168, 0.18), transparent 70%),
+    radial-gradient(70% 60% at 28% 22%, rgba(95, 196, 210, 0.12), transparent 72%),
+    radial-gradient(58% 52% at 76% 74%, rgba(226, 200, 120, 0.10), transparent 72%),
+    /* deep-space vignette base */
+    radial-gradient(120% 120% at 50% 50%, #070B18 0%, #05070F 58%, #03040A 100%);
+  background-repeat: no-repeat;
+}
+
+/* --- Warp streaks converging on the singularity (radial spokes). */
+.th-warp {
+  inset: -20%;
+  z-index: 2;
+  opacity: 0;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg 1.3deg,
+    rgba(235, 214, 150, 0.17) 1.3deg 1.55deg,
+    transparent 1.55deg 3deg
+  );
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 6%, #000 24%, #000 58%, transparent 84%);
+          mask: radial-gradient(circle at 50% 50%, transparent 6%, #000 24%, #000 58%, transparent 84%);
+  transform: scale(1.6) rotate(0deg);
+}
+
+/* --- The black hole itself: a black core inside a glowing ring. */
+.th-hole {
+  top: 50%;
+  left: 50%;
+  width: min(42vmin, 340px);
+  aspect-ratio: 1;
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(0.18);
+  opacity: 0;
+}
+
+.th-hole-disk {
+  position: absolute;
+  inset: -30%;
   border-radius: 50%;
-  animation: page-transition-spin 800ms linear infinite;
+  background: conic-gradient(
+    from 0deg,
+    #FFF6E4 3%, #FBE5B8 14%, #E6C878 29%, #5FC4D2 45%,
+    #35345A 60%, #857BB0 74%, #D2AF57 89%, #FFF6E4 100%
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent 47%, #000 53%, #000 74%, transparent 80%);
+          mask: radial-gradient(farthest-side, transparent 47%, #000 53%, #000 74%, transparent 80%);
+  filter: blur(2.5px) brightness(1.5) saturate(1.3)
+          drop-shadow(0 0 34px rgba(255, 228, 170, 0.5))
+          drop-shadow(0 0 78px rgba(95, 196, 210, 0.28));
+  animation: he-disk-spin 3.2s linear infinite;
 }
 
-@keyframes page-transition-spin {
-  to { transform: rotate(360deg); }
+.th-hole-core {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #000 44%, #04030A 53%, rgba(0, 0, 0, 0) 62%);
+  box-shadow:
+    0 0 60px 8px rgba(95, 196, 210, 0.32),
+    0 0 130px 16px rgba(210, 175, 87, 0.22),
+    inset 0 0 40px rgba(0, 0, 0, 0.96);
 }
 
+/* Gravitational-lensing halo — soft light bent around the shadow (paints
+   behind the disk). */
+.th--academic .th-hole::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 44%, rgba(120, 150, 210, 0.12) 52%, transparent 66%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* Photon ring — the crisp bright ring hugging the shadow edge, the
+   signature of a real (EHT-imaged) black hole. Paints on top of the core. */
+.th--academic .th-hole::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 57%;
+  height: 57%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px rgba(255, 247, 230, 0.92),
+    0 0 16px 2px rgba(255, 226, 168, 0.7),
+    0 0 40px 6px rgba(255, 205, 135, 0.35);
+  pointer-events: none;
+}
+
+/* --- Singularity flash / bloom, shared by both themes. */
+.th-flash {
+  top: 50%;
+  left: 50%;
+  width: 60vmax;
+  height: 60vmax;
+  transform: translate(-50%, -50%) scale(0.3);
+  border-radius: 50%;
+  z-index: 5;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(255, 252, 245, 0.95) 0%, rgba(230, 200, 120, 0.5) 26%, transparent 60%);
+  pointer-events: none;
+}
+
+.th--academic .th-mark {
+  color: #E6C878;
+  background: linear-gradient(120deg, #EAEEF6, #E6C878 60%, #5FC4D2);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- ACADEMIC · COVER ---- */
+.is-active .th--academic .th-space { animation: he-space-in 0.5s ease-out forwards; }
+.is-active .th--academic .th-warp  { animation: he-warp-in 1s cubic-bezier(0.5, 0, 0.5, 1) forwards; }
+.is-active .th--academic .th-hole  { animation: he-hole-in 1s cubic-bezier(0.34, 1.4, 0.5, 1) forwards; }
+.is-active .th--academic .th-flash { animation: he-flash-soft 1s ease-in forwards; }
+.is-active .th--academic .th-mark  { animation: he-mark-in 0.9s ease-out 0.2s forwards; }
+
+/* ---- ACADEMIC · REVEAL ---- */
+.is-revealing .th--academic .th-space { animation: he-space-out 0.9s ease-in forwards; }
+.is-revealing .th--academic .th-warp  { opacity: 0.85; transform: scale(0.7); animation: he-warp-out 0.9s cubic-bezier(0.4, 0, 0.6, 1) forwards; }
+.is-revealing .th--academic .th-hole  { opacity: 1; transform: translate(-50%, -50%) scale(1); animation: he-hole-out 0.7s cubic-bezier(0.6, 0, 0.8, 0.4) forwards; }
+.is-revealing .th--academic .th-hole-disk { animation: he-disk-spin 1.1s linear infinite; }
+.is-revealing .th--academic .th-flash { animation: he-flash-pop 0.7s ease-out forwards; }
+.is-revealing .th--academic .th-mark  { opacity: 1; transform: translate(-50%, 220%); animation: he-mark-out 0.5s ease-in forwards; }
+
+@keyframes he-space-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes he-space-out { 0%, 45% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes he-warp-in {
+  0%   { opacity: 0; transform: scale(1.6) rotate(0deg); }
+  35%  { opacity: 0.9; }
+  100% { opacity: 0.95; transform: scale(0.62) rotate(46deg); }
+}
+@keyframes he-warp-out {
+  0%   { opacity: 0.85; transform: scale(0.7) rotate(0deg); }
+  100% { opacity: 0; transform: scale(2.4) rotate(30deg); }
+}
+@keyframes he-hole-in {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.18); }
+  35%  { opacity: 1; }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes he-hole-out {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  70%  { opacity: 1; transform: translate(-50%, -50%) scale(0.16); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+}
+@keyframes he-disk-spin { to { transform: rotate(360deg); } }
+@keyframes he-flash-soft {
+  0%, 48% { opacity: 0; transform: translate(-50%, -50%) scale(0.25); }
+  68%     { opacity: 0.55; transform: translate(-50%, -50%) scale(0.55); }
+  100%    { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+}
+@keyframes he-flash-pop {
+  0%   { opacity: 0.6; transform: translate(-50%, -50%) scale(0.4); }
+  22%  { opacity: 0.9; transform: translate(-50%, -50%) scale(0.7); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+}
+@keyframes he-mark-in {
+  from { opacity: 0; transform: translate(-50%, 260%); }
+  to   { opacity: 0.85; transform: translate(-50%, 220%); }
+}
+@keyframes he-mark-out { to { opacity: 0; } }
+
+/* =============================================================
+   THEME 2 — VOLLEYBALL  ·  HAIKYUU GYMNASIUM GATE
+   ============================================================= */
+.th--volleyball {
+  background: #0A0A0C; /* safety base behind the panels */
+}
+
+/* --- Two diagonal panels that meet to cover, split to open. --- */
+.th-panel {
+  inset: 0;
+  z-index: 1;
+}
+.th-panel--a {
+  background:
+    linear-gradient(135deg, #F0A574 0%, #E8804A 46%, #D66A32 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 56%, 0 70%);
+  transform: translateY(-104%);
+}
+.th-panel--b {
+  background:
+    linear-gradient(200deg, #17130F 0%, #0A0A0C 70%);
+  clip-path: polygon(0 70%, 100% 56%, 100% 100%, 0 100%);
+  transform: translateY(104%);
+}
+
+/* --- Manga screentone (halftone) dots drifting over the panels. */
+.th-halftone {
+  inset: -10%;
+  z-index: 2;
+  opacity: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.22) 22%, transparent 24%);
+  background-size: 14px 14px;
+  mix-blend-mode: multiply;
+}
+
+/* --- Radial manga SPEED LINES — the signature "impact" burst. */
+.th-speed {
+  inset: -25%;
+  z-index: 3;
+  opacity: 0;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(10, 8, 6, 0.0) 0deg 1deg,
+    rgba(10, 8, 6, 0.42) 1deg 2.2deg,
+    rgba(10, 8, 6, 0.0) 2.2deg 4.4deg
+  );
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 22%, #000 40%, #000 100%);
+          mask: radial-gradient(circle at 50% 50%, transparent 22%, #000 40%, #000 100%);
+  transform: scale(1.4);
+}
+
+/* --- The volleyball. --- */
+.th-ball {
+  top: 50%;
+  left: 50%;
+  width: min(30vmin, 220px);
+  aspect-ratio: 1;
+  z-index: 4;
+  transform: translate(-50%, -160%) scale(0.6) rotate(0deg);
+  opacity: 0;
+  filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.45));
+}
+.th-ball svg { width: 100%; height: 100%; display: block; }
+
+.th--volleyball .th-mark {
+  color: #FBE8DC;
+  font-style: italic;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ---- VOLLEYBALL · COVER ---- */
+.is-active .th--volleyball .th-panel--a { animation: he-panel-a-in 0.62s cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+.is-active .th--volleyball .th-panel--b { animation: he-panel-b-in 0.62s cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+.is-active .th--volleyball .th-halftone { animation: he-fade-in 0.6s ease-out 0.2s forwards; }
+.is-active .th--volleyball .th-speed    { animation: he-speed-in 0.85s cubic-bezier(0.3, 0, 0.3, 1) 0.12s forwards; }
+.is-active .th--volleyball .th-ball     { animation: he-ball-in 0.85s cubic-bezier(0.4, 1.3, 0.5, 1) 0.15s forwards; }
+.is-active .th--volleyball .th-flash    { animation: he-flash-impact 0.85s ease-out 0.15s forwards; }
+.is-active .th--volleyball .th-mark     { animation: he-mark-in 0.7s ease-out 0.4s forwards; }
+
+/* ---- VOLLEYBALL · REVEAL ---- */
+.is-revealing .th--volleyball .th-panel--a { transform: translateY(0); animation: he-panel-a-out 0.85s cubic-bezier(0.5, 0, 0.2, 1) 0.18s forwards; }
+.is-revealing .th--volleyball .th-panel--b { transform: translateY(0); animation: he-panel-b-out 0.85s cubic-bezier(0.5, 0, 0.2, 1) 0.18s forwards; }
+.is-revealing .th--volleyball .th-halftone { opacity: 1; animation: he-fade-out 0.3s ease-in forwards; }
+.is-revealing .th--volleyball .th-speed    { opacity: 1; transform: scale(1); animation: he-speed-out 0.4s ease-in forwards; }
+.is-revealing .th--volleyball .th-ball     { opacity: 1; transform: translate(-50%, -50%) scale(1); animation: he-ball-out 0.5s cubic-bezier(0.4, 0, 0.7, 0.3) forwards; }
+.is-revealing .th--volleyball .th-flash    { animation: he-flash-pop 0.5s ease-out forwards; }
+.is-revealing .th--volleyball .th-mark     { opacity: 0.9; transform: translate(-50%, 220%); animation: he-mark-out 0.3s ease-in forwards; }
+
+@keyframes he-panel-a-in { from { transform: translateY(-104%); } to { transform: translateY(0); } }
+@keyframes he-panel-b-in { from { transform: translateY(104%); } to { transform: translateY(0); } }
+@keyframes he-panel-a-out { from { transform: translateY(0); } to { transform: translateY(-106%); } }
+@keyframes he-panel-b-out { from { transform: translateY(0); } to { transform: translateY(106%); } }
+@keyframes he-speed-in {
+  0%   { opacity: 0; transform: scale(1.4) rotate(0deg); }
+  40%  { opacity: 1; }
+  100% { opacity: 0.9; transform: scale(1) rotate(-8deg); }
+}
+@keyframes he-speed-out { to { opacity: 0; transform: scale(1.3) rotate(-14deg); } }
+@keyframes he-ball-in {
+  0%   { opacity: 0; transform: translate(-50%, -170%) scale(0.55) rotate(-40deg); }
+  55%  { opacity: 1; }
+  78%  { transform: translate(-50%, -50%) scale(1.12) rotate(8deg); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+@keyframes he-ball-out {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  30%  { transform: translate(-50%, -60%) scale(1.18) rotate(-6deg); }
+  100% { opacity: 0; transform: translate(-50%, -220%) scale(0.7) rotate(26deg); }
+}
+@keyframes he-flash-impact {
+  0%, 46% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  60%     { opacity: 0.95; transform: translate(-50%, -50%) scale(0.62); }
+  100%    { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* --- Soaring crows ("fly") — a small flock of black silhouettes that
+   cut across the ember panel, the way a Karasuno-style story signals
+   taking flight. Original silhouette; no character likeness. --- */
+.th-flock {
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.th-crow {
+  position: absolute;
+  opacity: 0;
+  color: #0B0A0C;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 2px rgba(255, 176, 120, 0.55));
+}
+.th-crow svg { display: block; width: 100%; height: auto; }
+.th-crow--1 { top: 30%; left: -24%; width: min(22vmin, 150px); }
+.th-crow--2 { top: 15%; left: -42%; width: min(15vmin, 96px); }
+.th-crow--3 { top: 44%; left: -14%; width: min(11vmin, 70px); }
+
+/* Cover: the flock soars up-and-across the ember diagonal. */
+.is-active .th--volleyball .th-crow--1 { animation: he-crow-soar 0.98s cubic-bezier(0.35, 0, 0.4, 1) 0.05s forwards; }
+.is-active .th--volleyball .th-crow--2 { animation: he-crow-soar 1.05s cubic-bezier(0.35, 0, 0.4, 1) 0.14s forwards; }
+.is-active .th--volleyball .th-crow--3 { animation: he-crow-soar 0.92s cubic-bezier(0.35, 0, 0.4, 1) 0.2s  forwards; }
+
+/* Reveal: the flock is mid-flight and clears off the top-right. */
+.is-revealing .th--volleyball .th-crow--1 { opacity: 1; animation: he-crow-off 0.6s ease-in forwards; }
+.is-revealing .th--volleyball .th-crow--2 { opacity: 1; animation: he-crow-off 0.55s ease-in 0.05s forwards; }
+.is-revealing .th--volleyball .th-crow--3 { opacity: 1; animation: he-crow-off 0.5s ease-in 0.1s forwards; }
+
+@keyframes he-crow-soar {
+  0%   { opacity: 0; transform: translate(0, 9vh) rotate(-12deg) scale(0.9); }
+  22%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(122vw, -60vh) rotate(-3deg) scale(1); }
+}
+@keyframes he-crow-off {
+  0%   { opacity: 1; transform: translate(46vw, -24vh) rotate(-5deg); }
+  100% { opacity: 0; transform: translate(114vw, -58vh) rotate(-2deg); }
+}
+
+/* --- small shared helpers --- */
+@keyframes he-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes he-fade-out { to { opacity: 0; } }
+
+/* =============================================================
+   THEME 3 — PORTAL  ·  THE COSMIC GATEWAY  (also the fallback)
+   -------------------------------------------------------------
+   Returning to the nexus between the two worlds. Hyperspace star
+   streaks rush toward a luminous GATEWAY RING built from the
+   portal's own accents (teal + gold), its bright core blooms open
+   (COVER) → on arrival the whole gate expands through the viewport
+   and the portal page shows behind it (REVEAL). Unlike the academic
+   BLACK HOLE (dark, devouring core) this gate has a BRIGHT core — a
+   doorway of light, not a void — so the two never read alike.
+   ============================================================= */
+.th--portal { background: #0B1022; }
+
+/* Deep-space backdrop — portal-tinted navy with teal/gold nebula + stars. */
+.th--portal .th-space {
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  background:
+    radial-gradient(2px 2px at 22% 26%, rgba(255, 255, 255, 0.95), transparent),
+    radial-gradient(1.8px 1.8px at 74% 62%, rgba(210, 236, 255, 0.9), transparent),
+    radial-gradient(1.6px 1.6px at 60% 18%, rgba(230, 200, 120, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 16% 70%, rgba(234, 238, 246, 0.85), transparent),
+    radial-gradient(1.4px 1.4px at 86% 30%, rgba(234, 238, 246, 0.8), transparent),
+    radial-gradient(1.2px 1.2px at 40% 84%, rgba(234, 238, 246, 0.7), transparent),
+    radial-gradient(1.2px 1.2px at 50% 46%, rgba(234, 238, 246, 0.6), transparent),
+    radial-gradient(65% 60% at 50% 50%, rgba(95, 196, 210, 0.14), transparent 70%),
+    radial-gradient(60% 55% at 30% 26%, rgba(210, 175, 87, 0.10), transparent 72%),
+    radial-gradient(120% 120% at 50% 50%, #101733 0%, #0B1022 60%, #070A16 100%);
+  background-repeat: no-repeat;
+}
+
+/* Hyperspace streaks converging on the gate. */
+.th--portal .th-streaks {
+  inset: -25%;
+  z-index: 2;
+  opacity: 0;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg 1.1deg,
+    rgba(126, 224, 236, 0.16) 1.1deg 1.4deg,
+    transparent 1.4deg 2.6deg,
+    rgba(230, 200, 120, 0.12) 2.6deg 2.9deg,
+    transparent 2.9deg 4.2deg
+  );
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 8%, #000 26%, #000 60%, transparent 86%);
+          mask: radial-gradient(circle at 50% 50%, transparent 8%, #000 26%, #000 60%, transparent 86%);
+  transform: scale(1.7) rotate(0deg);
+}
+
+/* The gateway assembly, centered. */
+.th--portal .th-gate {
+  top: 50%;
+  left: 50%;
+  width: min(46vmin, 380px);
+  aspect-ratio: 1;
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(0.12);
+  opacity: 0;
+}
+
+/* Spinning light halo behind the rings (soft, wide glow). */
+.th--portal .th-gate-halo {
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+    rgba(126, 224, 236, 0) 0%, rgba(126, 224, 236, 0.55) 12%,
+    rgba(255, 253, 247, 0) 28%, rgba(230, 200, 120, 0.5) 46%,
+    rgba(126, 224, 236, 0) 62%, rgba(126, 224, 236, 0.5) 80%,
+    rgba(230, 200, 120, 0) 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent 40%, #000 55%, #000 82%, transparent 92%);
+          mask: radial-gradient(farthest-side, transparent 40%, #000 55%, #000 82%, transparent 92%);
+  filter: blur(3px) saturate(1.2)
+          drop-shadow(0 0 30px rgba(95, 196, 210, 0.5))
+          drop-shadow(0 0 60px rgba(210, 175, 87, 0.28));
+  animation: he-gate-spin 3.4s linear infinite;
+}
+
+/* The gateway rings — luminous, not dark. */
+.th--portal .th-gate-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.th--portal .th-gate-ring--outer {
+  border: 2px solid rgba(126, 224, 236, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(255, 253, 247, 0.35),
+    0 0 22px 3px rgba(95, 196, 210, 0.55),
+    0 0 60px 10px rgba(95, 196, 210, 0.28),
+    inset 0 0 30px rgba(95, 196, 210, 0.35);
+}
+.th--portal .th-gate-ring--inner {
+  inset: 16%;
+  border: 1.5px solid rgba(230, 200, 120, 0.9);
+  box-shadow:
+    0 0 16px 2px rgba(210, 175, 87, 0.5),
+    0 0 40px 8px rgba(210, 175, 87, 0.25),
+    inset 0 0 22px rgba(210, 175, 87, 0.3);
+}
+
+/* Bright doorway core — a burst of light that opens. */
+.th--portal .th-gate-core {
+  position: absolute;
+  inset: 26%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    #FFFDF7 0%, #EAF6FA 26%, rgba(126, 224, 236, 0.55) 52%, rgba(95, 196, 210, 0) 72%);
+  filter: blur(1px) drop-shadow(0 0 30px rgba(126, 224, 236, 0.6));
+}
+
+/* Orbiting light dots — echo the portal portrait's orbit ring. */
+.th--portal .th-orbit {
+  position: absolute;
+  inset: -4%;
+  border-radius: 50%;
+  animation: he-gate-spin 5s linear infinite;
+}
+.th--portal .th-orbit-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 50%;
+  background: #FFFDF7;
+  box-shadow: 0 0 12px 2px rgba(126, 224, 236, 0.9), 0 0 4px #fff;
+}
+.th--portal .th-orbit-dot--1 { transform: rotate(0deg) translateX(min(24vmin, 200px)); }
+.th--portal .th-orbit-dot--2 {
+  transform: rotate(180deg) translateX(min(24vmin, 200px));
+  background: #F4E3B0;
+  box-shadow: 0 0 12px 2px rgba(210, 175, 87, 0.9), 0 0 4px #fff;
+}
+
+/* Portal-tinted bloom (teal-white instead of the shared warm flash). */
+.th--portal .th-flash {
+  background: radial-gradient(circle, rgba(255, 253, 247, 0.95) 0%, rgba(126, 224, 236, 0.5) 26%, transparent 60%);
+}
+
+/* ---- PORTAL · COVER ---- */
+.is-active .th--portal .th-space   { animation: he-space-in 0.4s ease-out forwards; }
+.is-active .th--portal .th-streaks { animation: he-streaks-in 0.9s cubic-bezier(0.4, 0, 0.4, 1) forwards; }
+.is-active .th--portal .th-gate    { animation: he-gate-open-in 0.85s cubic-bezier(0.34, 1.3, 0.5, 1) 0.1s forwards; }
+.is-active .th--portal .th-flash   { animation: he-flash-soft 0.9s ease-in 0.15s forwards; }
+
+/* ---- PORTAL · REVEAL ---- */
+.is-revealing .th--portal .th-space   { opacity: 1; animation: he-space-out 0.8s ease-in forwards; }
+.is-revealing .th--portal .th-streaks { opacity: 0.9; transform: scale(0.7) rotate(0deg); animation: he-streaks-out 0.8s cubic-bezier(0.4, 0, 0.6, 1) forwards; }
+.is-revealing .th--portal .th-gate    { opacity: 1; transform: translate(-50%, -50%) scale(1); animation: he-gate-open-out 0.8s cubic-bezier(0.5, 0, 0.7, 0.4) forwards; }
+.is-revealing .th--portal .th-flash   { animation: he-flash-pop 0.7s ease-out forwards; }
+
+@keyframes he-streaks-in {
+  0%   { opacity: 0; transform: scale(1.7) rotate(0deg); }
+  35%  { opacity: 0.95; }
+  100% { opacity: 0.9; transform: scale(0.7) rotate(40deg); }
+}
+@keyframes he-streaks-out {
+  0%   { opacity: 0.9; transform: scale(0.7) rotate(0deg); }
+  100% { opacity: 0; transform: scale(2.4) rotate(26deg); }
+}
+@keyframes he-gate-open-in {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.12); }
+  40%  { opacity: 1; }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes he-gate-open-out {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  55%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(3.6); }
+}
+@keyframes he-gate-spin { to { transform: rotate(360deg); } }
+
+/* =============================================================
+   REDUCED MOTION — no streaks / spikes. The cover simply holds a
+   still, opaque curtain (so the page swap is still hidden); the
+   reveal clears it. transition.js also shortens its timing.
+   ============================================================= */
 @media (prefers-reduced-motion: reduce) {
-  .page-transition-mark {
-    animation-duration: 0.01ms !important;
-  }
-  .page-transition-overlay {
-    transition-duration: 0.01ms !important;
-  }
+  .page-transition-overlay .th > * { animation: none !important; }
+
+  /* Cover: show the curtain + brand, statically. */
+  .is-active .th-space,
+  .is-active .th--portal .th-space { opacity: 1; }
+  .is-active .th--academic .th-hole { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .is-active .th--volleyball .th-panel--a,
+  .is-active .th--volleyball .th-panel--b { transform: translateY(0); }
+  .is-active .th-mark { opacity: 0.85; transform: translate(-50%, 220%); }
+
+  /* Reveal: clear everything so the page shows immediately. */
+  .is-revealing .th-space { opacity: 0; }
+  .is-revealing .th--academic .th-hole { opacity: 0; }
+  .is-revealing .th--volleyball .th-panel--a { transform: translateY(-106%); }
+  .is-revealing .th--volleyball .th-panel--b { transform: translateY(106%); }
+  .is-revealing .th-mark { opacity: 0; }
+
+  /* Crows never fly under reduced motion. */
+  .th-crow { animation: none !important; opacity: 0 !important; }
+
+  /* Portal gateway: keep it hidden + stop the halo/orbit spins; the
+     navy space curtain alone covers and clears. */
+  .th--portal .th-gate,
+  .th--portal .th-streaks { opacity: 0 !important; }
+  .th--portal .th-gate-halo,
+  .th--portal .th-orbit { animation: none !important; }
 }

@@ -3,20 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint, so a
-       Day-mode visitor never sees a flash of the dark (Night) default.
-       Dark stays the default: a first-time visitor still lands on Night. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the Night default */ }
-    })();
-  </script>
 
   <!--
     PHASE 03 — ABOUT PAGE
@@ -57,7 +46,7 @@
     "@type": "Person",
     "name": "Hussein ElBassiouni",
     "alternateName": ["حسين محمد مصطفى أحمد البسيوني", "Хуссейн Мохамед Мостафа Ахмед Эльбассиуни"],
-    "description": "Aspiring Data Scientist focused on Astroinformatics — currently building a foundation in programming, mathematics, and data science ahead of a Bachelor's degree in Economics in Russia.",
+    "description": "Aspiring Data Scientist focused on Astroinformatics — currently building a foundation in programming, mathematics, and data science while pursuing a university scholarship in Russia (business, economics, or statistics; not yet secured).",
     "url": "https://YOUR_DOMAIN.com/academic/",
     "image": "https://YOUR_DOMAIN.com/academic/assets/images/profile.jpg"
   }
@@ -178,15 +167,17 @@
         </div>
 
         <div class="reveal">
-          <h2 data-i18n="aboutStory2Title">Why Economics first</h2>
+          <h2 data-i18n="aboutStory2Title">Why foundations first</h2>
           <p data-i18n="aboutStory2Body">
-            The next academic step is a Bachelor's degree in Economics
-            in Russia. It isn't the destination, and it isn't pretended
-            to be. Economics was chosen deliberately as a foundation —
-            a structured environment to build real strength in
-            programming, mathematics, statistics, and analytical
-            thinking, alongside English, Russian, and the language
-            requirements the path ahead calls for.
+            The next academic step is a university scholarship in Russia
+            — in business, economics, statistics, or any field that serves
+            the bigger goal. No specific scholarship is secured yet, and it
+            isn't the destination — it's chosen deliberately as a foundation:
+            a structured environment to build real strength in programming,
+            mathematics, statistics, and analytical thinking, alongside
+            English, Russian, and the language requirements the path ahead
+            calls for. In the meantime, the work continues — preparing and
+            collecting certificates toward that goal.
           </p>
         </div>
 
@@ -261,12 +252,12 @@
       <div class="footer-brand">
         <p class="logo" data-i18n="siteName">Hussein ElBassiouni</p>
         <p class="footer-mission" data-i18n="footerMission">
-          Building a path from Economics to Data Science, and eventually
+          Building a path from strong foundations to Data Science, and eventually
           toward Astroinformatics.
         </p>
       </div>
 
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -277,17 +268,16 @@
   <!-- No data/certificates.js or data/volunteering.js here — this
        page doesn't render either preview, so there's nothing for
        those scripts to do. Keeps the page loading only what it needs. -->
-  <script src="../../transition.js"></script>
-  <script src="../js/cursor.js"></script>
-  <script src="../data/translations.js"></script>
-  <script src="../js/language.js"></script>
-  <script src="../js/animations.js"></script>
-  <script src="../js/navigation.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../data/social.js"></script>
-  <script src="../js/theme.js"></script>
-  <script src="../js/social.js"></script>
-  <script src="../js/media-system.js"></script>
-  <script src="../js/ambient.js"></script>
+  <script src="../../transition.js" defer></script>
+  <script src="../js/cursor.js" defer></script>
+  <script src="../data/translations.js" defer></script>
+  <script src="../js/language.js" defer></script>
+  <script src="../js/animations.js" defer></script>
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../data/social.js" defer></script>
+  <script src="../js/social.js" defer></script>
+  <script src="../js/media-system.js" defer></script>
+  <script src="../js/ambient.js" defer></script>
 </body>
 </html>

@@ -3,22 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0817" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Day / Night — apply the saved theme before first paint. Dark stays
-       the default; the volleyball skin re-tunes its OWN tokens in BOTH
-       themes: Warm White + Black + Volleyball Orange. NO astronomy, no
-       stars, no meteors — a clean "sports editorial" court-inspired
-       space, never a cosmic one. -->
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('preferredTheme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) { /* storage blocked — keep the default */ }
-    })();
-  </script>
 
   <!--
     VOLLEYBALL SIDE — "The journey is played here."
@@ -30,7 +17,7 @@
   -->
 
   <title>Volleyball — Hussein ElBassiouni</title>
-  <meta name="description" content="Volleyball — Hussein ElBassiouni." />
+  <meta name="description" content="Hussein ElBassiouni's volleyball journey — a developing middle blocker's honest path from grassroots to competitive play." />
   <link rel="canonical" href="https://YOUR_DOMAIN.com/sports/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Hussein ElBassiouni" />
@@ -49,9 +36,35 @@
   <!-- Scoped volleyball skin — ONLY rules under body.page-volleyball. -->
   <link rel="stylesheet" href="../sports/css/sports.css" />
   <link rel="stylesheet" href="../transition.css" />
+  <script>
+    /* Anti-flash pre-cover: if we arrived through a world transition, paint an
+       opaque curtain BEFORE first paint so the reveal in transition.js has no
+       white flash to fight. Self-removing failsafe in case transition.js is
+       ever missing. Kept tiny + dependency-free on purpose. */
+    (function () {
+      try {
+        var t = sessionStorage.getItem('he-transition');
+        if (!t) return;
+        var bg = t === 'volleyball' ? '#0A0A0C' : (t === 'portal' ? '#0B1022' : '#05070F');
+        var d = document.createElement('div');
+        d.id = 'he-transition-precover';
+        d.style.cssText = 'position:fixed;inset:0;z-index:2147483646;background:' + bg + ';';
+        (document.body || document.documentElement).appendChild(d);
+        setTimeout(function () { if (d && d.parentNode) d.parentNode.removeChild(d); }, 1600);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body class="page-volleyball">
   <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
+
+  <!-- Manga energy backdrop (decorative). A fixed, behind-everything layer:
+       warm ember corner glows + a faint orange screentone (halftone) in the
+       opposite corners, giving the whole world a Haikyuu-style manga-page
+       feel without any cosmic sky. Purely aria-hidden decoration. -->
+  <div class="volley-bg" aria-hidden="true">
+    <span class="volley-bg-halftone"></span>
+  </div>
 
 
   <header class="site-header" id="site-header">
@@ -71,12 +84,45 @@
       </div>
 
       <!-- Language switcher — js/language.js wires the clicks and sets
-           <html lang>/<html dir> (RTL for Arabic). -->
+           <html lang>/<html dir> (RTL for Arabic). Shown inline on desktop;
+           hidden on phones (sports.css), where the copy inside the mobile
+           overlay below takes over. -->
       <div class="lang-switcher" aria-label="Language switcher">
         <button type="button" data-lang-switch="ar" aria-label="العربية">AR</button>
         <button type="button" data-lang-switch="en" aria-label="English">EN</button>
         <button type="button" data-lang-switch="ru" aria-label="Русский">RU</button>
       </div>
+
+      <!-- Mobile menu. On phones the inline .site-switch (worlds) is hidden
+           for space and there are no separate pages here, so this hamburger
+           is how a phone visitor moves between worlds and changes language.
+           Mirrors the Academic side's overlay so the two worlds behave the
+           same. Hidden on desktop (sports.css); js/navigation.js wires it. -->
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="index.html" class="nav-link" aria-current="page" data-i18n="navVolleyball">Volleyball</a></li>
+          <li><a href="../academic/index.html" class="nav-link" data-i18n="navAcademic">Academic</a></li>
+          <li><a href="../index.html" class="nav-link" data-i18n="navPortal">Portal</a></li>
+        </ul>
+
+        <div class="lang-switcher" aria-label="Language switcher">
+          <button type="button" data-lang-switch="ar" aria-label="العربية">AR</button>
+          <button type="button" data-lang-switch="en" aria-label="English">EN</button>
+          <button type="button" data-lang-switch="ru" aria-label="Русский">RU</button>
+        </div>
+      </nav>
     </div>
   </header>
 
@@ -96,12 +142,26 @@
         </svg>
       </div>
 
+      <!-- Haikyuu energy layer (decorative): a bold diagonal ember wedge,
+           radial manga speed lines, halftone, and a small flock of soaring
+           crows — the "fly" motif — drifting over the arena. aria-hidden. -->
+      <div class="volley-hero-fx" aria-hidden="true">
+        <span class="volley-hero-wedge"></span>
+        <span class="volley-hero-speed"></span>
+        <span class="volley-hero-halftone"></span>
+        <span class="volley-hero-crows">
+          <span class="volley-crow volley-crow--1"><svg viewBox="0 0 120 60" fill="currentColor" aria-hidden="true"><path d="M60 8 C 57 8 54 10 54 14 C 42 11 24 8 10 7 C 26 15 42 21 51 27 C 49 33 52 43 60 52 C 68 43 71 33 69 27 C 78 21 94 15 110 7 C 96 8 78 11 66 14 C 66 10 63 8 60 8 Z"/></svg></span>
+          <span class="volley-crow volley-crow--2"><svg viewBox="0 0 120 60" fill="currentColor" aria-hidden="true"><path d="M60 8 C 57 8 54 10 54 14 C 42 11 24 8 10 7 C 26 15 42 21 51 27 C 49 33 52 43 60 52 C 68 43 71 33 69 27 C 78 21 94 15 110 7 C 96 8 78 11 66 14 C 66 10 63 8 60 8 Z"/></svg></span>
+          <span class="volley-crow volley-crow--3"><svg viewBox="0 0 120 60" fill="currentColor" aria-hidden="true"><path d="M60 8 C 57 8 54 10 54 14 C 42 11 24 8 10 7 C 26 15 42 21 51 27 C 49 33 52 43 60 52 C 68 43 71 33 69 27 C 78 21 94 15 110 7 C 96 8 78 11 66 14 C 66 10 63 8 60 8 Z"/></svg></span>
+        </span>
+      </div>
+
       <div class="container">
         <div class="volley-hero-inner reveal">
           <p class="volley-kicker" data-i18n="volleyKicker">Volleyball — an honest journey.</p>
           <h1 class="volley-hero-title" id="volley-hero-title">
-            <span class="volley-hero-word" data-i18n="volleyTitleB">Volleyball</span>
-            <span class="volley-hero-word volley-hero-word--outline" data-i18n="volleyTitleA">Journey</span>
+            <span class="volley-hero-word" data-i18n="volleyTitleA">Volleyball</span>
+            <span class="volley-hero-word volley-hero-word--outline" data-i18n="volleyTitleB">Journey</span>
           </h1>
           <p class="volley-hero-sub" data-i18n="volleySub">A developing player, a grassroots background, a middle blocker's love for attacking and blocking, and a long-term commitment to the road ahead.</p>
           <div class="volley-hero-actions">
@@ -265,7 +325,7 @@
             <h3 class="volley-tl-title" data-i18n="volleyTl1Title">The beginning</h3>
             <p class="volley-tl-sub" data-i18n="volleyTl1Sub">Local courts, youth centers, friends, and informal teams.</p>
           </li>
-          <li class="volley-tl-node volley-tl-node--solid reveal">
+          <li class="volley-tl-node reveal">
             <p class="volley-tl-time" data-i18n="volleyTl2Time">2023</p>
             <h3 class="volley-tl-title" data-i18n="volleyTl2Title">First friendly tournament</h3>
             <p class="volley-tl-sub" data-i18n="volleyTl2Sub">My first friendly tournament — played during Ramadan, with my team.</p>
@@ -280,7 +340,7 @@
             <h3 class="volley-tl-title" data-i18n="volleyTl4Title">A turning point</h3>
             <p class="volley-tl-sub" data-i18n="volleyTl4Sub">Stopped due to an eye injury and travel circumstances.</p>
           </li>
-          <li class="volley-tl-node reveal">
+          <li class="volley-tl-node volley-tl-node--solid reveal">
             <p class="volley-tl-time" data-i18n="volleyTl5Time">Current</p>
             <h3 class="volley-tl-title" data-i18n="volleyTl5Title">Athletic development</h3>
             <p class="volley-tl-sub" data-i18n="volleyTl5Sub">Preparing on and off the court — no claims, just readiness.</p>
@@ -325,6 +385,9 @@
          NEXT CHAPTER — volleyball continues, including outside Egypt.
     ============================================================= -->
     <section class="volley-section volley-next" aria-label="The next chapter">
+      <div class="volley-next-fx" aria-hidden="true">
+        <span class="volley-crow volley-crow--rise"><svg viewBox="0 0 120 60" fill="currentColor" aria-hidden="true"><path d="M60 8 C 57 8 54 10 54 14 C 42 11 24 8 10 7 C 26 15 42 21 51 27 C 49 33 52 43 60 52 C 68 43 71 33 69 27 C 78 21 94 15 110 7 C 96 8 78 11 66 14 C 66 10 63 8 60 8 Z"/></svg></span>
+      </div>
       <div class="container volley-next-inner reveal">
         <h2 class="volley-section-title" data-i18n="volleyNextTitle">The next chapter</h2>
         <p class="volley-next-lead" data-i18n="volleyNextLead">Continue to develop as an athlete — to keep playing volleyball, including outside Egypt.</p>
@@ -376,7 +439,7 @@
         </svg>
       </div>
 
-      <nav class="footer-socials" data-footer-socials aria-label="Social links"></nav>
+      <nav class="footer-socials" data-footer-socials aria-label="Social links" hidden></nav>
     </div>
 
     <div class="container footer-bottom">
@@ -449,16 +512,19 @@
     })();
   </script>
 
-  <script src="../transition.js"></script>
-  <script src="../academic/js/cursor.js"></script>
-  <script src="../academic/data/social.js"></script>
-  <script src="../academic/data/volleyball.js"></script>
-  <script src="../academic/data/translations.js"></script>
-  <script src="../academic/js/language.js"></script>
-  <script src="../academic/js/animations.js"></script>
-  <script src="../academic/js/social.js"></script>
-  <script src="../academic/js/theme.js"></script>
-  <script src="../academic/js/media-system.js"></script>
-  <script src="../academic/js/ambient.js"></script>
+  <script src="../transition.js" defer></script>
+  <script src="../academic/js/cursor.js" defer></script>
+  <script src="../academic/data/social.js" defer></script>
+  <script src="../academic/data/volleyball.js" defer></script>
+  <script src="../academic/data/translations.js" defer></script>
+  <script src="../academic/js/language.js" defer></script>
+  <!-- Mobile menu (hamburger overlay) + sticky-header state. initDropdown()
+       finds no #work-dropdown here and no-ops; initMobileMenu() wires the
+       #nav-toggle / #primary-nav added to the header above. -->
+  <script src="../academic/js/navigation.js" defer></script>
+  <script src="../academic/js/animations.js" defer></script>
+  <script src="../academic/js/social.js" defer></script>
+  <script src="../academic/js/media-system.js" defer></script>
+  <script src="../academic/js/ambient.js" defer></script>
 </body>
 </html>
