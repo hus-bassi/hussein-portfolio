@@ -541,6 +541,17 @@ body.page-volleyball::after {
 /* ---- Next chapter ---- */
 .volley-next-inner { text-align: center; max-width: 60ch; margin-inline: auto; }
 .volley-next-lead { margin-top: var(--space-3); color: var(--color-text-secondary); font-size: 1.05rem; }
+.volley-next-dream {
+  margin-top: var(--space-4);
+  margin-inline: auto;
+  max-width: 54ch;
+  padding-top: var(--space-4);
+  border-top: 1px solid color-mix(in srgb, var(--color-accent) 24%, transparent);
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.85;
+}
 .volley-following {
   margin-top: var(--space-4);
   font-family: var(--volley-mono);

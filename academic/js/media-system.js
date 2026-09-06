@@ -722,8 +722,8 @@
     function buildCard(ev, index) {
       var title = escapeHtml(localize(ev.title));
       var img = firstImage(ev);
-      var typeBadge = has(ev.type)
-        ? '<span class="event-type-badge">' + escapeHtml(localize(ev.type)) + '</span>'
+      var typeBadge = (has(ev.badge) || has(ev.type))
+        ? '<span class="event-type-badge">' + escapeHtml(localize(has(ev.badge) ? ev.badge : ev.type)) + '</span>'
         : '';
       var media = img
         ? '<span class="event-card-media" aria-hidden="true">' +
@@ -1014,7 +1014,7 @@
         : '';
 
       var body =
-        (has(ev.type) ? '<span class="event-type-badge">' + escapeHtml(localize(ev.type)) + '</span>' : '') +
+        (has(ev.badge) || has(ev.type) ? '<span class="event-type-badge">' + escapeHtml(localize(has(ev.badge) ? ev.badge : ev.type)) + '</span>' : '') +
         '<h3 class="cert-title" id="event-modal-title">' + escapeHtml(title) + '</h3>' +
         (has(ev.role) ? '<p class="event-role">' + escapeHtml(localize(ev.role)) + '</p>' : '') +
         (has(ev.position) ? '<p class="event-role">' + escapeHtml(t('eventPosition', 'Position')) + ': ' + escapeHtml(localize(ev.position)) + '</p>' : '') +

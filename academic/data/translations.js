@@ -38,6 +38,7 @@ const translations = {
     navCv: 'CV',
     navPortal: 'Portal',
     navVolleyball: 'Volleyball',
+    navTournaments: 'Tournaments',
     navAcademic: 'Academic',
 
     // Global identity — site / personal name, localized (one source
@@ -349,6 +350,7 @@ const translations = {
     // Next chapter
     volleyNextTitle: 'The next chapter',
     volleyNextLead: 'Continue volleyball outside Egypt. The journey is not over — it is simply taking a new route.',
+    volleyNextDream: 'Both teams I played for were grassroots — neither was registered with the Federation, and I have never joined an official team. That is the dream I could not realize in Egypt, and the one I intend to achieve in Russia.',
     volleyFollowing: 'Developing athlete · Middle Blocker · Long-haul commitment',
 
     // Memories
@@ -401,6 +403,7 @@ const translations = {
     navCv: 'السيرة الذاتية',
     navPortal: 'البوابة',
     navVolleyball: 'الكرة الطائرة',
+    navTournaments: 'البطولات',
     navAcademic: 'الأكاديمي',
     siteName: 'حسين البسيوني',
 
@@ -707,6 +710,7 @@ const translations = {
     // Next chapter
     volleyNextTitle: 'الفصل القادم',
     volleyNextLead: 'مواصلة الكرة الطائرة خارج مصر. الرحلة لم تنتهِ — بل تسلك طريقًا جديدًا.',
+    volleyNextDream: 'الفريقان اللذان لعبتُ لهما كانا شعبيَّين — كلاهما غير مسجَّل في الاتحاد، ولم أنضمّ يومًا لفريق رسمي. هذا هو الحلم الذي لم أستطع تحقيقه في مصر، وأنوي تحقيقه في روسيا.',
     volleyFollowing: 'لاعب في طور التطور · حائط الصد · التزام بعيد المدى',
 
     // Memories
@@ -759,6 +763,7 @@ const translations = {
     navCv: 'Резюме',
     navPortal: 'Портал',
     navVolleyball: 'Волейбол',
+    navTournaments: 'Турниры',
     navAcademic: 'Учёба',
     siteName: 'Хусейн Эльбассиуни',
 
@@ -1065,6 +1070,7 @@ const translations = {
     // Next chapter
     volleyNextTitle: 'Следующая глава',
     volleyNextLead: 'Продолжить волейбол за пределами Египта. Путь не окончен — он просто выбирает новый маршрут.',
+    volleyNextDream: 'Обе команды, за которые я играл, были любительскими — ни одна не была зарегистрирована в Федерации, и я никогда не состоял в официальной команде. Это мечта, которую я не смог осуществить в Египте и намерен воплотить в России.',
     volleyFollowing: 'Развивающийся игрок · Центральный блокирующий · Долгий путь',
 
     // Memories
