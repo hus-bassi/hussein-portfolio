@@ -5,8 +5,8 @@
    (Academic / Volleyball). This is the first impression, so it is
    built to read as premium and editorial rather than templated:
 
-     • a cinematic, layered backdrop — edge auroras + vignette +
-       a fine film-grain over the whole scene (not big soft blobs)
+     • a cinematic, layered backdrop — edge auroras + vignette + a
+       fine film-grain over the whole scene (not big soft blobs)
      • a portrait "lens": a slow rotating conic ring + orbit + halo
      • two gateway panels with a numbered index watermark, a custom
        line-art emblem, a masked gradient border, a pointer-tracking
@@ -240,10 +240,6 @@
   width: clamp(28px, 8vw, 60px);
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-border-strong));
-}
-
-.portal-subtitle::after {
-  background: linear-gradient(90deg, var(--color-border-strong), transparent);
 }
 
 /* ------------------------------------------------------------
@@ -577,19 +573,15 @@
   .portal-card-emblem svg,
   .portal-intro,
   .portal-card,
-  .business-showcase,
-  .business-showcase__card,
-  .business-showcase__logo-wrapper,
-  .business-showcase__body {
+  .featured-card,
+  .portal-discord .discord-card {
     animation: none !important;
   }
 
   .portal-intro,
   .portal-card,
-  .business-showcase,
-  .business-showcase__card,
-  .business-showcase__logo-wrapper,
-  .business-showcase__body {
+  .featured-card,
+  .portal-discord .discord-card {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -601,21 +593,23 @@
 
   .portal-socials .social-link:hover,
   .portal-socials .social-link:focus-visible,
+  .featured-card:hover,
+  .featured-card:focus-visible,
   .portal-discord .discord-card:hover,
-  .portal-discord .discord-card:focus-visible,
-  .business-showcase__card:hover {
+  .portal-discord .discord-card:focus-visible {
     transform: none;
   }
 }
 
 /* ============================================================
-   LANGUAGE SWITCHER + CONNECT (socials + Discord)
+   LANGUAGE SWITCHER + CONNECT (socials)
    ------------------------------------------------------------
-   Added to the gateway per request: a 3-language switcher, the
-   real social links, and a wide premium Discord community button.
-   Links + Discord are rendered data-driven by academic/js/social.js
-   from academic/data/social.js — nothing is hardcoded, and labels
-   follow the active language. .lang-switcher reuses main.css chrome.
+   Added to the gateway per request: a 3-language switcher and the
+   real social links. Links are rendered data-driven by
+   academic/js/social.js from academic/data/social.js — nothing is
+   hardcoded, and labels follow the active language. .lang-switcher
+   reuses main.css chrome. (The Discord community card now lives in
+   the FEATURED PAIR section below.)
    ============================================================= */
 
 /* --- Fixed language switcher (trailing top corner; flips in RTL) --- */
@@ -645,7 +639,7 @@
   border-radius: 999px;
 }
 
-/* --- Connect stack: kicker → social chips → Discord button --- */
+/* --- Connect stack: kicker → social chips --- */
 .portal-connect {
   margin-top: clamp(var(--space-4), 4vw, var(--space-5));
   display: flex;
@@ -708,85 +702,6 @@
   height: 1.15rem;
 }
 
-/* --- Discord: one wide, premium blurple button (the whole card is the link) --- */
-.portal-discord {
-  width: 100%;
-  max-width: 460px;
-  margin-top: var(--space-6);
-}
-
-.portal-discord .discord-card {
-  --dc: #5865f2;
-  width: 100%;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  border: 1px solid color-mix(in srgb, var(--dc) 55%, transparent);
-  border-radius: 16px;
-  color: #fff;
-  background:
-    radial-gradient(140% 130% at 10% 0%, rgba(255, 255, 255, 0.18), transparent 55%),
-    linear-gradient(135deg, #5b68f5, #4a54d4);
-  box-shadow:
-    0 16px 42px -18px rgba(88, 101, 242, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base),
-    border-color var(--transition-base);
-}
-
-.portal-discord .discord-card:hover,
-.portal-discord .discord-card:focus-visible {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--dc) 82%, #fff);
-  box-shadow:
-    0 24px 56px -18px rgba(88, 101, 242, 0.92),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
-}
-
-.portal-discord .discord-icon {
-  width: 2.9rem;
-  height: 2.9rem;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.16);
-  border-radius: 12px;
-}
-
-.portal-discord .discord-icon svg {
-  width: 1.7rem;
-  height: 1.7rem;
-}
-
-.portal-discord .discord-title {
-  font-family: var(--font-display);
-  font-size: 1.02rem;
-  color: #fff;
-}
-
-.portal-discord .discord-sub {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-/* White pill affordance on the blurple bar (aria-hidden; the <a> is the link). */
-.portal-discord .discord-btn {
-  padding: 0.5em 1.05em;
-  border: 0;
-  border-radius: 999px;
-  background: #fff;
-  color: #3a45c9;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.5);
-  transition: color var(--transition-base), transform var(--transition-base);
-}
-
-.portal-discord .discord-card:hover .discord-btn {
-  color: #2f3ab8;
-}
-
 /* --- RTL: Arabic is cursive — kill letter-spacing/uppercase so it stays legible --- */
 [dir="rtl"] .portal-subtitle,
 [dir="rtl"] .portal-connect-kicker,
@@ -808,232 +723,237 @@
 }
 
 /* ============================================================
-   BUSINESS SHOWCASE — Featured Business Showcase
+   FEATURED PAIR — Business (Souq Elmajde) + Discord
    ------------------------------------------------------------
-   A premium business showcase between social links and Discord.
-   Uses El Majd Medical brand colors. Sharp, clean, no blur.
+   One centered pair of matched horizontal brand cards between
+   the social links and the World Cards. A single .featured-card
+   shell styles BOTH cards (.portal-discord .discord-card is the
+   same shell — the Discord anchor is rendered data-driven by
+   academic/js/social.js into [data-discord-cta], which is why it
+   keeps its renderer class).
+
+   Souq Elmajde identity: #004231 bg · #39C79C accent ·
+   #DF9221 secondary accent · #E8E8E8 text. Calm, professional,
+   no blur. One transform owner: the entrance uses a `backwards`
+   fill so the element returns to its natural (visible, untransformed)
+   state after the animation — the :hover lift then applies cleanly
+   with no forwards-fill conflict and no JS hand-off needed.
    ============================================================= */
 
-/* Featured row: Business + Discord side by side */
 .portal-featured-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
   gap: var(--space-4);
-  max-width: 800px;
-  margin-inline: auto;
-  margin-top: var(--space-5);
-  margin-bottom: var(--space-4);
+  width: 100%;
+  max-width: 780px;
+  margin: var(--space-4) auto; /* rhythm: socials ↓ 24px ↓ pair ↓ World Cards */
 }
 
-.business-showcase {
-  position: relative;
-  z-index: 2;
+/* Comfortable gap down to the World Cards (spacing only — the World
+   Cards themselves are untouched). */
+.portal-featured-row + .portal-cards {
+  margin-top: clamp(28px, 4.5vw, var(--space-5));
 }
 
-.business-showcase__card {
-  height: 100%;
-  background: #004231;
+.business-showcase,
+.portal-discord {
+  display: grid; /* stretch each card to the row's equal height */
+}
+
+/* --- Shared card shell (Business + Discord) --- */
+.featured-card,
+.portal-discord .discord-card {
+  --fc-bg: #004231;
+  --fc-accent: #39c79c;
+  --fc-accent-2: #df9221;
+  --fc-text: #e8e8e8;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) var(--space-4);
+  border: 1px solid rgba(57, 199, 156, 0.22);
   border-radius: 16px;
-  border: 1px solid rgba(57, 199, 156, 0.2);
-  padding: clamp(var(--space-4), 3vw, var(--space-5));
+  background: var(--fc-bg);
+  box-shadow: 0 10px 30px rgba(4, 7, 18, 0.35);
+  color: var(--fc-text);
   text-align: center;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-}
-
-.business-showcase__card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.4);
-}
-
-.business-showcase__logo-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.business-showcase__logo {
-  height: 40px;
-  width: auto;
-  position: relative;
-  z-index: 1;
-}
-
-.business-showcase__body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  position: relative;
-  z-index: 1;
-}
-
-.business-showcase__name {
-  font-family: var(--font-display);
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: #E8E8E8;
-  line-height: 1.2;
-}
-
-.business-showcase__name-en {
-  font-family: var(--font-display);
-  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-  font-weight: 600;
-  color: #39C79C;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.business-showcase__desc {
-  font-family: var(--font-body);
-  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
-  color: #9CA8BE;
-  max-width: 52ch;
-  line-height: 1.5;
-}
-
-.business-showcase__desc-en {
-  display: none;
-}
-
-.business-showcase__badge {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: #DF9221;
-  padding: 0.15em 0.6em;
-  background: rgba(223, 146, 33, 0.12);
-  border-radius: 999px;
-  border: 1px solid rgba(223, 146, 33, 0.25);
-}
-
-.business-showcase__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  font-family: var(--font-display);
-  font-size: clamp(0.85rem, 1.5vw, 0.9rem);
-  font-weight: 600;
-  color: #004231;
   text-decoration: none;
-  padding: 0.5em 1.2em;
-  border-radius: 999px;
-  background: #39C79C;
-  border: 1px solid #39C79C;
-  transition: transform 0.3s var(--ease-settle), box-shadow 0.3s var(--ease-smooth);
+  animation: featured-rise 0.6s var(--ease-settle) backwards;
+  transition:
+    transform 0.3s var(--ease-smooth),
+    box-shadow 0.3s var(--ease-smooth),
+    border-color 0.3s var(--ease-smooth);
 }
 
-.business-showcase__cta:hover,
-.business-showcase__cta:focus-visible {
+.business-showcase .featured-card { animation-delay: 0.4s; }
+.portal-discord .discord-card     { animation-delay: 0.5s; }
+
+@keyframes featured-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.featured-card:hover,
+.featured-card:focus-visible,
+.portal-discord .discord-card:hover,
+.portal-discord .discord-card:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(57, 199, 156, 0.3);
+  border-color: rgba(57, 199, 156, 0.45);
+  box-shadow: 0 14px 34px rgba(4, 7, 18, 0.45);
 }
 
-.business-showcase__cta:focus-visible {
-  outline: 2px solid #DF9221;
+.featured-card:focus-visible,
+.portal-discord .discord-card:focus-visible {
+  outline: 2px solid var(--fc-accent);
   outline-offset: 3px;
 }
 
-.business-showcase__cta-icon {
-  width: 0.9em;
-  height: 0.9em;
-  transition: transform 0.3s var(--ease-smooth);
+/* --- Business (Souq Elmajde) content --- */
+.featured-card__logo {
+  height: 48px;
+  width: auto;
+  max-width: 66%;
+  object-fit: contain;
 }
 
-.business-showcase__cta:hover .business-showcase__cta-icon {
-  transform: translateY(-2px);
+.featured-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--fc-text);
 }
 
-/* Entrance animation — simple fade */
-.business-showcase__card {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: business-card-rise 0.6s var(--ease-settle) 0.1s both;
+.featured-card__title-en {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--fc-accent);
 }
 
-.business-showcase__logo-wrapper {
-  opacity: 0;
-  transform: translateY(6px);
-  animation: business-logo-rise 0.5s var(--ease-settle) 0.2s both;
+.featured-card__desc {
+  max-width: 30ch;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(232, 232, 232, 0.78);
 }
 
-.business-showcase__body {
-  opacity: 0;
-  transform: translateY(6px);
-  animation: business-body-rise 0.5s var(--ease-settle) 0.3s both;
+.featured-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  margin-top: var(--space-2);
+  padding: 0.5em 1.15em;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: box-shadow 0.3s var(--ease-smooth);
 }
 
-@keyframes business-card-rise {
-  to { opacity: 1; transform: translateY(0); }
+.featured-card__cta-arrow {
+  font-size: 0.95em;
+  line-height: 1;
 }
 
-@keyframes business-logo-rise {
-  to { opacity: 1; transform: translateY(0); }
+.featured-card__cta--souq {
+  border: 1px solid var(--fc-accent);
+  background: var(--fc-accent);
+  color: var(--fc-bg);
 }
 
-@keyframes business-body-rise {
-  to { opacity: 1; transform: translateY(0); }
+.featured-card__cta:hover,
+.featured-card__cta:focus-visible {
+  box-shadow: 0 4px 14px rgba(57, 199, 156, 0.35);
 }
 
-/* Discord card in the featured row */
-.portal-featured-row .portal-discord {
-  margin-top: 0;
+.featured-card__cta:focus-visible {
+  outline: 2px solid var(--fc-accent-2);
+  outline-offset: 3px;
 }
 
-.portal-featured-row .discord-card {
-  height: 100%;
-  min-height: 220px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+/* --- Discord card content (rendered by academic/js/social.js) ---
+   Same shell and visual weight; calm flat Discord blurple instead
+   of the old bright gradient bar. */
+.portal-discord .discord-card {
+  --fc-bg: #5865f2;
+  --fc-text: #ffffff;
+
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(24, 28, 60, 0.4);
 }
 
-.portal-featured-row .discord-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.35);
+.portal-discord .discord-card:hover,
+.portal-discord .discord-card:focus-visible {
+  border-color: rgba(255, 255, 255, 0.34);
+  box-shadow: 0 14px 34px rgba(24, 28, 60, 0.5);
 }
 
-/* RTL adjustments */
-[dir="rtl"] .business-showcase__name {
-  letter-spacing: normal;
+.portal-discord .discord-card:focus-visible {
+  outline-color: rgba(255, 255, 255, 0.85);
 }
 
-/* Responsive: stack vertically on mobile */
+.portal-discord .discord-card .discord-icon {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.portal-discord .discord-card .discord-icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.portal-discord .discord-card .discord-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.portal-discord .discord-card .discord-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 700;
+  color: #fff;
+}
+
+.portal-discord .discord-card .discord-sub {
+  max-width: 26ch;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.portal-discord .discord-card .discord-btn {
+  margin-top: var(--space-2);
+  padding: 0.5em 1.15em;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  background: #fff;
+  color: #3a45c9;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* --- Responsive: stack on mobile, compact centered container --- */
 @media (max-width: 720px) {
   .portal-featured-row {
     grid-template-columns: 1fr;
     max-width: 420px;
-  }
-
-  .business-showcase__card {
-    padding: var(--space-4) var(--space-3);
-  }
-
-  .business-showcase__logo {
-    height: 36px;
-  }
-
-  .business-showcase__name {
-    font-size: clamp(1rem, 3vw, 1.3rem);
-  }
-
-  .business-showcase__name-en {
-    font-size: clamp(0.7rem, 2vw, 0.8rem);
-  }
-
-  .business-showcase__cta {
-    padding: 0.5em 1.1em;
-    font-size: 0.85rem;
-  }
-
-  .portal-featured-row .discord-card {
-    min-height: auto;
   }
 }

@@ -614,8 +614,9 @@ const translations = {
     portalSportsDesc: 'تدريب ومباريات وتطوّر — قريبًا في روسيا.',
     portalEnter: 'ادخل',
 
-    // Business Showcase — featured business preview
-    businessTitle: 'متجر إلكتروني للمستلزمات الطبية',
+    // Business Showcase — featured business preview (official names)
+    businessTitle: 'سوق المجد الطبي',
+    businessTitleEn: 'Souq Elmajde',
     businessBadge: 'مشروع مُبرز',
     businessDesc: 'متجر إلكتروني للمستلزمات والأجهزة الطبية في مصر.',
     businessCta: 'زيارة المتجر',
