@@ -576,12 +576,20 @@
   .portal-portrait .portrait-orbit,
   .portal-card-emblem svg,
   .portal-intro,
-  .portal-card {
+  .portal-card,
+  .business-showcase,
+  .business-showcase__card,
+  .business-showcase__logo-wrapper,
+  .business-showcase__body {
     animation: none !important;
   }
 
   .portal-intro,
-  .portal-card {
+  .portal-card,
+  .business-showcase,
+  .business-showcase__card,
+  .business-showcase__logo-wrapper,
+  .business-showcase__body {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -594,7 +602,8 @@
   .portal-socials .social-link:hover,
   .portal-socials .social-link:focus-visible,
   .portal-discord .discord-card:hover,
-  .portal-discord .discord-card:focus-visible {
+  .portal-discord .discord-card:focus-visible,
+  .business-showcase__card:hover {
     transform: none;
   }
 }
@@ -703,6 +712,7 @@
 .portal-discord {
   width: 100%;
   max-width: 460px;
+  margin-top: var(--space-6);
 }
 
 .portal-discord .discord-card {
@@ -795,4 +805,235 @@
 [dir="rtl"] .portal-intro h1 {
   line-height: 1.3;
   padding-bottom: 0.16em;
+}
+
+/* ============================================================
+   BUSINESS SHOWCASE — Featured Business Showcase
+   ------------------------------------------------------------
+   A premium business showcase between social links and Discord.
+   Uses El Majd Medical brand colors. Sharp, clean, no blur.
+   ============================================================= */
+
+/* Featured row: Business + Discord side by side */
+.portal-featured-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  max-width: 800px;
+  margin-inline: auto;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.business-showcase {
+  position: relative;
+  z-index: 2;
+}
+
+.business-showcase__card {
+  height: 100%;
+  background: #004231;
+  border-radius: 16px;
+  border: 1px solid rgba(57, 199, 156, 0.2);
+  padding: clamp(var(--space-4), 3vw, var(--space-5));
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.business-showcase__card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.4);
+}
+
+.business-showcase__logo-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.business-showcase__logo {
+  height: 40px;
+  width: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.business-showcase__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  position: relative;
+  z-index: 1;
+}
+
+.business-showcase__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #E8E8E8;
+  line-height: 1.2;
+}
+
+.business-showcase__name-en {
+  font-family: var(--font-display);
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  font-weight: 600;
+  color: #39C79C;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.business-showcase__desc {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  color: #9CA8BE;
+  max-width: 52ch;
+  line-height: 1.5;
+}
+
+.business-showcase__desc-en {
+  display: none;
+}
+
+.business-showcase__badge {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #DF9221;
+  padding: 0.15em 0.6em;
+  background: rgba(223, 146, 33, 0.12);
+  border-radius: 999px;
+  border: 1px solid rgba(223, 146, 33, 0.25);
+}
+
+.business-showcase__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-display);
+  font-size: clamp(0.85rem, 1.5vw, 0.9rem);
+  font-weight: 600;
+  color: #004231;
+  text-decoration: none;
+  padding: 0.5em 1.2em;
+  border-radius: 999px;
+  background: #39C79C;
+  border: 1px solid #39C79C;
+  transition: transform 0.3s var(--ease-settle), box-shadow 0.3s var(--ease-smooth);
+}
+
+.business-showcase__cta:hover,
+.business-showcase__cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(57, 199, 156, 0.3);
+}
+
+.business-showcase__cta:focus-visible {
+  outline: 2px solid #DF9221;
+  outline-offset: 3px;
+}
+
+.business-showcase__cta-icon {
+  width: 0.9em;
+  height: 0.9em;
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.business-showcase__cta:hover .business-showcase__cta-icon {
+  transform: translateY(-2px);
+}
+
+/* Entrance animation — simple fade */
+.business-showcase__card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: business-card-rise 0.6s var(--ease-settle) 0.1s both;
+}
+
+.business-showcase__logo-wrapper {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: business-logo-rise 0.5s var(--ease-settle) 0.2s both;
+}
+
+.business-showcase__body {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: business-body-rise 0.5s var(--ease-settle) 0.3s both;
+}
+
+@keyframes business-card-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes business-logo-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes business-body-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Discord card in the featured row */
+.portal-featured-row .portal-discord {
+  margin-top: 0;
+}
+
+.portal-featured-row .discord-card {
+  height: 100%;
+  min-height: 220px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+}
+
+.portal-featured-row .discord-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* RTL adjustments */
+[dir="rtl"] .business-showcase__name {
+  letter-spacing: normal;
+}
+
+/* Responsive: stack vertically on mobile */
+@media (max-width: 720px) {
+  .portal-featured-row {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+  }
+
+  .business-showcase__card {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .business-showcase__logo {
+    height: 36px;
+  }
+
+  .business-showcase__name {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+  }
+
+  .business-showcase__name-en {
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+  }
+
+  .business-showcase__cta {
+    padding: 0.5em 1.1em;
+    font-size: 0.85rem;
+  }
+
+  .portal-featured-row .discord-card {
+    min-height: auto;
+  }
 }

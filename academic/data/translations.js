@@ -247,6 +247,13 @@ const translations = {
     portalSportsDesc: 'Training, matches, and progress — starting soon in Russia.',
     portalEnter: 'Enter',
 
+    // Business Showcase — featured business preview
+    businessTitle: 'سوق المجد الطبي',
+    businessTitleEn: 'Souq Elmajde',
+    businessDesc: 'متجر إلكتروني للمستلزمات والأجهزة الطبية',
+    businessBadge: 'MY BUSINESS',
+    businessCta: 'زيارة المتجر',
+
     // Digital Presence (homepage) + Discord community CTA
     digitalEyebrow: 'Digital Presence',
     digitalHeading: 'Where the journey is shared',
@@ -607,6 +614,12 @@ const translations = {
     portalSportsDesc: 'تدريب ومباريات وتطوّر — قريبًا في روسيا.',
     portalEnter: 'ادخل',
 
+    // Business Showcase — featured business preview
+    businessTitle: 'متجر إلكتروني للمستلزمات الطبية',
+    businessBadge: 'مشروع مُبرز',
+    businessDesc: 'متجر إلكتروني للمستلزمات والأجهزة الطبية في مصر.',
+    businessCta: 'زيارة المتجر',
+
     // Digital Presence (homepage) + Discord community CTA
     digitalEyebrow: 'الحضور الرقمي',
     digitalHeading: 'حيث تُشارَك رحلة المسار',
@@ -966,6 +979,13 @@ const translations = {
     portalSportsTitle: 'Волейбол',
     portalSportsDesc: 'Тренировки, матчи и прогресс — скоро в России.',
     portalEnter: 'Войти',
+
+    // Business Showcase — featured business preview
+    businessTitle: 'سوق المجد الطبي',
+    businessTitleEn: 'Souq Elmajde',
+    businessDesc: 'Интернет-магазин медицинского оборудования и расходных материалов в Египте.',
+    businessBadge: 'MY BUSINESS',
+    businessCta: 'Посетить магазин',
 
     // Digital Presence (homepage) + Discord community CTA
     digitalEyebrow: 'Цифровое присутствие',
