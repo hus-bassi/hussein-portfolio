@@ -59,6 +59,38 @@ const certificatesData = [
     },
     isDemo: false,
   },
+  {
+    // First Aid certificate from Edraak — one certificate, two PDF versions (AR/EN)
+    title: {
+      en: 'First Aid',
+      ar: 'الإسعافات الأولية',
+      ru: 'Первая помощь',
+    },
+    provider: 'إدراك / EDRAAK',
+    date: '15/09/2026',
+    category: 'Health & Safety',
+    image: {
+      en: 'assets/certificates/first-aid-edraak-en.jpg',
+      ar: 'assets/certificates/first-aid-edraak-ar.jpg',
+      ru: 'assets/certificates/first-aid-edraak-en.jpg',
+    },
+    pdf: {
+      en: 'assets/certificates/first-aid-edraak-en.pdf',
+      ar: 'assets/certificates/first-aid-edraak-ar.pdf',
+      ru: 'assets/certificates/first-aid-edraak-en.pdf',
+    },
+    verificationUrl: {
+      en: 'https://programs.edraak.org/learn/verify-certificate/ee26434337f74d3c962cc82c93aa7c33/?lang=en',
+      ar: 'https://programs.edraak.org/learn/verify-certificate/ee26434337f74d3c962cc82c93aa7c33/?lang=ar',
+      ru: 'https://programs.edraak.org/learn/verify-certificate/ee26434337f74d3c962cc82c93aa7c33/?lang=en',
+    },
+    description: {
+      en: 'Successfully completed the First Aid course on Edraak, covering essential emergency response skills including CPR, wound care, choking relief, and basic life support techniques.',
+      ar: 'أتممت بنجاح دورة الإسعافات الأولية على منصة إدراك، وتغطي مهارات الاستجابة للطوارئ الأساسية بما في ذلك الإنعاش القلبي الرئوي، ورعاية الجروح، وتخفيف الاختناق، وتقنيات الدعم الأساسي للحياة.',
+      ru: 'Успешно завершил курс Первой помощи на Edraak, охватывающий основные навыки экстренной реагирования, включая КЛР, уход за ранами, помощь при удушье и базовые методы поддержания жизни.',
+    },
+    isDemo: false,
+  },
 ];
 
 /* ------------------------------------------------------------

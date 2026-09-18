@@ -113,12 +113,19 @@ function certT(key, fallback) {
  *        root mirror without a build step. Delegates to EventSystem's
  *        resolveMediaPath (one source of truth for page-depth hops); returns
  *        the path unchanged if the event system isn't loaded yet.
+ *        Also handles multilingual image fields { en, ar, ru }.
  */
 function resolveCertImage(path) {
-  if (path && window.EventSystem && typeof window.EventSystem.resolveMediaPath === 'function') {
-    return window.EventSystem.resolveMediaPath(path);
+  // First resolve multilingual image object to a single URL
+  let resolvedPath = path;
+  if (path && typeof path === 'object' && !Array.isArray(path)) {
+    const lang = getActiveCertLang();
+    resolvedPath = path[lang] || path.en || Object.values(path)[0] || '';
   }
-  return path;
+  if (resolvedPath && window.EventSystem && typeof window.EventSystem.resolveMediaPath === 'function') {
+    return window.EventSystem.resolveMediaPath(resolvedPath);
+  }
+  return resolvedPath;
 }
 
 /**
@@ -221,21 +228,66 @@ function buildCertificateCard(certificate, index, clickable) {
  *        + full cleanup); credentialUrl → an external "View credential" link
  *        (trilingual label). Title/description stay { en, ar, ru } objects —
  *        the event system localizes them exactly as this file does.
+ *        For certificates with PDF files (multilingual), adds both "View Certificate"
+ *        (opens PDF in new tab) and "Verify Certificate" (opens verification URL)
+ *        as external links with language-appropriate labels.
  */
 function certToEvent(cert) {
+  const lang = getActiveCertLang();
+  
+  // Resolve multilingual image field to a single URL
+  let imageUrl = '';
+  if (cert.image) {
+    if (typeof cert.image === 'string') {
+      imageUrl = cert.image;
+    } else {
+      imageUrl = cert.image[lang] || cert.image.en || Object.values(cert.image)[0] || '';
+    }
+  }
+
   const ev = {
     type: cert.category,
     title: cert.title,
     provider: cert.provider,
     date: cert.date,
     description: cert.description,
-    image: cert.image,
+    image: imageUrl,
   };
-  if (cert.credentialUrl) {
-    ev.externalLinks = [{
+
+  const externalLinks = [];
+
+  // Add PDF link if available (multilingual)
+  if (cert.pdf) {
+    const pdfUrl = cert.pdf[lang] || cert.pdf.en || Object.values(cert.pdf)[0];
+    if (pdfUrl) {
+      externalLinks.push({
+        label: { en: 'View Certificate', ar: 'عرض الشهادة', ru: 'Просмотреть сертификат' },
+        url: pdfUrl,
+      });
+    }
+  }
+
+  // Add verification URL if available (multilingual)
+  if (cert.verificationUrl) {
+    const verifyUrl = cert.verificationUrl[lang] || cert.verificationUrl.en || Object.values(cert.verificationUrl)[0];
+    if (verifyUrl) {
+      externalLinks.push({
+        label: { en: 'Verify Certificate', ar: 'التحقق من الشهادة', ru: 'Проверить сертификат' },
+        url: verifyUrl,
+      });
+    }
+  }
+
+  // Fallback to legacy credentialUrl for existing certificates
+  if (cert.credentialUrl && !cert.verificationUrl) {
+    externalLinks.push({
       label: { en: 'View credential', ar: 'التحقّق من الشهادة', ru: 'Проверить сертификат' },
       url: cert.credentialUrl,
-    }];
+    });
+  }
+
+  if (externalLinks.length) {
+    ev.externalLinks = externalLinks;
   }
   return ev;
 }

@@ -393,6 +393,9 @@ const translations = {
     eventResult: 'Result',
     eventStats: 'Stats',
     eventNotes: 'Notes',
+    // Certificate PDF & verification (multilingual links in detail modal)
+    certViewPdf: 'View Certificate',
+    certVerify: 'Verify Certificate',
   },
 
   ar: {
@@ -760,6 +763,9 @@ const translations = {
     eventResult: 'النتيجة',
     eventStats: 'الإحصائيات',
     eventNotes: 'ملاحظات',
+    // Certificate PDF & verification (multilingual links in detail modal)
+    certViewPdf: 'عرض الشهادة',
+    certVerify: 'التحقق من الشهادة',
   },
 
   ru: {
@@ -1127,5 +1133,8 @@ const translations = {
     eventResult: 'Результат',
     eventStats: 'Статистика',
     eventNotes: 'Заметки',
+    // Certificate PDF & verification (multilingual links in detail modal)
+    certViewPdf: 'Просмотреть сертификат',
+    certVerify: 'Проверить сертификат',
   },
 };
