@@ -25,17 +25,11 @@
      `provider`, `date` and `category` are localised objects in the
      data file — ar() picks the right one automatically. */
 
-  /* Social platform names in Arabic script (no Latin in the Arabic UI). */
-  var SOCIAL_AR = {
-    linkedin: 'لينكد إن',
-    github: 'غيت هب',
-    youtube: 'يوتيوب',
-    vk: 'فك',
-    tiktok: 'تيك توك',
-    facebook: 'فيسبوك',
-    discord: 'ديسكورد',
-    qabilah: 'قابلية'
-  };
+  /* Platform names are brand names — they are written by the platform,
+     not translated. Hussein's instruction: keep them exactly as the brand
+     writes them (LinkedIn, GitHub, YouTube, VK) even inside the Arabic
+     version, and keep the role/description underneath in Arabic.
+     The name therefore comes straight from the data file. */
 
   var SOCIAL_ICONS = {
     linkedin: '<path d="M4.9 3.5a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM3.5 8.6h2.8V20H3.5zM9 8.6h2.7v1.6h.04c.38-.72 1.3-1.5 2.7-1.5 2.9 0 3.4 1.9 3.4 4.3V20h-2.8v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V20H9z"/>',
@@ -242,7 +236,7 @@
      ============================================================ */
   var socials = ((window.socialData && window.socialData.platforms) || [])
     /* the professional / academic ones that serve this audience */
-    .filter(function (p) { return SOCIAL_AR[p.key] && SOCIAL_ICONS[p.key]; })
+    .filter(function (p) { return SOCIAL_ICONS[p.key]; })
     .slice(0, 4);
   var socialList = $('#social-list');
   var contactPending = $('#contact-pending');
@@ -256,7 +250,9 @@
 
     var ico = el('span', 'social-ico', svgIcon(SOCIAL_ICONS[p.key]));
     var txt = el('span');
-    txt.appendChild(el('span', 'social-name', SOCIAL_AR[p.key]));
+    /* the platform writes its own name — keep it exactly as it is,
+       even in the Arabic version. Only the description below is Arabic. */
+    txt.appendChild(el('span', 'social-name', p.name));
     if (p.label) txt.appendChild(el('span', 'social-label', ar(p.label)));
 
     a.appendChild(ico);
