@@ -156,180 +156,60 @@
   }
 
   /* ============================================================
-     5. Render — certificates
+     5. Learning summary
+     The full searchable record lives on records.html. The home page
+     only shows the honest totals, each linking to that page.
      ============================================================ */
   var certs = window.certificatesData || [];
-  var certsList = $('#certs-list');
-  var certsNone = $('#certs-none');
-  var certTags = $('#cert-tags');
-  var learningEmpty = $('#learning-empty');
-
-  /* Tag every certificate by concept.
-     Preferred path: an explicit `tags` array in the data file — that is the
-     controlled vocabulary, and it is never guessed at render time.
-     The regex list below is only a fallback so a new record never ends up
-     untagged; it is written to tolerate the Arabic definite article
-     (الـ), which is why "الذكاء الاصطناعي" must not be tested for
-     "ذكاء اصطناعي" — that substring does not exist. */
-  var TAGS = {
-    ai:          { ar: 'الذكاء الاصطناعي' },
-    'first-aid': { ar: 'الإسعافات الأولية' },
-    data:        { ar: 'تحليل البيانات' },
-    python:      { ar: 'بايثون' },
-    excel:       { ar: 'إكسل' }
-  };
-  var TAG_RULES = [
-    { re: /ذكاء|اصطناعي|artificial intelligence|\bai\b/i, tag: 'ai' },
-    { re: /إسعاف|إسعافات|first aid|\bcpr\b/i,              tag: 'first-aid' },
-    { re: /بيانات|بياناتية|data analysis|data science/i,  tag: 'data' },
-    { re: /بايثون|\bpython\b/i,                            tag: 'python' },
-    { re: /إكسل|\bexcel\b/i,                              tag: 'excel' }
-  ];
-
-  function tagsFor(record) {
-    var explicit = Array.isArray(record.tags) ? record.tags.slice() : [];
-    if (explicit.length) return explicit;
-
-    var hay = ar(record.title) + ' ' + ar(record.description) + ' ' + ar(record.category);
-    var found = [];
-    TAG_RULES.forEach(function (rule) {
-      if (rule.re.test(hay) && found.indexOf(rule.tag) === -1) found.push(rule.tag);
-    });
-    return found;
-  }
-
-  function renderCert(record) {
-    var li = el('li', 'record');
-    li.appendChild(el('h3', 'record-title', ar(record.title)));
-
-    var meta = el('p', 'record-meta');
-    [ar(record.provider), ar(record.date), ar(record.category)]
-      .filter(Boolean)
-      .forEach(function (t) { meta.appendChild(el('span', null, t)); });
-    li.appendChild(meta);
-
-    if (ar(record.description)) li.appendChild(el('p', 'record-text', ar(record.description)));
-
-    var link = record.credentialUrl || (record.verificationUrl && ar(record.verificationUrl));
-    if (link) {
-      var a = el('a', 'record-action', 'عرض الشهادة');
-      a.href = link;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      li.appendChild(a);
-    }
-    li.dataset.tags = tagsFor(record).join(' ');
-    return li;
-  }
-
-  if (certs.length) {
-    certsList.innerHTML = '';
-    certs.forEach(function (c) { certsList.appendChild(renderCert(c)); });
-
-    /* build the filter buttons from the tags actually in use */
-    var used = [];
-    certsList.querySelectorAll('.record').forEach(function (n) {
-      (n.dataset.tags || '').split(' ').filter(Boolean).forEach(function (t) {
-        if (used.indexOf(t) === -1) used.push(t);
-      });
-    });
-
-    used.forEach(function (slug) {
-      var label = (TAGS[slug] || { ar: slug }).ar;
-      var b = el('button', 'tag', label);
-      b.type = 'button';
-      b.setAttribute('aria-pressed', 'false');
-      b.dataset.tag = slug;
-      certTags.appendChild(b);
-    });
-
-    certTags.addEventListener('click', function (e) {
-      var btn = e.target.closest('.tag');
-      if (!btn) return;
-      var slug = btn.dataset.tag;
-      var wasOn = btn.getAttribute('aria-pressed') === 'true';
-      var turningOn = !wasOn;   // clicking an active tag clears the filter
-
-      certTags.querySelectorAll('.tag').forEach(function (b) {
-        b.setAttribute('aria-pressed', (b === btn && turningOn) ? 'true' : 'false');
-      });
-
-      var shown = 0;
-      certsList.querySelectorAll('.record').forEach(function (n) {
-        /* clearing the filter restores every record, not none of them */
-        var hit = turningOn
-          ? (n.dataset.tags || '').split(' ').indexOf(slug) !== -1
-          : true;
-        n.hidden = !hit;
-        if (hit) shown++;
-      });
-      certsNone.hidden = shown > 0;
-    });
-  } else {
-    certTags.hidden = true;
-    learningEmpty.hidden = false;
-  }
-
-  /* ============================================================
-     6. Render — volunteering
-     ============================================================ */
   var events = (window.eventsData || []).filter(function (e) { return e.type === 'volunteering'; });
-  var volList = $('#volunteer-list');
+  var volley = window.volleyballData || [];
+  var statRow = $('#stat-row');
 
-  events.forEach(function (ev) {
-    var li = el('li', 'record');
-    li.appendChild(el('h3', 'record-title', ar(ev.title)));
-
-    var meta = el('p', 'record-meta');
-    [ar(ev.organization), ar(ev.role), ar(ev.date)]
-      .filter(Boolean)
-      .forEach(function (t) { meta.appendChild(el('span', null, t)); });
-    li.appendChild(meta);
-
-    if (ar(ev.description)) li.appendChild(el('p', 'record-text', ar(ev.description)));
-
-    var cert = (ev.images || []).map(function (i) { return i.src; })
-      .filter(function (s) { return /certificate/i.test(s); })[0] || ev.image;
-    if (cert && /certificate/i.test(cert)) {
-      var a = el('a', 'record-action is-plain', 'شهادة التطوّع');
-      a.href = 'academic/' + cert.replace(/^academic\//, '');
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
+  if (statRow) {
+    [
+      { n: certs.length,    label: 'شهادة موثّقة',   href: 'records.html' },
+      { n: events.length,   label: 'عملية تطوّع',     href: 'records.html#volunteering' },
+      { n: volley.length,   label: 'بطولة كرة طائرة', href: '#volleyball' }
+    ].forEach(function (s) {
+      var li = el('li', 'stat');
+      li.appendChild(el('span', 'stat-num', String(s.n)));
+      li.appendChild(el('span', 'stat-label', s.label));
+      var a = el('a', 'stat-link', 'عرض');
+      a.href = s.href;
+      a.setAttribute('aria-label', s.label + ' — عرض السجل');
       li.appendChild(a);
-    }
-    volList.appendChild(li);
-  });
-
-  if (!events.length) volList.parentNode.hidden = true;
+      statRow.appendChild(li);
+    });
+  }
 
   /* ============================================================
-     7. Render — volleyball
+     6. Render — volleyball
      ============================================================ */
-  var volley = window.volleyballData || [];
   var volleyList = $('#volley-list');
+  if (volleyList) {
+    volley.forEach(function (v) {
+      var li = el('li', 'record');
+      li.appendChild(el('h3', 'record-title', ar(v.title)));
 
-  volley.forEach(function (v) {
-    var li = el('li', 'record');
-    li.appendChild(el('h3', 'record-title', ar(v.title)));
+      var meta = el('p', 'record-meta');
+      [ar(v.organization), ar(v.position), ar(v.date), ar(v.result)]
+        .filter(Boolean)
+        .forEach(function (t) { meta.appendChild(el('span', null, t)); });
+      li.appendChild(meta);
 
-    var meta = el('p', 'record-meta');
-    [ar(v.organization), ar(v.position), ar(v.date), ar(v.result)]
-      .filter(Boolean)
-      .forEach(function (t) { meta.appendChild(el('span', null, t)); });
-    li.appendChild(meta);
+      if (ar(v.description)) li.appendChild(el('p', 'record-text', ar(v.description)));
 
-    if (ar(v.description)) li.appendChild(el('p', 'record-text', ar(v.description)));
-
-    var cover = v.image || (v.images && v.images[0] && v.images[0].src);
-    if (cover) {
-      var a = el('a', 'record-action is-plain', 'عرض الصورة');
-      a.href = 'academic/' + cover.replace(/^academic\//, '');
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      li.appendChild(a);
-    }
-    volleyList.appendChild(li);
-  });
+      var cover = v.image || (v.images && v.images[0] && v.images[0].src);
+      if (cover) {
+        var a = el('a', 'record-action is-plain', 'عرض الصورة');
+        a.href = 'academic/' + cover.replace(/^academic\//, '');
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        li.appendChild(a);
+      }
+      volleyList.appendChild(li);
+    });
+  }
 
   /* ============================================================
      8. Render — projects (stays empty until real ones exist)

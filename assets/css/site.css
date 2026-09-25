@@ -112,6 +112,12 @@ svg { display: block; }
   margin-inline: auto; padding-inline: var(--s-5);
 }
 
+/* The `hidden` attribute must always win.
+   Without this, any author rule that sets `display` (e.g. .empty-state,
+   .record, .to-top) silently overrides the browser's [hidden] rule and the
+   element stays on screen. */
+[hidden] { display: none !important; }
+
 /* ---------- 3. Header ---------- */
 .site-header {
   position: fixed; inset-block-start: 0; inset-inline: 0;
@@ -505,6 +511,42 @@ svg { display: block; }
 .record-action.is-plain:hover { background: none; border-color: var(--sky-400); color: var(--navy-800); }
 
 .no-match { color: var(--ink-3); padding-block: var(--s-5); }
+
+/* ---------- 11b. Stat row (home summary) ---------- */
+.stat-row {
+  display: flex; flex-wrap: wrap; gap: var(--s-3);
+  margin-block-start: var(--s-6);
+}
+.stat {
+  display: flex; align-items: baseline; gap: var(--s-3);
+  padding: var(--s-4) var(--s-5);
+  background: #fff; border: 1px solid var(--paper-3);
+  border-radius: var(--radius);
+}
+.band-alt .stat { background: var(--paper); }
+.stat-num {
+  font-family: var(--font-mono); font-size: 1.9rem; font-weight: 500;
+  line-height: 1; color: var(--sky-600);
+}
+.stat-label { color: var(--ink-2); font-size: .97rem; }
+.stat-link {
+  font-size: .88rem; color: var(--ink-3);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.stat-link:hover { color: var(--sky-600); }
+
+.stat-cta { margin-block-start: var(--s-6); }
+
+.btn-solid {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 50px; padding: var(--s-3) var(--s-6);
+  font-family: inherit; font-size: 1rem; font-weight: 500;
+  background: var(--sky-600); color: #fff;
+  border-radius: var(--radius-sm); border: 1px solid transparent;
+  transition: background var(--t-micro) var(--ease),
+              transform var(--t-micro) var(--ease);
+}
+.btn-solid:hover { background: var(--sky-500); color: #fff; transform: translateY(-2px); }
 
 /* ---------- 12. Vision ---------- */
 .band-vision { background: var(--navy-900); color: var(--on-navy); border-block-start: 0; }

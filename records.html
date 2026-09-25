@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>التعلم والشهادات | حسين البسيوني</title>
+<meta name="description" content="شهادات الدورات والتطوّع الموثّقة لحسين البسيوني، مع البحث الفوري والتصفية حسب المجال.">
+<meta name="author" content="حسين البسيوني">
+<meta name="theme-color" content="#0A1628">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:title" content="التعلم والشهادات | حسين البسيوني">
+<meta property="og:description" content="شهادات الدورات والتطوّع الموثّقة، مع البحث الفوري والتصفية حسب المجال.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="academic/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/records.css">
+</head>
+
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى الرئيسي</a>
+
+<header class="site-header is-stuck" id="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="12" cy="12" r="3.4"></circle>
+          <ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(-28 12 12)"></ellipse>
+        </svg>
+      </span>
+      <span class="brand-name">حسين البسيوني</span>
+    </a>
+
+    <button class="nav-toggle" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="primary-nav" aria-label="فتح قائمة التنقل">
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="التنقل الرئيسي">
+      <ul>
+        <li><a href="index.html">الرئيسية</a></li>
+        <li><a href="index.html#story">قصتي</a></li>
+        <li><a href="index.html#plan">خطتي</a></li>
+        <li><a href="index.html#interests">اهتماماتي</a></li>
+        <li><a href="index.html#projects">مشاريعي</a></li>
+        <li><a href="records.html" aria-current="page">التعلم والشهادات</a></li>
+        <li><a href="index.html#contact">التواصل</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="page-head">
+    <div class="shell">
+      <p class="eyebrow">السجل</p>
+      <h1 class="page-title">التعلم والشهادات</h1>
+      <p class="page-lead">كل شهادة هنا موثّقة برابط التحقق من الجهة المانحة. ابحث أو صفِّ حسب المجال.</p>
+    </div>
+  </section>
+
+  <!-- ═══ البحث ═══ -->
+  <section class="band band-search" aria-labelledby="search-label">
+    <div class="shell">
+      <h2 class="sr-only" id="search-label">البحث في السجلات</h2>
+
+      <div class="search" role="search">
+        <span class="search-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <circle cx="11" cy="11" r="6.6"></circle>
+            <path d="M15.8 15.8 20.5 20.5"></path>
+          </svg>
+        </span>
+        <input class="search-input" id="search" type="search"
+               placeholder="اكتب للبحث… مثال: ذكاء، إسعاف، 2026"
+               aria-label="اكتب للبحث في الشهادات والتطوّع"
+               autocomplete="off" spellcheck="false">
+        <button class="search-clear" id="search-clear" type="button" aria-label="مسح البحث" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <p class="search-hint" id="search-hint" aria-live="polite"></p>
+
+      <div class="tagbar" id="tagbar" role="group" aria-label="تصفية حسب المجال"></div>
+    </div>
+  </section>
+
+  <!-- ═══ الشهادات ═══ -->
+  <section class="band" id="certificates" aria-labelledby="certs-title">
+    <div class="shell">
+      <header class="sec-head sec-head-row">
+        <h2 id="certs-title">الشهادات</h2>
+        <span class="count" id="certs-count"></span>
+      </header>
+
+      <ul class="records" id="certs-list"></ul>
+      <p class="no-match" id="certs-none" hidden>لا توجد نتائج مطابقة.</p>
+    </div>
+  </section>
+
+  <!-- ═══ التطوّع ═══ -->
+  <section class="band band-alt" id="volunteering" aria-labelledby="vol-title">
+    <div class="shell">
+      <header class="sec-head sec-head-row">
+        <h2 id="vol-title">التطوّع</h2>
+        <span class="count" id="vol-count"></span>
+      </header>
+
+      <ul class="records" id="volunteer-list"></ul>
+      <p class="no-match" id="vol-none" hidden>لا توجد نتائج مطابقة.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <p class="footer-name">حسين البسيوني</p>
+    <nav class="footer-nav" aria-label="روابط التذييل">
+      <ul>
+        <li><a href="index.html">الرئيسية</a></li>
+        <li><a href="index.html#story">قصتي</a></li>
+        <li><a href="index.html#plan">خطتي</a></li>
+        <li><a href="records.html">التعلم والشهادات</a></li>
+        <li><a href="index.html#contact">التواصل</a></li>
+      </ul>
+    </nav>
+    <p class="footer-copy"><span id="footer-year">2026</span> — جميع الحقوق محفوظة لحسين البسيوني</p>
+  </div>
+</footer>
+
+<button class="to-top" id="to-top" type="button" aria-label="العودة إلى أعلى الصفحة" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7"></path>
+  </svg>
+</button>
+
+<script src="academic/data/certificates.js"></script>
+<script src="academic/data/events.js"></script>
+<script src="assets/js/records.js"></script>
+</body>
+</html>
