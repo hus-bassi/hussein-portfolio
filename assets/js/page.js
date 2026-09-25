@@ -30,16 +30,20 @@
   var navToggle = document.getElementById('nav-toggle');
   var primaryNav = document.getElementById('primary-nav');
 
+  function tt(key) {
+    return (window.I18N && window.I18N.t(key)) || '';
+  }
+
   if (navToggle && primaryNav) {
     function closeNav() {
       primaryNav.classList.remove('is-open');
       navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'فتح قائمة التنقل');
+      navToggle.setAttribute('aria-label', tt('nav.open'));
     }
     navToggle.addEventListener('click', function () {
       var open = primaryNav.classList.toggle('is-open');
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      navToggle.setAttribute('aria-label', open ? 'إغلاق قائمة التنقل' : 'فتح قائمة التنقل');
+      navToggle.setAttribute('aria-label', open ? tt('nav.close') : tt('nav.open'));
     });
     primaryNav.addEventListener('click', function (e) {
       if (e.target.closest('a')) closeNav();

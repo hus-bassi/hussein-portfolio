@@ -14,13 +14,13 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="academic/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
 
-<body>
-<a class="skip-link" href="#main">تخطّي إلى المحتوى الرئيسي</a>
+<body data-page="index">
+<a class="skip-link" href="#main" data-i18n="skip">تخطّي إلى المحتوى الرئيسي</a>
 
 <header class="site-header" id="site-header">
   <div class="shell header-inner">
@@ -31,27 +31,33 @@
           <ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(-28 12 12)"></ellipse>
         </svg>
       </span>
-      <span class="brand-name">حسين البسيوني</span>
+      <span class="brand-name" data-i18n="brand.name">حسين البسيوني</span>
     </a>
 
+    <nav class="primary-nav" id="primary-nav" data-i18n-aria="nav.label" aria-label="التنقل الرئيسي">
+      <ul>
+        <li><a href="#home" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="story.html" data-i18n="nav.story">قصتي</a></li>
+        <li><a href="#plan" data-i18n="nav.plan">خطتي</a></li>
+        <li><a href="#interests" data-i18n="nav.interests">اهتماماتي</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">مشاريعي</a></li>
+        <li><a href="records.html" data-i18n="nav.learning">التعلم والشهادات</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">التواصل</a></li>
+      </ul>
+    </nav>
+
+    <div class="lang-switch" role="group" data-i18n-aria="lang.label" aria-label="اللغة">
+      <button class="lang-btn" type="button" data-lang="ar" aria-pressed="true">ع</button>
+      <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button class="lang-btn" type="button" data-lang="ru" aria-pressed="false">RU</button>
+    </div>
+
     <button class="nav-toggle" id="nav-toggle" type="button"
-            aria-expanded="false" aria-controls="primary-nav" aria-label="فتح قائمة التنقل">
+            aria-expanded="false" aria-controls="primary-nav" data-i18n-aria="nav.open" aria-label="فتح قائمة التنقل">
       <span class="nav-toggle-bar" aria-hidden="true"></span>
       <span class="nav-toggle-bar" aria-hidden="true"></span>
       <span class="nav-toggle-bar" aria-hidden="true"></span>
     </button>
-
-    <nav class="primary-nav" id="primary-nav" aria-label="التنقل الرئيسي">
-      <ul>
-        <li><a href="#home">الرئيسية</a></li>
-        <li><a href="story.html">قصتي</a></li>
-        <li><a href="#plan">خطتي</a></li>
-        <li><a href="#interests">اهتماماتي</a></li>
-        <li><a href="#projects">مشاريعي</a></li>
-        <li><a href="records.html">التعلم والشهادات</a></li>
-        <li><a href="#contact">التواصل</a></li>
-      </ul>
-    </nav>
   </div>
 </header>
 
@@ -67,18 +73,18 @@
 
     <div class="shell hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow">الاسم</p>
-        <h1 class="hero-name" id="hero-title">حسين البسيوني</h1>
-        <p class="hero-lead">أطمح إلى الجمع بين علوم البيانات وعلم الفلك</p>
-        <p class="hero-desc">أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">الاسم</p>
+        <h1 class="hero-name" id="hero-title" data-i18n="brand.name">حسين البسيوني</h1>
+        <p class="hero-lead" data-i18n="hero.lead">أطمح إلى الجمع بين علوم البيانات وعلم الفلك</p>
+        <p class="hero-desc" data-i18n="hero.desc">أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.</p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="story.html">اقرأ قصتي</a>
-          <a class="btn btn-ghost" href="#interests">استكشف اهتماماتي</a>
-          <a class="btn btn-ghost" href="#contact">تواصل معي</a>
+          <a class="btn btn-primary" href="story.html" data-i18n="hero.btnStory">اقرأ قصتي</a>
+          <a class="btn btn-ghost" href="#interests" data-i18n="hero.btnInterests">استكشف اهتماماتي</a>
+          <a class="btn btn-ghost" href="#contact" data-i18n="hero.btnContact">تواصل معي</a>
         </div>
 
-        <p class="hero-quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
+        <p class="hero-quote" data-i18n="hero.quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
       </div>
 
       <div class="hero-visual" aria-hidden="true">
@@ -106,9 +112,9 @@
   <section class="band" id="about" aria-labelledby="about-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="about-title">نبذة عني</h2>
+        <h2 id="about-title" data-i18n="about.title">نبذة عني</h2>
       </header>
-      <p class="lead-para">أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.</p>
+      <p class="lead-para" data-i18n="about.text">أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.</p>
     </div>
   </section>
 
@@ -116,16 +122,16 @@
   <section class="band band-alt" id="story" aria-labelledby="story-title">
     <div class="shell">
       <header class="sec-head sec-head-row">
-        <h2 id="story-title">قصتي</h2>
-        <a class="sec-more" href="story.html">اقرأ القصة كاملة</a>
+        <h2 id="story-title" data-i18n="story.title">قصتي</h2>
+        <a class="sec-more" href="story.html" data-i18n="story.more">اقرأ القصة كاملة</a>
       </header>
 
-      <p class="lead-para">بدأتُ في الثانوية العامة وأهللتُ الدراسة، فكانت النتيجة 63% — وهي لا تعبّر عن قدراتي بقدر ما تعبّر عن إهمالي. بعدها مررتُ بفترة صعبة، وشاهدتُ أنمي “هايكيو” لأحبّ الكرة الطائرة، فممارستها ثلاث سنوات حتى اقتربتُ من أول انضمام رسمي لي إلى فريق. ثم تعرّضتُ لإصابة في عيني اليسرى أثناء مباراة ودية في مركز شباب السلام، ففقدتُ البصر فيها واعتزلتُ الكرة.</p>
+      <p class="lead-para" data-i18n="story.p1">بدأتُ في الثانوية العامة وأهملتُ الدراسة، فكانت النتيجة 63% — وهي لا تعبّر عن قدراتي بقدر ما تعبّر عن إهمالي. بعدها مررتُ بفترة صعبة، وشاهدتُ أنمي “هايكيو” لأحبّ الكرة الطائرة، فمارستها ثلاث سنوات حتى اقتربتُ من أول انضمام رسمي لي إلى فريق. ثم تعرّضتُ لإصابة في عيني اليسرى أثناء مباراة ودية في مركز شباب السلام، ففقدتُ البصر فيها واعتزلتُ الكرة.</p>
 
-      <p class="lead-para">لكنني لم أستسلم. انتقلتُ إلى البيانات والبرمجة، وبقي الفلك والكواكب شغفًا من طفولتي. أعمل الآن على تطوير نفسي وجمع الشهادات، وأطمح إلى بكالوريوس في بزنس إنفورماتكس ثم ماجستير في علوم البيانات ثم دكتوراه في علم البيانات الفلكي، مع الدراسة في روسيا بإذن الله.</p>
+      <p class="lead-para" data-i18n="story.p2">لكنني لم أستسلم. انتقلتُ إلى البيانات والبرمجة، وبقي الفلك والكواكب شغفًا من طفولتي. أعمل الآن على تطوير نفسي وجمع الشهادات، وأطمح إلى بكالوريوس في بزنس إنفورماتكس ثم ماجستير في علوم البيانات ثم دكتوراه في علم البيانات الفلكي، مع الدراسة في روسيا بإذن الله.</p>
 
       <p class="stat-cta">
-        <a class="btn btn-solid" href="story.html">اقرأ قصتي كاملة</a>
+        <a class="btn btn-solid" href="story.html" data-i18n="story.cta">اقرأ قصتي كاملة</a>
       </p>
     </div>
   </section>
@@ -134,38 +140,38 @@
   <section class="band" id="plan" aria-labelledby="plan-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="plan-title">الطريق الذي أعمل على بنائه</h2>
+        <h2 id="plan-title" data-i18n="plan.title">الطريق الذي أعمل على بنائه</h2>
       </header>
 
       <ol class="stages">
         <li class="stage">
           <p class="stage-num" aria-hidden="true">01</p>
-          <h3 class="stage-title">تطوير الأساس</h3>
-          <p class="stage-text">أعمل على تقوية معرفتي بالبرمجة وتحليل البيانات، وأحرص على التعلم المستمر وإضافة مهارات جديدة.</p>
+          <h3 class="stage-title" data-i18n="plan.s1t">تطوير الأساس</h3>
+          <p class="stage-text" data-i18n="plan.s1d">أعمل على تقوية معرفتي بالبرمجة وتحليل البيانات، وأحرص على التعلم المستمر وإضافة مهارات جديدة.</p>
         </li>
         <li class="stage">
           <p class="stage-num" aria-hidden="true">02</p>
-          <h3 class="stage-title">دراسة مجال يرتبط بالأعمال والتقنية</h3>
-          <p class="stage-text">أطمح إلى اختيار دراسة جامعية تمنحني أساسًا مناسبًا في الأعمال والتقنية، بما يتوافق مع اهتماماتي وخطتي المستقبلية.</p>
+          <h3 class="stage-title" data-i18n="plan.s2t">دراسة مجال يرتبط بالأعمال والتقنية</h3>
+          <p class="stage-text" data-i18n="plan.s2d">أطمح إلى اختيار دراسة جامعية تمنحني أساسًا مناسبًا في الأعمال والتقنية، بما يتوافق مع اهتماماتي وخطتي المستقبلية.</p>
         </li>
         <li class="stage">
           <p class="stage-num" aria-hidden="true">03</p>
-          <h3 class="stage-title">التخصص في علوم البيانات</h3>
-          <p class="stage-text">أطمح إلى التعمق في علوم البيانات وتعلم الأدوات والأساليب اللازمة لتحليل البيانات وبناء المشاريع.</p>
+          <h3 class="stage-title" data-i18n="plan.s3t">التخصص في علوم البيانات</h3>
+          <p class="stage-text" data-i18n="plan.s3d">أطمح إلى التعمق في علوم البيانات وتعلم الأدوات والأساليب اللازمة لتحليل البيانات وبناء المشاريع.</p>
         </li>
         <li class="stage">
           <p class="stage-num" aria-hidden="true">04</p>
-          <h3 class="stage-title">تطبيق البيانات في علم الفلك</h3>
-          <p class="stage-text">هدفي البعيد هو استخدام علوم البيانات والبرمجة في دراسة البيانات الفلكية والكواكب والظواهر المرتبطة بالفضاء.</p>
+          <h3 class="stage-title" data-i18n="plan.s4t">تطبيق البيانات في علم الفلك</h3>
+          <p class="stage-text" data-i18n="plan.s4d">هدفي البعيد هو استخدام علوم البيانات والبرمجة في دراسة البيانات الفلكية والكواكب والظواهر المرتبطة بالفضاء.</p>
         </li>
         <li class="stage">
           <p class="stage-num" aria-hidden="true">05</p>
-          <h3 class="stage-title">الدراسة في روسيا</h3>
-          <p class="stage-text">أحلم بالدراسة في روسيا، وأسعى إلى الاستعداد والتقديم للجامعات والفرص المناسبة.</p>
+          <h3 class="stage-title" data-i18n="plan.s5t">الدراسة في روسيا</h3>
+          <p class="stage-text" data-i18n="plan.s5d">أحلم بالدراسة في روسيا، وأسعى إلى الاستعداد والتقديم للجامعات والفرص المناسبة.</p>
         </li>
       </ol>
 
-      <p class="note">هذه خطة طموحة قابلة للتطوير، وتعتمد تفاصيلها على متطلبات الجامعات والفرص الدراسية المتاحة.</p>
+      <p class="note" data-i18n="plan.note">هذه خطة طموحة قابلة للتطوير، وتعتمد تفاصيلها على متطلبات الجامعات والفرص الدراسية المتاحة.</p>
     </div>
   </section>
 
@@ -173,13 +179,13 @@
   <section class="band band-alt" id="why" aria-labelledby="why-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="why-title">عندما يلتقي الفلك بالبيانات</h2>
+        <h2 id="why-title" data-i18n="why.title">عندما يلتقي الفلك بالبيانات</h2>
       </header>
 
       <div class="why-grid">
-        <p class="lead-para">أحببتُ الفلك والكواكب منذ طفولتي، وأهتم بالبيانات والبرمجة. يجذبني احتمال استخدام الأدوات الحاسوبية لتحليل البيانات الفلكية واكتشاف الأنماط وفهم المعلومات التي تقدمها لنا.</p>
+        <p class="lead-para" data-i18n="why.lead">أحببتُ الفلك والكواكب منذ طفولتي، وأهتم بالبيانات والبرمجة. يجذبني احتمال استخدام الأدوات الحاسوبية لتحليل البيانات الفلكية واكتشاف الأنماط وفهم المعلومات التي تقدمها لنا.</p>
 
-        <ul class="chain" aria-label="العلاقة بين البيانات والبرمجة والفلك">
+        <ul class="chain" data-i18n-aria="why.chainLabel" aria-label="العلاقة بين البيانات والبرمجة والفلك">
           <li>
             <span class="chain-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -188,7 +194,7 @@
                 <path d="M12 3v3.4M12 17.6V21"></path>
               </svg>
             </span>
-            <span class="chain-name">البيانات</span>
+            <span class="chain-name" data-i18n="why.data">البيانات</span>
           </li>
           <li>
             <span class="chain-ico" aria-hidden="true">
@@ -196,7 +202,7 @@
                 <path d="M9 7l-5 5 5 5M15 7l5 5-5 5"></path>
               </svg>
             </span>
-            <span class="chain-name">البرمجة</span>
+            <span class="chain-name" data-i18n="why.code">البرمجة</span>
           </li>
           <li>
             <span class="chain-ico" aria-hidden="true">
@@ -205,7 +211,7 @@
                 <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(-30 12 12)"></ellipse>
               </svg>
             </span>
-            <span class="chain-name">الفلك</span>
+            <span class="chain-name" data-i18n="why.astro">الفلك</span>
           </li>
           <li>
             <span class="chain-ico" aria-hidden="true">
@@ -215,7 +221,7 @@
                 <path d="M12 1.6v3M12 19.4v3M1.6 12h3M19.4 12h3"></path>
               </svg>
             </span>
-            <span class="chain-name">الكواكب</span>
+            <span class="chain-name" data-i18n="why.planets">الكواكب</span>
           </li>
         </ul>
       </div>
@@ -226,7 +232,7 @@
   <section class="band" id="interests" aria-labelledby="interests-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="interests-title">اهتماماتي</h2>
+        <h2 id="interests-title" data-i18n="interests.title">اهتماماتي</h2>
       </header>
 
       <ul class="cards">
@@ -236,8 +242,8 @@
               <path d="M4 19V9M9.3 19V5M14.7 19v-8M20 19V7"></path>
             </svg>
           </span>
-          <h3 class="card-title">علوم البيانات</h3>
-          <p class="card-text">مجال أطمح إلى التعمق فيه واستخدامه في مشروعات ذات معنى.</p>
+          <h3 class="card-title" data-i18n="int.ds.t">علوم البيانات</h3>
+          <p class="card-text" data-i18n="int.ds.d">مجال أطمح إلى التعمق فيه واستخدامه في مشروعات ذات معنى.</p>
         </li>
         <li class="card">
           <span class="card-ico" aria-hidden="true">
@@ -245,8 +251,8 @@
               <path d="M9 7l-5 5 5 5M15 7l5 5-5 5"></path>
             </svg>
           </span>
-          <h3 class="card-title">البرمجة</h3>
-          <p class="card-text">مهارة أعمل على تطويرها لدعم أفكاري ومشروعاتي.</p>
+          <h3 class="card-title" data-i18n="int.code.t">البرمجة</h3>
+          <p class="card-text" data-i18n="int.code.d">مهارة أعمل على تطويرها لدعم أفكاري ومشروعاتي.</p>
         </li>
         <li class="card">
           <span class="card-ico" aria-hidden="true">
@@ -255,8 +261,8 @@
               <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(-30 12 12)"></ellipse>
             </svg>
           </span>
-          <h3 class="card-title">علم الفلك</h3>
-          <p class="card-text">شغف قديم أطمح إلى ربطه بالبيانات والتحليل.</p>
+          <h3 class="card-title" data-i18n="int.astro.t">علم الفلك</h3>
+          <p class="card-text" data-i18n="int.astro.d">شغف قديم أطمح إلى ربطه بالبيانات والتحليل.</p>
         </li>
         <li class="card">
           <span class="card-ico" aria-hidden="true">
@@ -266,8 +272,8 @@
               <path d="M12 1.6v3M12 19.4v3M1.6 12h3M19.4 12h3"></path>
             </svg>
           </span>
-          <h3 class="card-title">الكواكب والفضاء</h3>
-          <p class="card-text">اهتمام مبكر بالفضاء والكواكب، أطمح إلى استكشافه بعين علمية قائمة على البيانات.</p>
+          <h3 class="card-title" data-i18n="int.planets.t">الكواكب والفضاء</h3>
+          <p class="card-text" data-i18n="int.planets.d">اهتمام مبكر بالفضاء والكواكب، أطمح إلى استكشافه بعين علمية قائمة على البيانات.</p>
         </li>
         <li class="card">
           <span class="card-ico" aria-hidden="true">
@@ -276,8 +282,8 @@
               <path d="M3.8 12h16.4M12 3.8c4.6 5 4.6 11.4 0 16.4M12 3.8c-4.6 5-4.6 11.4 0 16.4"></path>
             </svg>
           </span>
-          <h3 class="card-title">الكرة الطائرة</h3>
-          <p class="card-text">رياضة شكلت جزءًا مهمًا من رحلتي الشخصية.</p>
+          <h3 class="card-title" data-i18n="int.volley.t">الكرة الطائرة</h3>
+          <p class="card-text" data-i18n="int.volley.d">رياضة شكلت جزءًا مهمًا من رحلتي الشخصية.</p>
         </li>
         <li class="card">
           <span class="card-ico" aria-hidden="true">
@@ -285,8 +291,8 @@
               <path d="M12 3.2 14.5 9l6.3.6-4.8 4.2 1.4 6.2L12 16.8 6.6 20l1.4-6.2L3.2 9.6 9.5 9z"></path>
             </svg>
           </span>
-          <h3 class="card-title">التعلم المستمر</h3>
-          <p class="card-text">أعمل على تطوير معرفتي من خلال الدراسة والدورات والتطبيق.</p>
+          <h3 class="card-title" data-i18n="int.learn.t">التعلم المستمر</h3>
+          <p class="card-text" data-i18n="int.learn.d">أعمل على تطوير معرفتي من خلال الدراسة والدورات والتطبيق.</p>
         </li>
       </ul>
     </div>
@@ -296,7 +302,7 @@
   <section class="band band-alt" id="projects" aria-labelledby="projects-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="projects-title">مشاريعي</h2>
+        <h2 id="projects-title" data-i18n="projects.title">مشاريعي</h2>
       </header>
 
       <div class="empty-state" id="projects-empty">
@@ -306,10 +312,9 @@
             <path d="M4 7.5 12 12m0 9v-9m8-4.5L12 12"></path>
           </svg>
         </span>
-        <p class="empty-text">أعمل حاليًا على تطوير مهاراتي، وسيتم عرض مشاريعي هنا عند اكتمالها.</p>
+        <p class="empty-text" data-i18n="projects.empty">أعمل حاليًا على تطوير مهاراتي، وسيتم عرض مشاريعي هنا عند اكتمالها.</p>
       </div>
 
-      <!-- تُملأ تلقائيًا من academic/data/projects.js عند إضافة مشاريع حقيقية -->
       <ul class="cards cards-projects" id="projects-list" hidden></ul>
     </div>
   </section>
@@ -318,15 +323,15 @@
   <section class="band" id="learning" aria-labelledby="learning-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="learning-title">التعلم والشهادات</h2>
+        <h2 id="learning-title" data-i18n="learning.title">التعلم والشهادات</h2>
       </header>
 
-      <p class="lead-para">كل شهادة موثّقة برابط التحقق من الجهة المانحة. السجل كامل — مع البحث الفوري والتصفية حسب المجال — في صفحة مستقلة.</p>
+      <p class="lead-para" data-i18n="learning.lead">كل شهادة موثّقة برابط التحقق من الجهة المانحة. السجل كامل — مع البحث الفوري والتصفية حسب المجال — في صفحة مستقلة.</p>
 
-      <ul class="stat-row" id="stat-row" aria-label="ملخص السجل"></ul>
+      <ul class="stat-row" id="stat-row" data-i18n-aria="learning.statsLabel" aria-label="ملخص السجل"></ul>
 
       <p class="stat-cta">
-        <a class="btn btn-solid" href="records.html">افتح سجل التعلم والشهادات</a>
+        <a class="btn btn-solid" href="records.html" data-i18n="learning.open">افتح سجل التعلم والشهادات</a>
       </p>
     </div>
   </section>
@@ -335,12 +340,11 @@
   <section class="band band-alt" id="volleyball" aria-labelledby="volleyball-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="volleyball-title">الكرة الطائرة في رحلتي</h2>
+        <h2 id="volleyball-title" data-i18n="volley.title">الكرة الطائرة في رحلتي</h2>
       </header>
 
-      <p class="lead-para">كانت الكرة الطائرة جزءًا مهمًا من حياتي لمدة ثلاث سنوات. ساعدتني هذه التجربة على اكتشاف شغفي بالرياضة، والعمل على تطوير نفسي، وتعلم معنى الاستمرار. بعد إصابة عيني اليسرى توقفت عن اللعب، لكنني ما زلت أطمح إلى العودة إلى أجواء الفرق الرياضية إذا أتيحت لي الفرصة، بما يتناسب مع ظروفي.</p>
+      <p class="lead-para" data-i18n="volley.lead">كانت الكرة الطائرة جزءًا مهمًا من حياتي لمدة ثلاث سنوات. ساعدتني هذه التجربة على اكتشاف شغفي بالرياضة، والعمل على تطوير نفسي، وتعلم معنى الاستمرار. بعد إصابة عيني اليسرى توقفت عن اللعب، لكنني ما زلت أطمح إلى العودة إلى أجواء الفرق الرياضية إذا أتيحت لي الفرصة، بما يتناسب مع ظروفي.</p>
 
-      <!-- تُملأ تلقائيًا من academic/data/volleyball.js -->
       <ul class="records" id="volley-list"></ul>
     </div>
   </section>
@@ -349,10 +353,10 @@
   <section class="band band-vision" id="vision" aria-labelledby="vision-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="vision-title">رؤيتي للمستقبل</h2>
+        <h2 id="vision-title" data-i18n="vision.title">رؤيتي للمستقبل</h2>
       </header>
-      <p class="vision-text">أطمح، بإذن الله، إلى إنجاز مشاريع في علم البيانات الفلكي، ومواصلة دراستي في روسيا، وبناء مستقبل يجمع بين البيانات والبرمجة وشغفي بعلم الفلك.</p>
-      <p class="vision-sub">هذا هدف أعمل على الاقتراب منه خطوة بخطوة.</p>
+      <p class="vision-text" data-i18n="vision.text">أطمح، بإذن الله، إلى إنجاز مشاريع في علم البيانات الفلكي، ومواصلة دراستي في روسيا، وبناء مستقبل يجمع بين البيانات والبرمجة وشغفي بعلم الفلك.</p>
+      <p class="vision-sub" data-i18n="vision.sub">هذا هدف أعمل على الاقتراب منه خطوة بخطوة.</p>
     </div>
   </section>
 
@@ -360,14 +364,14 @@
   <section class="band" id="contact" aria-labelledby="contact-title">
     <div class="shell">
       <header class="sec-head">
-        <h2 id="contact-title">لنبقَ على تواصل</h2>
+        <h2 id="contact-title" data-i18n="contact.title">لنبقَ على تواصل</h2>
       </header>
 
-      <p class="lead-para">للتواصل بشأن الدراسة أو المشاريع أو فرص التعلم، يمكن استخدام وسائل التواصل التي سأضيفها هنا.</p>
+      <p class="lead-para" data-i18n="contact.lead">للتواصل بشأن الدراسة أو المشاريع أو فرص التعلم، يمكن استخدام وسائل التواصل التي سأضيفها هنا.</p>
 
       <ul class="socials" id="social-list"></ul>
 
-      <p class="pending" id="contact-pending">ستُضاف بيانات التواصل قريبًا.</p>
+      <p class="pending" id="contact-pending" data-i18n="contact.pending">ستُضاف بيانات التواصل قريبًا.</p>
     </div>
   </section>
 
@@ -375,21 +379,21 @@
 
 <footer class="site-footer">
   <div class="shell footer-inner">
-    <p class="footer-name">حسين البسيوني</p>
-    <nav class="footer-nav" aria-label="روابط التذييل">
+    <p class="footer-name" data-i18n="brand.name">حسين البسيوني</p>
+    <nav class="footer-nav" data-i18n-aria="footer.navLabel" aria-label="روابط التذييل">
       <ul>
-        <li><a href="#home">الرئيسية</a></li>
-        <li><a href="story.html">قصتي</a></li>
-        <li><a href="#plan">خطتي</a></li>
-        <li><a href="records.html">التعلم والشهادات</a></li>
-        <li><a href="#contact">التواصل</a></li>
+        <li><a href="#home" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="story.html" data-i18n="nav.story">قصتي</a></li>
+        <li><a href="#plan" data-i18n="nav.plan">خطتي</a></li>
+        <li><a href="records.html" data-i18n="nav.learning">التعلم والشهادات</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">التواصل</a></li>
       </ul>
     </nav>
-    <p class="footer-copy"><span id="footer-year">2026</span> — جميع الحقوق محفوظة لحسين البسيوني</p>
+    <p class="footer-copy"><span id="footer-year">2026</span> — <span data-i18n="footer.rights">جميع الحقوق محفوظة لحسين البسيوني</span></p>
   </div>
 </footer>
 
-<button class="to-top" id="to-top" type="button" aria-label="العودة إلى أعلى الصفحة" hidden>
+<button class="to-top" id="to-top" type="button" data-i18n-aria="toTop" aria-label="العودة إلى أعلى الصفحة" hidden>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"></path>
   </svg>
@@ -400,6 +404,7 @@
 <script src="academic/data/volleyball.js"></script>
 <script src="academic/data/projects.js"></script>
 <script src="academic/data/social.js"></script>
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/site.js"></script>
 </body>
 </html>
