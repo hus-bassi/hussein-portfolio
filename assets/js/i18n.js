@@ -25,6 +25,15 @@
       en: 'Hussein ElBassiouni',
       ru: 'Хусейн Эль-Басьюни'
     },
+    /* Hero name only. Russian is long enough that it wraps on its own
+       and the break lands badly — so the line break is deliberate:
+       first name over last name, both flush to the same side.
+       The \n is rendered by `white-space: pre-line` on .hero-name. */
+    'brand.nameLines': {
+      ar: 'حسين البسيوني',
+      en: 'Hussein ElBassiouni',
+      ru: 'Хусейн\nЭль-Басьюни'
+    },
     'nav.label': {
       ar: 'التنقل الرئيسي',
       en: 'Primary navigation',
