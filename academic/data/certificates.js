@@ -5,15 +5,17 @@
    files that read this.
 
    MULTILINGUAL FIELDS (AR / EN / RU)
-   A certificate's `title` and `description` may each be EITHER:
+   A certificate's fields may each be EITHER:
      • a plain string  — shown as-is in every language, or
      • an object { en, ar, ru }  — the matching language is shown,
        falling back to English. This lets a certificate read
        naturally in Arabic and Russian, matching the rest of the
        trilingual site.
-   `provider`, `date` and `category` stay single strings for now
-   (proper nouns / a shared filter key) — see CHANGELOG v1.6.0 for
-   why, and what the next honest localisation step would be.
+   `provider`, `date` and `category` are localised objects too. This
+   matters: the Arabic version of the site must contain NO Latin
+   characters at all, so "July 13, 2026" cannot stay in English — it has
+   to read "13 يوليو 2026", and the provider "MinnaLearn · University
+   of Helsinki" has to read "ميناليرن · جامعة هلسنكي".
 
    IMAGE PATHS are written relative to the academic/ folder itself
    (e.g. `assets/certificates/x.jpg`), NOT to any one page. js/certificates.js
@@ -46,18 +48,35 @@ const certificatesData = [
       ar: 'عناصر الذكاء الاصطناعي للأعمال',
       ru: 'Основы искусственного интеллекта для бизнеса',
     },
-    provider: 'MinnaLearn · University of Helsinki',
-    date: 'July 13, 2026',
-    category: 'Artificial Intelligence & Business',
+    provider: {
+      en: 'MinnaLearn · University of Helsinki',
+      ar: 'ميناليرن · جامعة هلسنكي',
+      ru: 'MinnaLearn · Хельсинкский университет',
+    },
+    date: {
+      en: 'July 13, 2026',
+      ar: '13 يوليو 2026',
+      ru: '13 июля 2026',
+    },
+    category: {
+      en: 'Artificial Intelligence & Business',
+      ar: 'الذكاء الاصطناعي والأعمال',
+      ru: 'Искусственный интеллект и бизнес',
+    },
     image: 'assets/certificates/elements-of-ai-for-business.jpg',
     credentialUrl:
       'https://courses.minnalearn.com/certificate/ar/elements-of-ai-for-business/253fbdeb-e4cc-4d4a-b668-ceb4056df15e',
     description: {
       en: 'Completed the 4-week Elements of AI for Business program, developing a practical understanding of artificial intelligence and exploring how modern AI tools can be applied to learning, productivity, content creation, and business-related tasks.',
-      ar: 'أتممت برنامج Elements of AI for Business لمدة أربعة أسابيع، واكتسبت فهمًا عمليًا لأساسيات الذكاء الاصطناعي وتطبيقاته، مع التدريب على استخدام مجموعة متنوعة من أدوات الذكاء الاصطناعي في التعلّم والإنتاجية وصناعة المحتوى والمهام المرتبطة بالأعمال.',
+      ar: 'أتممت برنامج «عناصر الذكاء الاصطناعي للأعمال» لمدة أربعة أسابيع، واكتسبت فهمًا عمليًا لأساسيات الذكاء الاصطناعي وتطبيقاته، مع التدريب على استخدام مجموعة متنوعة من أدوات الذكاء الاصطناعي في التعلّم والإنتاجية وصناعة المحتوى والمهام المرتبطة بالأعمال.',
       ru: 'Завершил четырёхнедельную программу Elements of AI for Business, получив практическое понимание искусственного интеллекта и изучив применение современных AI-инструментов для обучения, продуктивности, создания контента и решения бизнес-задач.',
     },
     isDemo: false,
+    /* Concept tags — the controlled vocabulary used by the filter buttons
+       on the site. Reuse an existing slug when the concept already exists;
+       only introduce a genuinely new one. See "The Tagging Rule" in AGENTS.md.
+       Current vocabulary: ai · first-aid · data · python · excel */
+    tags: ['ai'],
   },
   {
     // First Aid certificate from Edraak — one certificate, two PDF versions (AR/EN)
@@ -66,9 +85,21 @@ const certificatesData = [
       ar: 'الإسعافات الأولية',
       ru: 'Первая помощь',
     },
-    provider: 'إدراك / EDRAAK',
-    date: '15/09/2026',
-    category: 'Health & Safety',
+    provider: {
+      en: 'Edraak',
+      ar: 'إدراك',
+      ru: 'Edraak',
+    },
+    date: {
+      en: 'September 15, 2026',
+      ar: '15 سبتمبر 2026',
+      ru: '15 сентября 2026',
+    },
+    category: {
+      en: 'Health & Safety',
+      ar: 'الصحة والسلامة',
+      ru: 'Здоровье и безопасность',
+    },
     image: {
       en: 'assets/certificates/first-aid-edraak-en.jpg',
       ar: 'assets/certificates/first-aid-edraak-ar.jpg',
@@ -90,8 +121,16 @@ const certificatesData = [
       ru: 'Успешно завершил курс Первой помощи на Edraak, охватывающий основные навыки экстренной реагирования, включая КЛР, уход за ранами, помощь при удушье и базовые методы поддержания жизни.',
     },
     isDemo: false,
+    /* Concept tags — the controlled vocabulary used by the filter buttons
+       on the site. Add an existing slug when the concept already exists;
+       only introduce a genuinely new one. See "The Tagging Rule" in AGENTS.md.
+       Current vocabulary: ai · first-aid · data · python · excel */
+    tags: ['first-aid'],
   },
 ];
+
+// Expose for the site renderer (assets/js/site.js).
+if (typeof window !== 'undefined') window.certificatesData = certificatesData;
 
 /* ------------------------------------------------------------
    PARKED DEMO ENTRIES — kept, not deleted (nothing is ever lost).
