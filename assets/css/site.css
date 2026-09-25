@@ -309,6 +309,17 @@ svg { display: block; }
   max-width: 24ch;
 }
 
+.sec-head-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s-4); flex-wrap: wrap;
+}
+.sec-more {
+  font-size: .95rem; color: var(--sky-600);
+  text-decoration: underline; text-underline-offset: 4px;
+  white-space: nowrap;
+}
+.sec-more:hover { color: var(--navy-800); }
+
 .lead-para {
   font-size: clamp(1.06rem, 1rem + .35vw, 1.2rem);
   color: var(--ink-2);
@@ -332,6 +343,17 @@ svg { display: block; }
 
 /* ---------- 6. Timeline (قصتي) ---------- */
 .timeline { position: relative; max-width: var(--measure); }
+
+/* On the dedicated story page the copy is the whole point, so it gets a
+   wider measure, more breathing room, and a station number. */
+.timeline-lg { max-width: 46rem; }
+.timeline-lg .tl-item { padding-block-end: var(--s-9); }
+.timeline-lg .tl-text { font-size: 1.08rem; line-height: 1.95; }
+.tl-index {
+  font-family: var(--font-mono); font-size: .82rem; letter-spacing: .1em;
+  color: var(--sky-600); opacity: .75;
+  margin-block-end: var(--s-2);
+}
 
 .timeline::before {
   content: ""; position: absolute;
@@ -551,6 +573,32 @@ svg { display: block; }
               transform var(--t-micro) var(--ease);
 }
 .btn-solid:hover { background: var(--sky-500); color: #fff; transform: translateY(-2px); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 50px; padding: var(--s-3) var(--s-6);
+  font-family: inherit; font-size: 1rem; font-weight: 500;
+  background: none; color: var(--navy-800);
+  border: 1px solid var(--paper-3); border-radius: var(--radius-sm);
+  transition: border-color var(--t-micro) var(--ease),
+              background var(--t-micro) var(--ease),
+              transform var(--t-micro) var(--ease);
+}
+.btn-outline:hover {
+  border-color: var(--sky-600); background: #fff;
+  color: var(--navy-800); transform: translateY(-2px);
+}
+
+/* ---------- story closing line ---------- */
+.story-end {
+  font-size: clamp(1.35rem, 1.1rem + 1.1vw, 2rem);
+  line-height: 1.55; font-weight: 600; color: var(--navy-800);
+  max-width: 26ch;
+}
+.story-end-actions {
+  display: flex; flex-wrap: wrap; gap: var(--s-3);
+  margin-block-start: var(--s-6);
+}
 
 /* ---------- 12. Vision ---------- */
 .band-vision { background: var(--navy-900); color: var(--on-navy); border-block-start: 0; }
