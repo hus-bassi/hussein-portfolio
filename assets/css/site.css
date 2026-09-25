@@ -109,8 +109,11 @@ svg { display: block; }
 .hero :focus-visible, .site-header :focus-visible { outline-color: var(--sky-300); }
 
 .skip-link {
-  position: absolute; inset-inline-start: 50%;
-  top: -100px; transform: translateX(50%);
+  /* physical centering: `inset-inline-start:50%` + translateX(50%) put the
+     link OFF to the right in LTR (it stuck out 70px past the viewport in
+     EN/RU). translateX(-50%) centers it in both directions. */
+  position: absolute; left: 50%; transform: translateX(-50%);
+  top: -100px; max-width: calc(100vw - 32px);
   z-index: 200; padding: var(--s-3) var(--s-5);
   background: var(--navy-900); color: var(--on-navy);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
@@ -149,7 +152,7 @@ svg { display: block; }
 }
 
 .header-inner {
-  display: flex; align-items: center; gap: var(--s-5);
+  display: flex; align-items: center; gap: var(--s-4);
   min-height: 72px;
 }
 
@@ -163,10 +166,15 @@ svg { display: block; }
 .brand:hover { color: #fff; }
 .brand-mark { width: 26px; height: 26px; color: var(--sky-300); flex: none; }
 
-.primary-nav ul { display: flex; align-items: center; gap: var(--s-2); }
+.primary-nav ul { display: flex; align-items: center; gap: 6px; }
 .primary-nav a {
-  display: block; padding: var(--s-2) var(--s-3);
+  display: block; padding: var(--s-2);
   color: var(--on-navy-soft); font-size: .95rem;
+  /* A nav label is never allowed to break inside itself — the Russian
+     and English labels are long, and flex shrinking used to wrap them
+     onto two lines inside a single item. The row fits as a whole or the
+     hamburger takes over (see the 1140px query). */
+  white-space: nowrap;
   border-radius: var(--radius-sm);
   transition: color var(--t-micro) var(--ease), background var(--t-micro) var(--ease);
 }
@@ -183,8 +191,8 @@ svg { display: block; }
   flex: none;
 }
 .lang-btn {
-  min-width: 40px; min-height: 34px;
-  padding: 4px 10px;
+  min-width: 36px; min-height: 34px;
+  padding: 4px 9px;
   font-family: inherit; font-size: .8rem; font-weight: 600;
   color: var(--on-navy-soft);
   background: none; border: 0; border-radius: 999px;
@@ -317,7 +325,10 @@ svg { display: block; }
   font-size: 1.1rem; font-weight: 500; color: var(--on-navy);
   padding-inline-start: var(--s-4);
   border-inline-start: 2px solid var(--warm-400);
-  max-width: 34ch;
+  /* no max-width: the line must stay on ONE line in all three languages
+     (natural width ~416px; the old 34ch cap was 386px and forced two).
+     It only breaks when the viewport itself cannot hold it (< ~420px). */
+  max-width: none;
 }
 
 /* orbital figure */
@@ -531,11 +542,15 @@ svg { display: block; }
    not as one more category */
 .tag-all { padding-inline: var(--s-5); font-weight: 500; }
 
-.records { display: grid; gap: var(--s-3); }
+/* minmax(0,1fr): without the 0 floor, the track grows to the min-content
+   of its widest card (long Russian words + the action link) and the whole
+   card sticks out past the shell. */
+.records { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
 
 .record {
   display: grid; gap: var(--s-2) var(--s-5);
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-width: 0;
   align-items: start;
   padding: var(--s-5);
   background: #fff;
@@ -634,7 +649,8 @@ svg { display: block; }
 .story-end {
   font-size: clamp(1.35rem, 1.1rem + 1.1vw, 2rem);
   line-height: 1.55; font-weight: 600; color: var(--navy-800);
-  max-width: 26ch;
+  /* same rule as .hero-quote — this closing line stays on one line */
+  max-width: none;
 }
 .story-end-actions {
   display: flex; flex-wrap: wrap; gap: var(--s-3);
@@ -728,10 +744,11 @@ svg { display: block; }
   html { scroll-padding-top: 76px; }
 }
 
-/* The full desktop nav + the language switcher together need ~1020px
-   before the brand name starts wrapping (it is nowrap, so it must fit).
-   Below that, the hamburger takes over. */
-@media (max-width: 1100px) {
+/* The full desktop nav + the language switcher need ~1140px before the
+   row fits on ONE line with the longest labels (Russian). The links are
+   nowrap, so below this the hamburger takes over rather than squeezing
+   them onto a second line. */
+@media (max-width: 1140px) {
   .nav-toggle { display: flex; }
   .header-inner { position: relative; gap: var(--s-3); }
   .lang-btn { min-width: 36px; padding: 4px 8px; }
@@ -751,10 +768,20 @@ svg { display: block; }
   .primary-nav li + li { border-block-start: 1px solid rgba(156, 199, 234, .1); }
 }
 
+/* Phones: the row (name + switcher + hamburger) needs ~446px with the
+   longest name (Russian) but a 360–455px phone only offers ~297px.
+   Hussein's call: the language switcher stays visible, the NAME text is
+   dropped from the header only — it is still the giant h1 in the hero
+   and the first thing in the footer. The orbit mark remains as the logo,
+   and the anchor keeps its aria-label so it is never unnamed. */
+@media (max-width: 470px) {
+  .brand-name { display: none; }
+}
+
 @media (max-width: 560px) {
   .band { padding-block: var(--s-8); }
   .hero { padding-block: 120px var(--s-8); }
-  .record { grid-template-columns: 1fr; }
+  .record { grid-template-columns: minmax(0, 1fr); }
   .record-action { grid-row: auto; grid-column: 1; justify-self: start; }
   .stage-num { font-size: 1.7rem; }
   .timeline::before { inset-inline-start: 4px; }

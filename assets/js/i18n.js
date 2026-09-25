@@ -54,7 +54,7 @@
     'nav.plan': { ar: 'خطتي', en: 'My plan', ru: 'Мой план' },
     'nav.interests': { ar: 'اهتماماتي', en: 'Interests', ru: 'Интересы' },
     'nav.projects': { ar: 'مشاريعي', en: 'Projects', ru: 'Проекты' },
-    'nav.learning': { ar: 'التعلم والشهادات', en: 'Learning & certificates', ru: 'Обучение и сертификаты' },
+    'nav.learning': { ar: 'التعلم والشهادات', en: 'Learning & certificates', ru: 'Обучение' },
     'nav.contact': { ar: 'التواصل', en: 'Contact', ru: 'Контакты' },
     'footer.navLabel': {
       ar: 'روابط التذييل',
