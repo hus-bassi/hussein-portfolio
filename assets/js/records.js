@@ -256,7 +256,13 @@
     }
   }
 
-  input.addEventListener('input', apply);
+  input.addEventListener('input', function () {
+    /* Search is deliberately global — it always looks across every record,
+       never just the currently selected tag. Typing therefore returns the
+       filter to "الكل", so the two controls can never silently disagree. */
+    if (activeTag) { activeTag = ''; paintTags(); }
+    apply();
+  });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { input.value = ''; apply(); }
   });
@@ -273,10 +279,29 @@
     input.focus();
   });
 
+  /* ---------- Tag buttons ----------
+     "الكل" is always first and is the default state. Search is global:
+     typing always searches across everything, and a tag is only for
+     browsing. The two therefore never fight each other — choosing a tag
+     clears the search, and typing resets the tag back to "الكل". */
+  function paintTags() {
+    tagbar.querySelectorAll('.tag').forEach(function (b) {
+      var slug = b.dataset.tag || '';
+      b.setAttribute('aria-pressed', slug === activeTag ? 'true' : 'false');
+    });
+  }
+
   var used = [];
   allCerts.concat(allVol).forEach(function (r) {
     r.tags.forEach(function (t) { if (used.indexOf(t) === -1) used.push(t); });
   });
+
+  var allBtn = el('button', 'tag tag-all', 'الكل');
+  allBtn.type = 'button';
+  allBtn.setAttribute('aria-pressed', 'true');
+  allBtn.dataset.tag = '';
+  tagbar.appendChild(allBtn);
+
   used.forEach(function (slug) {
     var b = el('button', 'tag', (TAGS[slug] || { ar: slug }).ar);
     b.type = 'button';
@@ -284,14 +309,16 @@
     b.dataset.tag = slug;
     tagbar.appendChild(b);
   });
+
   tagbar.addEventListener('click', function (e) {
     var btn = e.target.closest('.tag');
     if (!btn) return;
     var wasOn = btn.getAttribute('aria-pressed') === 'true';
-    activeTag = wasOn ? '' : btn.dataset.tag;
-    tagbar.querySelectorAll('.tag').forEach(function (b) {
-      b.setAttribute('aria-pressed', (b === btn && !wasOn) ? 'true' : 'false');
-    });
+    activeTag = wasOn ? '' : (btn.dataset.tag || '');
+    /* browsing by tag, so any search text is no longer relevant */
+    input.value = '';
+    clearBtn.hidden = true;
+    paintTags();
     apply();
   });
 

@@ -464,6 +464,10 @@ svg { display: block; }
   background: var(--navy-800); border-color: var(--navy-800); color: #fff;
 }
 
+/* "الكل" is the reset control — it should read as the default state,
+   not as one more category */
+.tag-all { padding-inline: var(--s-5); font-weight: 500; }
+
 .records { display: grid; gap: var(--s-3); }
 
 .record {
