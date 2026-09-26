@@ -387,6 +387,78 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
 .to-top:hover { transform: translateY(-2px); background-position: var(--edge-hi); }
 .to-top svg { width: 20px; height: 20px; color: var(--gold); }
 
+/* ---------- 4a. The field and the cursor ----------
+   Both are injected by JS and are decorative only. They sit ABOVE the
+   light field and BELOW the content, and neither ever receives a pointer
+   event, so nothing about the site becomes harder to use because of them.
+   Reduced motion removes both: there is no still version of a moving
+   light, so they are taken out of the document rather than hidden. */
+.field-canvas {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  opacity: .9;
+}
+
+.cursor-light {
+  position: fixed; inset-block-start: 0; inset-inline-start: 0;
+  z-index: 1; width: 380px; height: 380px;
+  margin-block-start: -190px; margin-inline-start: -190px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(124, 92, 255, .13), rgba(124, 92, 255, .05) 45%, transparent 72%);
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  will-change: transform;
+}
+.cursor-light.is-bright {
+  background: radial-gradient(closest-side,
+    rgba(240, 206, 126, .16), rgba(124, 92, 255, .06) 45%, transparent 72%);
+}
+.cursor-light.is-on { opacity: 1; }
+
+.cursor-ring {
+  position: fixed; inset-block-start: 0; inset-inline-start: 0;
+  z-index: 2; width: 34px; height: 34px;
+  margin-block-start: -17px; margin-inline-start: -17px;
+  pointer-events: none;
+  border: 1px solid rgba(167, 139, 250, .5);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 300ms var(--ease),
+              width 300ms var(--ease), height 300ms var(--ease),
+              margin 300ms var(--ease),
+              border-color 300ms var(--ease), background 300ms var(--ease);
+  will-change: transform;
+}
+.cursor-ring.is-hot {
+  width: 52px; height: 52px;
+  margin-block-start: -26px; margin-inline-start: -26px;
+  border-color: rgba(240, 206, 126, .75);
+  background: rgba(167, 139, 250, .07);
+}
+.cursor-ring.is-down { width: 42px; height: 42px; margin-block-start: -21px; margin-inline-start: -21px; }
+.cursor-ring.is-on { opacity: 1; }
+
+.cursor-dot {
+  position: fixed; inset-block-start: 0; inset-inline-start: 0;
+  z-index: 3; width: 6px; height: 6px;
+  margin-block-start: -3px; margin-inline-start: -3px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: var(--fg);
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+  will-change: transform;
+}
+.cursor-dot.is-on { opacity: .85; }
+
+/* The native cursor is never hidden — the light is cast ALONGSIDE it.
+   Removing it would break every affordance the site depends on. */
+@media (hover: none), (pointer: coarse) {
+  .field-canvas, .cursor-light, .cursor-ring, .cursor-dot { display: none; }
+}
+
 /* ---------- 4b. THE OPENING SEQUENCE ----------
    The first thing a visitor sees. Content starts one step below its final
    place and one step out of focus, then rises into place in reading order.

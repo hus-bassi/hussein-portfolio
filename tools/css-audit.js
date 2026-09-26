@@ -50,7 +50,10 @@ const scan = dir => {
     for (const m of text.matchAll(/\.className\s*=\s*'([^']+)'/g)) {
       m[1].split(/\s+/).forEach(c => { if (c) used.add(c); });
     }
-    for (const m of text.matchAll(/classList\.\w+\(\s*'([^']+)'\s*\)/g)) {
+    /* classList.add('x') / .remove('x') / .toggle('x')
+       and .toggle('x', bool) — the second form must be matched too, or
+       every conditionally-applied state class is reported as dead. */
+    for (const m of text.matchAll(/classList\.\w+\(\s*'([^']+)'/g)) {
       used.add(m[1]);
     }
   }

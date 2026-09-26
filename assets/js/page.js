@@ -78,7 +78,7 @@
   }
 
   /* ---------- premium layer: ghost numerals + progress rail ---------- */
-  if (window.UI) { UI.sectionIndex(); UI.progress(); }
+  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.atmosphere(); }
 
   /* ---------- footer year ---------- */
   var fy = document.getElementById('footer-year');

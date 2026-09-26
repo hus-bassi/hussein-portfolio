@@ -1,0 +1,67 @@
+depth: a canvas starfield, a pointer light, and a cleaned asset path
+
+Hussein asked what was missing. Three real gaps, found by looking rather
+than guessing, plus one piece of organizational debt.
+
+THE FIELD (assets/js/field.js)
+A canvas starfield, because the brief asks for orbital depth and DOM
+elements would mean hundreds of nodes animating top/left - layout
+properties, in a loop. One canvas repaints instead.
+
+It is built to be boring, which is the point:
+  sparse   ~1 star per 14k px2, clamped to 14..110, and a third of that
+           on touch
+  slow     drift is under a pixel per second; it reads as depth, not motion
+  orbital a third of the stars ride real ellipses with independent centres,
+           radii and directions - this is what makes it astronomical rather
+           than random noise
+  cheap    one rAF, a flat array, no allocation inside the loop, dpr capped
+           at 2, and it STOPS entirely on visibilitychange
+  optional absent on reduced-motion and on small touch screens
+
+THE CURSOR (assets/js/cursor.js)
+A soft light, a ring and a dot. Not a cursor replacement - the native
+cursor stays and remains what clicks; this is light cast on the page.
+Hiding the native cursor would break every affordance the site has, so
+it is never hidden, and the whole thing is desktop-only via
+(hover: hover) and (pointer: fine).
+
+State comes from ONE delegated pointerover listener on the document that
+asks what the element is, rather than a listener per card, so it stays
+O(1) in interactive elements. Easing is frame-rate independent, so it
+feels the same at 60 and 120 Hz.
+
+Both are aria-hidden and pointer-events:none, and both remove themselves
+from the DOM if the visitor switches to still mode mid-visit. Z-order
+verified: canvas z-index 0, main z-index 1, so content is never covered.
+
+Wiring: UI.atmosphere() is the single entry point, called from site.js,
+page.js and records.js. Every mount is wrapped, so a missing module or a
+thrown error is a no-op, never a broken page.
+
+ASSET PATH DEBT
+The favicon was referenced as academic/assets/icons/favicon.svg - site
+assets living under the academic data folder, left over from the old
+project's layout. Copied to assets/icons/favicon.svg and all three pages
+now point there.
+
+TWO BUGS FOUND WHILE TESTING
+  · UI.atmosphere was defined BEFORE `var UI = window.UI = ...`, so it
+    assigned onto an undefined UI and silently did nothing. The field and
+    the cursor simply did not exist. Caught by reading computed state, not
+    by looking, because nothing errors - it just quietly does nothing.
+  · css-audit did not match classList.toggle('x', bool), so every
+    conditionally-applied state class (is-hot, is-bright) was reported as
+    dead CSS. Widened the pattern.
+
+VERIFICATION RUN
+  node tools/check.js      all static checks pass
+  QA harness               63/63 clean in FULL motion (3 pages x 3 langs x
+                           7 widths)
+  console                  0 errors, 0 warnings on all three pages
+  per page                 field + cursor present, motion=full, no errors
+
+As always: this environment renders no frames, so the canvas and the
+pointer light were verified by reading their state, their z-order and
+their accessibility attributes - not by watching them move. That still
+needs a human eye.

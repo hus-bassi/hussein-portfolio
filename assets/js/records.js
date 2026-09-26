@@ -437,7 +437,7 @@
   /* premium layer: ghost numerals + progress rail.
      Records themselves are never animated in — filtering must feel
      instant on every keystroke. */
-  if (window.UI) { UI.sectionIndex(); UI.progress(); }
+  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.atmosphere(); }
 
   document.addEventListener('site-lang-change', fullRefresh);
 })();

@@ -20,6 +20,15 @@
 
   var UI = window.UI = window.UI || {};
 
+  /* ---------- 0. atmosphere: the field and the pointer light ----------
+     The single entry point for the two decorative canvas/DOM layers.
+     Each is optional: a missing module, a reduced-motion setting or a
+     touch device all mean "do nothing", never "break something". */
+  UI.atmosphere = function () {
+    try { if (window.Field) Field.mount(document.body); } catch (e) { /* decorative only */ }
+    try { if (window.Cursor) Cursor.mount(document.body); } catch (e) { /* decorative only */ }
+  };
+
   /* ---------- 1. ghost section numerals ---------- */
   UI.sectionIndex = function (scope) {
     var heads = (scope || document).querySelectorAll('.sec-head');

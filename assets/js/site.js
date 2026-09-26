@@ -391,7 +391,7 @@
 
   renderAll();
   initReveal(document);
-  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.parallax(); }
+  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.parallax(); UI.atmosphere(); }
   mountMotionSwitch();
   document.addEventListener('site-lang-change', renderAll);
 })();
