@@ -62,7 +62,8 @@ function inspect(doc, win, width, lang, page, frames) {
      produced, IntersectionObserver callbacks and rAF never run, so every
      scroll-driven check would be a false alarm. Those are skipped and
      reported as a note instead of as an issue. */
-  if (!frames) r.notes.push('framesOff');
+  if (!frames) { /* the reason is added by done1(), which knows which of the
+                    two conditions failed: framesOff or windowTooNarrow */ }
 
   var d = doc.documentElement;
   /* overflow is a property of the LAYOUT, not of the visible slice: the page
@@ -160,6 +161,29 @@ function inspect(doc, win, width, lang, page, frames) {
     if (!al || al.length < 3) add('langBtnAria', (b.dataset.lang || '?') + ':' + al);
   });
 
+  /* Buttons: the label must never be covered.
+     A hover gleam used to be a ::after overlay, which painted ON TOP of the
+     text and turned "اقرأ قصتي" into a ghost. The fix was to make the gleam
+     a background layer — backgrounds always paint under text. This asserts
+     that contract so the overlay can never come back. */
+  var covered = [];
+  doc.querySelectorAll('.btn, .btn-solid, .btn-outline, .record-action, .tag').forEach(function (b) {
+    var after = win.getComputedStyle(b, '::after');
+    var before = win.getComputedStyle(b, '::before');
+    // an overlay pseudo-element that is not the focus ring is a red flag
+    if (after.content !== 'none' && after.backgroundImage !== 'none' && /gradient/.test(after.backgroundImage)) {
+      covered.push((b.textContent || '').trim().slice(0, 14) + ':after-overlay');
+    }
+    if (before.content !== 'none' && before.backgroundImage !== 'none' && /gradient/.test(before.backgroundImage)) {
+      covered.push((b.textContent || '').trim().slice(0, 14) + ':before-overlay');
+    }
+    // and the label must have a real box of its own
+    var range = doc.createRange();
+    range.selectNodeContents(b);
+    if (!range.getClientRects().length) covered.push((b.textContent || '').trim().slice(0, 14) + ':no-text-box');
+  });
+  if (covered.length) add('btnOverlay', covered.slice(0, 6));
+
   // data-i18n that stayed empty
   var empties = [];
   doc.querySelectorAll('[data-i18n]').forEach(function (n) {
@@ -232,24 +256,39 @@ function loadCase(page, lang, width) {
           var res;
           try { res = inspect(doc, win, width, lang, page, frames); }
           catch (e) { res = { page: page, lang: lang, width: width, issues: ['inspectError:' + e.message] }; }
+          if (!frames) res.notes = (res.notes || []).concat([visibleWidth(win, width) >= width ? 'framesOff' : 'windowTooNarrow']);
           resolve(res);
         }
-        /* Does this window actually paint? Sample the document timeline:
-           if it never advances, no rendering step runs, IntersectionObserver
-           is silent, and the scroll-driven checks cannot be trusted. */
+        /* Are the scroll-driven checks trustworthy in this window?
+           Two independent conditions, both required:
+             - the document timeline must ADVANCE, or no rendering step runs
+               and rAF/IntersectionObserver are silent;
+             - the case must FIT the window, or the iframe is clipped and its
+               IntersectionObserver stays silent for everything off the clip.
+           When either fails, the checks are skipped with a note instead of
+           being reported as page bugs. */
         function sampleFrames() {
           var a = doc.timeline ? doc.timeline.currentTime : 0;
           setTimeout(function () {
             var b = doc.timeline ? doc.timeline.currentTime : 0;
-            settle(10, b > a);
+            var paints = b > a;
+            var fits = visibleWidth(win, width) >= width;
+            settle(10, paints && fits, 0, paints && fits);
           }, 800);
         }
         function settle(tries, frames, clean) {
           var pending = 0;
           try {
+            /* same visible-slice rule as inspect(): an iframe wider than this
+               window is clipped, and its IntersectionObserver stays silent
+               for anything off the clip — so an item there is the harness's
+               doing, not the page's, and waiting for it would only burn
+               the settle budget. */
+            var vw = visibleWidth(win, width);
             pending = [].filter.call(doc.querySelectorAll('.reveal:not(.is-in)'), function (n) {
               var b = n.getBoundingClientRect();
-              return b.top < win.innerHeight * 0.95 && b.bottom > 0;
+              return b.top < win.innerHeight * 0.95 && b.bottom > 0 &&
+                     b.right > 0 && b.left < vw;
             }).length;
           } catch (e) { resolve({ page: page, lang: lang, width: width, issues: ['settleError:' + e.message] }); return; }
           /* Two consecutive clean samples are required. A single one is not

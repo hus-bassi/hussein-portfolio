@@ -85,7 +85,13 @@ const pairs = [
   ['void / azure   (btn-primary)',   void_, T.azure],
 
   /* the gold match highlight on a pane */
-  ['gold / gold-tinted pane (mark)', T.gold, over(hex(T.gold), paneBot, 0.26)]
+  ['gold / gold-tinted pane (mark)', T.gold, over(hex(T.gold), paneBot, 0.26)],
+
+  /* the gleam crossing a button: it is a BACKGROUND layer, so it sits
+     UNDER the label. The worst moment is its 30% peak passing behind the
+     text — measured here for both button kinds. */
+  ['void / spectrum + gleam peak',  void_, over([1, 1, 1], hex(T.gold), 0.30)],
+  ['fg / edge + gleam peak',       T.fg,  over([1, 1, 1], paneBot, 0.30)]
 ];
 
 const toRgb = v => (Array.isArray(v) ? v : hex(v));

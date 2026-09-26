@@ -438,48 +438,52 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
 
 /* ---------- 7. Buttons — always lit, alive on hover ---------- */
 .btn, .btn-solid, .btn-outline {
-  position: relative; isolation: isolate; overflow: hidden;
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 52px; padding: var(--s-3) var(--s-6);
   font-family: inherit; font-size: 1rem; font-weight: 600;
   color: var(--fg);
-  background-image: var(--edge), var(--spectrum);
-  background-size: var(--edge-size);
-  background-position: var(--edge-rest);
+  /* THREE background layers, and the order is the whole point:
+       1. the gleam  — a light band that crosses on hover
+       2. the fill   — the opaque pane body
+       3. the edge   — the spectrum, clipped to the 1px border
+     The gleam is a BACKGROUND layer, not a ::after overlay. As a pseudo
+     element it painted ON TOP of the label and turned "اقرأ قصتي" into a
+     ghost on hover; a background can never do that, because backgrounds
+     always paint beneath text. It also removed a pseudo-element. */
+  background-image: var(--gleam), var(--edge), var(--spectrum);
+  background-size: 220% 100%, 100% 100%, 240% 240%;
+  background-position: -70% 0, 0 0, 0% 50%;
   background-origin: border-box;
-  background-clip: padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
   animation: aura 6s var(--ease-soft) infinite;
   transition: transform var(--t-micro) var(--ease),
-              background-position var(--t-page) var(--ease);
+              background-position 700ms var(--ease);
 }
 .btn:hover, .btn-solid:hover, .btn-outline:hover {
   transform: translateY(-2px);
-  background-position: var(--edge-hi);
+  background-position: 170% 0, 0 0, 100% 50%;
 }
 .btn:active { transform: translateY(0); }
 
-/* the primary button is the spectrum itself, with near-black text on it */
+/* the primary button is the spectrum itself, with near-black text on it —
+   so it has no separate edge layer, only the gleam over the fill */
 .btn-primary {
-  background-image: var(--spectrum-lit);
+  background-image: var(--gleam), var(--spectrum-lit);
+  background-size: 220% 100%, 100% 100%;
+  background-position: -70% 0, 0 0;
+  background-clip: padding-box, border-box;
   color: var(--void);
   font-weight: 700;
 }
+.btn-primary:hover { background-position: 170% 0, 0 0; }
 
-/* a light sweep across the button on hover */
-.btn::after, .btn-solid::after, .btn-outline::after {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .28) 50%, transparent 68%);
-  transform: translateX(-135%);
-  transition: transform 700ms var(--ease);
-  pointer-events: none;
-}
-.btn:hover::after, .btn-solid:hover::after, .btn-outline:hover::after {
-  transform: translateX(135%);
-}
-.btn-primary::after { background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .55) 50%, transparent 68%); }
+/* the light that crosses the button: transparent at both ends so it reads
+   as a pass of light, not a white bar. Kept faint — it sits under the
+   label and must never compete with it. */
+:root { --gleam: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .30) 50%, transparent 62%); }
 
 /* the glow every interactive surface breathes with */
 @keyframes aura {
