@@ -353,8 +353,45 @@
     initReveal(document);
   }
 
+  /* ---------- the motion switch ----------
+     Only rendered when the OS is asking for reduced motion AND the
+     visitor has not already made a choice here. If the site is simply
+     running at full motion, the control would have nothing to do, so it
+     is not added at all — no dead UI, no extra markup in the normal case. */
+  function mountMotionSwitch() {
+    try { mountMotionSwitchUnsafe(); }
+    catch (e) { /* the switch is a convenience; it must never break the page */ }
+  }
+  function mountMotionSwitchUnsafe() {
+    if (!window.Motion) return;
+    if (Motion.mode() !== 'auto') return;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'motion-switch';
+    btn.setAttribute('aria-pressed', 'false');
+    var setLabel = function () {
+      var key = Motion.isStill() ? 'motion.enable' : 'motion.calm';
+      var text = (window.I18N && I18N.t(key)) || '';
+      btn.setAttribute('aria-label', text);
+      btn.setAttribute('title', text);
+    };
+    setLabel();
+    btn.addEventListener('click', function () {
+      Motion.set(Motion.isStill() ? 'full' : 'still');
+      setLabel();
+    });
+    Motion.onChange(setLabel);
+
+    var header = $('#site-header');
+    var shell = header && header.querySelector('.header-inner');
+    if (shell) shell.appendChild(btn);
+  }
+
   renderAll();
   initReveal(document);
-  if (window.UI) { UI.sectionIndex(); UI.progress(); }
+  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.parallax(); }
+  mountMotionSwitch();
   document.addEventListener('site-lang-change', renderAll);
 })();

@@ -27,11 +27,14 @@ for (const v of declared) {
   if (uses === 0) unusedTokens.push(v);
 }
 
-/* ---- what the markup actually uses ---- */
+/* ---- what the markup actually uses ----
+   assets/ is NOT skipped: the runtime classes are created in
+   assets/js/*.js, and skipping that folder is exactly how .motion-switch
+   came to be reported as dead when it very much is used. */
 const used = new Set();
 const scan = dir => {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name === 'node_modules' || e.name === '.git' || e.name === 'assets') continue;
+    if (e.name === 'node_modules' || e.name === '.git') continue;
     const p = path.join(dir, e.name);
     if (e.isDirectory()) { scan(p); continue; }
     if (!/\.(html|js|md)$/.test(e.name)) continue;
@@ -39,8 +42,16 @@ const scan = dir => {
     for (const m of text.matchAll(/class="([^"]+)"/g)) {
       m[1].split(/\s+/).forEach(c => { if (c) used.add(c); });
     }
+    // el('div', 'my-class', …)
     for (const m of text.matchAll(/el\('[a-z0-9]+',\s*'([^']+)'/g)) {
       m[1].split(/\s+/).forEach(c => { if (c) used.add(c); });
+    }
+    // el.className = 'my-class'  /  classList.add('my-class')
+    for (const m of text.matchAll(/\.className\s*=\s*'([^']+)'/g)) {
+      m[1].split(/\s+/).forEach(c => { if (c) used.add(c); });
+    }
+    for (const m of text.matchAll(/classList\.\w+\(\s*'([^']+)'\s*\)/g)) {
+      used.add(m[1]);
     }
   }
 };
@@ -54,7 +65,8 @@ const runtimeOnly = new Set([
   'stat', 'stat-num', 'stat-label', 'stat-link',
   'social', 'social-ico', 'social-name', 'social-label',
   'reveal', 'is-in', 'is-open', 'is-active', 'is-current',
-  'tag', 'tag-all', 'is-wide'
+  'tag', 'tag-all', 'is-wide',
+  'is-loading'   /* added and removed by assets/js/intro.js, never in markup */
 ]);
 
 /* ---- 2. class selectors that match nothing ---- */
@@ -72,9 +84,41 @@ const frames = new Set();
 for (const m of css.matchAll(/@keyframes\s+([a-zA-Z][\w-]*)/g)) frames.add(m[1]);
 const deadFrames = [...frames].filter(k => !new RegExp('animation[^;]*\\b' + k + '\\b').test(css));
 
+/* ---- 4. the motion must actually be visible ----
+   Two failures that made the site look dead, and both are silent:
+     · `animation-duration: .001ms !important` in the reduced-motion block
+       compresses EVERY animation into one frame on any machine with the
+       OS setting on. That is what "there is no animation" was.
+     · a loop longer than ~10s is not perceived as motion at all.
+   Both are checked here so they cannot come back unnoticed. */
+const motionProblems = [];
+
+for (const m of css.matchAll(/animation-duration:\s*([\d.]+m?s)/g)) {
+  const v = m[1];
+  if (v.endsWith('ms')) {
+    const ms = parseFloat(v);
+    if (ms < 50) {
+      const line = css.slice(0, m.index).split('\n').length;
+      motionProblems.push(`line ${line}: animation-duration ${v} — this freezes the animation to a single frame`);
+    }
+  }
+}
+
+// literal loop durations written straight into animation shorthands
+for (const m of css.matchAll(/animation:[^;}]*?(\d+(?:\.\d+)?)s/g)) {
+  const secs = parseFloat(m[1]);
+  if (secs > 12) {
+    const line = css.slice(0, m.index).split('\n').length;
+    motionProblems.push(`line ${line}: ${secs}s loop — longer than 12s is not perceived as motion`);
+  }
+}
+
 console.log('tokens declared:', declared.size, '| classes referenced:', used.size);
 console.log('');
 console.log('UNUSED TOKENS :', unusedTokens.length ? unusedTokens.join(', ') : 'none');
 console.log('DEAD CLASSES  :', deadClasses.length ? deadClasses.join(', ') : 'none');
 console.log('DEAD KEYFRAMES:', deadFrames.length ? deadFrames.join(', ') : 'none');
-process.exitCode = (unusedTokens.length + deadClasses.length + deadFrames.length) ? 1 : 0;
+console.log('MOTION PROBLEMS:', motionProblems.length ? '' : 'none');
+motionProblems.forEach(p => console.log('   - ' + p));
+const total = unusedTokens.length + deadClasses.length + deadFrames.length + motionProblems.length;
+process.exitCode = total ? 1 : 0;

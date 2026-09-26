@@ -64,7 +64,77 @@
     update();
   };
 
-  /* ---------- 3. keyword marquee (needs I18N for the words) ---------- */
+  /* ---------- 3. hero parallax ----------
+     The hero is the only place on the site where the visitor is looking
+     while the page is still moving under them, which is what makes the
+     opening feel cinematic rather than static: the name and the copy
+     leave more slowly than the orbit figure, and the whole composition
+     sinks and fades as the next section arrives.
+
+     Three rules, and they matter:
+       · it is written as ONE transform per element per frame, batched
+         through a single rAF — never a layout read inside the loop;
+       · it is completely inert under prefers-reduced-motion (this is the
+         movement that rule exists to suppress);
+       · it clamps at both ends, so a fast flick cannot fling the hero
+         off-screen.                                            */
+  UI.parallax = function () {
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    /* Motion.isStill() already resolves three things: the visitor's own
+       choice, the OS setting, and whether the full layer is wanted. This
+       is the one place that decides, so nothing else has to re-ask. */
+    if (window.Motion && Motion.isStill()) return;
+
+    var layers = [
+      { sel: '.hero-head',   depth: 26 },
+      { sel: '.hero-copy',   depth: 54 },
+      { sel: '.hero-visual', depth: 92 },
+      { sel: '.hero-quote',  depth: 40 }
+    ].map(function (l) {
+      return { el: hero.querySelector(l.sel), depth: l.depth };
+    }).filter(function (l) { return l.el; });
+
+    if (!layers.length) return;
+
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (y > window.innerHeight * 1.15) return;   // off screen: let it rest
+
+      layers.forEach(function (l) {
+        var shift = y * (l.depth / 100);
+        var fade = 1 - Math.min(1, y / (window.innerHeight * .85));
+        l.el.style.transform = 'translate3d(0,' + shift.toFixed(2) + 'px,0)';
+        l.el.style.opacity = fade.toFixed(3);
+      });
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    /* If the visitor switches to still mode mid-visit, put the hero back
+       exactly where it belongs, immediately. */
+    if (window.Motion) {
+      Motion.onChange(function (still) {
+        if (!still) return;
+        layers.forEach(function (l) { l.el.style.transform = ''; l.el.style.opacity = ''; });
+      });
+    }
+
+    update();
+  };
+
+  /* ---------- 4. keyword marquee (needs I18N for the words) ---------- */
   UI.marquee = function (root) {
     var strip = root || document.getElementById('marquee');
     if (!strip) return;

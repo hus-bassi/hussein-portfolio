@@ -47,6 +47,25 @@ real brief, and it is my job to translate it, not to interrogate him about it.
 - **Verify what I claim.** Hussein checks. A confident summary with a broken
   detail costs more trust than admitting uncertainty.
 
+## Motion: he asked for it twice
+
+He reported "there is no animation on the site", then "لا انا عايز انيميشن".
+Two real causes, and I misdiagnosed the first one.
+
+1. The reduced-motion block answered with `animation-duration: .001ms` on
+   everything, which freezes the whole cinematic layer into a single frame. A
+   headless browser reports `prefers-reduced-motion: reduce` by default, so I
+   read that as evidence about *his* machine and told him to change an OS
+   setting. Wrong — it was a bug in my CSS, and the signal came from the test
+   browser, not from him. Never diagnose a visitor's environment from headless.
+2. The loops were 38s, 46s, 30s, 16s. Nothing above ~12s is perceived as
+   motion at all: a site can be full of keyframes and still look frozen.
+
+Now `assets/js/motion.js` is the single place that decides, `--still` is the
+only property the CSS reads, and a switch appears in the header only when the
+OS is asking and he has not already chosen. `tools/css-audit.js` fails on any
+loop over 12s, so the second cause cannot come back silently.
+
 ## Still open
 
 1. **WhatsApp number** for the contact section (`wa.me`).
