@@ -1,12 +1,15 @@
 /* ============================================================
    Contrast audit — run:  node tools/contrast-audit.js
 
-   Reads the LIVE token values out of assets/css/site.css (so the table
-   can never drift from the stylesheet), prints the clean WCAG ratio for
-   every text/background pair the site uses, and then re-measures each
-   pair under the worst case produced by the 5% grain overlay
-   (body::after): text and background both drifting 5% toward each
-   other. The bar is 4.5:1 for BOTH columns.
+   Reads the LIVE token values out of assets/css/site.css, builds every
+   background the night system can actually produce (bands are
+   translucent, so the light field shows through them), and prints the
+   WCAG ratio for each text/background pair — then re-measures it under
+   the worst case of the 4% grain overlay (text and background both
+   drifting 4% toward each other).
+
+   The bar is 4.5:1 in BOTH columns. Anything that fails gets fixed in
+   the stylesheet, not in this file.
    ============================================================ */
 const fs = require('fs');
 const path = require('path');
@@ -17,70 +20,90 @@ function token(name) {
   if (!m) throw new Error('token not found: --' + name);
   return m[1];
 }
+function alphaOf(name) {
+  const m = css.match(new RegExp('--' + name + ':\\s*rgba?\\(([^)]+)\\)'));
+  if (!m) throw new Error('token not found: --' + name);
+  return m[1].split(',').map(s => parseFloat(s.trim()));
+}
 
 const hex = h => { h = h.replace('#', ''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255); };
 const lin = c => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 const L = rgb => 0.2126 * lin(rgb[0]) + 0.7152 * lin(rgb[1]) + 0.0722 * lin(rgb[2]);
+const over = (fg, bg, a) => fg.map((v, i) => v * a + bg[i] * (1 - a));   /* alpha compositing */
 const mix = (a, b, t) => a.map((v, i) => v * (1 - t) + b[i] * t);
 const cr = (x, y) => { const a = L(x), b = L(y); return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); };
-const grain = (fg, bg, a) => [mix(fg, bg, a), mix(bg, fg, a)];
-const alpha = (fg, bg, a) => fg.map((v, i) => v * a + bg[i] * (1 - a));
+const grain = (fg, bg, a = 0.04) => [mix(fg, bg, a), mix(bg, fg, a)];
+
+/* ---------- the night, built the way the browser builds it ---------- */
+const void_ = hex(token('void'));
+const field = [                                    /* body::before clouds   */
+  [hex('#7C5CFF'), 0.16], [hex('#D9A94C'), 0.10], [hex('#2E86FF'), 0.13]
+];
+/* the brightest background a band can ever present: every cloud at once
+   over the void, then the band colour on top of that */
+const fieldMax = field.reduce((acc, [c, a]) => over(c, acc, a), void_);
+const night1 = hex('#090C16'), night1A = alphaOf('night-1')[3];
+const night2 = hex('#05070E'), night2A = alphaOf('night-2')[3];
+const bandBright = over(night1, fieldMax, night1A);      /* .band        */
+const bandAlt = over(night2, fieldMax, night2A);          /* .band-alt    */
+const paneTop = hex('#0E1421'), paneBot = hex('#141C2C'); /* pane gradient */
 
 const T = {
-  ink: token('ink'), ink2: token('ink-2'), ink3: token('ink-3'),
-  sky600: token('sky-600'), sky300: token('sky-300'), warm: token('warm-400'),
-  navy900: token('navy-900'), navy800: token('navy-800'),
-  onNavy: token('on-navy'), onNavySoft: token('on-navy-soft'),
-  paper: token('paper'), paper2: token('paper-2'),
-  white: '#FFFFFF', heroEnd: '#16283F'
+  fg: token('fg'), fg2: token('fg-2'), fg3: token('fg-3'), fg4: token('fg-4'),
+  violet: token('violet'), gold: token('gold'), azure: token('azure')
 };
 
-/* [label, foreground, background]  — foreground may be a [color, alpha] pair */
+/* [label, text colour, background] */
 const pairs = [
-  ['ink / paper',                     [T.ink],                    T.paper],
-  ['ink-2 / paper',                   [T.ink2],                   T.paper],
-  ['ink-2 / paper-2',                 [T.ink2],                   T.paper2],
-  ['ink-3 / paper',                   [T.ink3],                   T.paper],
-  ['ink-3 / paper-2',                 [T.ink3],                   T.paper2],
-  ['ink-3 / white',                   [T.ink3],                   T.white],
-  ['sky-600 / white (links)',         [T.sky600],                 T.white],
-  ['sky-600 / paper (links)',         [T.sky600],                 T.paper],
-  ['sky-600 / paper-2 (sec-more)',    [T.sky600],                 T.paper2],
-  ['sky-600 / paper (tl-index)',      [T.sky600],                 T.paper],
-  ['sky-600 / paper-2 (chain-num)',   [T.sky600],                 T.paper2],
-  ['white / sky-600 (primary btn)',   [T.white],                  T.sky600],
-  ['white / navy-800 (record btn)',   [T.white],                  T.navy800],
-  ['white / navy-900',                [T.white],                  T.navy900],
-  ['navy-800 / white (active tag)',   [T.navy800],                T.white],
-  ['navy-900 / sky-300 (active lang)',[T.navy900],                T.sky300],
-  ['on-navy / navy-900',              [T.onNavy],                 T.navy900],
-  ['on-navy-soft / navy-900 (marquee)',[T.onNavySoft],            T.navy900],
-  ['on-navy-soft / hero end',         [T.onNavySoft],             T.heroEnd],
-  ['on-navy-soft 75% / navy-900 (copy)', [T.onNavySoft, 0.75],    T.navy900],
-  ['sky-300 80% / navy-900 (eyebrow)', [T.sky300, 0.8],           T.navy900],
-  ['on-navy-soft / hero end (cue)',   [T.onNavySoft],             T.heroEnd],
-  ['warm-400 / navy-900',             [T.warm],                   T.navy900],
-  ['sky-300 / navy-900',              [T.sky300],                 T.navy900]
+  ['fg / void (hero, footer)',        T.fg,  void_],
+  ['fg-2 / void',                     T.fg2, void_],
+  ['fg-3 / void',                     T.fg3, void_],
+  ['fg-4 / void',                     T.fg4, void_],
+
+  ['fg / band (brightest field)',     T.fg,  bandBright],
+  ['fg-2 / band',                     T.fg2, bandBright],
+  ['fg-3 / band',                     T.fg3, bandBright],
+  ['fg-4 / band',                     T.fg4, bandBright],
+  ['fg-2 / band-alt',                 T.fg2, bandAlt],
+  ['fg-3 / band-alt',                 T.fg3, bandAlt],
+  ['fg-4 / band-alt',                 T.fg4, bandAlt],
+
+  ['fg / pane',                       T.fg,  paneBot],
+  ['fg-2 / pane',                     T.fg2, paneBot],
+  ['fg-3 / pane (meta, count)',       T.fg3, paneBot],
+  ['fg-4 / pane (hint, placeholder)', T.fg4, paneTop],
+
+  ['gold / band (tl-index, chain-num)', T.gold,   bandBright],
+  ['gold / pane (stat-link hover)',  T.gold,   paneBot],
+  ['violet / band (icon, tick)',      T.violet, bandBright],
+  ['azure / band (sec-more, link)',   T.azure,  bandBright],
+  ['azure / pane (social icon)',      T.azure,  paneBot],
+
+  /* the lit spectrum carries near-black text: void on each of its stops */
+  ['void / violet  (btn-primary)',   void_, T.violet],
+  ['void / gold    (btn-primary)',   void_, T.gold],
+  ['void / azure   (btn-primary)',   void_, T.azure],
+
+  /* the gold match highlight on a pane */
+  ['gold / gold-tinted pane (mark)', T.gold, over(hex(T.gold), paneBot, 0.26)]
 ];
 
+const toRgb = v => (Array.isArray(v) ? v : hex(v));
+
 let fails = 0;
-console.log('pair'.padEnd(34) + 'clean'.padStart(7) + 'grain@5%'.padStart(11) + '   bar');
-console.log('-'.repeat(60));
-for (const [name, fgSpec, bgHex] of pairs) {
-  const bg = hex(bgHex);
-  const base = hex(fgSpec[0]);
-  const fg = fgSpec[1] !== undefined ? alpha(base, bg, fgSpec[1]) : base;
+console.log('pair'.padEnd(38) + 'clean'.padStart(7) + 'grain@4%'.padStart(11));
+console.log('-'.repeat(58));
+for (const [name, fgHex, bgHex] of pairs) {
+  const fg = toRgb(fgHex);
+  const bg = toRgb(bgHex);
   const clean = cr(fg, bg);
-  const dirty = cr(...grain(fg, bg, 0.05));
+  const dirty = cr(...grain(fg, bg));
   const ok = clean >= 4.5 && dirty >= 4.5;
   if (!ok) fails++;
-  console.log(
-    (ok ? '  ok  ' : ' FAIL ') + name.padEnd(28) +
-    clean.toFixed(2).padStart(7) + dirty.toFixed(2).padStart(11) +
-    '   4.50'
-  );
+  console.log((ok ? '  ok  ' : ' FAIL ') + name.padEnd(32) +
+    clean.toFixed(2).padStart(7) + dirty.toFixed(2).padStart(11));
 }
-console.log('-'.repeat(60));
+console.log('-'.repeat(58));
 console.log(fails ? fails + ' PAIR(S) BELOW 4.5' : 'all pairs >= 4.5:1, clean AND under the grain');
-console.log('tokens: sky-600=' + T.sky600 + '  ink-3=' + T.ink3);
+console.log('brightest band background: #' + bandBright.map(v => Math.round(v * 255).toString(16).padStart(2, '0')).join('').toUpperCase());
 process.exitCode = fails ? 1 : 0;

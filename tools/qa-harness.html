@@ -43,8 +43,20 @@ function walkText(root) {
   return out;
 }
 
+/* The harness window is far narrower than the widest case (484px here vs a
+   1440px case). An iframe wider than its window is CLIPPED by the browser,
+   and IntersectionObserver reports intersections against the clipped area —
+   so an element that is plainly inside the page still reports
+   isIntersecting:false. Every on-screen test below therefore measures
+   against the visible slice (min of the page width and the window width),
+   not the nominal case width. */
+function visibleWidth(win, width) {
+  return Math.max(1, Math.min(width, win.innerWidth || width));
+}
+
 function inspect(doc, win, width, lang, page, frames) {
   var r = { page: page, lang: lang, width: width, issues: [], notes: [] };
+  var vw = visibleWidth(win, width);
   var add = function (k, v) { r.issues.push(k + '=' + JSON.stringify(v)); };
   /* This browser window is headless/hidden: when no animation frames are
      produced, IntersectionObserver callbacks and rAF never run, so every
@@ -53,10 +65,13 @@ function inspect(doc, win, width, lang, page, frames) {
   if (!frames) r.notes.push('framesOff');
 
   var d = doc.documentElement;
-  var overflow = d.scrollWidth - Math.max(d.clientWidth, win.innerWidth);
+  /* overflow is a property of the LAYOUT, not of the visible slice: the page
+     must not scroll sideways at its own nominal width, even though this
+     window can only show part of it */
+  var overflow = d.scrollWidth - Math.max(d.clientWidth, width);
   if (overflow > 1) add('hOverflow', overflow);
 
-  // any element sticking out horizontally
+  // any element sticking out horizontally (against the page's own width)
   var wide = [];
   var els = doc.querySelectorAll('body *');
   for (var i = 0; i < els.length; i++) {
@@ -68,7 +83,7 @@ function inspect(doc, win, width, lang, page, frames) {
     if (b.width === 0 && b.height === 0) continue;
     // the marquee is MEANT to run past the viewport (its band clips it)
     if (e.closest('.marquee')) continue;
-    if (b.right > win.innerWidth + 1.5 || b.left < -1.5) {
+    if (b.right > width + 1.5 || b.left < -1.5) {
       wide.push(e.tagName.toLowerCase() + '.' + (e.className || '').toString().split(' ')[0] + '[' + Math.round(b.left) + ',' + Math.round(b.right) + ']');
     }
     if (wide.length > 5) break;
@@ -152,15 +167,20 @@ function inspect(doc, win, width, lang, page, frames) {
   });
   if (empties.length) add('emptyI18n', empties.slice(0, 6));
 
-  // invisible-but-not-revealed content (stuck opacity 0).
-  // The bottom 5% is the reveal zone: items there are outside the
-  // observer root on purpose, so they are not counted as stuck.
-  // Skipped entirely when the window is not producing frames.
+  /* Invisible-but-not-revealed content (stuck at opacity 0).
+     The bottom 5% of the height is the reveal zone: items there sit outside
+     the observer root on purpose, so they are not counted.
+     A reveal only counts as stuck if the item is BOTH vertically on screen
+     AND horizontally inside the visible slice — an element clipped off the
+     side of this window legitimately never intersects, and that is the
+     harness's doing, not the page's. */
   var stuck = [];
   if (frames) {
     doc.querySelectorAll('.reveal:not(.is-in)').forEach(function (n) {
       var b = n.getBoundingClientRect();
-      if (b.top < win.innerHeight * 0.95 && b.bottom > 0) stuck.push(n.className.split(' ')[0]);
+      var onScreenVertically = b.top < win.innerHeight * 0.95 && b.bottom > 0;
+      var onScreenHorizontally = b.right > 0 && b.left < vw;
+      if (onScreenVertically && onScreenHorizontally) stuck.push(n.className.split(' ')[0]);
     });
   }
   if (stuck.length) add('stuckReveal', stuck.slice(0, 5));
@@ -224,7 +244,7 @@ function loadCase(page, lang, width) {
             settle(10, b > a);
           }, 800);
         }
-        function settle(tries, frames) {
+        function settle(tries, frames, clean) {
           var pending = 0;
           try {
             pending = [].filter.call(doc.querySelectorAll('.reveal:not(.is-in)'), function (n) {
@@ -232,8 +252,13 @@ function loadCase(page, lang, width) {
               return b.top < win.innerHeight * 0.95 && b.bottom > 0;
             }).length;
           } catch (e) { resolve({ page: page, lang: lang, width: width, issues: ['settleError:' + e.message] }); return; }
-          if (!frames || !pending || tries <= 0) return done1(frames);
-          setTimeout(function () { settle(tries - 1, frames); }, 400);
+          /* Two consecutive clean samples are required. A single one is not
+             enough: fonts and images can still be landing, so an item may be
+             below the fold at the first sample and inside the viewport — and
+             therefore legitimately waiting for its observer — at the next. */
+          clean = pending ? 0 : (clean || 0) + 1;
+          if (!frames || clean >= 2 || tries <= 0) return done1(frames);
+          setTimeout(function () { settle(tries - 1, frames, clean); }, 400);
         }
         sampleFrames();
       }, 300);

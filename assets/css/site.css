@@ -1,51 +1,65 @@
 /* ============================================================
    حسين البسيوني — Personal site
-   Layout: dark navy hero → calm light content.
-   RTL-first. No build step, no framework.
+
+   THE NIGHT SYSTEM — one idea, applied everywhere:
+     · the page is black, not light
+     · ONE spectrum runs through the whole site: violet → gold → azure
+     · the spectrum lights everything: borders, text, buttons, hairlines
+     · it is never static: the light field drifts, the spectrum sweeps,
+       every button breathes, the hairline threads down the page
+
+   Two luminance tiers of the same spectrum, and that is all:
+     --spectrum      deep  → borders, glows, hairlines, fills behind text
+     --spectrum-lit  light → anything that CARRIES TEXT (fills, gradient text)
+
+   RTL-first · no build step · no framework · no light theme.
+   Order: tokens → reset → field → chrome → layout → panes → buttons →
+   hero → marquee → content → footer → motion → responsive → reduced motion.
    ============================================================ */
 
 /* ---------- 1. Tokens ---------- */
 :root {
-  /* deep navy — hero background, headings on light */
-  --navy-900: #0A1628;
-  --navy-800: #0E1D33;
-  --navy-700: #14273F;
-  --navy-600: #1D3552;
+  /* the night — bands are translucent so the light field shows through */
+  --void:      #04050A;   /* the page floor */
+  --night-1:   rgba(9, 12, 22, .78);
+  --night-2:   rgba(5, 7, 14, .84);
+  --night-3:   #0E1421;   /* pane fill */
+  --night-4:   #141C2C;   /* pane fill, raised */
 
-  /* calm sky blue — the single accent.
-     sky-600 is the one used for TEXT and ICONS on light backgrounds.
-     It is tuned to #2A6291 (was #2E6A9E) so that it still clears 4.5:1
-     against paper-2 AFTER the 5% grain overlay is taken into account —
-     see tools/contrast-audit.js. sky-500 is only 3.5:1 on white, so it
-     is kept for borders, fills and for text sitting on the dark navy. */
-  --sky-600: #2A6291;
-  --sky-500: #4E8FC4;
-  --sky-400: #6FA8D8;
-  --sky-300: #9CC7EA;
+  /* the spectrum */
+  --violet:    #A78BFA;   /* light tier */
+  --violet-d:  #7C5CFF;   /* deep tier */
+  --gold:      #F0CE7E;
+  --gold-d:    #D9A94C;
+  --azure:     #6FC3FF;
+  --azure-d:   #2E86FF;
 
-  /* one restrained warm tone, used sparingly */
-  --warm-400: #C0A46B;
+  --spectrum: linear-gradient(112deg,
+    var(--violet-d) 0%, var(--gold-d) 46%, var(--azure-d) 74%, var(--violet-d) 100%);
+  --spectrum-lit: linear-gradient(112deg,
+    var(--violet) 0%, var(--gold) 48%, var(--azure) 100%);
 
-  /* light content surfaces */
-  --paper:    #F7F9FC;
-  --paper-2:  #EDF1F7;
-  --paper-3:  #E2E9F2;
+  /* text on the night */
+  --fg:   #EEF3FA;   /* headings, names */
+  --fg-2: #C4D0E0;   /* body copy */
+  --fg-3: #94A3BA;   /* muted: labels, meta */
+  --fg-4: #8695AC;   /* faint: hints, captions — still ≥ 4.5:1 */
 
-  /* ink on light */
-  --ink:      #0C1826;
-  --ink-2:    #35465C;
-  /* ink on light — ink-3 is the muted tone (labels, meta, hints); it is
-     #4E6076 rather than #55677E so it keeps 4.5:1 on paper-2 under the
-     grain overlay (see tools/contrast-audit.js) */
-  --ink-3:    #4E6076;
+  /* glass / hairlines */
+  --glass:   rgba(148, 163, 186, .10);
+  --glass-2: rgba(148, 163, 186, .18);
 
-  /* text on navy */
-  --on-navy:      #E9EFF8;
-  --on-navy-soft: #A9BDD6;
+  /* the shared pane recipe: an opaque fill plus a spectrum edge.
+     --edge-rest / --edge-hi are the two positions of that edge, so every
+     surface on the site can be written once and hovered everywhere. */
+  --edge:      linear-gradient(180deg, var(--night-3), var(--night-4));
+  --edge-size: 100% 100%, 240% 240%;
+  --edge-rest: 0 0, 0% 50%;
+  --edge-hi:   0 0, 100% 50%;
 
   /* type — Arabic keeps its own face; EN/RU use Inter.
-     IBM Plex Sans Arabic has no Cyrillic support worth trusting, and a
-     Latin-only face breaks Arabic glyphs, so the switch is per-language. */
+     IBM Plex Sans Arabic has no trustworthy Cyrillic, and a Latin-only
+     face breaks Arabic glyphs, so the switch is per-language. */
   --font-ar: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
   --font-ltr: "Inter", "IBM Plex Sans Arabic", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
@@ -53,21 +67,22 @@
   /* rhythm — a 4px base scale, used everywhere */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
-  --s-9: 96px; --s-10: 128px;
+  --s-9: 96px;
 
   --shell: 1120px;
   --measure: 40rem;          /* comfortable Arabic line length */
-  --radius: 14px;
-  --radius-sm: 9px;
+  --radius: 16px;
+  --radius-sm: 11px;
 
-  /* motion — one easing, one vocabulary */
-  --ease: cubic-bezier(.22, .61, .36, 1);
-  --t-micro: 150ms;
-  --t-std: 300ms;
-  --t-page: 600ms;
+  /* motion — one easing pair, one vocabulary */
+  --ease:      cubic-bezier(.22, .61, .36, 1);
+  --ease-soft: cubic-bezier(.4, 0, .2, 1);
+  --t-micro: 160ms;
+  --t-std:   320ms;
+  --t-page:  700ms;
 }
 
-/* ---------- 2. Reset ---------- */
+/* ---------- 2. Reset & base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
@@ -81,8 +96,8 @@ body {
   font-family: var(--font-ar);
   font-size: clamp(1rem, .96rem + .2vw, 1.125rem);
   line-height: 1.85;              /* Arabic needs generous leading */
-  color: var(--ink);
-  background: var(--paper);
+  color: var(--fg-2);
+  background: var(--void);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -91,27 +106,24 @@ body {
 /* EN/RU: Latin + Cyrillic face, tighter leading (Arabic needs more) */
 html[lang="en"] body, html[lang="ru"] body {
   font-family: var(--font-ltr);
-  line-height: 1.65;
+  line-height: 1.68;
 }
-html[lang="en"] .eyebrow, html[lang="ru"] .eyebrow { letter-spacing: .12em; }
-html[lang="ar"] .eyebrow { letter-spacing: 0; }
 
 h1, h2, h3 { line-height: 1.3; margin: 0; font-weight: 600; }
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 
-a { color: var(--sky-600); text-decoration: none; }
-a:hover { color: var(--navy-800); }
+a { color: var(--azure); text-decoration: none; transition: color var(--t-micro) var(--ease); }
+a:hover { color: var(--gold); }
 
 svg { display: block; }
 
-/* visible focus for keyboard users only */
 :focus-visible {
-  outline: 2px solid var(--sky-500);
+  outline: 2px solid var(--violet);
   outline-offset: 3px;
   border-radius: 4px;
+  box-shadow: 0 0 18px -4px var(--violet);
 }
-.hero :focus-visible, .site-header :focus-visible { outline-color: var(--sky-300); }
 
 .skip-link {
   /* physical centering: `inset-inline-start:50%` + translateX(50%) put the
@@ -120,11 +132,13 @@ svg { display: block; }
   position: absolute; left: 50%; transform: translateX(-50%);
   top: -100px; max-width: calc(100vw - 32px);
   z-index: 200; padding: var(--s-3) var(--s-5);
-  background: var(--navy-900); color: var(--on-navy);
+  background: var(--void); color: var(--fg);
+  border: 1px solid var(--violet);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  box-shadow: 0 18px 40px -20px var(--violet-d);
   transition: top var(--t-micro) var(--ease);
 }
-.skip-link:focus { top: 0; color: var(--on-navy); }
+.skip-link:focus { top: 0; }
 
 .shell {
   width: 100%; max-width: var(--shell);
@@ -137,23 +151,76 @@ svg { display: block; }
    element stays on screen. */
 [hidden] { display: none !important; }
 
-/* ---------- 3. Header ---------- */
+/* visually hidden, still announced by screen readers */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- 3. The light field ----------
+   The page is lit from behind everything: three slow colour clouds that
+   drift. Bands are translucent, so this field is what gives the page depth.
+   Alphas are deliberately low — the brightest composite it can produce is
+   #171438, and every text colour is checked against it (tools/contrast-audit.js). */
+body::before {
+  content: ""; position: fixed; inset: -15%;
+  z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(46% 36% at 78% 6%,  rgba(124, 92, 255, .16), transparent 70%),
+    radial-gradient(40% 32% at 10% 44%, rgba(217, 169, 76, .10), transparent 72%),
+    radial-gradient(50% 40% at 64% 94%, rgba(46, 134, 255, .13), transparent 72%);
+  animation: field-drift 38s var(--ease-soft) infinite alternate;
+}
+@keyframes field-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-2.5%, 1.5%, 0) scale(1.07); }
+  100% { transform: translate3d(2%, -1.5%, 0) scale(1.02); }
+}
+
+/* Film grain, so the large black areas are not flat digital void. */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 300;
+  pointer-events: none; opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+}
+
+main, .site-footer, .site-header { position: relative; z-index: 1; }
+
+/* ---------- 4. Chrome: progress rail, header, nav, switcher, to-top ---------- */
+.read-progress {
+  position: fixed; inset-block-start: 0; inset-inline: 0;
+  height: 3px; z-index: 101;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: var(--spectrum-lit);
+  background-size: 300% 100%;
+  box-shadow: 0 0 20px -2px var(--violet-d);
+  animation: rail-drift 9s linear infinite;
+}
+@keyframes rail-drift { to { background-position: 300% 0; } }
+html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction: reverse; }
+
 .site-header {
   position: fixed; inset-block-start: 0; inset-inline: 0;
   z-index: 100;
-  /* Always carries its own dark tint, so the light header text keeps its
-     contrast no matter what scrolls underneath it. */
-  background: rgba(8, 16, 30, .55);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  transition: background var(--t-std) var(--ease),
-              box-shadow var(--t-std) var(--ease),
-              border-color var(--t-std) var(--ease);
+  /* its own tint, so the header text keeps its contrast over anything */
+  background: rgba(4, 5, 10, .62);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border-block-end: 1px solid transparent;
+  transition: background var(--t-std) var(--ease),
+              border-color var(--t-std) var(--ease),
+              box-shadow var(--t-std) var(--ease);
 }
 .site-header.is-stuck {
-  background: rgba(10, 22, 40, .92);
-  border-block-end-color: rgba(156, 199, 234, .16);
+  background: rgba(4, 5, 10, .93);
+  border-block-end-color: transparent;
+  background-image: linear-gradient(rgba(4, 5, 10, .93), rgba(4, 5, 10, .93)),
+                    var(--spectrum);
+  background-clip: padding-box, border-box;
+  background-size: 100% 100%, 200% 100%;
+  box-shadow: 0 18px 40px -30px var(--violet-d);
 }
 
 .header-inner {
@@ -163,18 +230,22 @@ svg { display: block; }
 
 .brand {
   display: inline-flex; align-items: center; gap: var(--s-3);
-  color: var(--on-navy); font-weight: 600; font-size: 1.02rem;
+  color: var(--fg); font-weight: 600; font-size: 1.02rem;
   margin-inline-end: auto;
   min-height: 44px;            /* comfortable tap target */
   padding-inline: var(--s-1);
 }
 .brand:hover { color: #fff; }
-.brand-mark { width: 26px; height: 26px; color: var(--sky-300); flex: none; }
+.brand-mark {
+  width: 26px; height: 26px; flex: none;
+  color: var(--azure);
+  filter: drop-shadow(0 0 8px rgba(46, 134, 255, .8));
+}
 
 .primary-nav ul { display: flex; align-items: center; gap: 6px; }
 .primary-nav a {
   display: block; padding: var(--s-2);
-  color: var(--on-navy-soft); font-size: .95rem;
+  color: var(--fg-3); font-size: .95rem;
   /* A nav label is never allowed to break inside itself — the Russian
      and English labels are long, and flex shrinking used to wrap them
      onto two lines inside a single item. The row fits as a whole or the
@@ -183,16 +254,15 @@ svg { display: block; }
   border-radius: var(--radius-sm);
   transition: color var(--t-micro) var(--ease), background var(--t-micro) var(--ease);
 }
-.primary-nav a:hover { color: #fff; background: rgba(156, 199, 234, .1); }
-.primary-nav a.is-current { color: var(--sky-300); }
+.primary-nav a:hover { color: #fff; background: rgba(167, 139, 250, .12); }
+.primary-nav a.is-current { color: var(--gold); }
 
-/* ---------- language switcher ---------- */
 .lang-switch {
   display: flex; align-items: center; gap: 2px;
   padding: 3px;
-  border: 1px solid rgba(156, 199, 234, .26);
+  border: 1px solid var(--glass-2);
   border-radius: 999px;
-  background: rgba(156, 199, 234, .06);
+  background: rgba(148, 163, 186, .06);
   flex: none;
 }
 .lang-btn {
@@ -200,77 +270,258 @@ svg { display: block; }
   min-width: 40px; min-height: 40px;
   padding: 4px 10px;
   font-family: inherit; font-size: .8rem; font-weight: 600;
-  color: var(--on-navy-soft);
+  color: var(--fg-3);
   background: none; border: 0; border-radius: 999px;
   cursor: pointer;
-  transition: background var(--t-micro) var(--ease),
-              color var(--t-micro) var(--ease);
+  transition: color var(--t-micro) var(--ease),
+              box-shadow var(--t-micro) var(--ease),
+              background var(--t-std) var(--ease);
 }
-.lang-btn:hover { color: #fff; }
+.lang-btn:hover { color: #fff; box-shadow: 0 0 18px -6px var(--violet); }
 .lang-btn.is-active, .lang-btn[aria-pressed="true"] {
-  background: var(--sky-300);
-  color: var(--navy-900);
+  background-image: var(--spectrum-lit);
+  color: var(--void);
+  font-weight: 700;
+  box-shadow: 0 0 22px -6px var(--violet);
 }
 
-.brand-name { white-space: nowrap; }   /* the name is never allowed to wrap in the header */
+.brand-name { white-space: nowrap; }   /* never wraps in the header */
 
 .nav-toggle {
   display: none; margin-inline-start: var(--s-2);
   width: 44px; height: 44px; padding: 0;
-  background: none; border: 1px solid rgba(156, 199, 234, .28);
+  background: none; border: 1px solid var(--glass-2);
   border-radius: var(--radius-sm); cursor: pointer;
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
 }
 .nav-toggle-bar {
   display: block; width: 19px; height: 1.5px;
-  background: var(--on-navy); border-radius: 2px;
+  background: var(--fg); border-radius: 2px;
   transition: transform var(--t-std) var(--ease), opacity var(--t-micro) var(--ease);
 }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* ---------- 4. Hero ---------- */
+.to-top {
+  position: fixed; inset-block-end: var(--s-5); inset-inline-start: var(--s-5);
+  z-index: 90;
+  width: 48px; height: 48px; display: grid; place-items: center;
+  color: var(--fg);
+  background-image: linear-gradient(rgba(14, 20, 33, .96), rgba(14, 20, 33, .96)), var(--spectrum);
+  background-clip: padding-box, border-box;
+  background-size: 100% 100%, 240% 240%;
+  background-position: var(--edge-rest);
+  border: 1px solid transparent;
+  border-radius: 50%; cursor: pointer;
+  animation: aura 6s var(--ease-soft) infinite;
+  transition: transform var(--t-micro) var(--ease), background-position var(--t-page) var(--ease);
+}
+.to-top:hover { transform: translateY(-2px); background-position: var(--edge-hi); }
+.to-top svg { width: 20px; height: 20px; color: var(--gold); }
+
+/* ---------- 5. Layout: bands and section heads ---------- */
+.band {
+  position: relative;
+  padding-block: var(--s-9);
+  background: var(--night-1);
+}
+/* The spectrum threads down the page: one hairline per band, in the same
+   three colours, so the whole scroll reads as a single object. */
+.band::before {
+  content: ""; position: absolute; inset-block-start: 0; inset-inline: 0; height: 1px;
+  background: var(--spectrum);
+  background-size: 200% 100%;
+  opacity: .55;
+  animation: thread 30s linear infinite;
+}
+@keyframes thread { to { background-position: -200% 0; } }
+html[dir="rtl"] .band::before { animation-direction: reverse; }
+
+.band-alt { background: var(--night-2); }
+
+.sec-head {
+  position: relative;
+  margin-block-end: var(--s-7);
+  padding-block-end: var(--s-5);
+}
+.sec-head::after {
+  content: ""; position: absolute; inset-block-end: 0; inset-inline-start: 0;
+  width: min(340px, 62%); height: 2px; border-radius: 2px;
+  background: var(--spectrum);
+  background-size: 220% 100%;
+  box-shadow: 0 0 20px -4px var(--violet-d);
+  animation: thread 16s linear infinite;
+}
+html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
+
+.sec-head h2 {
+  position: relative; z-index: 1;
+  font-size: clamp(1.7rem, 1.3rem + 1.5vw, 2.4rem);
+  color: var(--fg);
+  letter-spacing: -.01em;
+  max-width: 24ch;
+}
+.sec-head-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s-4); flex-wrap: wrap;
+}
+/* ONLY the real children of a row header are lifted above the ghost
+   numeral — reaching .sec-index itself would override its absolute
+   position (equal specificity, later in source) and drop a giant numeral
+   into the flow above the heading. */
+.sec-head-row > h2,
+.sec-head-row > .sec-more { position: relative; z-index: 1; }
+
+.sec-more {
+  font-size: .95rem; color: var(--azure);
+  text-decoration: underline; text-underline-offset: 4px;
+  white-space: nowrap;
+  display: inline-flex; align-items: center; min-height: 40px;
+  align-self: center;
+  transition: color var(--t-micro) var(--ease);
+}
+.sec-more:hover { color: var(--gold); }
+
+.lead-para {
+  font-size: clamp(1.06rem, 1rem + .35vw, 1.2rem);
+  color: var(--fg-2);
+  max-width: var(--measure);
+  line-height: 1.9;
+}
+
+.note {
+  margin-block-start: var(--s-6);
+  padding: var(--s-4) var(--s-5);
+  font-size: .96rem; color: var(--fg-3);
+  background: rgba(148, 163, 186, .06);
+  border: 1px solid var(--glass);
+  border-inline-start: 3px solid var(--gold-d);
+  border-radius: var(--radius-sm);
+  max-width: var(--measure);
+}
+
+/* the ghost numeral behind each section heading, in the same spectrum */
+.sec-index {
+  position: absolute; inset-block-start: -.16em; inset-inline-start: -.06em;
+  z-index: 0; margin: 0; pointer-events: none;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(4rem, 9vw, 6.5rem); line-height: 1;
+  letter-spacing: -.04em;
+  background: var(--spectrum-lit);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  opacity: .15;
+}
+
+/* ---------- 6. Panes — the one surface recipe ---------- */
+.card, .record, .stage, .stat, .social, .empty-state {
+  border: 1px solid transparent;
+  background-image: var(--edge), var(--spectrum);
+  background-size: var(--edge-size);
+  background-position: var(--edge-rest);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: var(--radius);
+  box-shadow: 0 26px 50px -34px rgba(0, 0, 0, .95);
+  transition: transform var(--t-std) var(--ease),
+              box-shadow var(--t-std) var(--ease),
+              background-position var(--t-page) var(--ease);
+}
+.card:hover, .record:hover, .stage:hover, .stat:hover, .social:hover {
+  transform: translateY(-4px);
+  background-position: var(--edge-hi);
+  box-shadow: 0 0 0 1px rgba(167, 139, 250, .30),
+              0 34px 64px -30px rgba(124, 92, 255, .75);
+}
+
+/* ---------- 7. Buttons — always lit, alive on hover ---------- */
+.btn, .btn-solid, .btn-outline {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: var(--s-3) var(--s-6);
+  font-family: inherit; font-size: 1rem; font-weight: 600;
+  color: var(--fg);
+  background-image: var(--edge), var(--spectrum);
+  background-size: var(--edge-size);
+  background-position: var(--edge-rest);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  animation: aura 6s var(--ease-soft) infinite;
+  transition: transform var(--t-micro) var(--ease),
+              background-position var(--t-page) var(--ease);
+}
+.btn:hover, .btn-solid:hover, .btn-outline:hover {
+  transform: translateY(-2px);
+  background-position: var(--edge-hi);
+}
+.btn:active { transform: translateY(0); }
+
+/* the primary button is the spectrum itself, with near-black text on it */
+.btn-primary {
+  background-image: var(--spectrum-lit);
+  color: var(--void);
+  font-weight: 700;
+}
+
+/* a light sweep across the button on hover */
+.btn::after, .btn-solid::after, .btn-outline::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .28) 50%, transparent 68%);
+  transform: translateX(-135%);
+  transition: transform 700ms var(--ease);
+  pointer-events: none;
+}
+.btn:hover::after, .btn-solid:hover::after, .btn-outline:hover::after {
+  transform: translateX(135%);
+}
+.btn-primary::after { background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .55) 50%, transparent 68%); }
+
+/* the glow every interactive surface breathes with */
+@keyframes aura {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(167, 139, 250, .22), 0 16px 40px -22px rgba(124, 92, 255, .75); }
+  50%      { box-shadow: 0 0 0 1px rgba(240, 206, 126, .34), 0 22px 52px -20px rgba(46, 134, 255, .85); }
+}
+
+/* ---------- 8. Hero ---------- */
 .hero {
   position: relative; overflow: hidden;
   min-height: 100svh;
   display: flex; align-items: center;
   /* extra room at the bottom for the scroll cue (.hero-scroll) */
   padding-block: 140px 136px;
-  color: var(--on-navy);
-  /* ONE continuous gradient, defined over the whole hero.
-     Stops are far enough apart that no boundary is perceptible. */
-  background: linear-gradient(178deg,
-    #060D19 0%,
-    #0A1628 38%,
-    #101F35 72%,
-    #16283F 100%);
+  background:
+    radial-gradient(68% 52% at 78% 18%, rgba(124, 92, 255, .22), transparent 70%),
+    radial-gradient(58% 46% at 10% 76%, rgba(46, 134, 255, .16), transparent 72%),
+    linear-gradient(180deg, #05060C 0%, #070A13 48%, #0A0E18 100%);
 }
 
-/* sparse, calm stars — never behind the text block */
+/* sparse stars, tinted from the same three colours */
 .hero-sky { position: absolute; inset: 0; pointer-events: none; }
 .star {
   position: absolute; border-radius: 50%;
-  background: var(--sky-300); opacity: .3;
+  background: var(--violet); opacity: .5;
   animation: twinkle 9s var(--ease) infinite;
 }
 .s1 { width: 2px; height: 2px; top: 16%; inset-inline-end: 12%; }
-.s2 { width: 3px; height: 3px; top: 30%; inset-inline-end: 26%; animation-delay: -2s; }
-.s3 { width: 2px; height: 2px; top: 62%; inset-inline-end: 8%;  animation-delay: -5s; }
+.s2 { width: 3px; height: 3px; top: 30%; inset-inline-end: 26%; background: var(--gold); animation-delay: -2s; }
+.s3 { width: 2px; height: 2px; top: 62%; inset-inline-end: 8%;  background: var(--azure); animation-delay: -5s; }
 .s4 { width: 2px; height: 2px; top: 22%; inset-inline-end: 40%; animation-delay: -3.5s; }
-.s5 { width: 3px; height: 3px; top: 74%; inset-inline-end: 33%; animation-delay: -7s; }
-.s6 { width: 2px; height: 2px; top: 46%; inset-inline-end: 18%; animation-delay: -1s; }
+.s5 { width: 3px; height: 3px; top: 74%; inset-inline-end: 33%; background: var(--gold); animation-delay: -7s; }
+.s6 { width: 2px; height: 2px; top: 46%; inset-inline-end: 18%; background: var(--azure); animation-delay: -1s; }
 .s7 { width: 2px; height: 2px; top: 84%; inset-inline-end: 46%; animation-delay: -6s; }
 .s8 { width: 2px; height: 2px; top: 10%; inset-inline-end: 54%; animation-delay: -4s; }
-
 @keyframes twinkle {
-  0%, 100% { opacity: .16; }
-  50%      { opacity: .46; }
+  0%, 100% { opacity: .18; }
+  50%      { opacity: .62; }
 }
 
-/* The head spans BOTH columns: the name gets the full shell width, which
-   is what lets it be set at magazine scale (see .hero-name). The copy and
-   the orbit figure share the row underneath. */
+/* The head spans BOTH columns: the name gets the full shell width, which is
+   what lets it be set at magazine scale. Copy and orbit share the row below. */
 .hero-inner {
   position: relative; z-index: 1;
   display: grid; grid-template-columns: 1.15fr .85fr;
@@ -281,436 +532,340 @@ svg { display: block; }
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: .78rem; letter-spacing: .16em;
-  color: var(--sky-300); opacity: .8;
+  font-size: .78rem; letter-spacing: .18em;
+  color: var(--gold); opacity: .92;
   margin-block-end: var(--s-4);
 }
+html[lang="ar"] .eyebrow { letter-spacing: 0; font-family: var(--font-ar); }
+html[lang="en"] .eyebrow, html[lang="ru"] .eyebrow { letter-spacing: .14em; }
 
-/* Magazine scale: the name is the hero. It is allowed to wrap (the only
-   deliberate break is the Russian one, from brand.nameLines), so a long
-   Latin name can never overflow the shell — it just sets over two lines. */
+/* Magazine scale, and the name IS the spectrum. It is allowed to wrap (the
+   only deliberate break is the Russian one, from brand.nameLines). */
 .hero-name {
   font-size: clamp(2.75rem, 1rem + 7.4vw, 6.2rem);
-  line-height: 1.06; font-weight: 700;
-  letter-spacing: -.028em;
-  color: #fff;
+  line-height: 1.08; font-weight: 800;
+  letter-spacing: -.03em;
+  background: var(--spectrum-lit);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 8px 38px rgba(124, 92, 255, .38));
   margin-block-end: var(--s-4);
-  /* keeps the deliberate line break in the Russian name
-     (Хусейн / Эль-Басьюни) — ignored when there is none */
-  white-space: pre-line;
+  white-space: pre-line;              /* keeps the Russian line break */
+  animation: name-drift 16s linear infinite;
 }
+@keyframes name-drift { to { background-position: 220% 0; } }
 /* Arabic is never tracked out — letter-spacing breaks the joins */
 html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
 
 .hero-lead {
   font-size: clamp(1.15rem, 1rem + .7vw, 1.6rem);
   line-height: 1.5; font-weight: 500;
-  color: var(--sky-300);
+  color: var(--fg);
   max-width: 22ch;
   margin-block-end: var(--s-4);
 }
-
-.hero-desc {
-  color: var(--on-navy-soft);
-  max-width: 46ch;
-  margin-block-end: var(--s-7);
-}
-
+.hero-desc { color: var(--fg-3); max-width: 46ch; margin-block-end: var(--s-7); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block-end: var(--s-7); }
 
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 50px; padding: var(--s-3) var(--s-6);
-  font-family: inherit; font-size: 1rem; font-weight: 500;
-  border-radius: var(--radius-sm); border: 1px solid transparent;
-  cursor: pointer;
-  transition: transform var(--t-micro) var(--ease),
-              background var(--t-micro) var(--ease),
-              border-color var(--t-micro) var(--ease),
-              color var(--t-micro) var(--ease);
-}
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
-
-.btn-primary { background: var(--sky-600); color: #fff; }
-.btn-primary:hover { background: var(--sky-500); color: #fff; }
-
-.btn-ghost { border-color: rgba(156, 199, 234, .34); color: var(--on-navy); }
-.btn-ghost:hover { border-color: var(--sky-300); background: rgba(156, 199, 234, .08); color: #fff; }
-
 .hero-quote {
-  font-size: 1.1rem; font-weight: 500; color: var(--on-navy);
-  padding-inline-start: var(--s-4);
-  border-inline-start: 2px solid var(--warm-400);
-  /* no max-width: the line must stay on ONE line in all three languages
-     (natural width ~416px; the old 34ch cap was 386px and forced two).
+  position: relative;
+  font-size: 1.1rem; font-weight: 500; color: var(--fg);
+  padding-inline-start: var(--s-5);
+  /* no max-width: the line must stay on ONE line in all three languages.
      It only breaks when the viewport itself cannot hold it (< ~420px). */
   max-width: none;
 }
+.hero-quote::before {
+  content: ""; position: absolute;
+  inset-block: .18em .22em; inset-inline-start: 0; width: 3px;
+  border-radius: 3px;
+  background: var(--spectrum-lit);
+  box-shadow: 0 0 20px -2px rgba(240, 206, 126, .7);
+}
+
+/* the scroll cue */
+.hero-scroll {
+  position: absolute; inset-block-end: 26px; inset-inline: 0;
+  z-index: 1; margin: 0; text-align: center;
+  font-size: .74rem; font-weight: 500;
+  color: var(--fg-4);
+  pointer-events: none;
+}
+.hero-scroll::after {
+  content: ""; display: block;
+  width: 1px; height: 34px; margin: 10px auto 0;
+  background: linear-gradient(180deg, var(--violet), transparent);
+  animation: cue 2.4s var(--ease-soft) infinite;
+}
+@keyframes cue {
+  0%, 100% { transform: scaleY(.35); opacity: .4; transform-origin: top; }
+  50%      { transform: scaleY(1);   opacity: 1;  transform-origin: top; }
+}
 
 /* orbital figure */
-.hero-visual { display: flex; justify-content: center; }
-.orbit-figure { width: 100%; max-width: 380px; height: auto; }
-.of-core { fill: rgba(111, 168, 216, .1); stroke: var(--sky-400); stroke-width: 1.2; }
-.of-ring { stroke: rgba(156, 199, 234, .3); stroke-width: 1; }
-.of-ring-2 { stroke: rgba(156, 199, 234, .16); stroke-width: 1; }
-.of-nodes circle { fill: var(--sky-300); opacity: .85; }
-.of-nodes { animation: drift 26s linear infinite; transform-origin: 160px 160px; }
-.of-ticks line { stroke: rgba(156, 199, 234, .38); stroke-width: 1; }
-
-@keyframes drift { to { transform: rotate(360deg); } }
-
-/* ---------- 5. Content bands ---------- */
-.band {
-  padding-block: var(--s-9);
-  background: var(--paper);
-  /* the hero→content handoff is a soft gradient, never a hard line */
-  border-block-start: 1px solid rgba(12, 24, 38, .05);
+.hero-visual { position: relative; display: flex; justify-content: center; }
+.hero-visual::before {
+  content: ""; position: absolute; inset: 6%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(124, 92, 255, .30), transparent 72%);
+  animation: orb-breathe 7s var(--ease-soft) infinite alternate;
 }
-.band-alt { background: var(--paper-2); }
+@keyframes orb-breathe { from { transform: scale(.9); opacity: .7; } to { transform: scale(1.1); opacity: 1; } }
 
-.sec-head { margin-block-end: var(--s-7); }
-
-.sec-head h2 {
-  font-size: clamp(1.7rem, 1.3rem + 1.5vw, 2.4rem);
-  color: var(--navy-800);
-  letter-spacing: -.01em;
-  max-width: 24ch;
+.orbit-figure {
+  width: 100%; max-width: 380px; height: auto;
+  filter: drop-shadow(0 0 30px rgba(124, 92, 255, .35));
+  animation: float 11s var(--ease-soft) infinite alternate;
 }
+@keyframes float { from { transform: translateY(-7px); } to { transform: translateY(7px); } }
+.of-core { fill: rgba(124, 92, 255, .16); stroke: var(--violet); stroke-width: 1.2; }
+.of-ring { stroke: rgba(240, 206, 126, .45); stroke-width: 1; }
+.of-ring-2 { stroke: rgba(111, 195, 255, .40); stroke-width: 1; }
+.of-nodes circle { fill: var(--azure); opacity: .9; }
+.of-nodes { animation: spin 26s linear infinite; transform-origin: 160px 160px; }
+.of-ticks line { stroke: rgba(167, 139, 250, .5); stroke-width: 1; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.sec-head-row {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--s-4); flex-wrap: wrap;
+/* ---------- 9. Marquee ---------- */
+.marquee {
+  position: relative; overflow: hidden;
+  background: rgba(4, 5, 10, .8);
+  border-block: 1px solid var(--glass);
+  padding-block: var(--s-4);
 }
-.sec-more {
-  font-size: .95rem; color: var(--sky-600);
-  text-decoration: underline; text-underline-offset: 4px;
+.marquee-track { display: flex; width: max-content; animation: marquee-run 46s linear infinite; }
+.marquee-group { display: flex; align-items: center; }
+.marquee-item {
+  display: inline-flex; align-items: center;
+  font-size: 1rem; font-weight: 500;
   white-space: nowrap;
-  /* 40px tap target; centred so it still lines up with the heading */
+  background: var(--spectrum-lit);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
+  font-family: var(--font-mono); font-size: .92rem; letter-spacing: .06em;
+}
+.marquee-item::after {
+  content: ""; width: 5px; height: 5px;
+  margin-inline: var(--s-5);
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px 0 rgba(240, 206, 126, .8);
+}
+@keyframes marquee-run { to { transform: translateX(-50%); } }
+
+/* ---------- 10. Content components ---------- */
+/* cards (interests + projects) */
+.cards { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(272px, 1fr)); }
+.card { padding: var(--s-5); }
+.card-ico { display: block; width: 24px; height: 24px; margin-block-end: var(--s-4); color: var(--azure); }
+.card-title { font-size: 1.08rem; color: var(--fg); margin-block-end: var(--s-2); }
+.card-text { color: var(--fg-2); font-size: .97rem; line-height: 1.8; }
+
+/* bento rhythm instead of six identical boxes (desktop only, so the
+   mobile stacking rules are never overridden) */
+@media (min-width: 901px) {
+  .cards-bento { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cards-bento .card.is-wide { grid-column: span 2; }
+  .card.is-wide .card-ico { width: 30px; height: 30px; }
+  .card.is-wide .card-title { font-size: 1.28rem; }
+  .card.is-wide .card-text { max-width: 46ch; }
+
+  .stages-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .stages-bento .stage:nth-child(1), .stages-bento .stage:nth-child(2) { grid-column: span 3; }
+  .stages-bento .stage:nth-child(n + 3) { grid-column: span 2; }
+  .why-grid { grid-template-columns: 1.25fr .95fr; gap: var(--s-8); }
+}
+
+/* the chain stops being pills and becomes an editorial step list */
+.why-grid { display: grid; gap: var(--s-8); grid-template-columns: 1fr auto; align-items: center; }
+.chain { display: block; }
+.chain li {
+  display: flex; align-items: center; gap: var(--s-4);
+  padding: var(--s-4) var(--s-3);
+  border-block-end: 1px solid var(--glass);
+  transition: background var(--t-micro) var(--ease), padding-inline-start var(--t-micro) var(--ease);
+}
+.chain li:first-child { border-block-start: 1px solid var(--glass); }
+.chain li:hover {
+  background: rgba(167, 139, 250, .08);
+  padding-inline-start: var(--s-5);
+}
+.chain-num { font-family: var(--font-mono); font-size: .8rem; color: var(--gold); width: 2.2ch; flex: none; }
+.chain-ico { width: 22px; height: 22px; color: var(--violet); flex: none; }
+.chain-name { font-size: 1.04rem; font-weight: 500; color: var(--fg); }
+
+/* the plan */
+.stages {
+  display: grid; gap: var(--s-5);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.stage { position: relative; padding: var(--s-6) var(--s-5) var(--s-5); }
+/* corner ticks that catch the light */
+.stage::before, .stage::after {
+  content: ""; position: absolute; width: 14px; height: 14px;
+  border: 1px solid var(--violet);
+  opacity: .8;
+  pointer-events: none;
+  transition: border-color var(--t-std) var(--ease), opacity var(--t-std) var(--ease);
+}
+.stage::before { top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
+.stage::after { bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
+.stage:hover::before, .stage:hover::after { border-color: var(--gold); opacity: 1; }
+.stage-num {
+  font-family: var(--font-mono); font-size: 2.1rem; font-weight: 500;
+  line-height: 1; margin-block-end: var(--s-4);
+  background: var(--spectrum-lit);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+.stage-title { font-size: 1.1rem; color: var(--fg); margin-block-end: var(--s-2); }
+.stage-text { color: var(--fg-2); font-size: .98rem; line-height: 1.8; }
+
+/* empty state — honest, not hidden */
+.empty-state {
+  display: flex; align-items: center; gap: var(--s-4);
+  padding: var(--s-6);
+  max-width: var(--measure);
+}
+.empty-ico { width: 30px; height: 30px; color: var(--fg-4); flex: none; }
+.empty-text { color: var(--fg-2); }
+.no-match { color: var(--fg-3); padding-block: var(--s-5); }
+
+/* records (شهادات / تطوع / بطولات) */
+.records { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.record {
+  display: grid; gap: var(--s-2) var(--s-5);
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-width: 0; align-items: start;
+  padding: var(--s-5);
+}
+.record-title { font-size: 1.08rem; color: var(--fg); }
+.record-meta {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4);
+  font-family: var(--font-mono); font-size: .8rem; color: var(--fg-3);
+}
+.record-meta span { white-space: nowrap; }
+.record-text {
+  grid-column: 1 / -1;
+  color: var(--fg-2); font-size: .96rem; line-height: 1.8;
+  max-width: var(--measure);   /* keep Arabic lines comfortable to read */
+}
+.record-action {
+  grid-row: 1; grid-column: 2;
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  padding: var(--s-2) var(--s-4); min-height: 40px;
+  font-size: .9rem; font-weight: 600; white-space: nowrap;
+  color: var(--fg);
+  background-image: var(--edge), var(--spectrum);
+  background-size: var(--edge-size);
+  background-position: var(--edge-rest);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  animation: aura 6s var(--ease-soft) infinite;
+  transition: background-position var(--t-page) var(--ease);
+}
+.record-action:hover { background-position: var(--edge-hi); }
+.record-action.is-plain { animation: none; box-shadow: none; }
+
+/* stat row */
+.stat-row { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block-start: var(--s-6); }
+.stat {
+  display: flex; align-items: baseline; gap: var(--s-3);
+  padding: var(--s-4) var(--s-5);
+}
+.stat-num {
+  font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600;
+  line-height: 1;
+  background: var(--spectrum-lit);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(124, 92, 255, .5));
+}
+.stat-label { color: var(--fg-2); font-size: .97rem; }
+.stat-link {
+  font-size: .88rem; color: var(--fg-3);
+  text-decoration: underline; text-underline-offset: 3px;
   display: inline-flex; align-items: center; min-height: 40px;
   align-self: center;
 }
-.sec-more:hover { color: var(--navy-800); }
+.stat-link:hover { color: var(--gold); }
+.stat-cta { margin-block-start: var(--s-6); }
 
-.lead-para {
-  font-size: clamp(1.06rem, 1rem + .35vw, 1.2rem);
-  color: var(--ink-2);
-  max-width: var(--measure);
-  line-height: 1.9;
-}
-
-.note {
-  margin-block-start: var(--s-6);
-  padding: var(--s-4) var(--s-5);
-  font-size: .96rem; color: var(--ink-3);
-  background: var(--paper-2);
-  border-inline-start: 3px solid var(--sky-400);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  max-width: var(--measure);
-}
-.band-alt .note { background: var(--paper); }
-
-.sub-head { margin-block: var(--s-8) var(--s-5); }
-.sub-head h3 { font-size: 1.3rem; color: var(--navy-800); }
-
-/* ---------- 6. Timeline (قصتي) ---------- */
+/* ---------- 11. Timeline (قصتي) ---------- */
 .timeline { position: relative; max-width: var(--measure); }
+.timeline::before {
+  content: ""; position: absolute;
+  inset-block: 8px 8px; inset-inline-start: 5px; width: 1px;
+  background: linear-gradient(180deg, transparent, var(--glass-2) 10%, var(--glass-2) 90%, transparent);
+}
+.tl-item { position: relative; padding-inline-start: var(--s-6); padding-block-end: var(--s-8); }
+.tl-item:last-child { padding-block-end: 0; }
+.tl-marker {
+  position: absolute; inset-inline-start: 0; top: 9px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--void); border: 2px solid var(--violet);
+  box-shadow: 0 0 16px -2px var(--violet);
+}
+.tl-item:last-child .tl-marker {
+  background: var(--gold); border-color: var(--gold);
+  box-shadow: 0 0 20px 0 rgba(240, 206, 126, .8);
+}
+.tl-index {
+  font-family: var(--font-mono); font-size: .82rem; letter-spacing: .1em;
+  color: var(--gold);
+  margin-block-end: var(--s-2);
+}
+.tl-stage { font-size: 1.16rem; color: var(--fg); margin-block-end: var(--s-2); }
+.tl-text { color: var(--fg-2); line-height: 1.9; }
 
 /* On the dedicated story page the copy is the whole point, so it gets a
    wider measure, more breathing room, and a station number. */
 .timeline-lg { max-width: 46rem; }
 .timeline-lg .tl-item { padding-block-end: var(--s-9); }
 .timeline-lg .tl-text { font-size: 1.08rem; line-height: 1.95; }
-.tl-index {
-  font-family: var(--font-mono); font-size: .82rem; letter-spacing: .1em;
-  color: var(--sky-600);
-  /* full-strength: at the old .75 opacity this small numeral measured
-     only 3.6:1 (3.1:1 with the grain counted) — it is read as text, so
-     it keeps 4.5:1 */
-  opacity: 1;
-  margin-block-end: var(--s-2);
-}
 
-.timeline::before {
-  content: ""; position: absolute;
-  inset-block: 8px 8px;
-  inset-inline-start: 5px; width: 1px;
-  background: linear-gradient(180deg,
-    transparent, var(--paper-3) 8%, var(--paper-3) 92%, transparent);
-}
-.band-alt .timeline::before { background: linear-gradient(180deg, transparent, var(--paper-3) 8%, var(--paper-3) 92%, transparent); }
-
-.tl-item { position: relative; padding-inline-start: var(--s-6); padding-block-end: var(--s-8); }
-.tl-item:last-child { padding-block-end: 0; }
-
-.tl-marker {
-  position: absolute; inset-inline-start: 0; top: 9px;
-  width: 11px; height: 11px; border-radius: 50%;
-  background: var(--paper); border: 2px solid var(--sky-500);
-}
-.band-alt .tl-marker { background: var(--paper-2); }
-.tl-item:last-child .tl-marker { background: var(--sky-500); }
-
-.tl-stage {
-  font-size: 1.16rem; color: var(--navy-800);
-  margin-block-end: var(--s-2);
-}
-.tl-text { color: var(--ink-2); line-height: 1.9; }
-
-/* ---------- 7. Stages (خطتي) ---------- */
-.stages {
-  display: grid; gap: var(--s-5);
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  counter-reset: stage;
-}
-
-.stage {
-  background: var(--paper-2);
-  border: 1px solid var(--paper-3);
-  border-radius: var(--radius);
-  padding: var(--s-6) var(--s-5) var(--s-5);
-  transition: transform var(--t-std) var(--ease),
-              box-shadow var(--t-std) var(--ease),
-              border-color var(--t-std) var(--ease);
-}
-.stage:hover {
-  transform: translateY(-3px);
-  border-color: var(--sky-400);
-  box-shadow: 0 12px 32px -18px rgba(10, 22, 40, .38);
-}
-.band:not(.band-alt) .stage { background: #fff; }
-
-.stage-num {
-  font-family: var(--font-mono); font-size: 2.1rem; font-weight: 500;
-  line-height: 1; color: var(--sky-500); opacity: .38;
-  margin-block-end: var(--s-4);
-}
-.stage-title { font-size: 1.1rem; color: var(--navy-800); margin-block-end: var(--s-2); }
-.stage-text { color: var(--ink-2); font-size: .98rem; line-height: 1.8; }
-
-/* ---------- 8. When astronomy meets data ---------- */
-.why-grid { display: grid; gap: var(--s-8); grid-template-columns: 1fr auto; align-items: center; }
-
-.chain { display: flex; flex-wrap: wrap; gap: var(--s-3); }
-.chain li {
-  display: flex; align-items: center; gap: var(--s-2);
-  padding: var(--s-3) var(--s-4);
-  background: var(--paper);
-  border: 1px solid var(--paper-3);
-  border-radius: 999px;
-  white-space: nowrap;
-}
-.chain-ico { width: 20px; height: 20px; color: var(--sky-600); flex: none; }
-.chain-name { font-size: .95rem; font-weight: 500; color: var(--ink); }
-
-/* ---------- 9. Cards ---------- */
-.cards {
-  display: grid; gap: var(--s-4);
-  grid-template-columns: repeat(auto-fit, minmax(272px, 1fr));
-}
-
-.card {
-  background: #fff;
-  border: 1px solid var(--paper-3);
-  border-radius: var(--radius);
-  padding: var(--s-5);
-  transition: transform var(--t-std) var(--ease),
-              box-shadow var(--t-std) var(--ease),
-              border-color var(--t-std) var(--ease);
-}
-.band-alt .card { background: var(--paper); }
-.card:hover {
-  transform: translateY(-3px);
-  border-color: var(--sky-400);
-  box-shadow: 0 12px 30px -18px rgba(10, 22, 40, .34);
-}
-
-.card-ico {
-  display: block; width: 24px; height: 24px;
-  color: var(--sky-600); margin-block-end: var(--s-4);
-}
-.card-title { font-size: 1.08rem; color: var(--navy-800); margin-block-end: var(--s-2); }
-.card-text { color: var(--ink-2); font-size: .97rem; line-height: 1.8; }
-
-/* ---------- 10. Empty state ---------- */
-.empty-state {
-  display: flex; align-items: center; gap: var(--s-4);
-  padding: var(--s-6);
-  background: #fff;
-  border: 1px dashed var(--paper-3);
-  border-radius: var(--radius);
-  max-width: var(--measure);
-}
-.band-alt .empty-state { background: var(--paper); }
-.empty-ico { width: 30px; height: 30px; color: var(--ink-3); flex: none; }
-.empty-text { color: var(--ink-2); }
-
-/* ---------- 11. Records (شهادات / تطوع / بطولات) ---------- */
-.tagbar { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-block-end: var(--s-6); }
-
-.tag {
-  padding: var(--s-2) var(--s-4);
-  min-height: 40px; display: inline-flex; align-items: center;
-  font-family: inherit; font-size: .92rem; color: var(--ink-2);
-  background: #fff; border: 1px solid var(--paper-3);
-  border-radius: 999px; cursor: pointer;
-  transition: all var(--t-micro) var(--ease);
-}
-.band-alt .tag { background: var(--paper); }
-.tag:hover { border-color: var(--sky-400); color: var(--navy-800); }
-.tag[aria-pressed="true"] {
-  background: var(--navy-800); border-color: var(--navy-800); color: #fff;
-}
-
-/* "الكل" is the reset control — it should read as the default state,
-   not as one more category */
-.tag-all { padding-inline: var(--s-5); font-weight: 500; }
-
-/* minmax(0,1fr): without the 0 floor, the track grows to the min-content
-   of its widest card (long Russian words + the action link) and the whole
-   card sticks out past the shell. */
-.records { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
-
-.record {
-  display: grid; gap: var(--s-2) var(--s-5);
-  grid-template-columns: minmax(0, 1fr) auto;
-  min-width: 0;
-  align-items: start;
-  padding: var(--s-5);
-  background: #fff;
-  border: 1px solid var(--paper-3);
-  border-radius: var(--radius);
-  transition: border-color var(--t-std) var(--ease),
-              box-shadow var(--t-std) var(--ease);
-}
-.band-alt .record { background: var(--paper); }
-.record:hover { border-color: var(--sky-400); box-shadow: 0 10px 26px -18px rgba(10, 22, 40, .3); }
-
-.record-title { font-size: 1.08rem; color: var(--navy-800); }
-
-.record-meta {
-  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4);
-  font-family: var(--font-mono); font-size: .8rem; color: var(--ink-3);
-}
-.record-meta span { white-space: nowrap; }
-
-.record-text {
-  grid-column: 1 / -1;
-  color: var(--ink-2); font-size: .96rem; line-height: 1.8;
-  max-width: var(--measure);   /* keep Arabic lines comfortable to read */
-}
-
-.record-action {
-  grid-row: 1; grid-column: 2;
-  display: inline-flex; align-items: center; gap: var(--s-2);
-  padding: var(--s-2) var(--s-4); min-height: 40px;
-  font-size: .9rem; font-weight: 500; color: #fff;
-  background: var(--navy-800); border-radius: var(--radius-sm);
-  white-space: nowrap;
-  transition: background var(--t-micro) var(--ease);
-}
-.record-action:hover { background: var(--sky-600); color: #fff; }
-.record-action.is-plain {
-  background: none; color: var(--ink-2);
-  border: 1px solid var(--paper-3);
-}
-.record-action.is-plain:hover { background: none; border-color: var(--sky-400); color: var(--navy-800); }
-
-.no-match { color: var(--ink-3); padding-block: var(--s-5); }
-
-/* ---------- 11b. Stat row (home summary) ---------- */
-.stat-row {
-  display: flex; flex-wrap: wrap; gap: var(--s-3);
-  margin-block-start: var(--s-6);
-}
-.stat {
-  display: flex; align-items: baseline; gap: var(--s-3);
-  padding: var(--s-4) var(--s-5);
-  background: #fff; border: 1px solid var(--paper-3);
-  border-radius: var(--radius);
-}
-.band-alt .stat { background: var(--paper); }
-.stat-num {
-  font-family: var(--font-mono); font-size: 1.9rem; font-weight: 500;
-  line-height: 1; color: var(--sky-600);
-}
-.stat-label { color: var(--ink-2); font-size: .97rem; }
-.stat-link {
-  font-size: .88rem; color: var(--ink-3);
-  text-decoration: underline; text-underline-offset: 3px;
-  display: inline-flex; align-items: center; min-height: 40px;
-  align-self: center;
-}
-.stat-link:hover { color: var(--sky-600); }
-
-.stat-cta { margin-block-start: var(--s-6); }
-
-.btn-solid {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 50px; padding: var(--s-3) var(--s-6);
-  font-family: inherit; font-size: 1rem; font-weight: 500;
-  background: var(--sky-600); color: #fff;
-  border-radius: var(--radius-sm); border: 1px solid transparent;
-  transition: background var(--t-micro) var(--ease),
-              transform var(--t-micro) var(--ease);
-}
-.btn-solid:hover { background: var(--sky-500); color: #fff; transform: translateY(-2px); }
-
-.btn-outline {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 50px; padding: var(--s-3) var(--s-6);
-  font-family: inherit; font-size: 1rem; font-weight: 500;
-  background: none; color: var(--navy-800);
-  border: 1px solid var(--paper-3); border-radius: var(--radius-sm);
-  transition: border-color var(--t-micro) var(--ease),
-              background var(--t-micro) var(--ease),
-              transform var(--t-micro) var(--ease);
-}
-.btn-outline:hover {
-  border-color: var(--sky-600); background: #fff;
-  color: var(--navy-800); transform: translateY(-2px);
-}
-
-/* ---------- story closing line ---------- */
 .story-end {
   font-size: clamp(1.35rem, 1.1rem + 1.1vw, 2rem);
-  line-height: 1.55; font-weight: 600; color: var(--navy-800);
-  /* same rule as .hero-quote — this closing line stays on one line */
+  line-height: 1.55; font-weight: 600; color: var(--fg);
   max-width: none;
 }
-.story-end-actions {
-  display: flex; flex-wrap: wrap; gap: var(--s-3);
-  margin-block-start: var(--s-6);
-}
+.story-end-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block-start: var(--s-6); }
 
-/* ---------- 12. Vision ---------- */
-.band-vision { background: var(--navy-900); color: var(--on-navy); border-block-start: 0; }
-.band-vision .sec-head h2 { color: #fff; }
+/* ---------- 12. Vision, contact, socials ---------- */
+.band-vision {
+  background:
+    radial-gradient(78% 58% at 50% 0%, rgba(124, 92, 255, .18), transparent 70%),
+    linear-gradient(180deg, rgba(6, 8, 15, .92), rgba(4, 5, 10, .96));
+}
+.band-vision .sec-head::after { width: min(420px, 78%); }
 .vision-text {
   font-size: clamp(1.2rem, 1.05rem + .8vw, 1.75rem);
-  line-height: 1.65; color: #fff; font-weight: 500;
+  line-height: 1.65; color: var(--fg); font-weight: 500;
   max-width: 30ch;
 }
 .vision-sub {
   margin-block-start: var(--s-5);
   font-family: var(--font-mono); font-size: .85rem;
-  color: var(--sky-300); letter-spacing: .04em;
+  color: var(--azure); letter-spacing: .04em;
 }
 
-/* ---------- 13. Socials ---------- */
 .socials { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block-start: var(--s-5); }
-
 .social {
   display: inline-flex; align-items: center; gap: var(--s-3);
   padding: var(--s-3) var(--s-5); min-height: 52px;
-  background: #fff; border: 1px solid var(--paper-3);
-  border-radius: var(--radius-sm); color: var(--navy-800);
-  transition: all var(--t-micro) var(--ease);
+  color: var(--fg);
 }
-.social:hover { border-color: var(--sky-400); background: var(--paper-2); transform: translateY(-2px); }
-.social-ico { width: 22px; height: 22px; color: var(--sky-600); flex: none; }
+.social-ico { width: 22px; height: 22px; color: var(--azure); flex: none; }
 .social-name {
-  font-weight: 500;
+  font-weight: 600;
   /* Brand names are Latin script inside an RTL layout. `unicode-bidi:
      isolate` keeps the letters in correct LTR order, and the explicit
      right alignment lines the name up with the Arabic label beneath it
@@ -719,49 +874,101 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   unicode-bidi: isolate;
   text-align: right;
 }
-.social-label {
-  display: block; font-size: .82rem; color: var(--ink-3); font-weight: 400;
-  text-align: right;
-}
+.social-label { display: block; font-size: .82rem; color: var(--fg-3); font-weight: 400; text-align: right; }
 
-.pending { margin-block-start: var(--s-5); color: var(--ink-3); font-size: .96rem; }
+.pending { margin-block-start: var(--s-5); color: var(--fg-3); font-size: .96rem; }
 
-/* ---------- 14. Footer ---------- */
+/* ---------- 13. Footer ---------- */
 .site-footer {
-  background: var(--navy-900); color: var(--on-navy-soft);
+  position: relative; overflow: hidden;
+  background: rgba(4, 5, 10, .92);
   padding-block: var(--s-7);
-  border-block-start: 1px solid rgba(156, 199, 234, .14);
+  border-block-start: 1px solid transparent;
+  background-image: linear-gradient(rgba(4, 5, 10, .92), rgba(4, 5, 10, .92)),
+                    var(--spectrum);
+  background-clip: padding-box, border-box;
+  background-size: 100% 100%, 200% 100%;
+  box-shadow: 0 -30px 60px -50px var(--violet-d);
 }
-.footer-inner { display: grid; gap: var(--s-5); }
-.footer-name { color: #fff; font-weight: 600; font-size: 1.05rem; }
+.footer-inner { position: relative; z-index: 1; display: grid; gap: var(--s-5); }
+.footer-name { color: var(--fg); font-weight: 600; font-size: 1.05rem; }
 .footer-nav ul { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
 .footer-nav a {
-  color: var(--on-navy-soft); font-size: .93rem;
+  color: var(--fg-3); font-size: .93rem;
   display: inline-flex; align-items: center; min-height: 40px;
 }
-.footer-nav a:hover { color: var(--sky-300); }
-.footer-copy { font-size: .88rem; color: var(--on-navy-soft); opacity: .75; }
-
-/* ---------- 15. To top ---------- */
-.to-top {
-  position: fixed; inset-block-end: var(--s-5); inset-inline-start: var(--s-5);
-  z-index: 90;
-  width: 46px; height: 46px; display: grid; place-items: center;
-  background: var(--navy-800); color: var(--sky-300);
-  border: 1px solid rgba(156, 199, 234, .26);
-  border-radius: 50%; cursor: pointer;
-  box-shadow: 0 8px 24px -10px rgba(10, 22, 40, .6);
-  transition: background var(--t-micro) var(--ease), transform var(--t-micro) var(--ease);
+.footer-nav a:hover { color: var(--gold); }
+.footer-copy { font-size: .88rem; color: var(--fg-4); }
+/* the name, one last time, as a watermark in the same spectrum */
+.footer-mark {
+  position: absolute; inset-inline: 0; inset-block-end: -.3em;
+  margin: 0; text-align: center; z-index: 0;
+  font-size: clamp(3.4rem, 13vw, 8.5rem);
+  font-weight: 800; line-height: 1; letter-spacing: -.03em;
+  white-space: nowrap;
+  background: var(--spectrum-lit);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  opacity: .08;
+  pointer-events: none;
 }
-.to-top:hover { background: var(--sky-600); color: #fff; transform: translateY(-2px); }
-.to-top svg { width: 20px; height: 20px; }
+html[lang="ar"] .footer-mark { letter-spacing: 0; }
 
-/* ---------- 16. Reveal on scroll ---------- */
+/* ---------- 14. Page head (story + records) ---------- */
+.page-head {
+  position: relative;
+  padding-block: 148px var(--s-8);
+  background:
+    radial-gradient(60% 50% at 76% 10%, rgba(124, 92, 255, .20), transparent 70%),
+    linear-gradient(180deg, #05060C 0%, #070A13 52%, #0A0E18 100%);
+  color: var(--fg);
+}
+.page-head .eyebrow { color: var(--gold); }
+.page-title {
+  font-size: clamp(2.1rem, 1.4rem + 3vw, 3.4rem);
+  margin-block-end: var(--s-4);
+  background: var(--spectrum-lit);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 30px rgba(124, 92, 255, .32));
+  animation: name-drift 18s linear infinite;
+}
+.page-lead { color: var(--fg-3); max-width: 52ch; }
+
+/* ---------- 15. Reveal on scroll ---------- */
 .reveal {
-  opacity: 0; transform: translateY(14px);
-  transition: opacity var(--t-page) var(--ease), transform var(--t-page) var(--ease);
+  opacity: 0; transform: translateY(18px); filter: blur(5px);
+  transition: opacity var(--t-page) var(--ease),
+              transform var(--t-page) var(--ease),
+              filter var(--t-page) var(--ease);
 }
-.reveal.is-in { opacity: 1; transform: none; }
+.reveal.is-in { opacity: 1; transform: none; filter: none; }
+
+/* ---------- 16. Arabic never runs through a Latin-only mono face ----------
+   IBM Plex Mono has no Arabic glyphs, so these labels were falling back to
+   a system typewriter face. They use the site's Arabic face instead;
+   digits-only elements (.sec-index, .stat-num, .stage-num, .tl-index,
+   .chain-num) stay mono in every language. */
+html[lang="ar"] .record-meta,
+html[lang="ar"] .search-hint,
+html[lang="ar"] .vision-sub,
+html[lang="ar"] .count {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+}
+
+/* Gradient text is the one progressive enhancement here — if the browser
+   cannot clip a background to text, it gets solid light text instead. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-name, .page-title, .sec-index, .marquee-item,
+  .stat-num, .stage-num, .footer-mark {
+    color: var(--fg);
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+  }
+  .sec-index, .footer-mark { opacity: .1; }
+}
 
 /* ---------- 17. Responsive ---------- */
 @media (max-width: 900px) {
@@ -775,10 +982,10 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   html { scroll-padding-top: 76px; }
 }
 
-/* The full desktop nav + the language switcher need ~1140px before the
-   row fits on ONE line with the longest labels (Russian). The links are
-   nowrap, so below this the hamburger takes over rather than squeezing
-   them onto a second line. */
+/* The full desktop nav + the language switcher need ~1140px before the row
+   fits on ONE line with the longest labels (Russian). The links are nowrap,
+   so below this the hamburger takes over rather than squeezing them onto a
+   second line. */
 @media (max-width: 1140px) {
   .nav-toggle { display: flex; }
   .header-inner { position: relative; gap: var(--s-3); }
@@ -787,16 +994,20 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
 
   .primary-nav {
     position: absolute; inset-block-start: calc(100% + 1px); inset-inline: 0;
-    background: rgba(10, 22, 40, .97);
+    background: rgba(4, 5, 10, .97);
     -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-    border-block-end: 1px solid rgba(156, 199, 234, .16);
+    border-block-end: 1px solid transparent;
+    background-image: linear-gradient(rgba(4, 5, 10, .97), rgba(4, 5, 10, .97)),
+                      var(--spectrum);
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 200% 100%;
     padding: var(--s-3) var(--s-5) var(--s-5);
     display: none;
   }
   .primary-nav.is-open { display: block; }
   .primary-nav ul { flex-direction: column; align-items: stretch; gap: 0; }
   .primary-nav a { padding: var(--s-4) var(--s-3); font-size: 1rem; }
-  .primary-nav li + li { border-block-start: 1px solid rgba(156, 199, 234, .1); }
+  .primary-nav li + li { border-block-start: 1px solid var(--glass); }
 }
 
 /* Phones: the row (name + switcher + hamburger) needs ~446px with the
@@ -819,7 +1030,7 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   .tl-item { padding-inline-start: var(--s-5); }
 }
 
-/* ---------- 18. Reduced motion ---------- */
+/* ---------- 18. This site, standing still ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -827,328 +1038,18 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
-  .btn:hover, .card:hover, .stage:hover, .social:hover, .to-top:hover { transform: none; }
-}
-
-/* ============================================================
-   19. Premium layer
-   The six upgrades Hussein approved: extreme typography, layered
-   surfaces (grain + hairline gradients), a layout that is not a blog
-   grid (bento), meaningful motion (progress rail, stagger, counters),
-   one restrained warm accent, and craft details.
-
-   Everything here is decorative: nothing changes reading order, nothing
-   delays content (reveals only touch below-the-fold items), and the
-   whole layer degrades under prefers-reduced-motion.
-   ============================================================ */
-
-:root {
-  /* one hairline gradient reused by every "pane" in the site.
-     The blue stop tracks --sky-600 (#2A6291 = rgb(42,98,145)); the warm
-     stop is the one piece of gold that lives in every pane border, at
-     only 32% alpha. */
-  --pane-line: linear-gradient(145deg,
-      rgba(42, 98, 145, .45),
-      rgba(42, 98, 145, .10) 52%,
-      rgba(192, 164, 107, .32));
-}
-
-/* ---------- 19a. Film grain over everything ----------
-   Grayscale noise (feColorMatrix desaturates it, so no purple/green
-   speckle). Fixed + pointer-events:none, so it never blocks a click. */
-body::after {
-  content: ""; position: fixed; inset: 0; z-index: 300;
-  pointer-events: none; opacity: .05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 150px 150px;
-}
-
-/* ---------- 19b. Reading progress rail ---------- */
-.read-progress {
-  position: fixed; inset-block-start: 0; inset-inline: 0;
-  height: 2px; z-index: 101;
-  transform: scaleX(0); transform-origin: 0 50%;
-  background: linear-gradient(90deg, var(--sky-400), var(--sky-600) 55%, var(--warm-400));
-  pointer-events: none;
-}
-html[dir="rtl"] .read-progress { transform-origin: 100% 50%; }
-
-/* ---------- 19c. Editorial heading: ghost numeral + hairline ---------- */
-.sec-head {
-  position: relative;
-  padding-block-end: var(--s-5);
-  margin-block-end: var(--s-6);
-}
-/* absolute, so it also draws under the flex (.sec-head-row) variant */
-.sec-head::after {
-  content: ""; position: absolute; inset-block-end: 0; inset-inline: 0;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(12, 24, 38, .18), rgba(12, 24, 38, 0) 72%);
-}
-html[dir="rtl"] .sec-head::after {
-  background: linear-gradient(270deg, rgba(12, 24, 38, .18), rgba(12, 24, 38, 0) 72%);
-}
-.band-vision .sec-head::after {
-  background: linear-gradient(90deg, rgba(156, 199, 234, .55), rgba(156, 199, 234, 0) 72%);
-}
-html[dir="rtl"] .band-vision .sec-head::after {
-  background: linear-gradient(270deg, rgba(156, 199, 234, .55), rgba(156, 199, 234, 0) 72%);
-}
-/* injected by ui.js — purely decorative, aria-hidden at creation */
-.sec-index {
-  position: absolute; inset-block-start: -.34em; inset-inline-start: -.06em;
-  font-family: var(--font-mono); font-weight: 500;
-  font-size: clamp(4.5rem, 10vw, 8rem);
-  line-height: 1; letter-spacing: -.05em;
-  color: var(--navy-800); opacity: .055;
-  pointer-events: none; user-select: none; z-index: 0;
-}
-.band-vision .sec-index { color: #fff; opacity: .09; }
-.sec-head h2 { position: relative; z-index: 1; }
-/* ONLY the real children of a row header get lifted above the ghost
-   numeral — this rule must never reach .sec-index itself, or it would
-   override its `position: absolute` (same specificity, later in source)
-   and drop a giant numeral into the flow above the heading. */
-.sec-head-row > h2,
-.sec-head-row > .sec-more { position: relative; z-index: 1; }
-
-/* ---------- 19d. Hero: hairline, gradient name, glow, scroll cue ---------- */
-.hero-head::before {
-  content: ""; display: block; height: 1px; margin-block-end: var(--s-5);
-  background: linear-gradient(90deg, rgba(156, 199, 234, .55), rgba(156, 199, 234, .06) 62%, transparent);
-}
-html[dir="rtl"] .hero-head::before {
-  background: linear-gradient(270deg, rgba(156, 199, 234, .55), rgba(156, 199, 234, .06) 62%, transparent);
-}
-
-/* white → sky → one whisper of warm gold. Every stop stays above 4.5:1
-   on the navy (white 18:1, sky-300 ~11:1, warm-400 ~7:1). */
-@supports (-webkit-background-clip: text) {
-  .hero-name {
-    background-image: linear-gradient(158deg, #FFFFFF 38%, #A9CBEE 76%, #C0A46B 112%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
-
-.hero-visual { position: relative; }
-/* soft light behind the ORBIT ONLY — never behind running text */
-.hero-visual::before {
-  content: ""; position: absolute;
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: min(118%, 460px); aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(111, 168, 216, .30),
-              rgba(111, 168, 216, .10) 45%, transparent 68%);
-  filter: blur(6px);
-  pointer-events: none;
-}
-
-.hero-scroll {
-  position: absolute; inset-block-end: var(--s-5); inset-inline-start: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  margin: 0; font-size: .74rem; font-weight: 500;
-  /* full-strength colour: at .8 this line dipped to ~4.3:1 once the grain
-     layer was counted, so it keeps its contrast and stays visually quiet
-     through the muted hue instead */
-  color: var(--on-navy-soft);
-  pointer-events: none;
-}
-html[lang="en"] .hero-scroll, html[lang="ru"] .hero-scroll {
-  font-family: var(--font-mono); letter-spacing: .14em; text-transform: uppercase;
-}
-.hero-scroll::after {
-  content: ""; width: 1px; height: 34px;
-  background: linear-gradient(180deg, var(--sky-300), transparent);
-  animation: cue-drop 2.6s var(--ease) infinite;
-}
-@keyframes cue-drop {
-  0%   { transform: scaleY(.25); transform-origin: top; opacity: 0; }
-  35%  { transform: scaleY(1);   transform-origin: top; opacity: 1; }
-  70%  { transform: scaleY(1);   transform-origin: top; opacity: 1; }
-  100% { transform: scaleY(.25); transform-origin: top; opacity: 0; }
-}
-
-/* ---------- 19e. Keyword marquee ---------- */
-.marquee {
-  position: relative; overflow: hidden;
-  background: var(--navy-900);
-  border-block: 1px solid rgba(156, 199, 234, .14);
-  padding-block: var(--s-4);
-}
-.marquee-track {
-  display: flex; width: max-content;
-  animation: marquee-run 46s linear infinite;
-}
-.marquee-group { display: flex; align-items: center; }
-.marquee-item {
-  display: inline-flex; align-items: center;
-  font-size: 1rem; font-weight: 500; color: var(--on-navy-soft);
-  white-space: nowrap;
-}
-html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
-  font-family: var(--font-mono); font-size: .92rem; letter-spacing: .06em;
-}
-/* the warm dot between words — one of only three places gold appears */
-.marquee-item::after {
-  content: ""; width: 5px; height: 5px;
-  margin-inline: var(--s-5);
-  border-radius: 50%; background: var(--warm-400); opacity: .85;
-}
-@keyframes marquee-run { to { transform: translateX(-50%); } }
-
-/* ---------- 19f. Panes instead of flat cards ---------- */
-.card, .stat, .social {
-  border-color: transparent;
-  background: linear-gradient(#fff, #fff) padding-box, var(--pane-line) border-box;
-}
-.band-alt .card, .band-alt .stat {
-  background: linear-gradient(var(--paper), var(--paper)) padding-box, var(--pane-line) border-box;
-}
-.record {
-  border-color: transparent;
-  background: linear-gradient(#fff, #fff) padding-box, var(--pane-line) border-box;
-}
-.band-alt .record {
-  background: linear-gradient(var(--paper), var(--paper)) padding-box, var(--pane-line) border-box;
-}
-.stage {
-  position: relative;
-  border-color: transparent;
-  background: linear-gradient(var(--paper-2), var(--paper-2)) padding-box, var(--pane-line) border-box;
-}
-.band:not(.band-alt) .stage {
-  background: linear-gradient(#fff, #fff) padding-box, var(--pane-line) border-box;
-}
-.social:hover {
-  background: linear-gradient(var(--paper-2), var(--paper-2)) padding-box, var(--pane-line) border-box;
-}
-/* hover: an inset light ring + a lift. border-color is left to the
-   existing hover rules, which light the hairline up on the same beat. */
-.card:hover, .stage:hover, .record:hover, .stat:hover, .social:hover {
-  box-shadow: inset 0 0 0 1px rgba(156, 199, 234, .6),
-              0 18px 40px -26px rgba(10, 22, 40, .55);
-}
-.stat:hover { transform: translateY(-2px); }
-
-/* corner ticks on the plan cards — they turn gold on hover, which is
-   the only place the warm tone gets to move */
-.stage::before, .stage::after {
-  content: ""; position: absolute; width: 14px; height: 14px;
-  border: 1px solid rgba(42, 98, 145, .55);
-  pointer-events: none;
-  transition: border-color var(--t-std) var(--ease);
-}
-.stage::before { top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
-.stage::after { bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
-.stage:hover::before, .stage:hover::after { border-color: var(--warm-400); }
-
-/* ---------- 19g. Bento rhythm (interests + plan + why) ---------- */
-.cards-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.cards-bento .card.is-wide { grid-column: span 2; }
-.card.is-wide .card-ico { width: 30px; height: 30px; }
-.card.is-wide .card-title { font-size: 1.28rem; }
-.card.is-wide .card-text { max-width: 46ch; }
-
-@media (min-width: 901px) {
-  .cards-bento { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  /* 2+1+1 / 2+1+1 — a rhythm instead of six identical boxes */
-  .stages-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .stages-bento .stage:nth-child(1), .stages-bento .stage:nth-child(2) { grid-column: span 3; }
-  .stages-bento .stage:nth-child(n + 3) { grid-column: span 2; }
-  .why-grid { grid-template-columns: 1.25fr .95fr; gap: var(--s-8); }
-}
-
-/* the "chain" stops being pills and becomes an editorial step list */
-.chain { display: block; border-block-start: 1px solid rgba(12, 24, 38, .12); }
-.chain li {
-  display: flex; align-items: center; gap: var(--s-4);
-  padding: var(--s-4) var(--s-3);
-  background: none; border: 0;
-  border-block-end: 1px solid rgba(12, 24, 38, .12);
-  border-radius: 0;
-  white-space: normal;      /* last of the old pill/chip properties */
-  transition: background var(--t-micro) var(--ease);
-}
-.chain li:hover { background: rgba(255, 255, 255, .75); }
-.band-alt .chain li:hover { background: rgba(255, 255, 255, .9); }
-.chain-num {
-  font-family: var(--font-mono); font-size: .8rem;
-  color: var(--sky-600);
-  /* full strength — .85 measured 4.2:1 on the alt band, 3.6:1 with the
-     grain counted, and this numeral is read, not just looked at */
-  opacity: 1;
-  width: 2.2ch; flex: none;
-}
-.chain-ico { width: 22px; height: 22px; }
-.chain-name { font-size: 1.04rem; }
-
-/* ---------- 19h. Button sheen ---------- */
-.btn, .btn-solid, .btn-outline {
-  position: relative; overflow: hidden; isolation: isolate;
-}
-.btn::after, .btn-solid::after, .btn-outline::after {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .30) 50%, transparent 68%);
-  transform: translateX(-135%);
-  transition: transform 650ms var(--ease);
-  pointer-events: none;
-}
-.btn:hover::after, .btn-solid:hover::after, .btn-outline:hover::after {
-  transform: translateX(135%);
-}
-
-/* ---------- 19i. Restrained warm accent, three places only ---------- */
-/* 1. the vision band opens with a gold hairline */
-.band-vision { position: relative; }
-.band-vision::before {
-  content: ""; position: absolute; inset-block-start: 0; inset-inline: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(192, 164, 107, .65) 35%,
-              rgba(192, 164, 107, .65) 65%, transparent);
-}
-/* 2. the marquee dots  3. the hero quote rule (already warm) */
-
-/* ---------- 19j. Footer watermark ---------- */
-.site-footer { position: relative; overflow: hidden; }
-.footer-inner { position: relative; z-index: 1; }
-.footer-mark {
-  position: absolute; inset-inline: 0; inset-block-end: -.3em;
-  margin: 0; text-align: center; z-index: 0;
-  font-size: clamp(3.4rem, 13vw, 8.5rem);
-  font-weight: 700; line-height: 1; letter-spacing: -.03em;
-  white-space: nowrap;
-  color: rgba(156, 199, 234, .11);
-  pointer-events: none;
-}
-html[lang="ar"] .footer-mark { letter-spacing: 0; }
-
-/* ---------- 19k. Arabic never runs through a Latin-only mono face ----------
-   IBM Plex Mono has no Arabic glyphs, so Arabic labels were falling back
-   to a system typewriter face. They now use the site's Arabic face;
-   digits-only elements (.sec-index, .stat-num, .stage-num, .tl-index)
-   stay mono in every language. */
-html[lang="ar"] .eyebrow,
-html[lang="ar"] .record-meta,
-html[lang="ar"] .search-hint,
-html[lang="ar"] .vision-sub,
-html[lang="ar"] .count {
-  font-family: var(--font-ar);
-  letter-spacing: 0;
-}
-
-/* ---------- 19l. Print ---------- */
-@media print {
-  body::after, .read-progress, .marquee, .hero-scroll, .to-top { display: none !important; }
-}
-
-/* ---------- 19m. This layer, standing still ---------- */
-@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; }
+  .btn:hover, .card:hover, .record:hover, .stage:hover,
+  .stat:hover, .social:hover, .to-top:hover { transform: none; }
+  /* the spectrum stays — only the movement goes */
   .marquee { overflow: visible; }
   .marquee-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; }
   .marquee-group { flex-wrap: wrap; justify-content: center; }
   .marquee-group + .marquee-group { display: none; }
-  .hero-scroll::after { animation: none; }
-  .stat:hover, .btn::after { transition: none; }
+  body::before { transform: none; }
+}
+
+@media print {
+  body::before, body::after, .read-progress, .marquee, .hero-scroll,
+  .to-top, .footer-mark { display: none !important; }
 }
