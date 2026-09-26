@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>QA harness</title>
+<style>body{font:13px/1.5 monospace;background:#111;color:#ddd;margin:0;padding:8px}iframe{border:0;display:block;background:#fff}</style>
+</head>
+<body>
+<iframe id="f" width="360" height="640"></iframe>
+<script>
+window.__qa = { done: false, results: [], phase: 'idle' };
+
+var PAGES = ['index.html', 'story.html', 'records.html'];
+var WIDTHS = [360, 414, 768, 900, 1140, 1280, 1440];
+var LANGS = ['ar', 'en', 'ru'];
+var ALLOWED_LATIN_AR = [
+  'LinkedIn', 'GitHub', 'YouTube', 'VK', 'EN', 'RU', 'Ç', 'ç'
+];
+
+function latinHits(text) {
+  // Latin letters in an Arabic UI — allow the approved brand names only
+  var cleaned = text;
+  ALLOWED_LATIN_AR.forEach(function (w) { cleaned = cleaned.split(w).join(''); });
+  var m = cleaned.match(/[A-Za-z]{2,}/g);
+  return m ? m.slice(0, 6) : [];
+}
+function cjkHits(text) {
+  var m = text.match(/[\u3040-\u30ff\u4e00-\u9fff\uac00-\ud7af]+/g);
+  return m ? m.slice(0, 4) : [];
+}
+function walkText(root) {
+  var out = [];
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function (n) {
+      if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p = n.parentElement;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      var tag = p.tagName;
+      if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TITLE' || tag === 'META') return NodeFilter.FILTER_REJECT;
+      if (p.getAttribute && p.getAttribute('aria-hidden') === 'true') return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var n;
+  while ((n = walker.nextNode())) out.push(n.nodeValue);
+  return out;
+}
+
+function inspect(doc, win, width, lang, page, frames) {
+  var r = { page: page, lang: lang, width: width, issues: [], notes: [] };
+  var add = function (k, v) { r.issues.push(k + '=' + JSON.stringify(v)); };
+  /* This browser window is headless/hidden: when no animation frames are
+     produced, IntersectionObserver callbacks and rAF never run, so every
+     scroll-driven check would be a false alarm. Those are skipped and
+     reported as a note instead of as an issue. */
+  if (!frames) r.notes.push('framesOff');
+
+  var d = doc.documentElement;
+  var overflow = d.scrollWidth - Math.max(d.clientWidth, win.innerWidth);
+  if (overflow > 1) add('hOverflow', overflow);
+
+  // any element sticking out horizontally
+  var wide = [];
+  var els = doc.querySelectorAll('body *');
+  for (var i = 0; i < els.length; i++) {
+    var e = els[i];
+    if (e.tagName === 'HTML' || e.tagName === 'BODY') continue;
+    var cs = win.getComputedStyle(e);
+    if (cs.position === 'fixed' || cs.display === 'none' || cs.visibility === 'hidden') continue;
+    var b = e.getBoundingClientRect();
+    if (b.width === 0 && b.height === 0) continue;
+    // the marquee is MEANT to run past the viewport (its band clips it)
+    if (e.closest('.marquee')) continue;
+    if (b.right > win.innerWidth + 1.5 || b.left < -1.5) {
+      wide.push(e.tagName.toLowerCase() + '.' + (e.className || '').toString().split(' ')[0] + '[' + Math.round(b.left) + ',' + Math.round(b.right) + ']');
+    }
+    if (wide.length > 5) break;
+  }
+  if (wide.length) add('outOfBounds', wide);
+
+  var h1s = doc.querySelectorAll('h1');
+  if (h1s.length !== 1) add('h1', h1s.length);
+
+  var text = walkText(doc.body).join(' \n ');
+  if (lang === 'ar') {
+    var lh = latinHits(text);
+    if (lh.length) add('latinInArabic', lh);
+  }
+  var cj = cjkHits(text);
+  if (cj.length) add('cjk', cj);
+
+  // dead anchors
+  var dead = [];
+  doc.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    if (id && !doc.getElementById(id)) dead.push(a.getAttribute('href'));
+  });
+  if (dead.length) add('deadAnchors', dead);
+
+  // tiny tap targets on visible interactive elements
+  var tiny = [];
+  doc.querySelectorAll('a, button').forEach(function (a) {
+    var b = a.getBoundingClientRect();
+    if (b.width === 0 || b.height === 0) return;
+    if (b.height < 40) tiny.push((a.textContent || '').trim().slice(0, 18) + ':' + Math.round(b.height));
+  });
+  if (tiny.length) add('smallTargets', tiny.slice(0, 8));
+
+  // language plumbing
+  if (doc.documentElement.lang !== lang) add('htmlLang', doc.documentElement.lang);
+  var expectDir = lang === 'ar' ? 'rtl' : 'ltr';
+  if (doc.documentElement.dir !== expectDir) add('dir', doc.documentElement.dir);
+
+  // premium layer markers
+  if (page === 'index.html') {
+    var heads = doc.querySelectorAll('.sec-head');
+    var idx = doc.querySelectorAll('.sec-index');
+    if (idx.length !== heads.length) add('secIndex', idx.length + '/' + heads.length);
+    var track = doc.querySelector('.marquee-track');
+    if (!track || track.children.length < 2) add('marquee', track ? track.children.length : 'none');
+    var words = track ? track.textContent.trim() : '';
+    if (words.length < 10) add('marqueeWords', words);
+    // "stuck at zero" only counts if the row is ON SCREEN — the counters
+    // are designed to stay at 0 until they scroll into view (IO-driven,
+    // so only meaningful when the window renders frames)
+    var sr = doc.getElementById('stat-row');
+    if (sr && frames) {
+      var sb = sr.getBoundingClientRect();
+      var onScreen = sb.top < win.innerHeight * 0.95 && sb.bottom > 0;
+      var nums = [].map.call(doc.querySelectorAll('.stat-num'), function (n) { return n.textContent; });
+      if (onScreen && nums.join(',') === '0,0,0') add('statStuckAtZero', nums);
+    }
+  }
+  if (!doc.querySelector('.read-progress')) add('progress', 'missing');
+  if (!doc.querySelector('.footer-mark')) add('footerMark', 'missing');
+  else if (doc.querySelector('.footer-mark').textContent.trim().length < 3) add('footerMark', 'empty');
+  else if (doc.querySelector('.footer-mark').getAttribute('aria-hidden') !== 'true') add('footerMark', 'notHidden');
+
+  // the ghost numeral must be ABSOLUTE — a `.sec-head-row > *` rule with
+  // equal specificity would otherwise drop it into the flow
+  doc.querySelectorAll('.sec-index').forEach(function (n) {
+    if (win.getComputedStyle(n).position !== 'absolute') add('secIndex', 'position:' + win.getComputedStyle(n).position);
+  });
+
+  // each switcher button needs a real accessible name, not just ع
+  doc.querySelectorAll('.lang-btn').forEach(function (b) {
+    var al = b.getAttribute('aria-label');
+    if (!al || al.length < 3) add('langBtnAria', (b.dataset.lang || '?') + ':' + al);
+  });
+
+  // data-i18n that stayed empty
+  var empties = [];
+  doc.querySelectorAll('[data-i18n]').forEach(function (n) {
+    if (!n.textContent.trim()) empties.push(n.getAttribute('data-i18n'));
+  });
+  if (empties.length) add('emptyI18n', empties.slice(0, 6));
+
+  // invisible-but-not-revealed content (stuck opacity 0).
+  // The bottom 5% is the reveal zone: items there are outside the
+  // observer root on purpose, so they are not counted as stuck.
+  // Skipped entirely when the window is not producing frames.
+  var stuck = [];
+  if (frames) {
+    doc.querySelectorAll('.reveal:not(.is-in)').forEach(function (n) {
+      var b = n.getBoundingClientRect();
+      if (b.top < win.innerHeight * 0.95 && b.bottom > 0) stuck.push(n.className.split(' ')[0]);
+    });
+  }
+  if (stuck.length) add('stuckReveal', stuck.slice(0, 5));
+
+  // header budget: the desktop nav must stay on ONE row, and the header
+  // row must not overflow its shell at any width
+  var hi = doc.querySelector('.header-inner');
+  if (hi && hi.scrollWidth > hi.clientWidth + 1) add('headerOverflow', hi.scrollWidth + '/' + hi.clientWidth);
+  var navUl = doc.querySelector('.primary-nav ul');
+  var toggle = doc.querySelector('.nav-toggle');
+  if (navUl && toggle && win.getComputedStyle(toggle).display === 'none') {
+    var tops = {};
+    navUl.querySelectorAll('a').forEach(function (a) {
+      var bb = a.getBoundingClientRect();
+      if (bb.width) tops[Math.round(bb.top)] = 1;
+    });
+    var rows = Object.keys(tops).length;
+    if (rows > 1) add('navRows', rows);
+  }
+
+  return r;
+}
+
+function loadCase(page, lang, width) {
+  return new Promise(function (resolve) {
+    var f = document.getElementById('f');
+    f.width = width;
+    f.style.width = width + 'px';
+    /* the site lets a saved preference win over ?lang=, so seed the exact
+       language for this case — otherwise every case renders the last one */
+    try { localStorage.setItem('site-lang', lang); } catch (e) { /* private mode */ }
+    var url = 'http://127.0.0.1:8000/' + page + '?lang=' + lang;
+    var done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      f.removeEventListener('load', finish);
+      // give the scripts a beat to render, then let the page settle:
+      // reveals are IntersectionObserver-driven and this browser window
+      // is throttled, so wait (bounded) until nothing visible is still
+      // waiting to be revealed before inspecting.
+      setTimeout(function () {
+        var doc, win;
+        try { doc = f.contentDocument; win = f.contentWindow; }
+        catch (e) { resolve({ page: page, lang: lang, width: width, issues: ['noAccess:' + e.message] }); return; }
+        if (!doc || !doc.body) { resolve({ page: page, lang: lang, width: width, issues: ['noDoc'] }); return; }
+
+        function done1(frames) {
+          var res;
+          try { res = inspect(doc, win, width, lang, page, frames); }
+          catch (e) { res = { page: page, lang: lang, width: width, issues: ['inspectError:' + e.message] }; }
+          resolve(res);
+        }
+        /* Does this window actually paint? Sample the document timeline:
+           if it never advances, no rendering step runs, IntersectionObserver
+           is silent, and the scroll-driven checks cannot be trusted. */
+        function sampleFrames() {
+          var a = doc.timeline ? doc.timeline.currentTime : 0;
+          setTimeout(function () {
+            var b = doc.timeline ? doc.timeline.currentTime : 0;
+            settle(10, b > a);
+          }, 800);
+        }
+        function settle(tries, frames) {
+          var pending = 0;
+          try {
+            pending = [].filter.call(doc.querySelectorAll('.reveal:not(.is-in)'), function (n) {
+              var b = n.getBoundingClientRect();
+              return b.top < win.innerHeight * 0.95 && b.bottom > 0;
+            }).length;
+          } catch (e) { resolve({ page: page, lang: lang, width: width, issues: ['settleError:' + e.message] }); return; }
+          if (!frames || !pending || tries <= 0) return done1(frames);
+          setTimeout(function () { settle(tries - 1, frames); }, 400);
+        }
+        sampleFrames();
+      }, 300);
+    }
+    f.addEventListener('load', finish);
+    f.src = url;
+    setTimeout(finish, 6000);
+  });
+}
+
+window.runQA = function () {
+  window.__qa = { done: false, results: [], phase: 'running' };
+  var q = window.__qa;
+  var jobs = [];
+  PAGES.forEach(function (p) {
+    LANGS.forEach(function (l) {
+      WIDTHS.forEach(function (w) { jobs.push([p, l, w]); });
+    });
+  });
+  (function next() {
+    var job = jobs.shift();
+    if (!job) { q.done = true; q.phase = 'done'; return; }
+    loadCase(job[0], job[1], job[2]).then(function (res) {
+      if (res.issues.length || (res.notes && res.notes.length)) q.results.push(res);
+      next();
+    });
+  })();
+  return jobs.length;
+};
+</script>
+</body></html>

@@ -434,5 +434,10 @@
   buildTags();
   apply();
 
+  /* premium layer: ghost numerals + progress rail.
+     Records themselves are never animated in — filtering must feel
+     instant on every keystroke. */
+  if (window.UI) { UI.sectionIndex(); UI.progress(); }
+
   document.addEventListener('site-lang-change', fullRefresh);
 })();

@@ -76,6 +76,13 @@
       en: 'Language',
       ru: 'Язык'
     },
+    /* Accessible names for the three switcher buttons. Their VISIBLE text
+       stays ع / EN / RU in every language (approved exception), so each
+       one carries a real name in the language currently on screen — a
+       screen reader must never announce a bare "ع". */
+    'lang.name.ar': { ar: 'العربية', en: 'Arabic', ru: 'Арабский' },
+    'lang.name.en': { ar: 'الإنجليزية', en: 'English', ru: 'Английский' },
+    'lang.name.ru': { ar: 'الروسية', en: 'Russian', ru: 'Русский' },
 
     /* ---------- meta (per page) ---------- */
     'meta.index.title': {
@@ -140,6 +147,21 @@
       ar: 'لم أستسلم، وما زلت أعمل على بناء طريقي.',
       en: 'I did not give up, and I am still building my path.',
       ru: 'Я не сдался и продолжаю строить свой путь.'
+    },
+    /* decorative scroll cue at the bottom of the hero */
+    'hero.scroll': {
+      ar: 'مرّر للأسفل',
+      en: 'Scroll to explore',
+      ru: 'Листайте вниз'
+    },
+
+    /* The keyword strip under the hero. Words only — each one is already
+       an interest or a field he really studies; `|` separates items and
+       JS duplicates the row to make the loop seamless. */
+    'marquee.items': {
+      ar: 'تحليل البيانات|بايثون|إكسل|الذكاء الاصطناعي|علم الفلك|الكواكب|التعلم المستمر',
+      en: 'Data analysis|Python|Excel|Artificial intelligence|Astronomy|Planets|Continuous learning',
+      ru: 'Анализ данных|Python|Искусственный интеллект|Астрономия|Планеты|Непрерывное обучение'
     },
 
     /* ---------- home: about ---------- */

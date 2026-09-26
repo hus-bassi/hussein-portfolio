@@ -12,9 +12,7 @@
 <meta property="og:title" content="التعلم والشهادات | حسين البسيوني">
 <meta property="og:description" content="شهادات الدورات والتطوّع الموثّقة، مع البحث الفوري والتصفية حسب المجال.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="icon" href="academic/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/records.css">
@@ -48,9 +46,9 @@
     </nav>
 
     <div class="lang-switch" role="group" data-i18n-aria="lang.label" aria-label="اللغة">
-      <button class="lang-btn" type="button" data-lang="ar" aria-pressed="true">ع</button>
-      <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
-      <button class="lang-btn" type="button" data-lang="ru" aria-pressed="false">RU</button>
+      <button class="lang-btn" type="button" data-lang="ar" data-i18n-aria="lang.name.ar" aria-label="العربية" aria-pressed="true">ع</button>
+      <button class="lang-btn" type="button" data-lang="en" data-i18n-aria="lang.name.en" aria-label="English" aria-pressed="false">EN</button>
+      <button class="lang-btn" type="button" data-lang="ru" data-i18n-aria="lang.name.ru" aria-label="Русский" aria-pressed="false">RU</button>
     </div>
 
     <button class="nav-toggle" id="nav-toggle" type="button"
@@ -134,6 +132,7 @@
 <footer class="site-footer">
   <div class="shell footer-inner">
     <p class="footer-name" data-i18n="brand.name">حسين البسيوني</p>
+    <p class="footer-mark" aria-hidden="true" data-i18n="brand.name">حسين البسيوني</p>
     <nav class="footer-nav" data-i18n-aria="footer.navLabel" aria-label="روابط التذييل">
       <ul>
         <li><a href="index.html" data-i18n="nav.home">الرئيسية</a></li>
@@ -156,6 +155,7 @@
 <script src="academic/data/certificates.js"></script>
 <script src="academic/data/events.js"></script>
 <script src="assets/js/i18n.js"></script>
+<script src="assets/js/ui.js"></script>
 <script src="assets/js/records.js"></script>
 </body>
 </html>

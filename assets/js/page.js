@@ -63,14 +63,22 @@
   } else {
     targets.forEach(function (n) { n.classList.add('reveal'); });
     var rev = new IntersectionObserver(function (entries) {
+      var order = 0;
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
+        /* small stagger, capped at ~350ms — content is never held back */
+        if (order) en.target.style.transitionDelay = (order * 70) + 'ms';
+        order++;
         en.target.classList.add('is-in');
         rev.unobserve(en.target);
+        window.setTimeout(function () { en.target.style.transitionDelay = ''; }, 700);
       });
-    }, { rootMargin: '0px 0px -6% 0px', threshold: .1 });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: .01 });
     targets.forEach(function (n) { rev.observe(n); });
   }
+
+  /* ---------- premium layer: ghost numerals + progress rail ---------- */
+  if (window.UI) { UI.sectionIndex(); UI.progress(); }
 
   /* ---------- footer year ---------- */
   var fy = document.getElementById('footer-year');

@@ -12,9 +12,7 @@
 <meta property="og:title" content="حسين البسيوني | علوم البيانات والفلك">
 <meta property="og:description" content="أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="icon" href="academic/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
@@ -47,9 +45,9 @@
     </nav>
 
     <div class="lang-switch" role="group" data-i18n-aria="lang.label" aria-label="اللغة">
-      <button class="lang-btn" type="button" data-lang="ar" aria-pressed="true">ع</button>
-      <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
-      <button class="lang-btn" type="button" data-lang="ru" aria-pressed="false">RU</button>
+      <button class="lang-btn" type="button" data-lang="ar" data-i18n-aria="lang.name.ar" aria-label="العربية" aria-pressed="true">ع</button>
+      <button class="lang-btn" type="button" data-lang="en" data-i18n-aria="lang.name.en" aria-label="English" aria-pressed="false">EN</button>
+      <button class="lang-btn" type="button" data-lang="ru" data-i18n-aria="lang.name.ru" aria-label="Русский" aria-pressed="false">RU</button>
     </div>
 
     <button class="nav-toggle" id="nav-toggle" type="button"
@@ -72,9 +70,13 @@
     </div>
 
     <div class="shell hero-inner">
-      <div class="hero-copy">
+      <!-- the head spans both columns: the name gets the full shell width -->
+      <div class="hero-head">
         <p class="eyebrow" data-i18n="hero.eyebrow">الاسم</p>
         <h1 class="hero-name" id="hero-title" data-i18n="brand.nameLines">حسين البسيوني</h1>
+      </div>
+
+      <div class="hero-copy">
         <p class="hero-lead" data-i18n="hero.lead">أطمح إلى الجمع بين علوم البيانات وعلم الفلك</p>
         <p class="hero-desc" data-i18n="hero.desc">أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.</p>
 
@@ -106,7 +108,14 @@
         </svg>
       </div>
     </div>
+
+    <p class="hero-scroll" aria-hidden="true" data-i18n="hero.scroll">مرّر للأسفل</p>
   </section>
+
+  <!-- ═══ شريط الكلمات المفتاحية — سُلّم بصريّ بين الهيرو والمحتوى ═══ -->
+  <div class="marquee" id="marquee" aria-hidden="true">
+    <div class="marquee-track"></div>
+  </div>
 
   <!-- ═══ 2. نبذة عني ═══ -->
   <section class="band" id="about" aria-labelledby="about-title">
@@ -143,7 +152,7 @@
         <h2 id="plan-title" data-i18n="plan.title">الطريق الذي أعمل على بنائه</h2>
       </header>
 
-      <ol class="stages">
+      <ol class="stages stages-bento">
         <li class="stage">
           <p class="stage-num" aria-hidden="true">01</p>
           <h3 class="stage-title" data-i18n="plan.s1t">تطوير الأساس</h3>
@@ -187,6 +196,7 @@
 
         <ul class="chain" data-i18n-aria="why.chainLabel" aria-label="العلاقة بين البيانات والبرمجة والفلك">
           <li>
+            <span class="chain-num" aria-hidden="true">01</span>
             <span class="chain-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <ellipse cx="12" cy="12" rx="9" ry="3.6"></ellipse>
@@ -197,6 +207,7 @@
             <span class="chain-name" data-i18n="why.data">البيانات</span>
           </li>
           <li>
+            <span class="chain-num" aria-hidden="true">02</span>
             <span class="chain-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M9 7l-5 5 5 5M15 7l5 5-5 5"></path>
@@ -205,6 +216,7 @@
             <span class="chain-name" data-i18n="why.code">البرمجة</span>
           </li>
           <li>
+            <span class="chain-num" aria-hidden="true">03</span>
             <span class="chain-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <circle cx="12" cy="12" r="3.2"></circle>
@@ -214,6 +226,7 @@
             <span class="chain-name" data-i18n="why.astro">الفلك</span>
           </li>
           <li>
+            <span class="chain-num" aria-hidden="true">04</span>
             <span class="chain-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <circle cx="12" cy="12" r="7.4"></circle>
@@ -235,8 +248,8 @@
         <h2 id="interests-title" data-i18n="interests.title">اهتماماتي</h2>
       </header>
 
-      <ul class="cards">
-        <li class="card">
+      <ul class="cards cards-bento">
+        <li class="card is-wide">
           <span class="card-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M4 19V9M9.3 19V5M14.7 19v-8M20 19V7"></path>
@@ -264,7 +277,7 @@
           <h3 class="card-title" data-i18n="int.astro.t">علم الفلك</h3>
           <p class="card-text" data-i18n="int.astro.d">شغف قديم أطمح إلى ربطه بالبيانات والتحليل.</p>
         </li>
-        <li class="card">
+        <li class="card is-wide">
           <span class="card-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <circle cx="12" cy="12" r="7.4"></circle>
@@ -380,6 +393,7 @@
 <footer class="site-footer">
   <div class="shell footer-inner">
     <p class="footer-name" data-i18n="brand.name">حسين البسيوني</p>
+    <p class="footer-mark" aria-hidden="true" data-i18n="brand.name">حسين البسيوني</p>
     <nav class="footer-nav" data-i18n-aria="footer.navLabel" aria-label="روابط التذييل">
       <ul>
         <li><a href="#home" data-i18n="nav.home">الرئيسية</a></li>
@@ -405,6 +419,7 @@
 <script src="academic/data/projects.js"></script>
 <script src="academic/data/social.js"></script>
 <script src="assets/js/i18n.js"></script>
+<script src="assets/js/ui.js"></script>
 <script src="assets/js/site.js"></script>
 </body>
 </html>

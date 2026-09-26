@@ -140,12 +140,19 @@
     }
     targets.forEach(function (n) { if (!n.classList.contains('is-in')) n.classList.add('reveal'); });
     var rev = new IntersectionObserver(function (entries) {
+      var order = 0;
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
+        /* a small stagger: a row of cards arrives as a wave rather than a
+           block. Never more than ~350ms, and only for below-fold items,
+           so nothing is ever kept waiting for its content. */
+        if (order) en.target.style.transitionDelay = (order * 70) + 'ms';
+        order++;
         en.target.classList.add('is-in');
         rev.unobserve(en.target);
+        window.setTimeout(function () { en.target.style.transitionDelay = ''; }, 700);
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: .12 });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: .01 });
     targets.forEach(function (n) {
       if (!n.classList.contains('is-in')) rev.observe(n);
     });
@@ -216,6 +223,40 @@
       li.appendChild(a);
       statRow.appendChild(li);
     });
+    animateStats(statRow);
+  }
+
+  /* The three numbers count up the first time they scroll into view.
+     Under prefers-reduced-motion (or without IntersectionObserver) the
+     real value is simply left on screen — no animation at all. */
+  var statsObserver = null;
+
+  function countUp(node, to) {
+    var start = null, dur = 850;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      node.textContent = String(Math.round(to * eased));
+      if (p < 1) window.requestAnimationFrame(step);
+      else node.textContent = String(to);
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  function animateStats(statRow) {
+    if (statsObserver) { statsObserver.disconnect(); statsObserver = null; }
+    var nums = Array.prototype.slice.call(statRow.querySelectorAll('.stat-num'));
+    if (reduceMotion || !('IntersectionObserver' in window) || !nums.length) return;
+    var to = nums.map(function (n) { return parseInt(n.textContent, 10) || 0; });
+    nums.forEach(function (n) { n.textContent = '0'; });
+    statsObserver = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      statsObserver.disconnect();
+      statsObserver = null;
+      nums.forEach(function (n, i) { countUp(n, to[i]); });
+    }, { threshold: .5 });
+    statsObserver.observe(statRow);
   }
 
   function renderVolleyball() {
@@ -306,6 +347,7 @@
     renderVolleyball();
     renderProjects();
     renderSocials();
+    if (window.UI) UI.marquee();      /* the keyword strip follows the language */
     var fy = $('#footer-year');
     if (fy) fy.textContent = String(new Date().getFullYear());
     initReveal(document);
@@ -313,5 +355,6 @@
 
   renderAll();
   initReveal(document);
+  if (window.UI) { UI.sectionIndex(); UI.progress(); }
   document.addEventListener('site-lang-change', renderAll);
 })();
