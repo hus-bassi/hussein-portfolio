@@ -245,7 +245,7 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
 .primary-nav ul { display: flex; align-items: center; gap: 6px; }
 .primary-nav a {
   display: block; padding: var(--s-2);
-  color: var(--fg-3); font-size: .95rem;
+  font-size: .95rem;
   /* A nav label is never allowed to break inside itself — the Russian
      and English labels are long, and flex shrinking used to wrap them
      onto two lines inside a single item. The row fits as a whole or the
@@ -254,8 +254,9 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   border-radius: var(--radius-sm);
   transition: color var(--t-micro) var(--ease), background var(--t-micro) var(--ease);
 }
-.primary-nav a:hover { color: #fff; background: rgba(167, 139, 250, .12); }
-.primary-nav a.is-current { color: var(--gold); }
+/* the label colours live in the trap-proof block in §7 — they must be
+   type-qualified (a.primary-nav a) to outrank the base `a:hover` */
+.primary-nav a:hover { background: rgba(167, 139, 250, .12); }
 
 .lang-switch {
   display: flex; align-items: center; gap: 2px;
@@ -437,6 +438,41 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
 }
 
 /* ---------- 7. Buttons — always lit, alive on hover ---------- */
+
+/* THE LINK-COLOUR TRAP, in one place.
+   `a:hover { color: var(--gold) }` (base) has specificity (0,1,1) and beats
+   any single-class rule like `.btn { color }` (0,1,0). So every link that
+   carries its OWN colour has to re-state it on hover, or its label turns
+   gold mid-hover. On the primary button — gold on the bright spectrum —
+   that made the text disappear entirely.
+
+   These rules are type-qualified (a.btn, a.social, …) precisely so they
+   outrank the bare `a:hover`, and they are the ONLY place that has to be
+   touched if a new link surface is added. A link surface reacts to hover
+   through its BACKGROUND, never through its label. */
+/* Every other button is light-on-dark. The primary is excluded here
+   because it is dark-on-bright, and letting both rules apply would make
+   the winner depend on source order. */
+a.btn:not(.btn-primary), a.btn-solid:not(.btn-primary), a.btn-outline,
+a.record-action, a.social, a.stat-link,
+a.footer-nav a, a.skip-link { color: var(--fg); }
+a.primary-nav a { color: var(--fg-3); }
+a.primary-nav a.is-current { color: var(--gold); }
+
+a.btn-primary, .btn-primary { color: var(--void); }
+a.record-action.is-plain { color: var(--fg-2); }
+
+a.btn:not(.btn-primary):hover, a.btn-solid:not(.btn-primary):hover,
+a.btn-outline:hover,
+a.record-action:hover, a.social:hover, a.stat-link:hover,
+a.footer-nav a:hover, a.skip-link:hover { color: var(--fg); }
+a.primary-nav a:hover { color: var(--fg); }
+a.primary-nav a.is-current:hover { color: var(--gold); }
+/* must outrank both the plain a.btn:hover (0,2,1) and the base a:hover
+   (0,1,1). Two classes is the cheapest way to be unambiguously higher. */
+a.btn-primary.btn:hover { color: var(--void); }
+a.record-action.is-plain:hover { color: var(--fg); }
+
 .btn, .btn-solid, .btn-outline {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 52px; padding: var(--s-3) var(--s-6);
@@ -898,10 +934,9 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
 .footer-name { color: var(--fg); font-weight: 600; font-size: 1.05rem; }
 .footer-nav ul { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
 .footer-nav a {
-  color: var(--fg-3); font-size: .93rem;
+  font-size: .93rem;
   display: inline-flex; align-items: center; min-height: 40px;
 }
-.footer-nav a:hover { color: var(--gold); }
 .footer-copy { font-size: .88rem; color: var(--fg-4); }
 /* the name, one last time, as a watermark in the same spectrum */
 .footer-mark {

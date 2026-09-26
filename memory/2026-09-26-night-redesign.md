@@ -71,6 +71,56 @@ used on all three pages, so it was never this file's business.
   background stack (void → colour clouds → translucent band) instead of
   assuming flat colours, and re-measures under the grain. **24/24 pairs ≥ 4.5:1**
   clean and worst-case. Run it after any colour change.
+- **`tools/hover-colour-audit.js`** — catches the Link-Colour Trap (below).
+- **`tools/css-parse-check.js`** — brace balance, top-level rule count, and
+  `var()` calls to tokens that do not exist.
+- **`tools/check.js`** — runs all four static checks in one command. This is
+  the entry point: `node tools/check.js`.
+
+## The Link-Colour Trap — the real cause of the disappearing button
+
+Hussein reported the hero's primary button label ("اقرأ قصتي") vanishing on
+hover. **The first fix was wrong.** I assumed a `::after` gleam overlay was
+painting over the text, moved it to a background layer — and the bug survived.
+The actual cause was in the base stylesheet:
+
+```css
+a:hover { color: var(--gold); }        /* specificity (0,1,1) */
+.btn-primary { color: var(--void); }   /* specificity (0,1,0) — LOSES */
+```
+
+On hover the label turned **gold**, on top of a bright violet-gold spectrum.
+The gleam overlay was a real defect worth fixing, but a different one.
+
+**Rule now in AGENTS.md:** any `<a>` carrying its own colour must re-state it
+on hover with an equally-or-more specific selector. Type-qualified is the
+reliable form — `a.btn-primary:hover` (0,2,1) beats `.btn-primary:hover`
+(0,1,1). All such links live in one block in `site.css` §7. A link surface
+reacts to hover through its **background**, never through its label.
+
+Verified in the live page: `getComputedStyle` reads `rgb(4,5,10)` at rest, and
+forcing the pre-fix colour with `!important` yields `rgb(240,206,126)` — the
+exact gold that disappeared.
+
+## Two lessons about my own tooling (both cost real time)
+
+1. **A check that silently finds nothing is worse than no check.** The browser
+   hover audit read 0 rules and passed all 63 cases as "clean" for several
+   rounds. Two causes: `Array.prototype.slice.call()` on a `CSSRuleList`, and
+   testing `rule.cssRules` alone (style rules can expose an empty-but-present
+   `cssRules`, sending the walk down a dead branch). It now indexes explicitly,
+   keys on `selectorText`, and **reports `hoverAuditBlind` if it reads zero
+   rules** so it can never pass silently again.
+2. **Environment artefacts look exactly like real bugs.** Diagnosis was blocked
+   for a long time by: a browser window that cannot be made visible (no
+   rendering steps → `getComputedStyle` returns pre-mutation values → a
+   `.stage.reveal` read back `opacity: 1` until the node was detached and
+   re-attached, then `0`), and `serve.js` sending `no-cache`, which still lets
+   the browser keep a stale copy. Changed to `no-store, must-revalidate`.
+
+**When a reading here looks wrong: force a reflow, re-fetch with a cache
+buster, and confirm the byte length before touching the CSS.** I spent a long
+stretch convinced the parser was dropping rules when the file was fine.
 
 ## QA
 

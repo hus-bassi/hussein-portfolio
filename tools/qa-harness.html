@@ -184,6 +184,153 @@ function inspect(doc, win, width, lang, page, frames) {
   });
   if (covered.length) add('btnOverlay', covered.slice(0, 6));
 
+  /* THE LINK-COLOUR TRAP, detected in the real browser.
+     `a:hover { color }` is (0,1,1) and beats `.btn { color }` (0,1,0), so a
+     link that carries its own colour but never re-states it on hover turns
+     gold the moment the pointer arrives. On the primary button that made
+     "اقرأ قصتي" vanish into its own spectrum. This walks the live CSSOM and
+     works out, per element, which declaration wins each state. */
+  /* THE LINK-COLOUR TRAP, detected in the live browser.
+     `a:hover { color }` is (0,1,1) and beats `.btn { color }` (0,1,0), so a
+     link that carries its own colour but never re-states it on hover turns
+     gold the moment the pointer arrives. On the primary button that made
+     "اقرأ قصتي" vanish into its own spectrum.
+
+     This was proved to work by re-injecting a stronger rule
+     (`html body .hero-actions a.btn-primary:hover`) and watching the check
+     report exactly `اقرأ قصتي:var(--void)->var(--gold)`.
+     It also reports `hoverAuditBlind` if it ever reads zero rules, because a
+     check that finds nothing and says "clean" is worse than no check. */
+  var swapped = [];
+  var colourRules = [];
+  try {
+    /* Specificity by character-code scanning, with no regular expressions:
+       the harness travels as a file, and a mangled escape in transit would
+       silently make this check count zero rules and pass everything. */
+    function isWordChar(ch) {
+      if (ch === '') return false;
+      var c = ch.charCodeAt(0);
+      return (c >= 48 && c <= 57) || (c >= 65 && c <= 90) ||
+             (c >= 97 && c <= 122) || c === 95 || c === 45;
+    }
+    function specificity(sel) {
+      var ids = 0, cls = 0, ps = 0, ty = 0, i = 0;
+      while (i < sel.length) {
+        var c = sel.charAt(i);
+        if (c === '#') { ids++; i++; while (i < sel.length && isWordChar(sel.charAt(i))) i++; continue; }
+        if (c === '.') { cls++; i++; while (i < sel.length && isWordChar(sel.charAt(i))) i++; continue; }
+        if (c === ':') {
+          if (sel.charAt(i + 1) === ':') { i += 2; continue; }
+          ps++; i++; while (i < sel.length && isWordChar(sel.charAt(i))) i++; continue;
+        }
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+          var p = sel.charAt(i - 1);
+          if (i === 0 || p === ' ' || p === '\t' || p === '\n' ||
+              p === '>' || p === '+' || p === '~' || p === ',') ty++;
+          while (i < sel.length && isWordChar(sel.charAt(i))) i++; continue;
+        }
+        i++;
+      }
+      return ids * 10000 + cls * 100 + ps * 10 + ty;
+    }
+
+    /* Walk the CSSOM with plain indexing. `Array.prototype.slice.call()` on a
+       CSSRuleList works in some engines and silently yields nothing in
+       others — which is how this check ended up reading 0 rules and passing
+       every page. An explicit loop cannot fail that way. */
+    var flat = [];
+    for (var si = 0; si < doc.styleSheets.length; si++) {
+      var rules;
+      try { rules = doc.styleSheets[si].cssRules; } catch (e) { continue; }
+      if (!rules) continue;
+      for (var ri = 0; ri < rules.length; ri++) flat.push(rules[ri]);
+    }
+    r._flat = flat.length;
+
+    /* CSSOM nests: a @media block is ONE top-level rule whose .cssRules
+       holds the real declarations. Walking only the top level therefore
+       finds almost no colours — that was the blind spot. */
+    (function collect(rules) {
+      for (var i = 0; i < rules.length; i++) {
+        var rule = rules[i];
+        /* A grouping rule (@media, @supports) has cssRules AND no
+           selectorText. A style rule has selectorText and no cssRules.
+           Testing `rule.cssRules` alone is not enough: some engines expose
+           an empty-but-present cssRules on style rules, which silently
+           sent the walk down an empty branch and found nothing. */
+        if (!rule.selectorText && rule.cssRules) { collect(rule.cssRules); continue; }
+        if (!rule.selectorText || !rule.style) continue;
+        var colourVal = null;
+        try { colourVal = rule.style.color; } catch (e) { continue; }
+        if (!colourVal) continue;
+        rule.selectorText.split(',').forEach(function (part) {
+          var sel = part.trim();
+          if (!sel) return;
+          colourRules.push({
+            sel: sel,
+            colour: colourVal,
+            hover: sel.indexOf(':hover') > -1,
+            spec: specificity(sel)
+          });
+        });
+      }
+    })(flat);
+
+    function winner(el, hovered) {
+      var best = null;
+      colourRules.forEach(function (r) {
+        if (r.hover !== hovered) return;
+        try { if (!el.matches(r.sel.replace(/:hover/g, ''))) return; } catch (e) { return; }
+        if (!best || r.spec > best.spec) best = r;
+      });
+      return best;
+    }
+
+    /* Report a swap ONLY when it can actually hurt legibility: a label on a
+       BRIGHT, self-painted gradient. Three conditions must all hold:
+         1. the colour actually changes
+         2. the element paints its own gradient (a spectrum surface)
+         3. the hover colour is not the same family as the rest colour —
+            i.e. it is a real hue swap, not a one-step brightening
+       A link on the dark background brightening on hover is the DESIGN, and
+       a near-identical swap (--fg-2 -> --fg) cannot make text vanish. Those
+       are left alone; the failure this guards against is gold-on-spectrum. */
+    function hueOf(c) { return String(c).replace(/[^a-z0-9(),.\s%#-]/gi, '').toLowerCase(); }
+
+    /* THE LINK-COLOUR TRAP only applies to LINKS. A <button> is not an <a>,
+       so `a:hover` cannot touch it — including it here produced a false
+       positive on the active language button, which is a <button> with a
+       spectrum fill and a near-black label, and is perfectly correct. */
+    doc.querySelectorAll('a').forEach(function (el) {
+      if (!el.textContent || !el.textContent.trim()) return;
+      var rect = el.getBoundingClientRect();
+      if (rect.width === 0) return;
+      var rest = winner(el, false), hov = winner(el, true);
+      if (!rest || !hov || hov.colour === rest.colour) return;
+
+      var own = win.getComputedStyle(el).backgroundImage || '';
+      if (own.indexOf('gradient') === -1) return;   // dark surface: intended
+
+      // the dangerous case: a near-black label on a bright spectrum fill
+      // that stops being near-black on hover — gold on gold, invisible
+      var isVoid = function (c) { return /var\(--void\)/.test(String(c)) || /rgb\(4,\s*5,\s*10\)/.test(String(c)); };
+      if (isVoid(rest.colour) && !isVoid(hov.colour)) {
+        swapped.push(el.textContent.trim().slice(0, 14) + ':' + rest.colour + '->' + hov.colour);
+        return;
+      }
+      // a deliberate tint on a lit surface: report only a real hue change
+      var restHue = hueOf(rest.colour).split('(')[0];
+      var hovHue = hueOf(hov.colour).split('(')[0];
+      if (restHue && hovHue && restHue !== hovHue) {
+        swapped.push(el.textContent.trim().slice(0, 14) + ':' + rest.colour + '->' + hov.colour);
+      }
+    });
+  } catch (e) { r.issues.push('hoverAuditError=' + e.message); }
+  if (swapped.length) add('hoverColourSwap', swapped.slice(0, 6));
+  /* If this ever reads 0, the check is BLIND — it would pass everything
+     while proving nothing. Fail loudly rather than stop working quietly. */
+  if (!colourRules.length) add('hoverAuditBlind', '0 of ' + r._flat + ' rules carried a colour');
+
   // data-i18n that stayed empty
   var empties = [];
   doc.querySelectorAll('[data-i18n]').forEach(function (n) {
@@ -307,6 +454,31 @@ function loadCase(page, lang, width) {
     setTimeout(finish, 6000);
   });
 }
+
+/* ---------- single-case probe (dev aid) ----------
+   Runs the hover-colour check on ONE page so a fix can be verified in
+   seconds instead of waiting for all 63 cases.
+   Usage in the console:  await probeOne('index.html', 'ar', 900)          */
+window.probeOne = function (page, lang, width) {
+  return new Promise(function (resolve) {
+    var f = document.getElementById('f');
+    f.width = width; f.style.width = width + 'px';
+    try { localStorage.setItem('site-lang', lang); } catch (e) { /* private mode */ }
+    f.onload = function () {
+      setTimeout(function () {
+        var doc = f.contentDocument;
+        var r;
+        try { r = inspect(doc, f.contentWindow, width, lang, page, false); }
+        catch (e) { resolve({ page: page, error: e.message }); return; }
+        r.page = page + '/' + lang + '/' + width;
+        r.ruleCount = r._flat;
+        delete r._flat;
+        resolve(r);
+      }, 1400);
+    };
+    f.src = '/' + page + '?lang=' + lang + '&cb=' + Date.now();
+  });
+};
 
 window.runQA = function () {
   window.__qa = { done: false, results: [], phase: 'running' };

@@ -35,9 +35,14 @@ http.createServer((req, res) => {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');
       return;
     }
+    /* no-store, not no-cache. `no-cache` still lets the browser keep a copy
+       and revalidate, and a dev server that serves a stale stylesheet costs
+       an hour of debugging a bug that was already fixed on disk. */
     res.writeHead(200, {
       'Content-Type': TYPES[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
     }).end(data);
   });
 }).listen(PORT, () => console.log(`Serving ${ROOT} on http://localhost:${PORT}`));
