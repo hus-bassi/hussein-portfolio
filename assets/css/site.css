@@ -74,25 +74,51 @@
   --radius: 16px;
   --radius-sm: 11px;
 
-  /* motion â€” one easing pair, one vocabulary */
+  /* ---------- MOTION, IN TWO FAMILIES ----------
+     There are only two kinds of movement on this site, and they must never
+     share a clock:
+
+       INTERACTION answers the visitor. It is quick enough to feel
+       instant and slow enough to be appreciated. Five steps, each with a
+       job: a hair-thin state change, a control, a surface settling back,
+       a block of content arriving, the opening sequence.
+
+       AMBIENT answers to nobody. It runs on its own slow clock, long
+       enough that the eye never catches it in the act — the page should
+       feel deep, not busy. Four steps: a breath, a drift, a slow loop,
+       and the slowest field of all.
+
+     Nothing in this file may invent its own duration. If a time is not
+     one of these, it does not belong here. */
   --ease:      cubic-bezier(.22, .61, .36, 1);
   --ease-soft: cubic-bezier(.4, 0, .2, 1);
-  --ease-out:  cubic-bezier(.16, 1, .3, 1);   /* cinematic overshoot-free settle */
-  --t-micro: 160ms;
-  --t-std:   320ms;
-  --t-page:  700ms;
-  --t-intro: 1000ms;                        /* one beat of the opening sequence  */
+  --ease-out:  cubic-bezier(.16, 1, .3, 1);   /* cinematic settle, no overshoot */
 
-  /* THE TIMING VOCABULARY OF MOVEMENT.
-     A loop longer than about 8s does not read as motion â€” it reads as a
-     static image. The first version of this site used 38s and 46s loops
-     and Hussein reported "there is no animation on the site", which was
-     correct: at those speeds nothing is perceptible. These are the beats
-     a human actually sees. */
-  --loop-beat: 3.4s;   /* button aura, orbit breathing, float   */
-  --loop-text: 7s;     /* gradient travelling across text      */
-  --loop-edge: 9s;     /* spectrum drifting along a pane edge  */
-  --loop-amb:  18s;    /* the light field, stars, the marquee  */
+  --motion-instant: 150ms;   /* a press: the surface takes the finger's answer */
+  --motion-fast: 300ms;      /* a small state: focus, colour, a hairline       */
+  --motion-normal: 450ms;    /* a control: buttons, nav, filters, the switcher */
+  --motion-slow: 650ms;      /* a pane settling back, the magnetic pull        */
+  --motion-reveal: 800ms;    /* a block of content arriving                    */
+  --motion-cinematic: 1200ms;/* the name, a timeline item, a large visual       */
+  --motion-long: 1600ms;     /* a drawn line, the slowest arrival there is    */
+  --stagger: 120ms;          /* the gap between two items in a sequence        */
+
+  --ambient-pulse: 6s;       /* a breath: glows, node pulses, the halo         */
+  --ambient-slow: 20s;       /* the starfield, an orbit trace, the marquee     */
+  --ambient-long: 30s;       /* an orbit, a pane edge, the reading rail        */
+  --ambient-cinematic: 45s;  /* the light field, the atmosphere                */
+
+  /* ---------- 4a. Decorative numerals ----------
+     A section marker is a LABEL now, not a ghost painted over a heading, so
+     it gets the same three numbers every other scale on the site does: its
+     own size, its own separation, and one place to change them. The size is
+     unchanged from the version that collided — the collision was a layout
+     fault, and shrinking the numeral to hide it would have been the wrong
+     repair. The gap is the whole of the fix, and it is tight on purpose:
+     close enough that the two read as one composition, clear enough that
+     nothing touches anything. */
+  --section-number-size: clamp(4rem, 9vw, 6.5rem);
+  --section-number-gap: clamp(.5rem, 1.1vw, .9rem);
 }
 
 /* ---------- 2. Reset & base ---------- */
@@ -126,7 +152,7 @@ h1, h2, h3 { line-height: 1.3; margin: 0; font-weight: 600; }
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 
-a { color: var(--azure); text-decoration: none; transition: color var(--t-micro) var(--ease); }
+a { color: var(--azure); text-decoration: none; transition: color var(--motion-fast) var(--ease); }
 a:hover { color: var(--gold); }
 
 svg { display: block; }
@@ -149,7 +175,7 @@ svg { display: block; }
   border: 1px solid var(--violet);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   box-shadow: 0 18px 40px -20px var(--violet-d);
-  transition: top var(--t-micro) var(--ease);
+  transition: top var(--motion-normal) var(--ease);
 }
 .skip-link:focus { top: 0; }
 
@@ -183,10 +209,11 @@ body::before {
     radial-gradient(46% 36% at 78% 6%,  rgba(124, 92, 255, .16), transparent 70%),
     radial-gradient(40% 32% at 10% 44%, rgba(217, 169, 76, .10), transparent 72%),
     radial-gradient(50% 40% at 64% 94%, rgba(46, 134, 255, .13), transparent 72%);
-  animation: field-drift var(--loop-amb) var(--ease-soft) infinite alternate;
+  animation: field-drift var(--ambient-cinematic) var(--ease-soft) infinite alternate;
 }
-/* The field is the slowest loop on the site, but it travels far enough to
-   be seen: at 38s with a 2% offset it looked like a still image. */
+/* The field is the slowest thing on the site — 45 seconds, four stops, and
+   it never returns to where it started, so the loop has no seam to spot.
+   It is meant to be felt as depth and never noticed as motion. */
 @keyframes field-drift {
   0%   { transform: translate3d(0, 0, 0) scale(1); }
   25%  { transform: translate3d(-4%, 2.5%, 0) scale(1.12); }
@@ -203,7 +230,7 @@ body::after {
   pointer-events: none; opacity: .04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 150px 150px;
-  animation: grain-crawl 1.1s steps(6, end) infinite;
+  animation: grain-crawl 6s steps(6, end) infinite;
 }
 @keyframes grain-crawl {
   0%   { transform: translate3d(0, 0, 0); }
@@ -224,7 +251,7 @@ main, .site-footer, .site-header { position: relative; z-index: 1; }
   background: var(--spectrum-lit);
   background-size: 300% 100%;
   box-shadow: 0 0 20px -2px var(--violet-d);
-  animation: rail-drift 5s linear infinite;
+  animation: rail-drift var(--ambient-long) linear infinite;
 }
 @keyframes rail-drift { to { background-position: 300% 0; } }
 html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction: reverse; }
@@ -237,9 +264,9 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-block-end: 1px solid transparent;
-  transition: background var(--t-std) var(--ease),
-              border-color var(--t-std) var(--ease),
-              box-shadow var(--t-std) var(--ease);
+  transition: background var(--motion-normal) var(--ease),
+              border-color var(--motion-normal) var(--ease),
+              box-shadow var(--motion-normal) var(--ease);
 }
 .site-header.is-stuck {
   background: rgba(4, 5, 10, .93);
@@ -280,57 +307,86 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
      hamburger takes over (see the 1140px query). */
   white-space: nowrap;
   border-radius: var(--radius-sm);
-  transition: color var(--t-micro) var(--ease), background var(--t-micro) var(--ease);
+  position: relative;
+  transition: color var(--motion-normal) var(--ease), background var(--motion-normal) var(--ease);
 }
-/* the label colours live in the trap-proof block in Â§7 â€” they must be
-   type-qualified (a.primary-nav a) to outrank the base `a:hover` */
+/* THE UNDERLINE DRAWS. One hairline of spectrum under the label, grown from
+   the writing direction so it opens the same way in Arabic as in English.
+   450ms — a control's answer — and it is a transform, so it costs nothing
+   but a composite. It draws for the current page too, and STAYS drawn: the
+   header must always say where you are. */
+.primary-nav a::after {
+  content: ""; position: absolute;
+  inset-inline: var(--s-2); inset-block-end: 2px; height: 1px;
+  background: var(--spectrum);
+  transform: scaleX(0);
+  transform-origin: var(--draw-from, left);
+  transition: transform var(--motion-normal) var(--ease-out);
+}
+.primary-nav a:hover::after,
+.primary-nav a:focus-visible::after,
+.primary-nav a.is-current::after { transform: scaleX(1); }
+
+/* THE CURRENT PAGE.
+   `aria-current="page"` is the one nav state that is not temporary, so it
+   is the one state that does not share a rule with `:hover`. Hover is a
+   1px line that draws and goes; the page you are on is a 2px spectrum line
+   with a close glow that is simply always there — present in the first
+   paint, with no JavaScript and no waiting for a pointer, which is why the
+   attribute is written into the markup as well as derived from the URL.
+
+   It sits a pixel lower and is a pixel thicker than the hover line, and it
+   carries a hairline of light, so the two are distinguishable at a glance
+   when both are on screen: the scroll-spy marks the SECTION you are reading
+   with a thin line, and this marks the PAGE with a lit one.
+
+   Logical inset, so it sits under the label in Arabic exactly as it does in
+   English, and 3px clear of the glyphs so an Arabic descender or a
+   diacritic can never touch it. */
+.primary-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+  height: 2px;
+  inset-block-end: 3px;
+  box-shadow: 0 0 12px -2px rgba(167, 139, 250, .6);
+}
+/* the current page, hovered, is slightly stronger — and still the current
+   page when the pointer leaves, which is the whole difference */
+.primary-nav a[aria-current="page"]:hover::after {
+  box-shadow: 0 0 18px 0 rgba(167, 139, 250, .75);
+}
 .primary-nav a:hover { background: rgba(167, 139, 250, .12); }
 
-/* The motion switch: a 40px target, icon only, with an accessible name.
-   It is injected by site.js ONLY when the OS is asking for reduced
-   motion and the visitor has not already chosen — in the normal case it
-   is not in the document at all, so there is no dead control. */
-.motion-switch {
-  width: 40px; height: 40px; flex: none;
-  display: grid; place-items: center;
-  margin-inline-start: var(--s-2);
-  padding: 0;
-  color: var(--fg-3);
-  background: none;
-  border: 1px solid var(--glass-2);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: color var(--t-micro) var(--ease),
-              border-color var(--t-micro) var(--ease),
-              box-shadow var(--t-std) var(--ease);
-}
-.motion-switch::before {
-  content: "";
-  width: 15px; height: 15px;
-  background: currentColor;
-  /* a filled dot with a broken ring = motion is currently paused */
-  -webkit-mask: radial-gradient(circle 3.2px at 50% 50%, #000 99%, transparent) center / 100% 100% no-repeat,
-                radial-gradient(circle 6.6px at 50% 50%, transparent 0 5.6px, #000 5.6px) center / 100% 100% no-repeat;
-  mask: radial-gradient(circle 3.2px at 50% 50%, #000 99%, transparent) center / 100% 100% no-repeat,
-        radial-gradient(circle 6.6px at 50% 50%, transparent 0 5.6px, #000 5.6px) center / 100% 100% no-repeat;
-  -webkit-mask-composite: source-over;
-  mask-composite: add;
-}
-.motion-switch:hover { color: var(--gold); border-color: var(--gold-d); }
-.motion-switch[aria-pressed="true"] {
-  color: var(--azure);
-  border-color: transparent;
-  box-shadow: 0 0 0 1px var(--azure), 0 0 20px -6px var(--azure);
-}
-.motion-switch:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
-
+/* THE LANGUAGE INDICATOR. One pill, one element, moved — not three pills
+   appearing. ui.js measures the active button once per language change and
+   writes its offset and width here, so the slide is exact in all three
+   languages and in both writing directions, and it costs one layout read
+   per language change rather than a frame. The buttons give up their own
+   background, or there would be two pills. */
 .lang-switch {
+  position: relative;
   display: flex; align-items: center; gap: 2px;
   padding: 3px;
   border: 1px solid var(--glass-2);
   border-radius: 999px;
   background: rgba(148, 163, 186, .06);
   flex: none;
+}
+.lang-switch::after {
+  content: ""; position: absolute;
+  inset-block: 3px;
+  /* Physical, deliberately. The position is MEASURED by ui.js — offsetLeft,
+     which is counted from the left edge in every writing direction — so the
+     pill has to be placed from the same edge. Writing this as
+     `inset-inline-start` would put the anchor on the right in Arabic and
+     the pill would travel off the switcher. */
+  left: 0;
+  width: var(--lang-w, 40px);
+  translate: var(--lang-x, 0px) 0;
+  border-radius: 999px;
+  background-image: var(--spectrum-lit);
+  box-shadow: 0 0 22px -6px var(--violet);
+  transition: translate var(--motion-reveal) var(--ease-out);
+  pointer-events: none;
 }
 .lang-btn {
   /* 40Ã—40 â€” the standing minimum tap target, in every language */
@@ -340,16 +396,13 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   color: var(--fg-3);
   background: none; border: 0; border-radius: 999px;
   cursor: pointer;
-  transition: color var(--t-micro) var(--ease),
-              box-shadow var(--t-micro) var(--ease),
-              background var(--t-std) var(--ease);
+  position: relative; z-index: 1;
+  transition: color var(--motion-normal) var(--ease);
 }
-.lang-btn:hover { color: #fff; box-shadow: 0 0 18px -6px var(--violet); }
+.lang-btn:hover { color: var(--fg); }
 .lang-btn.is-active, .lang-btn[aria-pressed="true"] {
-  background-image: var(--spectrum-lit);
   color: var(--void);
   font-weight: 700;
-  box-shadow: 0 0 22px -6px var(--violet);
 }
 
 .brand-name { white-space: nowrap; }   /* never wraps in the header */
@@ -364,12 +417,18 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
 .nav-toggle-bar {
   display: block; width: 19px; height: 1.5px;
   background: var(--fg); border-radius: 2px;
-  transition: transform var(--t-std) var(--ease), opacity var(--t-micro) var(--ease);
+  transition: transform var(--motion-normal) var(--ease), opacity var(--motion-fast) var(--ease);
 }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
+/* The back-to-top control. It arrives rather than appearing: `hidden` is a
+   display switch and can never be transitioned, so scroll.js marks it with
+   .is-on instead and this is the whole arrival — 450ms of rise and settle.
+   `visibility` is transitioned with a delay rather than instantly, which is
+   what keeps it out of the tab order while it is away: an invisible button
+   that can still be focused is worse than no button. */
 .to-top {
   position: fixed; inset-block-end: var(--s-5); inset-inline-start: var(--s-5);
   z-index: 90;
@@ -381,10 +440,22 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   background-position: var(--edge-rest);
   border: 1px solid transparent;
   border-radius: 50%; cursor: pointer;
-  animation: aura var(--loop-beat) var(--ease-soft) infinite;
-  transition: transform var(--t-micro) var(--ease), background-position var(--t-page) var(--ease);
+  animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
+  opacity: 0; visibility: hidden; translate: 0 12px; scale: .94;
+  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
+  transition: transform var(--motion-normal) var(--ease),
+              background-position var(--motion-reveal) var(--ease),
+              filter var(--motion-slow) var(--ease),
+              opacity var(--motion-normal) var(--ease),
+              translate var(--motion-normal) var(--ease-out),
+              scale var(--motion-normal) var(--ease-out),
+              visibility 0s linear var(--motion-normal);
 }
-.to-top:hover { transform: translateY(-2px); background-position: var(--edge-hi); }
+.to-top.is-on {
+  opacity: 1; visibility: visible; translate: none; scale: 1;
+  transition-delay: 0s;
+}
+.to-top:hover { transform: translateY(-2px); background-position: var(--edge-hi); filter: drop-shadow(0 8px 20px rgba(124, 92, 255, .45)); }
 .to-top svg { width: 20px; height: 20px; color: var(--gold); }
 
 /* ---------- 4a. The field and the cursor ----------
@@ -399,21 +470,28 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   opacity: .9;
 }
 
+/* THE CURSOR LIGHT. An atmosphere, not a lamp. It is 260px of violet at 9%
+   — visible as depth when the page is still, invisible as a shape — because
+   the moment a pointer-sized glow becomes strong enough to notice, it stops
+   being the page's light and becomes a pale patch on whatever it happens to
+   be over. It is fixed, aria-hidden, and it never receives a pointer event.
+   The ring below is the part that carries precision; this is the part that
+   carries mood, and it stays behind everything. */
 .cursor-light {
   position: fixed; inset-block-start: 0; inset-inline-start: 0;
-  z-index: 1; width: 380px; height: 380px;
-  margin-block-start: -190px; margin-inline-start: -190px;
+  z-index: 1; width: 260px; height: 260px;
+  margin-block-start: -130px; margin-inline-start: -130px;
   pointer-events: none;
   border-radius: 50%;
   background: radial-gradient(closest-side,
-    rgba(124, 92, 255, .13), rgba(124, 92, 255, .05) 45%, transparent 72%);
+    rgba(124, 92, 255, .09), rgba(124, 92, 255, .03) 45%, transparent 72%);
   opacity: 0;
-  transition: opacity 400ms var(--ease);
+  transition: opacity var(--motion-normal) var(--ease);
   will-change: transform;
 }
 .cursor-light.is-bright {
   background: radial-gradient(closest-side,
-    rgba(240, 206, 126, .16), rgba(124, 92, 255, .06) 45%, transparent 72%);
+    rgba(240, 206, 126, .11), rgba(124, 92, 255, .04) 45%, transparent 72%);
 }
 .cursor-light.is-on { opacity: 1; }
 
@@ -425,10 +503,10 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   border: 1px solid rgba(167, 139, 250, .5);
   border-radius: 50%;
   opacity: 0;
-  transition: opacity 300ms var(--ease),
-              width 300ms var(--ease), height 300ms var(--ease),
-              margin 300ms var(--ease),
-              border-color 300ms var(--ease), background 300ms var(--ease);
+  transition: opacity var(--motion-fast) var(--ease),
+              width var(--motion-fast) var(--ease), height var(--motion-fast) var(--ease),
+              margin var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease), background var(--motion-fast) var(--ease);
   will-change: transform;
 }
 .cursor-ring.is-hot {
@@ -448,7 +526,7 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   border-radius: 50%;
   background: var(--fg);
   opacity: 0;
-  transition: opacity 200ms var(--ease);
+  transition: opacity var(--motion-fast) var(--ease);
   will-change: transform;
 }
 .cursor-dot.is-on { opacity: .85; }
@@ -464,10 +542,17 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
    place and one step out of focus, then rises into place in reading order.
    The delays are read in the source, not hidden in inline styles.
 
-   `.is-loading` is added by a tiny inline script in <head> and removed on
-   the first animation frame, so nothing is ever "stuck" hidden: if the
-   script is blocked or errors, the class is gone by the fallback timeout
-   and the hero is simply already in place. The page is never blank. */
+   It is a sequence, not a queue. The beats overlap — the orbit is still
+   settling when the eyebrow starts, and the name is still arriving when
+   the lead does — because a page that waits for each element in turn reads
+   as a loading screen. The whole thing is 2.6s from first light to the
+   last line, and it never blocks anything: the delays only stagger a
+   transition, the content is in the DOM the entire time.
+
+   `.is-loading` is added by a tiny script in <head> and removed on the
+   first animation frame, so nothing is ever "stuck" hidden: if the script
+   is blocked or errors, the class is gone by the fallback timeout
+   (assets/js/intro.js, 3s) and the hero is simply already in place. */
 .is-loading .hero-head,
 .is-loading .hero-lead,
 .is-loading .hero-desc,
@@ -478,29 +563,36 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   transform: translateY(28px);
   filter: blur(12px);
 }
-.is-loading .hero-head    { transition-delay: 0ms; }
-.is-loading .hero-visual  { transition-delay: 120ms; }
-.is-loading .hero-lead    { transition-delay: 220ms; }
-.is-loading .hero-desc    { transition-delay: 340ms; }
-.is-loading .hero-actions { transition-delay: 460ms; }
-.is-loading .hero-quote   { transition-delay: 620ms; }
+/*     0ms  the light field is already there — nothing to announce
+     600ms  the orbit
+     800ms  the eyebrow
+    1000ms  the name
+    1200ms  the lead, and the description just behind it
+    1400ms  the buttons
+    1600ms  the line that closes the hero                             */
+.is-loading .hero-head    { transition-delay: 800ms; }
+.is-loading .hero-visual  { transition-delay: 600ms; }
+.is-loading .hero-lead    { transition-delay: 1200ms; }
+.is-loading .hero-desc    { transition-delay: 1280ms; }
+.is-loading .hero-actions { transition-delay: 1400ms; }
+.is-loading .hero-quote   { transition-delay: 1600ms; }
 
 .hero-head, .hero-lead, .hero-desc, .hero-actions, .hero-quote, .hero-visual {
-  transition: opacity var(--t-intro) var(--ease-out),
-              transform var(--t-intro) var(--ease-out),
-              filter var(--t-intro) var(--ease-out);
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              transform var(--motion-reveal) var(--ease-out),
+              filter var(--motion-reveal) var(--ease-out);
 }
 
 /* the name arrives last and hardest — it is the subject of the page */
 .is-loading .hero-name { opacity: 0; transform: translateY(38px) scale(.96); filter: blur(18px); }
 .hero-name {
-  transition: opacity 1200ms var(--ease-out),
-              transform 1200ms var(--ease-out),
-              filter 1200ms var(--ease-out);
+  transition: opacity var(--motion-cinematic) var(--ease-out),
+              transform var(--motion-cinematic) var(--ease-out),
+              filter var(--motion-cinematic) var(--ease-out);
 }
-.is-loading .hero-name { transition-delay: 80ms; }
+.is-loading .hero-name { transition-delay: 1000ms; }
 .is-loading .site-header { opacity: 0; transform: translateY(-14px); }
-.site-header { transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+.site-header { transition: opacity var(--motion-reveal) var(--ease-out), transform var(--motion-reveal) var(--ease-out); }
 
 /* ---------- 5. Layout: bands and section heads ---------- */
 .band {
@@ -515,7 +607,7 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   background: var(--spectrum);
   background-size: 200% 100%;
   opacity: .55;
-  animation: thread 11s linear infinite;
+  animation: thread var(--ambient-long) linear infinite;
 }
 @keyframes thread { to { background-position: -200% 0; } }
 html[dir="rtl"] .band::before { animation-direction: reverse; }
@@ -533,27 +625,29 @@ html[dir="rtl"] .band::before { animation-direction: reverse; }
   background: var(--spectrum);
   background-size: 220% 100%;
   box-shadow: 0 0 20px -4px var(--violet-d);
-  animation: thread 8s linear infinite;
+  animation: thread var(--ambient-cinematic) linear infinite;
 }
 html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
 
 .sec-head h2 {
-  position: relative; z-index: 1;
   font-size: clamp(1.7rem, 1.3rem + 1.5vw, 2.4rem);
   color: var(--fg);
   letter-spacing: -.01em;
   max-width: 24ch;
 }
+/* A row header is a heading and a link on one line, with the numeral above
+   both of them. It is a grid rather than a flex row for one reason: a flex
+   container cannot have a first child break out of the row, and the numeral
+   has to be on its own line or it is back inside the heading. Spanning
+   `1 / -1` gives it a full-width row of its own, and the heading and the
+   link keep the two columns underneath it. */
 .sec-head-row {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--s-4); flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  column-gap: var(--s-4); row-gap: var(--s-2);
 }
-/* ONLY the real children of a row header are lifted above the ghost
-   numeral â€” reaching .sec-index itself would override its absolute
-   position (equal specificity, later in source) and drop a giant numeral
-   into the flow above the heading. */
-.sec-head-row > h2,
-.sec-head-row > .sec-more { position: relative; z-index: 1; }
+.sec-head-row > .sec-index { grid-column: 1 / -1; }
 
 .sec-more {
   font-size: .95rem; color: var(--azure);
@@ -561,7 +655,7 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
   white-space: nowrap;
   display: inline-flex; align-items: center; min-height: 40px;
   align-self: center;
-  transition: color var(--t-micro) var(--ease);
+  transition: color var(--motion-fast) var(--ease);
 }
 .sec-more:hover { color: var(--gold); }
 
@@ -583,12 +677,28 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
   max-width: var(--measure);
 }
 
-/* the ghost numeral behind each section heading, in the same spectrum */
+/* ---------- the section number's own zone ----------
+   The numeral used to be a ghost ABSOLUTELY positioned at
+   `inset-inline-start: -.06em` — that is, a 104px-wide block of digits whose
+   start edge sat six hundredths of an em BEFORE the heading's own start
+   edge. On one line, with a 38px heading beside it, that is not "behind the
+   heading", it is "inside the first four letters of it", and the mirroring
+   is automatic in Arabic, so RTL got the identical collision with denser
+   glyphs and diacritics to collide with.
+
+   So the numeral is IN THE FLOW now, on a line of its own, with
+   `--section-number-gap` between it and the heading. That is the whole fix,
+   and it is structural rather than cosmetic: no offset, no z-index and no
+   font-size change can produce an overlap, because the two boxes cannot
+   occupy the same space in any language, at any viewport, at any font size.
+   What is left is a composition — number, gap, heading — and the numeral is
+   still the same size, the same spectrum and the same slow arrival. */
 .sec-index {
-  position: absolute; inset-block-start: -.16em; inset-inline-start: -.06em;
-  z-index: 0; margin: 0; pointer-events: none;
+  position: static; display: block;
+  margin: 0 0 var(--section-number-gap);
+  pointer-events: none; user-select: none;
   font-family: var(--font-mono); font-weight: 700;
-  font-size: clamp(4rem, 9vw, 6.5rem); line-height: 1;
+  font-size: var(--section-number-size); line-height: .8;
   letter-spacing: -.04em;
   background: var(--spectrum-lit);
   background-size: 200% 100%;
@@ -597,38 +707,52 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
   opacity: .15;
 }
 
-/* ---------- 6. Panes — the one surface recipe ---------- */
+/* ---------- 6. Panes — the one surface recipe ----------
+   Every surface on the site is written once here and hovered everywhere:
+   the rest state below, and the response in the two rules that follow.
+
+   The two timings are deliberately different, and the mechanism is the
+   browser's own: a transition takes its duration from the state being
+   ENTERED. So the base rule carries the RETURN (650ms — a surface coming
+   back to rest should feel heavier than one responding) and the `:hover`
+   rule carries the RESPONSE (450ms — quick enough to feel like an answer,
+   slow enough to read as movement rather than a flash).
+
+   NO POINTER-FOLLOWING LIGHT, AND NO TILT. This used to carry a third
+   background layer — a white band at 55% alpha travelling across the
+   interior — plus a perspective lean driven by the pointer. Both are gone,
+   and the reason is worth writing down: a moving highlight inside a surface
+   reads as a flashlight pointed at the card, it makes every card on the
+   page glow with something that has nothing to do with what it contains, and
+   it needs a layout read and two style writes on every pointer frame to
+   follow the pointer around. The interior is now DARK and the EDGE reacts.
+   The hover is pure CSS, so it works with no JavaScript at all. */
 .card, .record, .stage, .stat, .social, .empty-state {
   border: 1px solid transparent;
-  /* THREE layers: fill, the spectrum edge, and a narrow highlight that
-     travels around the border. The third layer is what keeps a card alive
-     when nobody is touching it — a static gradient edge reads as a photo. */
-  background-image:
-    linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, .55) 50%, transparent 58%),
-    var(--edge),
-    var(--spectrum);
-  background-size: 260% 100%, var(--edge-size);
-  background-position: -80% 0, 0 0, 0% 50%;
+  /* TWO layers, the same pair the buttons use: a dark fill inside, and the
+     spectrum painted into the 1px border. Nothing sits on top of the
+     content, because nothing is allowed to. */
+  background-image: var(--edge), var(--spectrum);
+  background-size: var(--edge-size);
+  background-position: var(--edge-rest);
   background-origin: border-box;
-  background-clip: border-box, padding-box, border-box;
+  background-clip: padding-box, border-box;
   border-radius: var(--radius);
   box-shadow: 0 26px 50px -34px rgba(0, 0, 0, .95);
-  transition: transform var(--t-std) var(--ease),
-              box-shadow var(--t-std) var(--ease),
-              background-position var(--t-page) var(--ease);
-  animation: edge-shine var(--loop-edge) var(--ease-soft) infinite;
-}
-/* the highlight crosses, pauses, and crosses back — never a hard loop */
-@keyframes edge-shine {
-  0%   { background-position: -80% 0, 0 0, 0% 50%; }
-  55%  { background-position: 180% 0, 0 0, 100% 50%; }
-  100% { background-position: -80% 0, 0 0, 0% 50%; }
+  transition: transform var(--motion-slow) var(--ease),
+              background-position var(--motion-slow) var(--ease),
+              box-shadow var(--motion-slow) var(--ease);
 }
 .card:hover, .record:hover, .stage:hover, .stat:hover, .social:hover {
   transform: translateY(-4px);
-  background-position: 180% 0, 0 0, 100% 50%;
+  /* the spectrum slides to the lit end of its own gradient: the border gets
+     brighter, and it stays brighter for as long as the pointer is there */
+  background-position: var(--edge-hi);
+  /* a thin violet ring and a glow that stays close to the card — no halo */
   box-shadow: 0 0 0 1px rgba(167, 139, 250, .30),
-              0 34px 64px -30px rgba(124, 92, 255, .75);
+              0 22px 40px -26px rgba(124, 92, 255, .55);
+  transition-duration: var(--motion-normal);
+  transition-timing-function: var(--ease-out);
 }
 
 /* ---------- 7. Buttons â€” always lit, alive on hover ---------- */
@@ -649,9 +773,21 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
    the winner depend on source order. */
 a.btn:not(.btn-primary), a.btn-solid:not(.btn-primary), a.btn-outline,
 a.record-action, a.social, a.stat-link,
-a.footer-nav a, a.skip-link { color: var(--fg); }
-a.primary-nav a { color: var(--fg-3); }
-a.primary-nav a.is-current { color: var(--gold); }
+.footer-nav a, a.skip-link { color: var(--fg); }
+/* NOTE the type qualifier's ABSENCE here, and it is not a slip. These were
+   written `a.primary-nav a` and `a.footer-nav a`, on the assumption that
+   `.primary-nav` sits on an anchor. It sits on a <nav> — so `a.primary-nav`
+   matched nothing, every rule in this group was dead, and the header fell
+   back to the base `a` colour: azure at rest and gold on hover, for years,
+   on every page. The underline kept working because those rules were
+   written `.primary-nav a` and did match. */
+.primary-nav a { color: var(--fg-3); }
+.primary-nav a.is-current { color: var(--gold); }
+/* The current page is brighter than a resting label and quieter than a
+   hovered one, and it never turns gold — gold is the scroll-spy's signal
+   for "this is the section you are reading", and two meanings for one
+   colour would be one too many. */
+.primary-nav a[aria-current="page"] { color: var(--fg); }
 
 a.btn-primary, .btn-primary { color: var(--void); }
 a.record-action.is-plain { color: var(--fg-2); }
@@ -659,12 +795,15 @@ a.record-action.is-plain { color: var(--fg-2); }
 a.btn:not(.btn-primary):hover, a.btn-solid:not(.btn-primary):hover,
 a.btn-outline:hover,
 a.record-action:hover, a.social:hover, a.stat-link:hover,
-a.footer-nav a:hover, a.skip-link:hover { color: var(--fg); }
-a.primary-nav a:hover { color: var(--fg); }
-a.primary-nav a.is-current:hover { color: var(--gold); }
+.footer-nav a:hover, a.skip-link:hover { color: var(--fg); }
+.primary-nav a:hover { color: var(--fg); }
+.primary-nav a.is-current:hover { color: var(--gold); }
+/* hovering the current page brightens it, and it comes straight back to
+   `var(--fg)` on the way out — never to NORMAL, because it is not normal */
+.primary-nav a[aria-current="page"]:hover { color: #fff; }
 /* must outrank both the plain a.btn:hover (0,2,1) and the base a:hover
    (0,1,1). Two classes is the cheapest way to be unambiguously higher. */
-a.btn-primary.btn:hover { color: var(--void); }
+a.btn-primary.btn:hover { color: var(--void); background-position: 0 0, 100% 50%; }
 a.record-action.is-plain:hover { color: var(--fg); }
 
 .btn, .btn-solid, .btn-outline {
@@ -673,47 +812,165 @@ a.record-action.is-plain:hover { color: var(--fg); }
   font-family: inherit; font-size: 1rem; font-weight: 600;
   color: var(--fg);
   /* THREE background layers, and the order is the whole point:
-       1. the gleam  â€” a light band that crosses on hover
-       2. the fill   â€” the opaque pane body
-       3. the edge   â€” the spectrum, clipped to the 1px border
-     The gleam is a BACKGROUND layer, not a ::after overlay. As a pseudo
-     element it painted ON TOP of the label and turned "Ø§Ù‚Ø±Ø£ Ù‚ØµØªÙŠ" into a
-     ghost on hover; a background can never do that, because backgrounds
-     always paint beneath text. It also removed a pseudo-element. */
-  background-image: var(--gleam), var(--edge), var(--spectrum);
-  background-size: 220% 100%, 100% 100%, 240% 240%;
-  background-position: -70% 0, 0 0, 0% 50%;
+       1. the fill   — the opaque pane body
+       2. the edge   — the spectrum, clipped to the 1px border
+       3. nothing above the text, ever
+     The light that crosses the button is NOT one of them. It is a
+     pseudo-element, for two reasons that both cost us a round:
+     a background layer positioned as a percentage of a layer WIDER than
+     the button moves by (container − layer) × the change in position, so
+     the old `--gleam` slid the wrong way and covered nearly three button
+     widths — the bright part of it was off-screen for almost the whole
+     second, which is why the hover looked static. And a positioned
+     pseudo-element with the default z-index paints OVER the label, which
+     is what turned an earlier attempt into a ghost. It is `z-index: -1`
+     here for both reasons: under the text, over the fill. */
+  background-image: var(--edge), var(--spectrum);
+  background-size: 100% 100%, 240% 240%;
+  background-position: var(--edge-rest);
   background-origin: border-box;
-  background-clip: padding-box, padding-box, border-box;
+  background-clip: padding-box, border-box;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  animation: aura var(--loop-beat) var(--ease-soft) infinite;
-  transition: transform var(--t-micro) var(--ease),
-              background-position 700ms var(--ease);
+  animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
+  /* Three clocks. The label and the surface answer in 450ms and the glow
+     takes 650ms to come up; the light has its own, 800ms here and 1.2s on
+     the primary, and it is an ANIMATION rather than a transition so that it
+     runs once on the way in and does not run backwards on the way out. */
+  transition: transform var(--motion-normal) var(--ease),
+              background-position var(--motion-normal) var(--ease),
+              filter var(--motion-slow) var(--ease);
+  /* A resting drop-shadow, fully transparent. The hover glow is a filter
+     and not a box-shadow because the `aura` keyframe above OWNS
+     box-shadow — an animation beats a normal declaration for the same
+     property, so every hover shadow written into this file was being
+     silently discarded, and that is the other half of why the interaction
+     felt weak. Two drop-shadows interpolate; `filter: none` does not
+     interpolate with one, which is why this rests at zero alpha rather than
+     at `none`. */
+  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
 }
 .btn:hover, .btn-solid:hover, .btn-outline:hover {
   transform: translateY(-2px);
-  background-position: 170% 0, 0 0, 100% 50%;
+  background-position: var(--edge-hi);
+  filter: drop-shadow(0 10px 24px rgba(124, 92, 255, .45));
+  transition: transform var(--motion-normal) var(--ease),
+              background-position var(--motion-normal) var(--ease),
+              filter var(--motion-slow) var(--ease);
 }
-.btn:active { transform: translateY(0); }
+/* THE PRESS. One pixel, 150ms, no ripple and nothing that scales the whole
+   surface — a physical answer, not a material design. It returns to the
+   hover state it came from, because :active sits on top of :hover. */
+.btn:active, .btn-solid:active, .btn-outline:active,
+.record-action:active, .to-top:active {
+  transform: translateY(1px);
+  transition-duration: var(--motion-instant);
+}
 
-/* the primary button is the spectrum itself, with near-black text on it â€”
-   so it has no separate edge layer, only the gleam over the fill */
+/* ---------- 7a. the light that crosses a button ----------
+   One element, two jobs, and neither of them is a loop.
+
+   THE SWEEP (::before) plays once when the pointer arrives, crosses the
+   button from just outside one edge to just outside the other, and fades
+   out where it leaves. It is an animation rather than a transition so that
+   leaving does not run it backwards: the hover STATE is the ring, the
+   edge, the lift and the glow, and those are transitions that stay put.
+   The travel is logical — `translate` with the sign flipped for Arabic —
+   so the light crosses the same way the reader is going.
+
+   THE TINT (::after) is the part that persists: a spectrum wash at 12%
+   that comes up under the label and stays for as long as the pointer does,
+   which is what separates "the button is interactive" from "the button is
+   on". The primary has no tint: its surface is already the spectrum, and
+   washing it would only muddy it.
+
+   Both are spectrum colours. There is no white in either, no radial
+   gradient, and nothing anywhere in this system reads the pointer's
+   position — the whole interaction is this one block of CSS. */
+.btn, .btn-solid, .btn-outline, .record-action { --sweep-a: .20; --sweep-dur: var(--motion-reveal); }
+/* The primary needs more of it than the others, and it is not a matter of
+   taste: a light surface swallows a dark wash. Its fill is already the lit
+   spectrum, so a 20% pass over it is nearly invisible — the colour only
+   reads when the band is strong enough to shift the hue it is crossing.
+   42% is the point where the sweep is unmistakable and the label is still
+   near-black on a light field, which the contrast audit checks. */
+.btn-primary { --sweep-a: .42; --sweep-dur: var(--motion-cinematic); }
+
+.btn::before, .record-action::before {
+  content: ""; position: absolute; z-index: -1;
+  inset-block: 0; inset-inline-start: 0; width: 100%;
+  background: linear-gradient(100deg,
+    transparent 30%,
+    rgba(124, 92, 255, var(--sweep-a)) 42%,
+    rgba(240, 206, 126, calc(var(--sweep-a) * 1.2)) 50%,
+    rgba(46, 134, 255, var(--sweep-a)) 58%,
+    transparent 70%);
+  opacity: 0;
+  translate: var(--sweep-from) 0;
+  pointer-events: none;
+}
+.btn:hover::before, .btn:focus-visible::before,
+.record-action:hover::before {
+  animation: btn-sweep var(--sweep-dur) var(--ease-out) 1 both;
+}
+@keyframes btn-sweep {
+  from { opacity: 0; translate: var(--sweep-from) 0; }
+  22%  { opacity: 1; }
+  78%  { opacity: 1; }
+  to   { opacity: 0; translate: var(--sweep-to) 0; }
+}
+
+.btn:not(.btn-primary)::after, .record-action:not(.is-plain)::after {
+  content: ""; position: absolute; z-index: -1;
+  inset: 0; border-radius: inherit;
+  background: var(--spectrum);
+  background-size: 240% 240%;
+  opacity: 0;
+  transition: opacity var(--motion-normal) var(--ease);
+  pointer-events: none;
+}
+.btn:not(.btn-primary):hover::after, .btn:not(.btn-primary):focus-visible::after,
+.record-action:not(.is-plain):hover::after { opacity: .12; }
+
+/* The keyboard must be able to see this too, and by a different route:
+   a visitor tabbing through the page has no pointer and therefore no
+   sweep, no lift and no glow. The outline is the whole of that state. */
+.btn:focus-visible, .btn-solid:focus-visible, .btn-outline:focus-visible,
+.record-action:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* THE MAGNETIC PULL. assets/js/pointer.js writes --mag-x / --mag-y at three
+   and two pixels, and removes them the moment the pointer leaves. It is
+   applied through the `translate` property rather than `transform`, so it
+   composes with the hover lift instead of overwriting it, and so that the
+   press and the sweep can each own something else. 650ms is both the
+   follow and the way back: a button that chased the pointer would be a
+   button nobody can click, and one that snapped back would read as a toy. */
+[data-magnetic] {
+  translate: var(--mag-x, 0px) var(--mag-y, 0px);
+  transition: translate var(--motion-slow) var(--ease-soft);
+}
+
+/* the primary button is the lit spectrum with near-black text on it, over a
+   DEEP spectrum edge — so its border is a real border, and it can get
+   brighter on hover the way the others do */
 .btn-primary {
-  background-image: var(--gleam), var(--spectrum-lit);
-  background-size: 220% 100%, 100% 100%;
-  background-position: -70% 0, 0 0;
+  background-image: var(--spectrum-lit), var(--spectrum);
+  background-size: 100% 100%, 240% 240%;
+  background-position: 0 0, 0% 50%;
   background-clip: padding-box, border-box;
   color: var(--void);
   font-weight: 700;
 }
-.btn-primary:hover { background-position: 170% 0, 0 0; }
+.btn-primary:hover { background-position: 0 0, 100% 50%; }
 
-/* the light that crosses the button: transparent at both ends so it reads
-   as a pass of light, not a white bar. Kept faint â€” it sits under the
-   label and must never compete with it. */
-:root { --gleam: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .30) 50%, transparent 62%); }
+/* the travel, in the direction the reader is going. These two variables
+   are the only place the light knows which way it is crossing. */
+:root { --sweep-from: -100%; --sweep-to: 100%; }
+html[dir="rtl"] { --sweep-from: 100%; --sweep-to: -100%; }
 
 /* the glow every interactive surface breathes with */
 @keyframes aura {
@@ -734,30 +991,53 @@ a.record-action.is-plain:hover { color: var(--fg); }
     linear-gradient(180deg, #05060C 0%, #070A13 48%, #0A0E18 100%);
 }
 
-/* sparse stars, tinted from the same three colours */
-.hero-sky { position: absolute; inset: 0; pointer-events: none; }
+/* sparse stars, tinted from the same three colours.
+   Every star gets its own clock — eight stars with eight different periods
+   and eight different negative delays, so the sky is never in step and no
+   two of them brighten together. Each one takes 20 to 38 seconds to breathe
+   once, and drifts a few pixels across that, which is slow enough to be
+   depth rather than flight. */
+.hero-sky {
+  position: absolute; inset: 0; pointer-events: none;
+  /* THE SCROLL. --hero-y is 0 … 1 across the hero, published by
+     assets/js/scroll.js from one measurement. Each layer below multiplies it
+     by its own depth, so the environment separates as the page moves: the
+     sky falls away, the instrument rises and recedes, the type drifts a
+     little. The depths are 6 to 34 pixels across a full screen of scroll —
+     enough to be felt, far too little to notice as movement. */
+  translate: 0 calc(var(--hero-y, 0) * 34px);
+}
 .star {
   position: absolute; border-radius: 50%;
   background: var(--violet); opacity: .5;
-  animation: twinkle 4.5s var(--ease) infinite;
+  animation: twinkle var(--twinkle, 24s) var(--ease-soft) infinite,
+             star-drift var(--drift, 90s) var(--ease-soft) infinite alternate;
 }
 /* A faint halo behind each star, so a brightening star throws light
    instead of just getting bigger. */
 .star { box-shadow: 0 0 6px 1px currentColor; }
-.s1 { width: 2px; height: 2px; top: 16%; inset-inline-end: 12%; animation-delay: -0.4s; }
-.s2 { width: 3px; height: 3px; top: 30%; inset-inline-end: 26%; background: var(--gold); color: var(--gold); animation-delay: -1.1s; }
-.s3 { width: 2px; height: 2px; top: 62%; inset-inline-end: 8%;  background: var(--azure); color: var(--azure); animation-delay: -2.3s; }
-.s4 { width: 2px; height: 2px; top: 22%; inset-inline-end: 40%; animation-delay: -3.2s; }
-.s5 { width: 3px; height: 3px; top: 74%; inset-inline-end: 33%; background: var(--gold); color: var(--gold); animation-delay: -0.8s; }
-.s6 { width: 2px; height: 2px; top: 46%; inset-inline-end: 18%; background: var(--azure); color: var(--azure); animation-delay: -1.8s; }
-.s7 { width: 2px; height: 2px; top: 84%; inset-inline-end: 46%; animation-delay: -2.8s; }
-.s8 { width: 2px; height: 2px; top: 10%; inset-inline-end: 54%; animation-delay: -3.7s; }
-/* Stars now SWELL as well as brighten — a twinkle that only changes
-   opacity reads as a flicker. Growing the disc is what makes it a star. */
+.s1 { width: 2px; height: 2px; top: 16%; inset-inline-end: 12%; --twinkle: 22s; --drift: 96s; animation-delay: -4s, -12s; }
+.s2 { width: 3px; height: 3px; top: 30%; inset-inline-end: 26%; background: var(--gold); color: var(--gold); --twinkle: 31s; --drift: 118s; animation-delay: -11s, -40s; }
+.s3 { width: 2px; height: 2px; top: 62%; inset-inline-end: 8%;  background: var(--azure); color: var(--azure); --twinkle: 27s; --drift: 104s; animation-delay: -19s, -66s; }
+.s4 { width: 2px; height: 2px; top: 22%; inset-inline-end: 40%; --twinkle: 38s; --drift: 88s; animation-delay: -7s, -25s; }
+.s5 { width: 3px; height: 3px; top: 74%; inset-inline-end: 33%; background: var(--gold); color: var(--gold); --twinkle: 20s; --drift: 126s; animation-delay: -23s, -81s; }
+.s6 { width: 2px; height: 2px; top: 46%; inset-inline-end: 18%; background: var(--azure); color: var(--azure); --twinkle: 35s; --drift: 110s; animation-delay: -14s, -52s; }
+.s7 { width: 2px; height: 2px; top: 84%; inset-inline-end: 46%; --twinkle: 25s; --drift: 132s; animation-delay: -2s, -95s; }
+.s8 { width: 2px; height: 2px; top: 10%; inset-inline-end: 54%; --twinkle: 29s; --drift: 100s; animation-delay: -17s, -33s; }
+/* Stars SWELL as well as brighten — a twinkle that only changes opacity
+   reads as a flicker. Growing the disc is what makes it a star. */
 @keyframes twinkle {
   0%, 100% { opacity: .16; transform: scale(.7); }
   45%      { opacity: .95; transform: scale(1.5); }
   70%      { opacity: .45; transform: scale(.9); }
+}
+/* The drift is a separate animation on the `translate` property, not on
+   `transform`, so it can run alongside the swell instead of fighting it.
+   It alternates, which means the star never jumps back to where it
+   started: there is no loop boundary to catch. */
+@keyframes star-drift {
+  from { translate: -2px 3px; }
+  to   { translate: 2px -3px; }
 }
 .star { transform-origin: center; will-change: transform, opacity; }
 
@@ -769,7 +1049,13 @@ a.record-action.is-plain:hover { color: var(--fg); }
   gap: var(--s-6) var(--s-7); align-items: center;
 }
 .hero-head { grid-column: 1 / -1; position: relative; }
-.hero-copy { position: relative; z-index: 1; }
+.hero-copy {
+  position: relative; z-index: 1;
+  /* the type is the last thing to move: six pixels and a whisper of
+     transparency over a full screen of scroll */
+  translate: 0 calc(var(--hero-y, 0) * -6px);
+  opacity: calc(1 - var(--hero-y, 0) * .06);
+}
 
 .eyebrow {
   font-family: var(--font-mono);
@@ -801,8 +1087,12 @@ html[lang="en"] .eyebrow, html[lang="ru"] .eyebrow { letter-spacing: .14em; }
     linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .85) 50%, transparent 62%),
     var(--spectrum-lit);
   background-size: 200% 100%, 220% 100%;
-  animation: name-drift var(--loop-text) linear infinite,
-             name-gleam 5.5s var(--ease-soft) infinite;
+  /* The spectrum itself is 45s — the name should look lit, not animated.
+     The gleam crosses the letters once every 30s and comes to rest at the
+     far side, so a second pass is not needed: the loop starts where the
+     previous one ended. */
+  animation: name-drift var(--ambient-cinematic) linear infinite,
+             name-gleam var(--ambient-long) var(--ease-soft) infinite;
 }
 @keyframes name-drift { to { background-position: 200% 0, 220% 0; } }
 @keyframes name-gleam {
@@ -850,45 +1140,117 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   content: ""; display: block;
   width: 1px; height: 34px; margin: 10px auto 0;
   background: linear-gradient(180deg, var(--violet), transparent);
-  animation: cue 1.6s var(--ease-soft) infinite;
+  /* 4s, not 1.6s: a cue that pulses like a heartbeat reads as an alarm */
+  animation: cue 4s var(--ease-soft) infinite;
 }
 @keyframes cue {
   0%, 100% { transform: scaleY(.35); opacity: .4; transform-origin: top; }
   50%      { transform: scaleY(1);   opacity: 1;  transform-origin: top; }
 }
 
-/* orbital figure */
-.hero-visual { position: relative; display: flex; justify-content: center; }
+/* ---------- 8b. THE ORBITAL FIGURE ----------
+   The instrument the hero is named after. It is drawn, not spun: the
+   geometry comes from the markup, and everything that moves is a group
+   turning about the centre of the viewBox.
+
+   The clocks are what make it an instrument rather than a spinner:
+     ring A   20s, clockwise          ring B   30s, anticlockwise
+     ring C   45s                     the trace 20s per circuit
+     a node   6s of breath            the figure itself drifts 24s
+
+   Nothing here is fast, and nothing is synchronised: two rings turning at
+   20s and 30s in opposite directions read as depth, where a single 4s
+   spin reads as loading. */
+.hero-visual {
+  position: relative; display: flex; justify-content: center;
+  /* the instrument rises against the falling sky, and takes the faintest
+     hint of extra presence while the page is moving quickly — the one
+     place on this site that answers the scroll's speed, because it is the
+     one thing on screen that is purely decorative */
+  translate: 0 calc(var(--hero-y, 0) * -30px);
+  scale: calc(1 + var(--scroll-v, 0) * .012);
+  transition: scale var(--motion-slow) var(--ease);
+}
 .hero-visual::before {
   content: ""; position: absolute; inset: 6%;
   z-index: -1;
   background: radial-gradient(closest-side, rgba(124, 92, 255, .30), transparent 72%);
-  animation: orb-breathe 4.5s var(--ease-soft) infinite alternate;
+  animation: orb-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
 }
 @keyframes orb-breathe { from { transform: scale(.9); opacity: .7; } to { transform: scale(1.1); opacity: 1; } }
 
 .orbit-figure {
   width: 100%; max-width: 380px; height: auto;
   filter: drop-shadow(0 0 30px rgba(124, 92, 255, .35));
-  animation: float 6s var(--ease-soft) infinite alternate;
+  animation: float 24s var(--ease-soft) infinite alternate;
 }
-@keyframes float { from { transform: translateY(-7px); } to { transform: translateY(7px); } }
-.of-core { fill: rgba(124, 92, 255, .16); stroke: var(--violet); stroke-width: 1.2; }
-.of-ring { stroke: rgba(240, 206, 126, .45); stroke-width: 1; }
-.of-ring-2 { stroke: rgba(111, 195, 255, .40); stroke-width: 1; }
-.of-nodes circle { fill: var(--azure); opacity: .9; }
-.of-nodes { animation: spin 11s linear infinite; transform-origin: 160px 160px; }
-.of-ticks line { stroke: rgba(167, 139, 250, .5); stroke-width: 1; }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
 
-/* ---------- 9. Marquee ---------- */
+/* every turn happens about the centre of the 360×360 viewBox, which
+   `transform-box: view-box` is what makes expressible in CSS */
+.of-spin, .of-halo, .of-core {
+  transform-box: view-box;
+  transform-origin: 180px 180px;
+}
+.of-spin { animation: orbit-spin var(--ambient-long) linear infinite; }
+.of-ring-a .of-spin { animation-duration: var(--ambient-slow); }
+.of-ring-b .of-spin { animation-duration: var(--ambient-long); animation-direction: reverse; }
+.of-ring-c .of-spin { animation-duration: var(--ambient-cinematic); }
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+
+/* the body being observed, and the line of its equator */
+.of-halo {
+  fill: rgba(124, 92, 255, .07);
+  animation: orb-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
+}
+.of-core {
+  fill: rgba(124, 92, 255, .16); stroke: var(--violet); stroke-width: 1.2;
+  animation: core-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
+}
+@keyframes core-breathe { from { transform: scale(.985); } to { transform: scale(1.015); } }
+.of-equator { fill: none; stroke: rgba(240, 206, 126, .30); stroke-width: 1; }
+/* the path each ring rides: still. Only the dashes and the nodes travel. */
+.of-path { fill: none; stroke: rgba(148, 163, 186, .20); stroke-width: 1; }
+.of-trace {
+  fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round;
+  /* pathLength="1000" in the markup, so a 90-unit dash and a 910-unit gap
+     are one tenth of the circuit — and shifting the offset by exactly 1000
+     over the loop is one whole period, which is why the trace never jumps */
+  stroke-dasharray: 90 910;
+  animation: trace-run var(--ambient-slow) linear infinite;
+}
+.of-trace-b { stroke: var(--azure); stroke-dasharray: 60 940; }
+@keyframes trace-run { to { stroke-dashoffset: -1000; } }
+/* the nodes riding the rings. Each one swells on its own phase, so the
+   figure is never lit symmetrically. 8s, not the 6s the other glows use:
+   a node is a body in orbit, and a body breathes more slowly than a halo —
+   8s is also the slowest end of the range a beacon should sit in. */
+.of-node {
+  fill: var(--azure);
+  transform-box: fill-box; transform-origin: center;
+  animation: node-breathe 8s var(--ease-soft) infinite;
+}
+.of-node-hot { fill: var(--gold); animation-delay: -3.4s; }
+.of-ring-a .of-node:last-child { animation-delay: -2.1s; }
+@keyframes node-breathe {
+  0%, 100% { opacity: .55; transform: scale(.9); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+.of-ticks line { stroke: rgba(167, 139, 250, .5); stroke-width: 1; }
+
+/* ---------- 9. Marquee ----------
+   One group of keywords is 500–900px wide depending on the language, and
+   the track travels exactly one group per loop. At 20s that is 25–45px per
+   second: a line of text being read, not a ticker. The loop has no seam
+   because the second group is the first one, and the shift is -50% of the
+   track, which is precisely one group. */
 .marquee {
   position: relative; overflow: hidden;
   background: rgba(4, 5, 10, .8);
   border-block: 1px solid var(--glass);
   padding-block: var(--s-4);
 }
-.marquee-track { display: flex; width: max-content; animation: marquee-run 11s linear infinite; }
+.marquee-track { display: flex; width: max-content; animation: marquee-run var(--ambient-slow) linear infinite; }
 .marquee-group { display: flex; align-items: center; }
 .marquee-item {
   display: inline-flex; align-items: center;
@@ -941,7 +1303,7 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   display: flex; align-items: center; gap: var(--s-4);
   padding: var(--s-4) var(--s-3);
   border-block-end: 1px solid var(--glass);
-  transition: background var(--t-micro) var(--ease), padding-inline-start var(--t-micro) var(--ease);
+  transition: background var(--motion-normal) var(--ease), padding-inline-start var(--motion-normal) var(--ease);
 }
 .chain li:first-child { border-block-start: 1px solid var(--glass); }
 .chain li:hover {
@@ -964,7 +1326,7 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   border: 1px solid var(--violet);
   opacity: .8;
   pointer-events: none;
-  transition: border-color var(--t-std) var(--ease), opacity var(--t-std) var(--ease);
+  transition: border-color var(--motion-normal) var(--ease), opacity var(--motion-normal) var(--ease);
 }
 .stage::before { top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
 .stage::after { bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
@@ -979,6 +1341,37 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
 }
 .stage-title { font-size: 1.1rem; color: var(--fg); margin-block-end: var(--s-2); }
 .stage-text { color: var(--fg-2); font-size: .98rem; line-height: 1.8; }
+
+/* ---------- 10a. The roadmap trajectory ----------
+   Five stations on one curve, drawn once and then left alone. It is the
+   section's own argument — a plan that goes somewhere — so it is the only
+   decorative thing in the plan section, and it is aria-hidden.
+
+   The line is DRAWN BY THE SCROLL, not by a keyframe. #plan is a
+   [data-track] section, so --p is its own progress through the viewport:
+   the trajectory is finished exactly when the section has been read, it
+   cannot lag behind the hand, and it cannot replay. The `var(--p, 1)`
+   fallback is what draws the whole line when there is no script at all —
+   a decorative figure that can only ever be invisible is a broken figure.
+   1.6s is the slowest arrival in the site, and it is only the fallback's
+   to spend if the section is reached without scrolling. */
+.trajectory { margin: 0 0 var(--s-7); }
+.tj-svg { width: 100%; height: auto; overflow: visible; }
+.tj-rail { fill: none; stroke: var(--glass-2); stroke-width: 1.5; }
+.tj-draw {
+  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: calc(1000px * (1 - clamp(0, var(--p, 1), 1)));
+}
+.tj-node {
+  fill: var(--void); stroke: var(--violet); stroke-width: 2;
+  transform-box: fill-box; transform-origin: center;
+  animation: node-breathe var(--ambient-pulse) var(--ease-soft) infinite;
+}
+.tj-node:nth-of-type(2) { animation-delay: -1.2s; }
+.tj-node:nth-of-type(3) { animation-delay: -2.4s; }
+.tj-node:nth-of-type(4) { animation-delay: -3.6s; }
+.tj-node:nth-of-type(5) { animation-delay: -4.8s; }
 
 /* empty state â€” honest, not hidden */
 .empty-state {
@@ -1010,6 +1403,7 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   max-width: var(--measure);   /* keep Arabic lines comfortable to read */
 }
 .record-action {
+  position: relative; overflow: hidden;
   grid-row: 1; grid-column: 2;
   display: inline-flex; align-items: center; gap: var(--s-2);
   padding: var(--s-2) var(--s-4); min-height: 40px;
@@ -1022,10 +1416,20 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   background-clip: padding-box, border-box;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
-  animation: aura var(--loop-beat) var(--ease-soft) infinite;
-  transition: background-position var(--t-page) var(--ease);
+  animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
+  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
+  transition: background-position var(--motion-normal) var(--ease),
+              transform var(--motion-normal) var(--ease),
+              filter var(--motion-slow) var(--ease);
 }
-.record-action:hover { background-position: var(--edge-hi); }
+/* the same language as the buttons, one step quieter: it is a small
+   control inside a card, and a card that starts moving is a card that has
+   stopped being a card */
+.record-action:hover {
+  transform: translateY(-1px);
+  background-position: var(--edge-hi);
+  filter: drop-shadow(0 6px 16px rgba(124, 92, 255, .4));
+}
 .record-action.is-plain { animation: none; box-shadow: none; }
 
 /* stat row */
@@ -1060,25 +1464,71 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   inset-block: 8px 8px; inset-inline-start: 5px; width: 1px;
   background: linear-gradient(180deg, transparent, var(--glass-2) 10%, var(--glass-2) 90%, transparent);
 }
+/* THE LINE DRAWS AS THE SECTION IS READ. The story page wraps this timeline
+   in a [data-track] section, so --p is that section's own progress through
+   the viewport — one number, measured once per frame by scroll.js, and every
+   layer here multiplies it. The unlit part of the line stays a hairline; the
+   part you have travelled becomes the spectrum. There is no animation clock
+   on this at all: it is the scroll position, so it can never lag behind the
+   hand and it can never replay. */
+.timeline::after {
+  content: ""; position: absolute;
+  inset-block: 8px 8px; inset-inline-start: 5px; width: 1px;
+  background: linear-gradient(180deg, var(--violet), var(--gold) 55%, var(--azure));
+  transform-origin: top;
+  scale: 1 var(--p, 0);
+  opacity: .9;
+}
 .tl-item { position: relative; padding-inline-start: var(--s-6); padding-block-end: var(--s-8); }
 .tl-item:last-child { padding-block-end: 0; }
+
+/* A MILESTONE ACTIVATES, once, and in this order: the node takes the light,
+   the number strengthens, the title settles, the text arrives last. The item
+   itself is already arriving as a block, so the four children are given
+   their own short delays rather than their own opacity — the sequence reads
+   as one event settling, not four things appearing. */
 .tl-marker {
   position: absolute; inset-inline-start: 0; top: 9px;
   width: 12px; height: 12px; border-radius: 50%;
   background: var(--void); border: 2px solid var(--violet);
   box-shadow: 0 0 16px -2px var(--violet);
+  scale: 1;
+  transition: box-shadow var(--motion-cinematic) var(--ease),
+              scale var(--motion-cinematic) var(--ease-out);
+}
+.tl-item.is-in .tl-marker {
+  scale: 1.18;
+  box-shadow: 0 0 26px 0 rgba(124, 92, 255, .8);
 }
 .tl-item:last-child .tl-marker {
   background: var(--gold); border-color: var(--gold);
   box-shadow: 0 0 20px 0 rgba(240, 206, 126, .8);
 }
+.tl-item:last-child.is-in .tl-marker { box-shadow: 0 0 30px 2px rgba(240, 206, 126, .9); }
+
 .tl-index {
   font-family: var(--font-mono); font-size: .82rem; letter-spacing: .1em;
   color: var(--gold);
   margin-block-end: var(--s-2);
+  opacity: .55; translate: 0 8px;
+  transition: opacity var(--motion-cinematic) var(--ease) 120ms,
+              translate var(--motion-cinematic) var(--ease-out) 120ms;
 }
-.tl-stage { font-size: 1.16rem; color: var(--fg); margin-block-end: var(--s-2); }
-.tl-text { color: var(--fg-2); line-height: 1.9; }
+.tl-stage {
+  font-size: 1.16rem; color: var(--fg); margin-block-end: var(--s-2);
+  opacity: 0; translate: 0 12px;
+  transition: opacity var(--motion-cinematic) var(--ease) 240ms,
+              translate var(--motion-cinematic) var(--ease-out) 240ms;
+}
+.tl-text {
+  color: var(--fg-2); line-height: 1.9;
+  opacity: 0; translate: 0 16px;
+  transition: opacity var(--motion-cinematic) var(--ease) 380ms,
+              translate var(--motion-cinematic) var(--ease-out) 380ms;
+}
+.tl-item.is-in .tl-index,
+.tl-item.is-in .tl-stage,
+.tl-item.is-in .tl-text { opacity: 1; translate: none; }
 
 /* On the dedicated story page the copy is the whole point, so it gets a
    wider measure, more breathing room, and a station number. */
@@ -1177,6 +1627,30 @@ html[lang="ar"] .footer-mark { letter-spacing: 0; }
   color: var(--fg);
 }
 .page-head .eyebrow { color: var(--gold); }
+/* ---------- 14. Page head: the entrance of a standalone page ----------
+   story.html and records.html have no hero, so without this they arrive all
+   at once. The sequence is the same one the home page opens with, at a
+   third of its weight: the eyebrow, then the name, then the lead — 500ms
+   apart, the title itself taking --motion-long, the slowest arrival the
+   site has. It is a plain CSS sequence on a class the page script adds and
+   removes on the first frame (assets/js/page.js), so with no script at all
+   the page is simply already in place. */
+.page-head .eyebrow,
+.page-head .page-title,
+.page-head .page-lead {
+  opacity: 0; translate: 0 20px; filter: blur(10px);
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-reveal) var(--ease-out),
+              filter var(--motion-reveal) var(--ease-out);
+}
+.page-head .page-title { transition-duration: var(--motion-long); }
+.is-entering .page-head .eyebrow  { transition-delay: 0ms; }
+.is-entering .page-head .page-title { transition-delay: 500ms; }
+.is-entering .page-head .page-lead { transition-delay: 1000ms; }
+.page-head.is-in .eyebrow,
+.page-head.is-in .page-title,
+.page-head.is-in .page-lead { opacity: 1; translate: none; filter: none; }
+
 .page-title {
   font-size: clamp(2.1rem, 1.4rem + 3vw, 3.4rem);
   margin-block-end: var(--s-4);
@@ -1186,19 +1660,100 @@ html[lang="ar"] .footer-mark { letter-spacing: 0; }
   -webkit-background-clip: text; background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 6px 30px rgba(124, 92, 255, .32));
-  animation: title-drift 7s linear infinite;
+  animation: title-drift var(--ambient-long) linear infinite;
 }
 @keyframes title-drift { to { background-position: 200% 0; } }
 .page-lead { color: var(--fg-3); max-width: 52ch; }
 
-/* ---------- 15. Reveal on scroll ---------- */
+/* ---------- 15. Reveal on scroll ----------
+   One rule for the arrival, one variable for how long it may take, and five
+   behaviours instead of one. The markup already says which behaviour an
+   element gets (assets/js/reveal.js reads data-reveal and adds the matching
+   .reveal-* class), so the timing is read from the same place and nothing is
+   declared twice:
+
+     up      650ms   a paragraph, a note — rises 18px and clears its blur
+     line    800ms   a heading: it rises, and the rule beneath it DRAWS
+     blur   1200ms   a large statement — a longer, softer arrival
+     scale  1200ms   a figure: 1.04 → 1, no travel
+     mask    800ms   an editorial statement, wiped in by a clip
+     stagger  800ms   a row of cards, 120ms apart
+     draw   1600ms   an SVG line, drawn by its own path length
+
+   A staggered row steps 120ms at a time. Fast enough that a row of six
+   does not take ten seconds to assemble, slow enough that the eye can
+   follow the order it is being given.
+
+   The travel is on the `translate` property, not on `transform`, and that
+   is not a style preference. Every card, record, stage and stat on this
+   site arrives through a stagger, so each one ends up carrying both
+   `.reveal.is-in` and `.card:hover` — and if the reveal rested at
+   `transform: none` it would out-rank the hover state (same specificity,
+   later in the file) and the card could never lift. Two properties, two
+   jobs, and no fight. The hover owns `transform`; the reveal owns
+   `translate`; neither can cancel the other. */
 .reveal {
-  opacity: 0; transform: translateY(18px); filter: blur(5px);
-  transition: opacity var(--t-page) var(--ease),
-              transform var(--t-page) var(--ease),
-              filter var(--t-page) var(--ease);
+  opacity: 0; translate: 0 18px; filter: blur(5px);
+  transition: opacity var(--reveal-dur, var(--motion-slow)) var(--ease),
+              translate var(--reveal-dur, var(--motion-slow)) var(--ease),
+              filter var(--reveal-dur, var(--motion-slow)) var(--ease);
 }
-.reveal.is-in { opacity: 1; transform: none; filter: none; }
+.reveal.is-in { opacity: 1; translate: none; filter: none; }
+
+/* the five behaviours. Each one overrides the same three properties the
+   arrival is made of, so they are written as one-liners over the base. */
+.reveal-blur {
+  translate: 0 26px; filter: blur(12px);
+  transition-duration: var(--motion-cinematic);
+}
+/* a figure settles rather than travels. `scale` is its own property, so it
+   composes with the reveal's `translate` and with a hover's `transform`
+   instead of overwriting either. */
+.reveal-scale {
+  translate: none; scale: 1.04;
+  transition: opacity var(--motion-cinematic) var(--ease),
+              scale var(--motion-cinematic) var(--ease-out);
+}
+.reveal-scale.is-in { scale: 1; }
+
+.reveal-mask {
+  translate: 0 22px; filter: none;
+  clip-path: inset(0 0 100% 0);
+  transition: opacity var(--motion-reveal) var(--ease),
+              translate var(--motion-reveal) var(--ease),
+              clip-path var(--motion-reveal) var(--ease-out);
+}
+.reveal-mask.is-in { clip-path: inset(0 0 0 0); }
+
+/* a heading, and the rule under it. The line draws from the writing
+   direction, so it grows the right way in Arabic. */
+.reveal-line { --reveal-dur: var(--motion-reveal); }
+.sec-head.reveal-line::after {
+  transform: scaleX(0);
+  transform-origin: var(--draw-from, left);
+  transition: transform var(--motion-cinematic) var(--ease-out);
+}
+.sec-head.reveal-line.is-in::after { transform: scaleX(1); }
+html[dir="rtl"] { --draw-from: right; }
+
+/* The ghost numeral arrives on its own beat, a little after its heading.
+   It comes from ABOVE, not below, and that direction is load-bearing: it
+   used to travel 14px DOWNWARD into the line beneath it, which is exactly
+   the heading — the numeral's own gap is 8–14px depending on the viewport,
+   so a 14px downward travel consumed all of it and pushed the digits
+   through the first line of an Arabic heading. Travelling up means every
+   intermediate frame of the animation is in the band's padding, and the
+   only thing the number ever moves through is empty space. */
+.reveal-line .sec-index {
+  translate: 0 -12px;
+  transition: translate var(--motion-reveal) var(--ease) 180ms;
+}
+.reveal-line.is-in .sec-index { translate: none; }
+
+[data-reveal="stagger"] > .reveal {
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+.tl-item { --reveal-dur: var(--motion-cinematic); }
 
 /* ---------- 16. Arabic never runs through a Latin-only mono face ----------
    IBM Plex Mono has no Arabic glyphs, so these labels were falling back to
@@ -1235,6 +1790,11 @@ html[lang="ar"] .count {
   .hero-lead { max-width: none; }
   .why-grid { grid-template-columns: 1fr; gap: var(--s-6); }
   html { scroll-padding-top: 76px; }
+  /* A heading and a link no longer fit on one line beside each other, so
+     the row becomes a column. The numeral is unaffected: it is on its own
+     row in both layouts, which is the point of it having one. */
+  .sec-head-row { grid-template-columns: 1fr; }
+  .sec-head-row > .sec-more { justify-self: start; }
 }
 
 /* The full desktop nav + the language switcher need ~1140px before the row
@@ -1281,6 +1841,10 @@ html[lang="ar"] .count {
   .record { grid-template-columns: minmax(0, 1fr); }
   .record-action { grid-row: auto; grid-column: 1; justify-self: start; }
   .stage-num { font-size: 1.7rem; }
+  /* The numeral steps down with the viewport rather than pushing the
+     heading: on a 360px screen a 104px marker would be a third of the
+     column, and the composition would stop being a composition. */
+  :root { --section-number-size: 3.4rem; }
   .timeline::before { inset-inline-start: 4px; }
   .tl-item { padding-inline-start: var(--s-5); }
 }
@@ -1288,24 +1852,28 @@ html[lang="ar"] .count {
 /* ============================================================================
    18. STILL MODE — less movement, never less life
 
-   HOW THE SWITCH WORKS, and why it is not just a media query:
+   HOW IT IS TRIGGERED, and why there is no switch any more:
 
-   `prefers-reduced-motion` is an operating-system setting. A stylesheet
-   cannot turn it off, and a page should not pretend to. But a visitor can
-   be offered a choice of the site's own (assets/js/motion.js writes
-   data-motion="full" | "still" onto <html>). So the two triggers are
-   merged ONCE, here, into a single custom property:
+   `prefers-reduced-motion` is an operating-system setting, and a page
+   cannot turn it off — nor should it pretend to. It used to offer a
+   control of its own in the header, and merge the two answers into a
+   `--still` property. The control is gone, so there is nothing to merge:
+   the media query below is the whole trigger, and assets/js/motion.js
+   asks the same question of the same query for the things CSS cannot do
+   (it does not start the canvas, and it does not draw the cursor light).
 
-       html                        { --still: 0; }   ← motion on
-       html[data-motion="still"]   { --still: 1; }   ← visitor asked for still
-       @media (prefers-reduced-motion: reduce) {
-         html:not([data-motion="full"]) { --still: 1; }   ← OS asked, and the
-       }                                                     visitor has not
-                                                            overridden it
+   Two things follow from that, and both matter:
 
-   Every rule below reads `--still`. One property, one implementation, no
-   duplicated selector lists, and the OS setting stays overridable — which
-   is exactly the thing that was impossible before.
+     1. The rules below live INSIDE the media query. The previous version
+        wrote them at the top level with a duration of
+        `calc(var(--real-dur, 1s) * (1 - var(--still)))` — and
+        `var(--real-dur)` is only declared for the panes, so every other
+        loop on the site was silently running at ONE SECOND. That is where
+        "everything moves too fast" came from.
+     2. Loops are turned off with `animation: none`, not with a tiny
+        duration. Nothing is left stranded on a random keyframe: each
+        element falls back to the rest state its own base rule already
+        describes, which is what the design looks like standing still.
 
    WHY THIS BLOCK IS HERE AT ALL
    The previous version answered "reduced" with:
@@ -1322,88 +1890,217 @@ html[lang="ar"] .count {
      GONE  · light-field drift, grain crawl, travelling gradients
      GONE  · the marquee, the breathing glows, the orbiting figure
      GONE  · reveal travel and blur (the fade stays)
-     GONE  · parallax and the cursor light
+     GONE  · the magnetic pull and the pane tilt
    ========================================================================= */
 
-/* the switch itself */
-html { --still: 0; }
-html[data-motion="still"] { --still: 1; }
 @media (prefers-reduced-motion: reduce) {
-  html:not([data-motion="full"]) { --still: 1; }
+  /* EVERY ambient loop goes off — the field, the grain, the reading rail,
+     the band hairlines, the drifting names, the stars, the whole orbital
+     figure, the roadmap stations. One list, and anything added to it is
+     covered from then on. The panes are NOT on it and do not need to be:
+     a card has no animation of its own, only a hover transition, which is
+     the interaction half of this block.
+
+     The orbital rings are named twice on purpose. `.of-ring-a .of-spin`
+     outranks a bare `.of-spin`, so listing only the bare selector would
+     leave that ring's duration standing at 20s. It would not move — the
+     name is what runs an animation — but a stylesheet that claims 20s in
+     still mode is a lie the next reader will take literally. */
+  body::before, body::after,
+  .read-progress, .hero-name, .page-title, .marquee-track,
+  .orbit-figure, .of-halo, .of-core, .of-trace, .of-node, .tj-node,
+  .of-spin, .of-ring-a .of-spin, .of-ring-b .of-spin, .of-ring-c .of-spin,
+  .hero-visual::before, .hero-scroll::after, .star,
+  .band::before, .sec-head::after {
+    animation: none;
+  }
+
+  /* The controls lose their loop but NOT their light. This is the aura's
+     own first frame, held still: a button that stops glowing is not calm,
+     it is broken. */
+  .btn, .btn-solid, .btn-outline, .record-action, .to-top {
+    animation: none;
+    box-shadow: 0 0 0 1px rgba(167, 139, 250, .22), 0 16px 40px -22px rgba(124, 92, 255, .75);
+  }
+
+  /* Interaction keeps a short settle. The surface changes; it does not
+     move — so no lift, no tilt, no magnetic pull.
+
+     This comes AFTER the reveal rule on purpose. A staggered card is both a
+     `.card` and a `.reveal`, and the reveal needs its own properties to
+     arrive instantly; if the two were the other way round, the reveal's
+     `transition: none` would erase the hover response from every card on
+     the page and a visitor would get no feedback at all. */
+  .reveal { opacity: 1; translate: none; filter: none; transition-duration: 0s; }
+
+  .btn, .btn-solid, .btn-outline, .record-action, .to-top,
+  .card, .record, .stage, .stat, .social, .empty-state, .search {
+    transition-duration: 200ms;
+  }
+  .btn:hover, .btn-solid:hover, .btn-outline:hover, .to-top:hover,
+  .card:hover, .record:hover, .stage:hover, .stat:hover, .social:hover,
+  .empty-state:hover { transform: none; }
+  [data-magnetic] { translate: none; }
+
+  /* The light that crosses a button is travel, and travel is exactly what
+     this mode is asking us not to do. Selector for selector with the rule it
+     overrides, so nothing survives on specificity. What is kept is the half
+     of the hover that is state rather than movement: the edge, the tint, the
+     glow and the focus ring all stay, so a visitor who asked for calm is
+     still looking at a control that plainly says it is one. */
+  .btn:hover::before, .btn:focus-visible::before,
+  .record-action:hover::before { animation: none; }
+  .btn:not(.btn-primary):hover::after, .btn:not(.btn-primary):focus-visible::after,
+  .record-action:not(.is-plain):hover::after { opacity: .12; }
+
+  /* the opening sequence becomes a plain fade, in the same order */
+  .is-loading .hero-head,
+  .is-loading .hero-lead,
+  .is-loading .hero-desc,
+  .is-loading .hero-actions,
+  .is-loading .hero-quote,
+  .is-loading .hero-visual,
+  .is-loading .hero-name,
+  .is-loading .site-header {
+    opacity: 0; transform: none; filter: none;
+    transition: opacity 400ms linear !important;
+  }
+
+  /* reveals resolve immediately, with no travel and no blur, and the
+     trajectory is simply already drawn */
+  .tj-draw { stroke-dashoffset: 0; }
+
+  /* the parallax is switched off by the same hand that publishes it: the
+     numbers are still there, but every layer that would consume them is
+     pinned back to where it started */
+  .hero-sky, .hero-copy, .hero-visual { translate: none; }
+  .hero-visual { scale: 1; }
+  .hero-copy { opacity: 1; }
+  .timeline::after { scale: 1 1; }
+
+  /* no page transition: the old page is simply replaced */
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  html.is-leaving .shell,
+  html.is-leaving .site-footer,
+  html.is-leaving .marquee { opacity: 1; transform: none; }
+
+  /* the marquee becomes a wrapped, centred list of keywords */
+  .marquee { overflow: visible; }
+  .marquee-track { width: auto; flex-wrap: wrap; justify-content: center; }
+  .marquee-group { flex-wrap: wrap; justify-content: center; }
+  .marquee-group + .marquee-group { display: none; }
+
+  /* the two names keep their spectrum, held still rather than travelling */
+  .hero-name, .page-title {
+    background-size: 100% 100% !important;
+    background-position: 0 0 !important;
+  }
+  .hero-name {
+    background-image:
+      linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .5) 50%, transparent 62%),
+      var(--spectrum-lit) !important;
+    background-size: 100% 100%, 100% 100% !important;
+  }
 }
 
-/* Every animated property is multiplied by a duration that is zero in
-   still mode. Nothing has to be listed twice, and adding a new animation
-   in this file is automatically covered by adding it to the group below. */
-body::before, body::after,
-.read-progress, .hero-name, .page-title, .marquee-track,
-.orbit-figure, .hero-visual::before, .hero-scroll::after,
-.btn, .btn-solid, .btn-outline, .record-action, .to-top,
-.star, .of-nodes, .band::before, .sec-head::after,
-.card, .record, .stage, .stat, .social, .empty-state, .search, .tag {
-  animation-duration: calc(var(--real-dur, 1s) * (1 - var(--still)));
+/* ============================================================================
+   19. PAGE TRANSITIONS — one scene becoming another
+
+   There are three pages and they are one site, so moving between them
+   should read as a cut inside a film rather than as three separate
+   documents. Two mechanisms, in this order:
+
+     1. The View Transitions API, one line of CSS. The browser captures the
+        old page, navigates, and cross-fades for us. No JavaScript, no
+        snapshot to manage, and if the browser has never heard of it the
+        whole block is simply ignored.
+     2. A fallback for browsers without it, in ui.js: the same shape —
+        the old page dims and drifts 8px, the new page arrives — played
+        with a class and a real navigation. It never blocks longer than
+        400ms, and it is switched off under reduced motion.
+
+   NO WHITE FLASH, EVER. The transition happens over the page's own black
+   foundation and every frame in between is a fade, so there is never a
+   moment where the browser paints a default background. Nothing here
+   uses a filter, a slide-in from the side, or a scale — a scale on a
+   snapshot this size is what makes a page transition feel like a phone
+   switching apps.
+
+   Direction: ui.js records where the visitor came from (one line of
+   sessionStorage, no cookie) and puts it on <html> as data-nav="from>to",
+   so the pair decides which way the scenes move. Home → story moves
+   forward, story → records moves across, and the return moves back. The
+   default, for a visitor who opened the site in a new tab, is forward.
+   ============================================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    /* the page's own background is the backdrop, so the two scenes are
+       always composited over black */
+    background: var(--void);
+    animation-duration: var(--motion-cinematic);
+    animation-timing-function: var(--ease-out);
+  }
+  ::view-transition-old(root) {
+    animation-name: scene-out;
+    animation-fill-mode: both;
+  }
+  ::view-transition-new(root) {
+    animation-name: scene-in;
+    animation-fill-mode: both;
+  }
+  @keyframes scene-out {
+    to { opacity: 0; transform: translateY(-10px); }
+  }
+  @keyframes scene-in {
+    from { opacity: 0; transform: translateY(14px); }
+  }
+
+  /* story → records reads as turning to a different shelf: a little across
+     rather than up */
+  :root[data-nav="story>records"] ::view-transition-old(root) {
+    animation-name: scene-out-x;
+  }
+  :root[data-nav="story>records"] ::view-transition-new(root) {
+    animation-name: scene-in-x;
+  }
+  /* and home → records goes the other way, because records is a leaf off
+     the story, not the next chapter of it */
+  :root[data-nav="index>records"] ::view-transition-old(root) {
+    animation-name: scene-out-x;
+  }
+  :root[data-nav="index>records"] ::view-transition-new(root) {
+    animation-name: scene-in-x;
+  }
+  @keyframes scene-out-x { to { opacity: 0; transform: translateX(-16px); } }
+  @keyframes scene-in-x { from { opacity: 0; transform: translateX(16px); } }
+
+  /* THE EXIT, for browsers without the API. ui.js adds .is-leaving and
+     navigates when this finishes; nothing waits longer than 400ms. */
+  html.is-leaving .shell,
+  html.is-leaving .site-footer,
+  html.is-leaving .marquee {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity var(--motion-normal) var(--ease),
+                transform var(--motion-normal) var(--ease);
+  }
+  html.is-leaving .site-header,
+  html.is-leaving .read-progress { opacity: 0; transition: opacity var(--motion-fast) var(--ease); }
 }
 
-/* the panes hold their spectrum edge still instead of letting it travel */
-.card, .record, .stage, .stat, .social, .empty-state, .search {
-  animation-name: edge-shine;
-  --real-dur: var(--loop-edge);
-}
-
-/* still: a soft settle on interaction, with no travel */
-.btn, .btn-solid, .btn-outline, .record-action, .to-top {
-  transition-duration: calc(var(--t-micro) * (1 - var(--still)) + 200ms * var(--still));
-}
-.card, .record, .stage, .stat, .social, .empty-state, .search {
-  transition-duration: calc(var(--t-std) * (1 - var(--still)) + 200ms * var(--still));
-}
-html[data-motion="still"] .btn:hover, html[data-motion="still"] .card:hover,
-html[data-motion="still"] .record:hover, html[data-motion="still"] .stage:hover,
-html[data-motion="still"] .stat:hover, html[data-motion="still"] .social:hover,
-html[data-motion="still"] .to-top:hover { transform: none; }
-
-/* still: the opening sequence becomes a plain fade */
-html[data-motion="still"] .is-loading .hero-head,
-html[data-motion="still"] .is-loading .hero-lead,
-html[data-motion="still"] .is-loading .hero-desc,
-html[data-motion="still"] .is-loading .hero-actions,
-html[data-motion="still"] .is-loading .hero-quote,
-html[data-motion="still"] .is-loading .hero-visual,
-html[data-motion="still"] .is-loading .hero-name,
-html[data-motion="still"] .is-loading .site-header {
-  opacity: 0; transform: none; filter: none;
-  transition: opacity 400ms linear !important;
-}
-
-/* still: reveals resolve immediately, with no travel and no blur */
-html[data-motion="still"] .reveal {
-  opacity: 1; transform: none; filter: none; transition: none;
-}
-
-/* still: the marquee becomes a wrapped, centred list of keywords */
-html[data-motion="still"] .marquee { overflow: visible; }
-html[data-motion="still"] .marquee-track { width: auto; flex-wrap: wrap; justify-content: center; }
-html[data-motion="still"] .marquee-group { flex-wrap: wrap; justify-content: center; }
-html[data-motion="still"] .marquee-group + .marquee-group { display: none; }
-
-/* still: gradient text keeps the spectrum, loses the drift */
-html[data-motion="still"] .hero-name,
-html[data-motion="still"] .page-title,
-html[data-motion="still"] .marquee-item,
-html[data-motion="still"] .stat-num,
-html[data-motion="still"] .stage-num,
-html[data-motion="still"] .sec-index,
-html[data-motion="still"] .footer-mark {
-  background-size: 100% 100% !important;
-  background-position: 0 0 !important;
-  animation-name: none;
-}
-/* the name keeps its gleam, held still rather than travelling */
-html[data-motion="still"] .hero-name {
-  background-image:
-    linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .5) 50%, transparent 62%),
-    var(--spectrum-lit) !important;
-  background-size: 100% 100%, 100% 100% !important;
+/* ---------- 7b. Touch: the same state, minus the travel ----------
+   A touch device fires :hover on a tap and then leaves it stuck, so a
+   sweep keyed to :hover would fire once on every tap of a button that
+   navigates — a flash of light on a link you are already leaving. The
+   hover STATE is not disabled here, because on a touch screen the tap IS
+   the hover and the control still has to look alive under a finger; only
+   the light that crosses is a thing a finger cannot see. */
+@media (hover: none), (pointer: coarse) {
+  .btn:hover::before, .btn:focus-visible::before,
+  .record-action:hover::before { animation: none; }
 }
 
 @media print {

@@ -71,19 +71,6 @@
       en: 'Back to top',
       ru: 'Наверх'
     },
-    /* The motion switch. It only appears when the operating system is
-       asking for reduced motion, so the visitor can turn the full
-       cinematic layer back on without leaving the site. */
-    'motion.enable': {
-      ar: 'تشغيل الحركة',
-      en: 'Enable motion',
-      ru: 'Включить движение'
-    },
-    'motion.calm': {
-      ar: 'إيقاف الحركة',
-      en: 'Reduce motion',
-      ru: 'Уменьшить движение'
-    },
     'lang.label': {
       ar: 'اللغة',
       en: 'Language',

@@ -1,61 +1,44 @@
 /* ============================================================
    MOTION — the single source of truth for movement on this site.
 
-   Everything animated goes through here, so there is exactly one place
-   that knows about:
-     · the user's motion preference
-     · the fact that a browser cannot change prefers-reduced-motion from
-       a stylesheet
-     · what "reduced" means: less travel, never less life
+   Everything animated asks this module one question: is the operating
+   system asking for calm? There is exactly one trigger, and it is the
+   operating system. A page cannot change `prefers-reduced-motion`, and
+   pretending otherwise is a lie the visitor can see.
 
-   WHY THIS FILE EXISTS
-   -------------------
-   `prefers-reduced-motion` is an operating-system setting. A page cannot
-   turn it off, and should not pretend to. But it can offer a choice of
-   its own that the visitor controls, which is what this does:
+   WHY THERE IS NO SWITCH IN THE HEADER
+   ------------------------------------
+   There used to be a small control here that let a visitor override the
+   OS setting for this site. It was removed: it was a button in the corner
+   that meant nothing to most people, it duplicated a decision the visitor
+   had already made in their system settings, and the only code that
+   existed to serve it was a localStorage key that could leave a page
+   fighting the machine it was running on. Reduced motion is now exactly
+   what the operating system says it is.
 
-     default   → follow the OS setting
-     full      → the full cinematic layer, whatever the OS says
-     still     → reduced: no travel, no loops, but the site is alive
+   WHAT "REDUCED" MEANS HERE
+   ------------------------
+   Less travel, never less life. The still layer lives in one media query
+   at the bottom of assets/css/site.css and it turns movement OFF — the
+   loops, the drift, the field, the pointer light. Every gradient, glow
+   and colour stays, and every state a visitor can reach is still
+   reachable. Freezing the whole page into one frame is what once made the
+   site look broken rather than calm, and it is not how this is done.
 
-   That distinction matters. An earlier version answered "reduced" by
-   compressing every animation to 0.001ms, which made the site look
-   broken rather than calm — and it was the reason for the report that
-   the site had no animation at all.
+     Motion.isStill()      is the OS asking?
+     Motion.onChange(fn)   run fn(true) the moment the OS answer changes
+     Motion.isFinePointer()  a hover-capable, precise pointer
    ============================================================ */
 (function () {
   'use strict';
 
   var Motion = window.Motion = window.Motion || {};
-
-  var KEY = 'site-motion';
-  var root = document.documentElement;
   var listeners = [];
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  function osPrefersReduced() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  function read() {
-    try { return localStorage.getItem(KEY); } catch (e) { return null; }
-  }
-  function write(v) {
-    try { localStorage.setItem(KEY, v); } catch (e) { /* private mode */ }
-  }
-
-  /* 'auto' | 'full' | 'still' */
-  Motion.mode = function () {
-    var saved = read();
-    if (saved === 'full' || saved === 'still') return saved;
-    return 'auto';
-  };
-
-  Motion.isStill = function () {
-    var m = Motion.mode();
-    if (m === 'still') return true;
-    if (m === 'full') return false;
-    return osPrefersReduced();
-  };
+  /* Read, not decide. One media query is queried for the whole site, so
+     the stylesheet and the scripts can never disagree about it. */
+  Motion.isStill = function () { return mq.matches; };
 
   /* Is this a touch-first device? The custom cursor and the heavy field
      are desktop-only; on touch they cost battery and buy nothing. */
@@ -63,34 +46,18 @@
     return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   };
 
-  Motion.set = function (mode) {
-    if (mode !== 'full' && mode !== 'still' && mode !== 'auto') return;
-    write(mode);
-    Motion.apply();
-    listeners.forEach(function (fn) { fn(Motion.isStill()); });
-  };
-
-  /* One attribute on <html> is the whole contract:
-       data-motion="still"  → the CSS reduced layer applies
-       data-motion="full"   → the full layer applies, OS setting ignored
-     Every animated system in the codebase reads this single flag. */
-  Motion.apply = function () {
-    var still = Motion.isStill();
-    root.setAttribute('data-motion', still ? 'still' : 'full');
-    root.classList.toggle('motion-still', still);
-    root.classList.toggle('motion-full', !still);
-  };
-
   Motion.onChange = function (fn) { listeners.push(fn); };
 
-  /* Follow the OS live: if the visitor flips the system setting while the
-     page is open, and they have not made an explicit choice here, honour it. */
-  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (mq.addEventListener) {
-    mq.addEventListener('change', function () {
-      if (Motion.mode() === 'auto') Motion.apply();
-    });
+  /* Follow the OS live: a visitor who turns animation off (or back on) in
+     their system settings while the page is open must not have to reload
+     to be obeyed. Subscribers clean up (or rebuild) the layers they own. */
+  function notify(still) {
+    for (var i = 0; i < listeners.length; i++) {
+      try { listeners[i](still); } catch (e) { /* one bad subscriber is not the page's problem */ }
+    }
   }
 
-  Motion.apply();
+  if (mq.addEventListener) {
+    mq.addEventListener('change', function (e) { notify(e.matches); });
+  }
 })();

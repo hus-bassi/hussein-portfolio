@@ -16,12 +16,14 @@
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/site.css">
 <script src="assets/js/motion.js"></script>
+<script src="assets/js/tick.js"></script>
 <script src="assets/js/field.js"></script>
-<script src="assets/js/cursor.js"></script>
+<script src="assets/js/pointer.js"></script>
 <script src="assets/js/intro.js"></script>
 </head>
 
 <body data-page="index">
+<div class="read-progress" aria-hidden="true"></div>
 <a class="skip-link" href="#main" data-i18n="skip">تخطّي إلى المحتوى الرئيسي</a>
 
 <header class="site-header" id="site-header">
@@ -38,7 +40,7 @@
 
     <nav class="primary-nav" id="primary-nav" data-i18n-aria="nav.label" aria-label="التنقل الرئيسي">
       <ul>
-        <li><a href="#home" data-i18n="nav.home">الرئيسية</a></li>
+        <li><a href="#home" aria-current="page" data-i18n="nav.home">الرئيسية</a></li>
         <li><a href="story.html" data-i18n="nav.story">قصتي</a></li>
         <li><a href="#plan" data-i18n="nav.plan">خطتي</a></li>
         <li><a href="#interests" data-i18n="nav.interests">اهتماماتي</a></li>
@@ -85,29 +87,62 @@
         <p class="hero-desc" data-i18n="hero.desc">أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.</p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="story.html" data-i18n="hero.btnStory">اقرأ قصتي</a>
-          <a class="btn" href="#interests" data-i18n="hero.btnInterests">استكشف اهتماماتي</a>
-          <a class="btn" href="#contact" data-i18n="hero.btnContact">تواصل معي</a>
+          <a class="btn btn-primary" href="story.html" data-magnetic data-i18n="hero.btnStory">اقرأ قصتي</a>
+          <a class="btn" href="#interests" data-magnetic data-i18n="hero.btnInterests">استكشف اهتماماتي</a>
+          <a class="btn" href="#contact" data-magnetic data-i18n="hero.btnContact">تواصل معي</a>
         </div>
 
         <p class="hero-quote" data-i18n="hero.quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
       </div>
 
       <div class="hero-visual" aria-hidden="true">
-        <svg viewBox="0 0 320 320" class="orbit-figure" fill="none">
-          <circle class="of-core" cx="160" cy="160" r="46"></circle>
-          <ellipse class="of-ring" cx="160" cy="160" rx="122" ry="52" transform="rotate(-24 160 160)"></ellipse>
-          <ellipse class="of-ring of-ring-2" cx="160" cy="160" rx="88" ry="150" transform="rotate(28 160 160)"></ellipse>
-          <g class="of-nodes">
-            <circle cx="238" cy="72" r="4.5"></circle>
-            <circle cx="86" cy="252" r="3.5"></circle>
-            <circle cx="96" cy="84" r="3"></circle>
+        <svg viewBox="0 0 360 360" class="orbit-figure" fill="none">
+          <!-- the body being observed -->
+          <circle class="of-halo" cx="180" cy="180" r="62"></circle>
+          <circle class="of-core" cx="180" cy="180" r="40"></circle>
+          <circle class="of-equator" cx="180" cy="180" r="58"></circle>
+
+          <!-- ring A — a tilted ellipse. The dashes travel the path, which
+               is what makes the motion read as something in orbit rather
+               than a decoration that happens to be spinning. Every node
+               below sits exactly on this ellipse: for rx·cos t, ry·sin t
+               at t = 0° and 120°. The tilt lives on this <g> as an
+               attribute, and the inner .of-spin group carries the turn —
+               a CSS transform would replace the attribute, not add to it. -->
+          <g class="of-ring-a" transform="rotate(-24 180 180)">
+            <g class="of-spin">
+              <ellipse class="of-path" cx="180" cy="180" rx="128" ry="54"></ellipse>
+              <ellipse class="of-trace" cx="180" cy="180" rx="128" ry="54" pathLength="1000"></ellipse>
+              <circle class="of-node" cx="308" cy="180" r="3.6"></circle>
+              <circle class="of-node" cx="116" cy="227" r="2.4"></circle>
+            </g>
           </g>
+
+          <!-- ring B — the second orbit, tilted the other way and slower -->
+          <g class="of-ring-b" transform="rotate(28 180 180)">
+            <g class="of-spin">
+              <ellipse class="of-path" cx="180" cy="180" rx="92" ry="152"></ellipse>
+              <ellipse class="of-trace of-trace-b" cx="180" cy="180" rx="92" ry="152" pathLength="1000"></ellipse>
+              <circle class="of-node" cx="272" cy="180" r="3"></circle>
+            </g>
+          </g>
+
+          <!-- ring C — a true circle, so the orbit itself can turn and stay
+               itself. This one carries the bright node. -->
+          <g class="of-ring-c">
+            <circle class="of-path" cx="180" cy="180" r="74"></circle>
+            <g class="of-spin">
+              <circle class="of-node of-node-hot" cx="254" cy="180" r="4.4"></circle>
+              <circle class="of-node" cx="180" cy="254" r="2.4"></circle>
+            </g>
+          </g>
+
+          <!-- the instrument ticks that make it read as a chart -->
           <g class="of-ticks">
-            <line x1="160" y1="24" x2="160" y2="40"></line>
-            <line x1="160" y1="280" x2="160" y2="296"></line>
-            <line x1="24" y1="160" x2="40" y2="160"></line>
-            <line x1="280" y1="160" x2="296" y2="160"></line>
+            <line x1="180" y1="18" x2="180" y2="38"></line>
+            <line x1="180" y1="322" x2="180" y2="342"></line>
+            <line x1="18" y1="180" x2="38" y2="180"></line>
+            <line x1="322" y1="180" x2="342" y2="180"></line>
           </g>
         </svg>
       </div>
@@ -124,39 +159,60 @@
   <!-- ═══ 2. نبذة عني ═══ -->
   <section class="band" id="about" aria-labelledby="about-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="about-title" data-i18n="about.title">نبذة عني</h2>
       </header>
-      <p class="lead-para" data-i18n="about.text">أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.</p>
+      <p class="lead-para" data-reveal="blur" data-i18n="about.text">أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.</p>
     </div>
   </section>
 
   <!-- ═══ 3. قصتي — موجز ═══ -->
   <section class="band band-alt" id="story" aria-labelledby="story-title">
     <div class="shell">
-      <header class="sec-head sec-head-row">
+      <header class="sec-head sec-head-row" data-reveal="line">
         <h2 id="story-title" data-i18n="story.title">قصتي</h2>
         <a class="sec-more" href="story.html" data-i18n="story.more">اقرأ القصة كاملة</a>
       </header>
 
-      <p class="lead-para" data-i18n="story.p1">بدأتُ في الثانوية العامة وأهملتُ الدراسة، فكانت النتيجة 63% — وهي لا تعبّر عن قدراتي بقدر ما تعبّر عن إهمالي. بعدها مررتُ بفترة صعبة، وشاهدتُ أنمي “هايكيو” لأحبّ الكرة الطائرة، فمارستها ثلاث سنوات حتى اقتربتُ من أول انضمام رسمي لي إلى فريق. ثم تعرّضتُ لإصابة في عيني اليسرى أثناء مباراة ودية في مركز شباب السلام، ففقدتُ البصر فيها واعتزلتُ الكرة.</p>
+      <p class="lead-para" data-reveal="mask" data-i18n="story.p1">بدأتُ في الثانوية العامة وأهملتُ الدراسة، فكانت النتيجة 63% — وهي لا تعبّر عن قدراتي بقدر ما تعبّر عن إهمالي. بعدها مررتُ بفترة صعبة، وشاهدتُ أنمي “هايكيو” لأحبّ الكرة الطائرة، فمارستها ثلاث سنوات حتى اقتربتُ من أول انضمام رسمي لي إلى فريق. ثم تعرّضتُ لإصابة في عيني اليسرى أثناء مباراة ودية في مركز شباب السلام، ففقدتُ البصر فيها واعتزلتُ الكرة.</p>
 
-      <p class="lead-para" data-i18n="story.p2">لكنني لم أستسلم. انتقلتُ إلى البيانات والبرمجة، وبقي الفلك والكواكب شغفًا من طفولتي. أعمل الآن على تطوير نفسي وجمع الشهادات، وأطمح إلى بكالوريوس في بزنس إنفورماتكس ثم ماجستير في علوم البيانات ثم دكتوراه في علم البيانات الفلكي، مع الدراسة في روسيا بإذن الله.</p>
+      <p class="lead-para" data-reveal="up" data-i18n="story.p2">لكنني لم أستسلم. انتقلتُ إلى البيانات والبرمجة، وبقي الفلك والكواكب شغفًا من طفولتي. أعمل الآن على تطوير نفسي وجمع الشهادات، وأطمح إلى بكالوريوس في بزنس إنفورماتكس ثم ماجستير في علوم البيانات ثم دكتوراه في علم البيانات الفلكي، مع الدراسة في روسيا بإذن الله.</p>
 
-      <p class="stat-cta">
+      <p class="stat-cta" data-reveal="up">
         <a class="btn btn-solid" href="story.html" data-i18n="story.cta">اقرأ قصتي كاملة</a>
       </p>
     </div>
   </section>
 
   <!-- ═══ 4. خطتي ═══ -->
-  <section class="band" id="plan" aria-labelledby="plan-title">
+  <section class="band" id="plan" data-track aria-labelledby="plan-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="plan-title" data-i18n="plan.title">الطريق الذي أعمل على بنائه</h2>
       </header>
 
-      <ol class="stages stages-bento">
+      <!-- ═══ مسار الخطة — تصوير مجرّدي للخمس مراحل ═══
+           Decorative: the five stage numbers it repeats are all in the cards
+           below it, and it is aria-hidden. Every anchor below is exactly on
+           the curve, because a T command reflects the previous control point
+           and therefore passes through the point it is given. -->
+      <figure class="trajectory" data-reveal="scale" aria-hidden="true">
+        <svg viewBox="0 0 1200 260" class="tj-svg" fill="none">
+          <path class="tj-rail" pathLength="1000"
+                d="M60 190 Q195 150 330 110 T600 180 T870 110 T1140 160"></path>
+          <path class="tj-draw" pathLength="1000"
+                d="M60 190 Q195 150 330 110 T600 180 T870 110 T1140 160"></path>
+          <g class="tj-stations">
+            <circle class="tj-node" cx="60" cy="190" r="7"></circle>
+            <circle class="tj-node" cx="330" cy="110" r="7"></circle>
+            <circle class="tj-node" cx="600" cy="180" r="7"></circle>
+            <circle class="tj-node" cx="870" cy="110" r="7"></circle>
+            <circle class="tj-node" cx="1140" cy="160" r="7"></circle>
+          </g>
+        </svg>
+      </figure>
+
+      <ol class="stages stages-bento" data-reveal="stagger">
         <li class="stage">
           <p class="stage-num" aria-hidden="true">01</p>
           <h3 class="stage-title" data-i18n="plan.s1t">تطوير الأساس</h3>
@@ -184,21 +240,21 @@
         </li>
       </ol>
 
-      <p class="note" data-i18n="plan.note">هذه خطة طموحة قابلة للتطوير، وتعتمد تفاصيلها على متطلبات الجامعات والفرص الدراسية المتاحة.</p>
+      <p class="note" data-reveal="up" data-i18n="plan.note">هذه خطة طموحة قابلة للتطوير، وتعتمد تفاصيلها على متطلبات الجامعات والفرص الدراسية المتاحة.</p>
     </div>
   </section>
 
   <!-- ═══ 5. عندما يلتقي الفلك بالبيانات ═══ -->
-  <section class="band band-alt" id="why" aria-labelledby="why-title">
+  <section class="band band-alt" id="why" data-track aria-labelledby="why-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="why-title" data-i18n="why.title">عندما يلتقي الفلك بالبيانات</h2>
       </header>
 
       <div class="why-grid">
-        <p class="lead-para" data-i18n="why.lead">أحببتُ الفلك والكواكب منذ طفولتي، وأهتم بالبيانات والبرمجة. يجذبني احتمال استخدام الأدوات الحاسوبية لتحليل البيانات الفلكية واكتشاف الأنماط وفهم المعلومات التي تقدمها لنا.</p>
+        <p class="lead-para" data-reveal="up" data-i18n="why.lead">أحببتُ الفلك والكواكب منذ طفولتي، وأهتم بالبيانات والبرمجة. يجذبني احتمال استخدام الأدوات الحاسوبية لتحليل البيانات الفلكية واكتشاف الأنماط وفهم المعلومات التي تقدمها لنا.</p>
 
-        <ul class="chain" data-i18n-aria="why.chainLabel" aria-label="العلاقة بين البيانات والبرمجة والفلك">
+        <ul class="chain" data-reveal="stagger" data-i18n-aria="why.chainLabel" aria-label="العلاقة بين البيانات والبرمجة والفلك">
           <li>
             <span class="chain-num" aria-hidden="true">01</span>
             <span class="chain-ico" aria-hidden="true">
@@ -248,11 +304,11 @@
   <!-- ═══ 6. اهتماماتي ═══ -->
   <section class="band" id="interests" aria-labelledby="interests-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="interests-title" data-i18n="interests.title">اهتماماتي</h2>
       </header>
 
-      <ul class="cards cards-bento">
+      <ul class="cards cards-bento" data-reveal="stagger">
         <li class="card is-wide">
           <span class="card-ico" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -318,11 +374,11 @@
   <!-- ═══ 7. مشاريعي ═══ -->
   <section class="band band-alt" id="projects" aria-labelledby="projects-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="projects-title" data-i18n="projects.title">مشاريعي</h2>
       </header>
 
-      <div class="empty-state" id="projects-empty">
+      <div class="empty-state" id="projects-empty" data-reveal="scale">
         <span class="empty-ico" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
             <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"></path>
@@ -339,13 +395,13 @@
   <!-- ═══ 8. التعلم والشهادات ═══ -->
   <section class="band" id="learning" aria-labelledby="learning-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="learning-title" data-i18n="learning.title">التعلم والشهادات</h2>
       </header>
 
       <p class="lead-para" data-i18n="learning.lead">كل شهادة موثّقة برابط التحقق من الجهة المانحة. السجل كامل — مع البحث الفوري والتصفية حسب المجال — في صفحة مستقلة.</p>
 
-      <ul class="stat-row" id="stat-row" data-i18n-aria="learning.statsLabel" aria-label="ملخص السجل"></ul>
+      <ul class="stat-row" id="stat-row" data-reveal="stagger" data-i18n-aria="learning.statsLabel" aria-label="ملخص السجل"></ul>
 
       <p class="stat-cta">
         <a class="btn btn-solid" href="records.html" data-i18n="learning.open">افتح سجل التعلم والشهادات</a>
@@ -356,7 +412,7 @@
   <!-- ═══ 9. الكرة الطائرة ═══ -->
   <section class="band band-alt" id="volleyball" aria-labelledby="volleyball-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="volleyball-title" data-i18n="volley.title">الكرة الطائرة في رحلتي</h2>
       </header>
 
@@ -369,7 +425,7 @@
   <!-- ═══ 10. رؤيتي للمستقبل ═══ -->
   <section class="band band-vision" id="vision" aria-labelledby="vision-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="vision-title" data-i18n="vision.title">رؤيتي للمستقبل</h2>
       </header>
       <p class="vision-text" data-i18n="vision.text">أطمح، بإذن الله، إلى إنجاز مشاريع في علم البيانات الفلكي، ومواصلة دراستي في روسيا، وبناء مستقبل يجمع بين البيانات والبرمجة وشغفي بعلم الفلك.</p>
@@ -380,13 +436,13 @@
   <!-- ═══ 11. التواصل ═══ -->
   <section class="band" id="contact" aria-labelledby="contact-title">
     <div class="shell">
-      <header class="sec-head">
+      <header class="sec-head" data-reveal="line">
         <h2 id="contact-title" data-i18n="contact.title">لنبقَ على تواصل</h2>
       </header>
 
       <p class="lead-para" data-i18n="contact.lead">للتواصل بشأن الدراسة أو المشاريع أو فرص التعلم، يمكن استخدام وسائل التواصل التي سأضيفها هنا.</p>
 
-      <ul class="socials" id="social-list"></ul>
+      <ul class="socials" id="social-list" data-reveal="stagger"></ul>
 
       <p class="pending" id="contact-pending" data-i18n="contact.pending">ستُضاف بيانات التواصل قريبًا.</p>
     </div>
@@ -411,7 +467,7 @@
   </div>
 </footer>
 
-<button class="to-top" id="to-top" type="button" data-i18n-aria="toTop" aria-label="العودة إلى أعلى الصفحة" hidden>
+<button class="to-top" id="to-top" type="button" data-i18n-aria="toTop" aria-label="العودة إلى أعلى الصفحة">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"></path>
   </svg>
@@ -423,6 +479,8 @@
 <script src="academic/data/projects.js"></script>
 <script src="academic/data/social.js"></script>
 <script src="assets/js/i18n.js"></script>
+<script src="assets/js/scroll.js"></script>
+<script src="assets/js/reveal.js"></script>
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/site.js"></script>
 </body>

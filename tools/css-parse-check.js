@@ -53,9 +53,27 @@ if (depth !== 0) problems.push({ line: lines.length, msg: `unbalanced braces: de
    also look for a `var(--x)` reference to a token that does not exist,
    which some parsers reject hard */
 const declared = new Set();
-for (const m of raw.matchAll(/(--[a-z0-9-]+)\s*:/g)) declared.add(m[1]);
-for (const m of raw.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) {
-  if (!declared.has(m[1])) problems.push({ line: raw.slice(0, m.index).split('\n').length, msg: `var() references undeclared token ${m[1]}` });
+for (const m of stripped.matchAll(/(--[a-z0-9-]+)\s*:/g)) declared.add(m[1]);
+
+/* Tokens this stylesheet consumes but cannot declare: the ones the scripts
+   publish on an element at runtime. `var(--i, 0)` is a contract with
+   assets/js/reveal.js, not a typo — and every such use carries a fallback,
+   so a script that never runs costs nothing. The list is verified against
+   the scripts on every run, so a rename on either side is caught. */
+const jsPublished = ['--mag-x', '--mag-y', '--i', '--hero-y', '--scroll-v', '--p', '--lang-x', '--lang-w'];
+const jsDir = path.join(__dirname, '..', 'assets', 'js');
+let jsText = '';
+for (const f of fs.readdirSync(jsDir)) {
+  if (f.endsWith('.js')) jsText += fs.readFileSync(path.join(jsDir, f), 'utf8');
+}
+for (const name of jsPublished) {
+  const written = new RegExp("(setProperty|setVar)\\(\\s*'" + name + "'").test(jsText);
+  if (!written) problems.push({ line: 0, msg: `${name} is in the script-published list but no script writes it any more` });
+}
+
+for (const m of stripped.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) {
+  if (declared.has(m[1]) || jsPublished.includes(m[1])) continue;
+  problems.push({ line: stripped.slice(0, m.index).split('\n').length, msg: `var() references undeclared token ${m[1]}` });
 }
 
 /* report the line of the last well-formed top-level rule, so we can compare

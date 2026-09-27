@@ -8,8 +8,6 @@
 (function () {
   'use strict';
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   function lang() {
     return (window.I18N && window.I18N.getLang()) || 'ar';
   }
@@ -274,6 +272,14 @@
   var allVol = [];
   var activeTag = '';
 
+  /* The page ENTERS with a stagger, once. Every list rebuilt after that —
+     a keystroke in the search box, a filter, a language change — resolves
+     immediately instead, because an archive that re-animates its whole
+     contents on every keypress is an archive nobody can search. One flag,
+     one distinction, and it is the difference between a page that arrives
+     and a page that keeps performing. */
+  var firstPaint = true;
+
   function rebuildData() {
     allCerts = buildCerts();
     allVol = buildVolunteering();
@@ -325,6 +331,11 @@
       hit.sort(function (a, b) { return b.s - a.s; });
       target.innerHTML = '';
       hit.forEach(function (x) { target.appendChild(recordNode(x.rec, qWords)); });
+      /* the entrance, once. After this, every list is resolved in place. */
+      if (window.Reveal) {
+        if (firstPaint) Reveal.scan(target);
+        else Reveal.resolve(target);
+      }
       noneEl.hidden = hit.length > 0;
       countEl.textContent = hit.length ? String(hit.length) : '';
       return hit.length;
@@ -333,6 +344,7 @@
     var c = run(allCerts, certsList, certsNone, certsCount);
     var v = run(allVol, volList, volNone, volCount);
     var total = c + v;
+    firstPaint = false;
 
     clearBtn.hidden = !raw;
 
@@ -387,46 +399,13 @@
     });
   }
 
-  /* ---------- header / to-top / nav ---------- */
-  var header = $('#site-header');
-  var toTop = $('#to-top');
-  function onScroll() {
-    var y = window.scrollY || window.pageYOffset;
-    if (header) header.classList.toggle('is-stuck', y > 40);
-    if (toTop) toTop.hidden = y < 600;
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-  if (toTop) {
-    toTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-  }
-
-  var navToggle = $('#nav-toggle');
-  var primaryNav = $('#primary-nav');
-  function closeNav() {
-    if (!primaryNav || !navToggle) return;
-    primaryNav.classList.remove('is-open');
-    navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', t('nav.open'));
-  }
-  if (navToggle && primaryNav) {
-    navToggle.addEventListener('click', function () {
-      var open = primaryNav.classList.toggle('is-open');
-      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      navToggle.setAttribute('aria-label', open ? t('nav.close') : t('nav.open'));
-    });
-    primaryNav.addEventListener('click', function (e) {
-      if (e.target.closest('a')) closeNav();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && primaryNav.classList.contains('is-open')) {
-        closeNav(); navToggle.focus();
-      }
-    });
-  }
-
+  /* ---------- shared furniture ----------
+     The header's stuck state, the back-to-top button and the mobile
+     navigation were three copies of code that scroll.js and ui.js already
+     own; they were fighting each other over the same class. Everything
+     page-furniture is UI.chrome(), and the button's arrival is a class now
+     (see .to-top in site.css) rather than the `hidden` attribute, which is
+     a display switch and can never be transitioned. */
   var fy = $('#footer-year');
   if (fy) fy.textContent = String(new Date().getFullYear());
 
@@ -434,10 +413,15 @@
   buildTags();
   apply();
 
-  /* premium layer: ghost numerals + progress rail.
-     Records themselves are never animated in — filtering must feel
-     instant on every keystroke. */
-  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.atmosphere(); }
+  /* scroll tracking */
+  if (window.Scroll) Scroll.mount();
+
+  /* premium layer: ghost numerals + atmosphere */
+  if (window.UI) {
+    UI.sectionIndex();
+    UI.atmosphere();
+    UI.mount();
+  }
 
   document.addEventListener('site-lang-change', fullRefresh);
 })();

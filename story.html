@@ -17,12 +17,14 @@
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/records.css">
 <script src="assets/js/motion.js"></script>
+<script src="assets/js/tick.js"></script>
 <script src="assets/js/field.js"></script>
-<script src="assets/js/cursor.js"></script>
+<script src="assets/js/pointer.js"></script>
 <script src="assets/js/intro.js"></script>
 </head>
 
 <body data-page="story">
+<div class="read-progress" aria-hidden="true"></div>
 <a class="skip-link" href="#main" data-i18n="skip">تخطّي إلى المحتوى الرئيسي</a>
 
 <header class="site-header is-stuck" id="site-header">
@@ -75,10 +77,10 @@
   </section>
 
   <!-- ═══ المحطات الخمس ═══ -->
-  <section class="band" aria-labelledby="stations-title">
+  <section class="band" data-track aria-labelledby="stations-title">
     <div class="shell">
       <h2 class="sr-only" id="stations-title" data-i18n="storyPage.stationsSr">محطات القصة</h2>
-      <ol class="timeline timeline-lg">
+      <ol class="timeline timeline-lg" data-reveal="stagger">
         <li class="tl-item">
           <p class="tl-marker" aria-hidden="true"></p>
           <p class="tl-index" aria-hidden="true">01</p>
@@ -148,12 +150,16 @@
   </div>
 </footer>
 
-<button class="to-top" id="to-top" type="button" data-i18n-aria="toTop" aria-label="العودة إلى أعلى الصفحة" hidden>
+<button class="to-top" id="to-top" type="button" data-i18n-aria="toTop" aria-label="العودة إلى أعلى الصفحة">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"></path>
   </svg>
 </button>
 
+<script src="assets/js/tick.js"></script>
+<script src="assets/js/pointer.js"></script>
+<script src="assets/js/scroll.js"></script>
+<script src="assets/js/reveal.js"></script>
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/page.js"></script>

@@ -13,8 +13,9 @@
                     depth rather than as motion
      · orbital    — a third of the stars ride actual ellipses, which is
                     what makes it feel astronomical instead of random
-     · cheap      — one rAF, no per-star objects beyond a plain array,
-                    no allocation inside the loop, paused off-screen
+     · cheap      — one shared animation loop (assets/js/tick.js), no
+                    per-star objects beyond a plain array, no allocation
+                    inside the loop, paused off-screen
      · optional   — absent entirely on reduced-motion, touch and small
                     screens (see counts() below)
 
@@ -55,7 +56,7 @@
     if (!ctx) { canvas.remove(); return; }
 
     var dpr = Math.min(window.devicePixelRatio || 1, 2);   // cap: 3x is not worth it
-    var w = 0, h = 0, stars = [], running = false, raf = 0;
+    var w = 0, h = 0, stars = [], running = false;
 
     function resize() {
       w = window.innerWidth;
@@ -96,13 +97,11 @@
       stars = arr;
     }
 
-    var last = 0;
-    function frame(t) {
-      raf = window.requestAnimationFrame(frame);
-      /* clamp dt so a backgrounded tab does not teleport every star on return */
-      var dt = last ? Math.min((t - last) / 1000, 0.05) : 0.016;
-      last = t;
-
+    /* The loop belongs to assets/js/tick.js: this file contributes one
+       subscriber and nothing else. dt arrives already clamped, so a
+       backgrounded tab returning after a minute cannot teleport every star
+       on the page. */
+    function frame(dt) {
       ctx.clearRect(0, 0, w, h);
 
       for (var i = 0; i < stars.length; i++) {
@@ -120,9 +119,10 @@
           if (s.y < -2) { s.y = h + 2; s.x = Math.random() * w; }
         }
 
-        /* the twinkle: a triangle wave is smoother on the eye than a sine
-           at this amplitude, and it costs one comparison */
-        var tw = 0.5 + 0.5 * Math.sin(s.phase * 1.7);
+        /* The twinkle: a sine at 0.6 × the star's own rate, so every star
+           takes between roughly 19 and 42 seconds to breathe once and no
+           two of them are in step — the sky is a field, not a strobe. */
+        var tw = 0.5 + 0.5 * Math.sin(s.phase * 0.6);
         var alpha = 0.10 + tw * 0.42;
         var rad = s.r * (0.75 + tw * 0.45);
 
@@ -141,8 +141,8 @@
       }
     }
 
-    function start() { if (running) return; running = true; last = 0; raf = window.requestAnimationFrame(frame); }
-    function stop() { if (!running) return; running = false; window.cancelAnimationFrame(raf); }
+    function start() { if (running) return; running = true; if (window.Tick) Tick.subscribe(frame); }
+    function stop() { if (!running) return; running = false; if (window.Tick) Tick.unsubscribe(frame); }
 
     resize();
     start();
@@ -153,14 +153,7 @@
       rt = window.setTimeout(resize, 180);     // debounce: resizing seeds a new field
     }, { passive: true });
 
-    /* Stop painting when nobody can see it. A background tab that keeps
-       repainting a canvas is exactly the kind of cost this file exists
-       to avoid. */
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) stop(); else start();
-    });
-
-    /* and if the visitor turns still mode on while the page is open */
+    /* and if the OS starts asking for calm while the page is open */
     if (window.Motion) {
       Motion.onChange(function (still) { if (still) { stop(); canvas.remove(); } });
     }

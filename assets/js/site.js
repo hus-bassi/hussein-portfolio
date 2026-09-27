@@ -45,61 +45,15 @@
   }
 
   /* ============================================================
-     1. Header: stuck state
+     1-2. Header state, the back-to-top button and the mobile
+     navigation all live in assets/js/ui.js now, together with the
+     page transition. They were copied into all three page scripts
+     and the copies had started to differ; there is one of each.
+
+     What is left here is the scroll-spy, which is about the NAVIGATION
+     and only exists on this page.
      ============================================================ */
-  var header = $('#site-header');
-  var toTop = $('#to-top');
-
-  function onScroll() {
-    var y = window.scrollY || window.pageYOffset;
-    if (header) header.classList.toggle('is-stuck', y > 40);
-    if (toTop && !toTop.hidden) toTop.hidden = y < 600;
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  if (toTop) {
-    toTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-  }
-
-  /* ============================================================
-     2. Mobile navigation (labels follow the language)
-     ============================================================ */
-  var navToggle = $('#nav-toggle');
   var primaryNav = $('#primary-nav');
-
-  function closeNav() {
-    if (!primaryNav || !navToggle) return;
-    primaryNav.classList.remove('is-open');
-    navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', t('nav.open'));
-  }
-
-  if (navToggle && primaryNav) {
-    navToggle.addEventListener('click', function () {
-      var open = primaryNav.classList.toggle('is-open');
-      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      navToggle.setAttribute('aria-label', open ? t('nav.close') : t('nav.open'));
-    });
-
-    primaryNav.addEventListener('click', function (e) {
-      if (e.target.closest('a')) closeNav();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && primaryNav.classList.contains('is-open')) {
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!primaryNav.classList.contains('is-open')) return;
-      if (!e.target.closest('#primary-nav') && !e.target.closest('#nav-toggle')) closeNav();
-    });
-  }
 
   /* ============================================================
      3. Scroll-spy
@@ -131,31 +85,7 @@
      4. Reveal on scroll
      ============================================================ */
   function initReveal(scope) {
-    var targets = (scope || document).querySelectorAll(
-      '.tl-item, .stage, .card, .record, .empty-state, .chain li, .tagbar, .stat'
-    );
-    if (reduceMotion || !('IntersectionObserver' in window)) {
-      targets.forEach(function (n) { n.classList.add('reveal', 'is-in'); });
-      return;
-    }
-    targets.forEach(function (n) { if (!n.classList.contains('is-in')) n.classList.add('reveal'); });
-    var rev = new IntersectionObserver(function (entries) {
-      var order = 0;
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        /* a small stagger: a row of cards arrives as a wave rather than a
-           block. Never more than ~350ms, and only for below-fold items,
-           so nothing is ever kept waiting for its content. */
-        if (order) en.target.style.transitionDelay = (order * 70) + 'ms';
-        order++;
-        en.target.classList.add('is-in');
-        rev.unobserve(en.target);
-        window.setTimeout(function () { en.target.style.transitionDelay = ''; }, 700);
-      });
-    }, { rootMargin: '0px 0px -5% 0px', threshold: .01 });
-    targets.forEach(function (n) {
-      if (!n.classList.contains('is-in')) rev.observe(n);
-    });
+    if (window.Reveal) Reveal.scan(scope);
   }
 
   /* ============================================================
@@ -353,45 +283,9 @@
     initReveal(document);
   }
 
-  /* ---------- the motion switch ----------
-     Only rendered when the OS is asking for reduced motion AND the
-     visitor has not already made a choice here. If the site is simply
-     running at full motion, the control would have nothing to do, so it
-     is not added at all — no dead UI, no extra markup in the normal case. */
-  function mountMotionSwitch() {
-    try { mountMotionSwitchUnsafe(); }
-    catch (e) { /* the switch is a convenience; it must never break the page */ }
-  }
-  function mountMotionSwitchUnsafe() {
-    if (!window.Motion) return;
-    if (Motion.mode() !== 'auto') return;
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'motion-switch';
-    btn.setAttribute('aria-pressed', 'false');
-    var setLabel = function () {
-      var key = Motion.isStill() ? 'motion.enable' : 'motion.calm';
-      var text = (window.I18N && I18N.t(key)) || '';
-      btn.setAttribute('aria-label', text);
-      btn.setAttribute('title', text);
-    };
-    setLabel();
-    btn.addEventListener('click', function () {
-      Motion.set(Motion.isStill() ? 'full' : 'still');
-      setLabel();
-    });
-    Motion.onChange(setLabel);
-
-    var header = $('#site-header');
-    var shell = header && header.querySelector('.header-inner');
-    if (shell) shell.appendChild(btn);
-  }
-
   renderAll();
   initReveal(document);
-  if (window.UI) { UI.sectionIndex(); UI.progress(); UI.parallax(); UI.atmosphere(); }
-  mountMotionSwitch();
+  if (window.Scroll) Scroll.mount();
+  if (window.UI) { UI.sectionIndex(); UI.atmosphere(); UI.mount(); }
   document.addEventListener('site-lang-change', renderAll);
 })();

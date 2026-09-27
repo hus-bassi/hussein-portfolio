@@ -9,26 +9,25 @@
 .search {
   position: relative; display: flex; align-items: center; gap: var(--s-3);
   border: 1px solid transparent;
-  /* the same three-layer pane recipe as every other surface, so the
-     travelling highlight is consistent across the whole site */
-  background-image:
-    linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, .55) 50%, transparent 58%),
-    var(--edge),
-    var(--spectrum);
-  background-size: 260% 100%, var(--edge-size);
-  background-position: -80% 0, 0 0, 0% 50%;
+  /* the same two-layer pane recipe as every other surface: a dark fill
+     inside, the spectrum in the 1px border. The white travelling band this
+     used to carry is gone with the rest of them — a search field is a field,
+     not a display case */
+  background-image: var(--edge), var(--spectrum);
+  background-size: var(--edge-size);
+  background-position: var(--edge-rest);
   background-origin: border-box;
-  background-clip: border-box, padding-box, border-box;
+  background-clip: padding-box, border-box;
   border-radius: var(--radius);
   padding-inline: var(--s-4);
-  animation: edge-shine var(--loop-edge) var(--ease-soft) infinite;
-  transition: background-position var(--t-page) var(--ease),
-              box-shadow var(--t-std) var(--ease);
+  transition: background-position var(--motion-slow) var(--ease),
+              box-shadow var(--motion-slow) var(--ease);
 }
 .search:focus-within {
-  background-position: 180% 0, 0 0, 100% 50%;
+  background-position: var(--edge-hi);
   box-shadow: 0 0 0 1px rgba(167, 139, 250, .35),
               0 0 34px -12px var(--violet);
+  transition-duration: var(--motion-normal);
 }
 .search-ico { width: 21px; height: 21px; color: var(--fg-4); flex: none; }
 
@@ -48,9 +47,17 @@
   background: rgba(148, 163, 186, .10);
   border: 1px solid var(--glass);
   border-radius: 50%; cursor: pointer;
-  transition: color var(--t-micro) var(--ease), border-color var(--t-micro) var(--ease);
+  filter: drop-shadow(0 0 0 rgba(240, 206, 126, 0));
+  transition: color var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease),
+              transform var(--motion-normal) var(--ease),
+              filter var(--motion-slow) var(--ease);
 }
-.search-clear:hover { color: var(--gold); border-color: var(--gold-d); }
+.search-clear:hover {
+  color: var(--gold); border-color: var(--gold-d);
+  transform: translateY(-1px);
+  filter: drop-shadow(0 5px 12px rgba(240, 206, 126, .35));
+}
 .search-clear svg { width: 15px; height: 15px; }
 
 .search-hint {
@@ -68,22 +75,52 @@ mark {
 /* ---------- filters ---------- */
 .tagbar { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-block-end: var(--s-6); }
 
+/* A filter is a small control, so it gets the button language one step
+   quieter: a hair of lift, a brighter border, and a narrow spectrum sweep
+   that plays once on arrival. The PRESSED state is a different statement
+   altogether and has to stay unmistakable — a filled spectrum, dark text,
+   no lift, no sweep, no glow — because "this is the filter you are reading
+   by" is not the same thing as "this is the one you would tap". */
 .tag {
+  position: relative; overflow: hidden;
   display: inline-flex; align-items: center;
   min-height: 40px; padding: var(--s-2) var(--s-4);
   font-family: inherit; font-size: .92rem; color: var(--fg-2);
   background: rgba(148, 163, 186, .07);
   border: 1px solid var(--glass);
   border-radius: 999px; cursor: pointer;
-  transition: color var(--t-micro) var(--ease),
-              border-color var(--t-micro) var(--ease),
-              background var(--t-micro) var(--ease),
-              box-shadow var(--t-std) var(--ease);
+  --sweep-a: .18;
+  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
+  transition: color var(--motion-normal) var(--ease),
+              border-color var(--motion-normal) var(--ease),
+              background var(--motion-normal) var(--ease),
+              transform var(--motion-normal) var(--ease),
+              filter var(--motion-slow) var(--ease);
 }
+.tag::before {
+  content: ""; position: absolute; z-index: -1;
+  inset-block: 0; inset-inline-start: 0; width: 100%;
+  background: linear-gradient(100deg,
+    transparent 30%,
+    rgba(124, 92, 255, var(--sweep-a)) 42%,
+    rgba(240, 206, 126, calc(var(--sweep-a) * 1.2)) 50%,
+    rgba(46, 134, 255, var(--sweep-a)) 58%,
+    transparent 70%);
+  opacity: 0;
+  translate: var(--sweep-from) 0;
+  pointer-events: none;
+}
+.tag:hover::before { animation: btn-sweep var(--motion-reveal) var(--ease-out) 1 both; }
 .tag:hover {
   color: var(--fg); border-color: var(--violet);
-  box-shadow: 0 0 20px -8px var(--violet);
+  transform: translateY(-1px);
+  filter: drop-shadow(0 6px 16px rgba(124, 92, 255, .4));
 }
+.tag:active { transform: translateY(0); transition-duration: var(--motion-instant); }
+.tag:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* a pressed filter is not a hovered one */
+.tag[aria-pressed="true"], .tag[aria-pressed="true"]:hover { transform: none; filter: none; }
+.tag[aria-pressed="true"]::before { animation: none; }
 .tag[aria-pressed="true"] {
   background-image: var(--spectrum-lit);
   background-clip: border-box;

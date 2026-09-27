@@ -13,6 +13,7 @@ const node = process.execPath;
 const checks = [
   ['css-parse-check', ['assets/css/site.css'], 'CSS parses, braces balance, no dangling var()'],
   ['css-audit', [], 'no unused tokens, dead classes or keyframes'],
+  ['motion-audit-selftest', [], 'the motion rules above can still fail'],
   ['hover-colour-audit', [], 'no link loses its label colour on hover'],
   ['contrast-audit', [], 'every text pair clears 4.5:1, grain included']
 ];
