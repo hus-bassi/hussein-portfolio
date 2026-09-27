@@ -87,7 +87,13 @@ const runtimeOnly = new Set([
   'social', 'social-ico', 'social-name', 'social-label',
   'reveal', 'is-in', 'is-open', 'is-active', 'is-current',
   'tag', 'tag-all', 'is-wide',
-  'is-loading'   /* added and removed by assets/js/intro.js, never in markup */
+  'is-loading',   /* added and removed by assets/js/intro.js, never in markup */
+  /* the four media states of a record card. assets/js/records.js picks one out
+     of a small map by media kind, so the three non-image modifiers never
+     appear as a literal class attribute — the image state deliberately keeps
+     the bare `.record-shot` class so the approved certificate card is
+     unchanged. */
+  'is-video', 'is-document', 'is-none'
 ]);
 
 /* ---- 2. class selectors that match nothing ---- */
@@ -344,6 +350,56 @@ for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
    and a style write on every frame of every hover */
 for (const m of css.matchAll(/transform\s*:[^;}]*(perspective\(|rotate3d\(|rotateX\(|rotateY\()/g)) {
   motionProblems.push(`line ${css.slice(0, m.index).split('\n').length}: a 3D lean on ${m[0].slice(0, 40)} — surfaces do not rotate toward the pointer; the hover is a lift`);
+}
+
+/* (e) A CARD IS COMPOSED, NOT STRETCHED.
+   The record card went through a pass that made the information column
+   stretch to the media's height and pushed the action row to the bottom of
+   it with `margin-top: auto`. It looked deliberate and produced a large
+   dead area under a tall portrait certificate: the text did not need the
+   height, the media did not need to be that tall, and the two together
+   produced a mostly-empty panel.
+
+   So three rules, all of them things that can be written by accident:
+     · no record surface may carry an artificial min-height
+     · the info column may not stretch to its row
+     · the action row may not be pushed to the bottom of that column
+   and one that keeps the fix generic: no per-record selector, ever. */
+for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+  const sel = m[1].trim();
+  if (!/^\.?record/.test(sel)) continue;
+  const body = m[2];
+  const line = css.slice(0, m.index).split('\n').length;
+  const minH = /min-height:\s*(\d+)px/.exec(body);
+  if (minH && parseInt(minH[1]) >= 300) {
+    motionProblems.push(`line ${line}: ${sel.slice(0, 40)} sets a ${minH[1]}px min-height — a card's height comes from its content and a bounded preview, never from a number`);
+  }
+  if (/align-self:\s*stretch/.test(body) || /min-height:\s*100%/.test(body)) {
+    motionProblems.push(`line ${line}: ${sel.slice(0, 40)} stretches the info column to the media's height — that is what leaves a dead area under a tall preview`);
+  }
+  if (/record-actions/.test(sel) && /margin-(top|block-start):\s*auto/.test(body)) {
+    motionProblems.push(`line ${line}: the action row is pushed to the bottom of the column — the buttons follow the facts they belong to`);
+  }
+  if (/\[data-(id|record|slug)=/.test(sel) || /\.record\s*:nth-child/.test(sel) || /\.record\s*:first-child|\.record\s*:last-child/.test(sel)) {
+    motionProblems.push(`line ${line}: ${sel.slice(0, 44)} targets ONE record — the card system is generic and every record must be laid out by the same rule`);
+  }
+}
+
+/* A MEDIA PREVIEW IS BOUNDED AND NEVER CROPPED.
+   The preview may be any size its own ratio asks for UP TO a ceiling; the
+   ceiling is what keeps a portrait scan from deciding the height of the
+   card. And it is contained, because a credential that loses its edges is
+   not a preview of a credential. */
+let shotRules = 0, shotBounded = 0, contained = 0;
+for (const m of css.matchAll(/([^{}]*\.record-shot[^{}]*)\{([^{}]*)\}/g)) {
+  shotRules++;
+  if (/max-height:\s*(clamp\([^)]*\)|\d+px)/.test(m[2])) shotBounded++;
+}
+if (shotRules && !shotBounded) {
+  motionProblems.push('.record-shot has no max-height — a preview without a ceiling lets a portrait image decide the height of the card');
+}
+if (shotRules && !/\.record-shot\s+img\s*\{[^}]*object-fit:\s*contain/.test(css)) {
+  motionProblems.push('.record-shot img is not object-fit: contain — a preview must never crop or stretch what it previews');
 }
 
 console.log('tokens declared:', declared.size, '| classes referenced:', used.size);

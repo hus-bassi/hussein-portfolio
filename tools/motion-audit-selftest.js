@@ -208,6 +208,48 @@ const CASES = [
     css: CLEAN + '\n.primary-nav a { color: #888; }\n',
     markup: MARKUP + '<nav class="primary-nav"><a href="story.html">My story</a></nav>',
     expect: null
+  },
+  {
+    name: 'a record card with an artificial min-height',
+    css: CLEAN + '\n.record { min-height: 500px; }\n',
+    markup: MARKUP + '<li class="record"></li>',
+    expect: /500px min-height/
+  },
+  {
+    name: 'an info column stretched to the media height (the dead space)',
+    css: CLEAN + '\n.record-body { align-self: stretch; min-height: 100%; }\n',
+    markup: MARKUP + '<li class="record"><div class="record-body"></div></li>',
+    expect: /stretches the info column/
+  },
+  {
+    name: 'an action row pushed to the bottom of the column',
+    css: CLEAN + '\n.record-actions { display: flex; margin-block-start: auto; }\n',
+    markup: MARKUP + '<div class="record-actions"></div>',
+    expect: /pushed to the bottom of the column/
+  },
+  {
+    name: 'a selector written for one record only',
+    css: CLEAN + '\n.record[data-record="datacamp"] .record-shot { max-height: 120px; }\n',
+    markup: MARKUP + '<li class="record" data-record="datacamp"><span class="record-shot"></span></li>',
+    expect: /targets ONE record/
+  },
+  {
+    name: 'a media preview with no ceiling',
+    css: CLEAN + '\n.record-shot { aspect-ratio: 16 / 9; }\n.record-shot img { object-fit: contain; }\n',
+    markup: MARKUP + '<span class="record-shot"><img alt=""></span>',
+    expect: /no max-height/
+  },
+  {
+    name: 'a bounded preview that is cropped instead of contained',
+    css: CLEAN + '\n.record-shot { max-height: clamp(210px, 22vw, 280px); }\n.record-shot img { object-fit: cover; }\n',
+    markup: MARKUP + '<span class="record-shot"><img alt=""></span>',
+    expect: /not object-fit: contain/
+  },
+  {
+    name: 'a bounded, contained preview (must pass)',
+    css: CLEAN + '\n.record-shot { max-height: clamp(210px, 22vw, 280px); }\n.record-shot img { object-fit: contain; }\n.record-body { align-self: start; }\n.record-actions { display: flex; gap: var(--s-3); margin-block-start: var(--s-4); }\n',
+    markup: MARKUP + '<li class="record"><span class="record-shot"><img alt=""></span><div class="record-body"><div class="record-actions"></div></div></li>',
+    expect: null
   }
 ];
 

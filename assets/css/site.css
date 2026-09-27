@@ -119,7 +119,41 @@
      nothing touches anything. */
   --section-number-size: clamp(4rem, 9vw, 6.5rem);
   --section-number-gap: clamp(.5rem, 1.1vw, .9rem);
+
+  /* ---------- 4b. Scrollbars ----------
+     One scrollbar for the whole site: the page's own, and the record
+     details panel. Built from the palette above rather than from new
+     colours, so a scrollbar cannot drift away from the design the way a
+     hand-picked grey does. Three values, each one a mix of an existing
+     token — the track is nearly the page's own darkness, the thumb is the
+     deep violet tier at a muted strength, and hover lifts it toward the
+     azure tier. Rounded, thin, and quiet enough to read as chrome rather
+     than as a feature. */
+  --scroll-track: color-mix(in srgb, var(--night-2) 70%, transparent);
+  --scroll-thumb: color-mix(in srgb, var(--violet-d) 62%, transparent);
+  --scroll-thumb-hi: color-mix(in srgb, var(--azure) 70%, var(--violet-d));
+  --scroll-size: 10px;
 }
+
+/* ---------- 4c. The scrollbars themselves ----------
+   Firefox first (two properties, no pseudo-elements), then the WebKit and
+   Blink pseudo-elements, on the same selector list so the page and the
+   details panel cannot drift apart. A browser that supports neither simply
+   draws its own scrollbar, which is why nothing here is load-bearing. */
+html, .detail-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+html::-webkit-scrollbar, .detail-body::-webkit-scrollbar { width: var(--scroll-size); height: var(--scroll-size); }
+html::-webkit-scrollbar-track, .detail-body::-webkit-scrollbar-track { background: var(--scroll-track); }
+html::-webkit-scrollbar-thumb, .detail-body::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+html::-webkit-scrollbar-thumb:hover, .detail-body::-webkit-scrollbar-thumb:hover { background: var(--scroll-thumb-hi); }
+html::-webkit-scrollbar-corner, .detail-body::-webkit-scrollbar-corner { background: transparent; }
 
 /* ---------- 2. Reset & base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -1977,6 +2011,13 @@ html[lang="ar"] .count {
   .hero-visual { scale: 1; }
   .hero-copy { opacity: 1; }
   .timeline::after { scale: 1 1; }
+
+  /* THE VIEWER loses its travel, not its function. A zoom step becomes a
+     cut, an opened document appears instead of settling — and every control
+     still works, because being able to see a certificate properly is not
+     the kind of movement this setting is about. */
+  .cert-image, .cert-panel { transition: none !important; animation: none !important; }
+  .zoom-btn:active { transform: none; }
 
   /* no page transition: the old page is simply replaced */
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }

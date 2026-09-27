@@ -23,6 +23,10 @@
    data renders correctly on the homepage preview, the full Certificates page,
    and the root mirror — with no build step. Don't prefix them with `../`.
 
+   ONE EXCEPTION: a path that starts with `../` is already relative to the
+   PROJECT ROOT and is used as it stands. That is for files which live outside
+   academic/ — the DataCamp certificate's image and PDF, which were left
+   exactly where they were placed rather than being copied or moved.
    ------------------------------------------------------------
    TO ADD A REAL CERTIFICATE:
    1. Copy the object below (the real one is a good template).
@@ -126,6 +130,119 @@ const certificatesData = [
        only introduce a genuinely new one. See "The Tagging Rule" in AGENTS.md.
        Current vocabulary: ai · first-aid · data · python · excel */
     tags: ['first-aid'],
+  },
+   {
+    // A DataCamp Statement of Accomplishment for a completed course.
+    //
+    // WHAT THIS IS NOT, deliberately: it is not a "DataCamp certification",
+    // not a "Google certification", and completing it does not make anyone
+    // a "Google Sheets expert". It is a course completion, and the record
+    // says so in the credential type and nowhere else. The only claim made
+    // anywhere here is the one printed on the document itself.
+    //
+    // The course title is NOT translated. A credential's title is the exact
+    // string on the certificate, and the certificate in the preview is in
+    // English — translating it would put a title on the page that the
+    // document does not carry. The provider "DataCamp" is a brand and stays
+    // in Latin in all three languages, like LinkedIn and GitHub.
+    //
+    // The two files are the two halves of ONE credential: the JPEG is the
+    // card's preview, the PDF is the official document that "view
+    // certificate" opens. Hussein placed both at the PROJECT ROOT and
+    // nothing has been moved, copied, renamed or re-exported, so their
+    // paths start with `../` — see the path note at the top of this file.
+    // There is deliberately NO credentialUrl: the PDF is the official
+    // document and no verification URL was invented for it.
+    title: 'Introduction to Google Sheets',
+    provider: 'DataCamp',
+    date: {
+      en: '27 Sep 2026',
+      ar: '27 سبتمبر 2026',
+      ru: '27 сентября 2026',
+    },
+    /* the credential TYPE, printed exactly as the certificate prints it */
+    category: {
+      en: 'Statement of Accomplishment',
+      ar: 'بيان إتمام',
+      ru: 'Подтверждение о прохождении курса',
+    },
+    duration: {
+      en: '2 hrs',
+      ar: 'ساعتان',
+      ru: '2 часа',
+    },
+    /* printed verbatim, commas and all, exactly as the document shows it */
+    credentialId: '#47,542,476',
+    image: '../Introduction to Google Sheets_page-0001.jpg',
+    pdf: '../Introduction to Google Sheets.pdf',
+    description: {
+      en: 'A two-hour DataCamp course on spreadsheet fundamentals: entering and formatting data, writing formulas and calculations, using comparison operators, and referencing cells correctly.',
+      ar: 'دورة من ساعتين على منصة DataCamp تتناول أساسيات الجداول: إدخال البيانات وتنسيقها، وكتابة الصيغ والحسابات، واستخدام معاملات المقارنة، والإشارة إلى الخلايا بشكل صحيح.',
+      ru: 'Двухчасовой курс DataCamp по основам работы с таблицами: ввод и форматирование данных, написание формул и вычислений, использование операторов сравнения и корректные ссылки на ячейки.',
+    },
+    isDemo: false,
+    /* THE DETAIL VIEW, and the ONLY record on the site that has one.
+
+       Everything here is optional: a record without a `details` block gets
+       no such sections and no empty headings. The blocks are rendered only
+       where the data has them.
+
+       PROVENANCE, because this is the part that matters: these items were
+       supplied by Hussein for this course. Nothing was inferred from the
+       course name and nothing was invented — in particular there is no
+       "learning outcome" and no personal takeaway here, because he has not
+       written one, and a completed course is still not a certification.
+
+       The items are kept in English on purpose, for the same reason the
+       course title is: they are the course's own terminology. The
+       description above IS translated, because that text is the project's
+       and not the provider's. */
+    details: {
+      topics: {
+        en: [
+          'Spreadsheet fundamentals',
+          'Cells and formulas',
+          'Calculations',
+          'Comparison operators',
+          'Cell references',
+          'Working with tabular data',
+          'Creating formulas',
+          'Applying calculations at scale',
+          'Organizing spreadsheet data',
+          'Communicating insights with spreadsheets',
+        ],
+      },
+      /* chapter titles only — no description was supplied for either, so
+         neither is written here and the chapter renders as a title only */
+      chapters: {
+        en: [
+          { title: 'Cells and Formulas' },
+          { title: 'Cell References' },
+        ],
+      },
+      /* the practice files that ship with the course. NAMES only: no URL
+         was supplied, and inventing one would be fabricating a link. */
+      resources: {
+        en: [
+          { label: 'Food Ingredients' },
+          { label: 'Most Populous Countries' },
+          { label: 'Bank Accounts' },
+        ],
+      },
+      /* named in the course material. Their relationship to the course is
+         not stated in any source the project holds, so this is labelled
+         "collaborators" and nothing more is claimed about them. */
+      collaborators: {
+        en: ['Amy Peterson', 'James Chapman'],
+      },
+    },
+    /* Concept tags — the controlled vocabulary used by the filter buttons on
+       the site. `data` is the existing slug that covers the subject area.
+       A dedicated `spreadsheets` slug is PROPOSED in the report rather than
+       invented here: every new tag has to be translated into three
+       languages, and that is Hussein's call. See "The Tagging Rule" in
+       AGENTS.md. Current vocabulary: ai · first-aid · data · python · excel */
+    tags: ['data'],
   },
 ];
 

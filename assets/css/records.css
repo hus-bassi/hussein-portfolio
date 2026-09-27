@@ -138,6 +138,571 @@ mark {
   font-family: var(--font-mono); font-size: .84rem; color: var(--fg-3);
 }
 
+/* ============================================================
+   THE CERTIFICATE PREVIEW.
+
+   A record with a document gets the document's own image as its
+   preview: the certificate exactly as it was issued, light background
+   and all, with DataCamp's colours, Hussein's name, the credential
+   number and the signature left alone. It is NOT darkened, tinted,
+   cropped or filtered to match the site — a credential has to stay
+   recognisable, and the card around it is what belongs to the design.
+
+   `object-fit: contain` inside a frame of the file's real ratio, so
+   nothing is ever stretched and nothing is ever cut. The frame is a
+   <button> because it opens the document; the card's own hover (lift,
+   spectrum edge, controlled glow) is inherited from `.record` and is
+   not restated here.
+   ============================================================ */
+.record.has-media {
+  display: grid;
+  /* The media column is a BUDGET, not a size the media gets to dictate: it
+     is the width a preview occupies, and the preview inside it is contained
+     and capped. Before, this was a flat 360px with a 420px height ceiling,
+     and a portrait certificate scan then made a card twice the height of
+     its neighbours. minmax lets the column shrink a little on a narrower
+     desktop without the media ever growing. */
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 0 var(--s-5);
+  align-items: start;          /* nothing in the row stretches the other */
+}
+/* The info column takes its own height from its own content. It is NOT
+   stretched to the row, and it has no minimum: a card is as tall as its
+   tallest part and not one pixel more, which is the whole difference
+   between a composed record and a panel with some text in it. */
+.record-body {
+  min-width: 0;                /* so a long word in the description cannot widen the column */
+  display: flex; flex-direction: column;
+  align-self: start;
+}
+
+/* GROUP 1 — the eyebrow: the record's own kind (certificate / volunteering),
+   small, quiet, spectrum-lit, never a pill */
+.record-eyebrow {
+  margin: 0 0 var(--s-2);
+  font-family: var(--font-mono); font-size: .74rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  background: var(--spectrum-lit);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+html[lang="ar"] .record-eyebrow { font-family: var(--font-ar); letter-spacing: 0; }
+
+/* GROUP 5 — the facts: duration / credential, in the DETAILS view only.
+   The card does not carry them: a card answers "what is this?", and a
+   credential number is an answer to "exactly what is it?". A hairline above
+   and label-over-value pairs, no fill, no glow, no radius — an editorial
+   divider, not a second card. */
+.detail-facts {
+  display: grid; gap: var(--s-3);
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  padding-block-start: var(--s-3);
+  border-block-start: 1px solid var(--glass);
+}
+.record-fact { display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
+.record-fact-k {
+  font-family: var(--font-mono); font-size: .7rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fg-4);
+}
+html[lang="ar"] .record-fact-k { font-family: var(--font-ar); letter-spacing: 0; }
+.record-fact-v {
+  font-family: var(--font-mono); font-size: .84rem; letter-spacing: .02em;
+  color: var(--fg-2);
+}
+html[lang="ar"] .record-fact-v { font-family: var(--font-ar); letter-spacing: 0; }
+
+/* GROUP 6 — the actions: one row on one baseline, a real 12px gap, a
+   little air above it, and nothing else. It used to rest at the bottom of
+   a stretched column via margin-top:auto, which is the second half of the
+   dead space: the column was forced to the media's height, and then the
+    actions were pushed to the far end of it. The buttons follow the content
+    now, wherever that happens to be. */
+.record-actions {
+  display: flex; flex-wrap: wrap; gap: var(--s-3);
+  align-items: center;
+  margin-block-start: var(--s-4);
+}
+
+.record-shot {
+  display: grid; place-items: center;
+  padding: 0;
+  position: relative;
+  /* THE MOUNT IS THE SIZE OF WHAT IT HOLDS, not a fixed box the media is
+     poured into. `width: fit-content` lets the frame shrink to its own
+     image, so a portrait certificate is a narrow tall mount and a landscape
+     one is a wide short mount — neither is padded out with empty mat
+     beside it, which is what a fixed column produced. The ceiling lives on
+     the image itself, so it is the MEDIA that is capped rather than the
+     box around it, and nothing is ever cropped: max-width and max-height
+     together with `object-fit: contain` mean the whole document is visible
+     at its own ratio, and the full size is one click away in the viewer. */
+  width: fit-content;
+  max-width: 100%;
+  background-color: rgba(148, 163, 186, .05);
+  border: 0;
+  border-radius: var(--radius-sm);
+  /* a hairline, so a light certificate has an edge to sit against
+     without the card's own border doubling up on it */
+  box-shadow: 0 0 0 1px var(--glass-2);
+  overflow: hidden;
+  transition: box-shadow var(--motion-normal) var(--ease),
+              translate var(--motion-normal) var(--ease-out);
+  translate: none;
+}
+.record-shot img {
+  display: block;
+  width: auto; height: auto;
+  /* the responsive media budget: 210px on a narrow desktop, 280px on a
+     wide one, and never more. This is what stops a portrait scan from
+     deciding the height of its card. */
+  max-height: clamp(210px, 22vw, 280px);
+  max-width: 100%;
+  object-fit: contain;             /* never stretched, never cropped */
+}
+/* the media frame is the positioned ancestor for the type badge */
+.record-shot { position: relative; }
+/* the frame is a control only when it opens something, so the hover
+   response is scoped to a real button — a plain frame is a mount */
+button.record-shot { cursor: pointer; }
+button.record-shot:hover { box-shadow: 0 0 0 1px var(--violet), 0 0 26px -10px var(--violet); }
+button.record-shot:active { translate: 0 1px; transition-duration: var(--motion-instant); }
+.record-shot:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ============================================================
+   THE OTHER THREE MEDIA STATES.
+
+   The frame is one element with four states and the same aspect ratio in
+   all of them, so a record with a video sits exactly where a record with a
+   certificate image sits. Nothing here invents media: a video frame is a
+   play control and a label, a document frame is a page glyph and a label,
+   and a record with nothing gets the observatory mark and says so.
+
+   The glyphs are inline SVG, drawn in the current colour, and the type
+   badge comes from the record's own `type` in the data.
+   ============================================================ */
+.record-shot.is-video,
+.record-shot.is-document,
+.record-shot.is-none {
+  display: grid; place-items: center; gap: var(--s-2);
+  /* the same budget as an image frame: a designed state is still a
+     preview, and it must not out-shout the text beside it */
+  aspect-ratio: 16 / 9; max-height: clamp(210px, 22vw, 280px);
+  background-image: var(--edge), var(--spectrum);
+  background-size: 100% 100%, 240% 240%;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  cursor: default;
+}
+/* the video and document frames brighten their edge on hover, and only when
+   they are the control that opens the evidence */
+button.record-shot.is-video:hover, button.record-shot.is-video:focus-visible,
+button.record-shot.is-document:hover, button.record-shot.is-document:focus-visible {
+  background-position: 0 0, 100% 50%;
+}
+
+.media-glyph { display: grid; place-items: center; color: var(--violet); }
+.media-glyph svg { width: 46px; height: 46px; }
+.record-shot.is-video .media-glyph {
+  color: var(--fg);
+  /* the play control is a spectrum ring, not a filled brand button: it has
+     to belong to this card, not to a video app */
+  width: 74px; height: 74px; border-radius: 50%;
+  background: rgba(124, 92, 255, .16);
+  box-shadow: 0 0 0 1px rgba(167, 139, 250, .45), 0 0 30px -10px var(--violet);
+  transition: box-shadow var(--motion-normal) var(--ease), background var(--motion-normal) var(--ease);
+}
+.record-shot.is-video:hover .media-glyph { background: rgba(124, 92, 255, .28); box-shadow: 0 0 0 1px rgba(167, 139, 250, .7), 0 0 40px -8px var(--violet); }
+.record-shot.is-document .media-glyph { color: var(--gold); }
+.record-shot.is-none .media-glyph { color: var(--fg-4); }
+.media-kind {
+  font-family: var(--font-mono); font-size: .74rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--fg-3);
+}
+html[lang="ar"] .media-kind { font-family: var(--font-ar); letter-spacing: 0; }
+/* the type badge, in the corner, from the record's own data */
+.media-badge {
+  position: absolute; inset-block-start: var(--s-3); inset-inline-start: var(--s-3);
+  padding: 3px 10px; border-radius: 999px;
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .08em;
+  color: var(--azure);
+  background: rgba(4, 5, 10, .72);
+  border: 1px solid var(--glass-2);
+}
+html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
+/* a local video file plays in the card itself, at the same ratio, uncropped */
+.record-shot video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+/* The info column's own rhythm — small, deliberate, editorial. Title first
+   and prominent, provider/date 8px beneath it, the description 20px on,
+   then the actions with room to breathe. Typography sizes are
+   UNCHANGED: only the space between the groups is new. Logical margins
+   throughout, so RTL mirrors for free. */
+.record-body .record-title { margin: 0; font-size: 1.14rem; line-height: 1.5; }
+.record-body .record-meta { margin-block: var(--s-2) 0; }
+.record-body .record-text {
+  margin-block: var(--s-4) 0;
+  margin-block-end: var(--s-1);
+  color: var(--fg-2); font-size: .96rem; line-height: 1.8;
+  max-width: var(--measure);   /* keep Arabic lines comfortable to read */
+}
+
+/* The duration/credential line has moved to the DETAILS view entirely: a
+   card answers "what is this?" and a credential number answers "exactly
+   what is it?". Nothing is left here for it to describe. */
+
+/* ============================================================
+   THE DOCUMENT VIEWER.
+   <dialog> is in the top layer, so this is an overlay and not a
+   layout change: nothing behind it moves, the page cannot scroll
+   under it, and Escape closes it without a line of code. The
+   backdrop is the site's own black rather than a grey scrim.
+   ============================================================ */
+/* ============================================================
+   THE DIALOG'S SHAPE — and the reason it is a grid.
+
+   The scroll container has to be the element that is given a bounded
+   height, and in a flex column that is not the same element as the one that
+   scrolls. `.cert-panel` was a flex column with `max-height`; the middle
+   item was `.cert-frame` with `min-height: 0`, so the FRAME got the
+   bounded height while the details body inside it stayed at its content
+   height. An element taller than its box with `overflow-y: auto` on the
+   wrong level does not scroll: the content simply ran past the box, and the
+   panel's own `overflow: hidden` swallowed the rest. That is the whole
+   reason a wheel over the details did nothing useful and a visitor reached
+   for the scrollbar.
+
+   So the panel is a GRID with three rows and a definite middle one:
+
+       auto        the header — never scrolls, the close button is always there
+       minmax(0,1fr)  the frame — the one bounded box
+       auto        the footer — the actions stay reachable
+
+   `minmax(0, 1fr)` rather than `1fr` is the load-bearing part: a plain
+   `1fr` row has an automatic minimum, so it refuses to shrink below its
+   content and the clamp never engages. With a zero minimum the row takes
+   exactly what is left of 92svh after the header and footer, the frame
+   fills it, and the details body — which is the only thing with
+   `overflow-y: auto` — becomes a real scroll region.
+   ============================================================ */
+.cert-dialog {
+  width: min(1080px, 94vw);
+  max-width: none; max-height: 92svh;
+  padding: 0; border: 0;
+  background: none;
+  color: var(--fg);
+  overflow: visible;
+}
+.cert-dialog::backdrop {
+  background: rgba(2, 3, 6, .88);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.cert-panel {
+  display: grid;
+  /* header · frame · footer — see the block comment above for why this is a
+     grid and why the middle row is minmax(0, 1fr) */
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: 92svh;
+  background: rgba(8, 11, 19, .98);
+  border: 1px solid var(--glass-2);
+  border-radius: var(--radius);
+  box-shadow: 0 40px 120px -40px rgba(0, 0, 0, .95);
+  overflow: hidden;
+  /* the panel is brought into focus rather than thrown on screen: one short
+     fade and settle, on open. The reduced-motion block in site.css removes
+     the travel and keeps the panel. */
+  animation: panel-in var(--motion-slow) var(--ease-out) 1 both;
+}
+@keyframes panel-in {
+  from { opacity: 0; scale: .985; }
+  to   { opacity: 1; scale: 1; }
+}
+/* the record title is a real control — the keyboard door into the details —
+   so it reads as a heading first and a link second, and the card itself
+   says "this opens" with a cursor and nothing more. The approved card hover
+   is not restated here and not changed. */
+.record-open {
+  font: inherit; color: inherit; text-align: start;
+  background: none; border: 0; padding: 0; margin: 0;
+  cursor: pointer; border-radius: 3px;
+  transition: color var(--motion-normal) var(--ease);
+}
+.record-open:hover { color: var(--gold); }
+.record-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.record { cursor: pointer; }
+
+.cert-head {
+  position: relative;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: var(--s-4) var(--s-6);
+  padding-inline-end: 64px;
+  border-block-end: 1px solid var(--glass);
+}
+.cert-kicker {
+  font-family: var(--font-mono); font-size: .76rem; letter-spacing: .1em;
+  color: var(--azure); text-transform: uppercase;
+}
+.cert-title { font-size: 1.15rem; color: var(--fg); }
+.cert-close {
+  position: absolute; inset-block-start: var(--s-3); inset-inline-end: var(--s-3);
+  width: 40px; height: 40px; display: grid; place-items: center;
+  color: var(--fg-3);
+  background: rgba(148, 163, 186, .08);
+  border: 1px solid var(--glass-2);
+  border-radius: 50%; cursor: pointer;
+  transition: color var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease),
+              transform var(--motion-normal) var(--ease);
+}
+.cert-close:hover { color: var(--gold); border-color: var(--gold-d); transform: translateY(-1px); }
+.cert-close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.cert-close svg { width: 17px; height: 17px; }
+.cert-frame { min-height: 0; background: #05070e; }
+.cert-frame iframe { display: block; width: 100%; height: 100%; min-height: 60svh; border: 0; }
+.cert-foot {
+  display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
+  padding: var(--s-3) var(--s-5);
+  border-block-start: 1px solid var(--glass);
+  background: rgba(4, 5, 10, .6);
+}
+.cert-foot .btn, .cert-foot .record-action { min-height: 44px; }
+
+/* ============================================================
+   THE DETAILS VIEW - a fourth mode on the same dialog.
+
+   The card is a preview and stays compact; this is where a record's full
+   information lives. Same panel, same backdrop, same focus trap, same
+   Escape, same close button, and the same type, buttons and spacing tokens
+   as everywhere else: a details view that looked like a different product
+   would be a second design language, and that is the one thing a portfolio
+   must not have.
+
+   A section that has no data does not exist — the builder returns nothing
+   and nothing is appended, so there is no empty heading and no "N/A"
+   anywhere to clean up afterwards.
+   ============================================================ */
+.cert-dialog.is-details { width: min(940px, 94vw); }
+.cert-panel.is-wide { max-width: none; }
+.detail-body {
+  /* THE SCROLL CONTAINER. One of them, and it is here: `height: 100%`
+     makes this element take the frame's bounded height instead of its
+     content height, which is what turns `overflow-y: auto` into a scrollbar
+     that a wheel can actually drive. Without it this box grows past the
+     frame and nothing scrolls.
+     `overscroll-behavior: contain` stops the chain: reaching the top or
+     the bottom of the details does NOT hand the gesture to the page behind
+     the dialog. The page is locked anyway — <dialog>.showModal() does that
+     natively, and there is no second lock here on purpose.
+     `auto`, never `scroll`: a record that fits shows no scrollbar at all. */
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--s-5) var(--s-6);
+  display: grid; gap: var(--s-5);
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  background: #05070e;
+}
+.detail-section { display: grid; gap: var(--s-2); }
+.detail-h {
+  font-family: var(--font-mono); font-size: .74rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--azure);
+  margin: 0;
+}
+html[lang="ar"] .detail-h { font-family: var(--font-ar); letter-spacing: 0; }
+.detail-text { color: var(--fg-2); line-height: 1.85; max-width: 68ch; }
+.detail-list { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); margin: 0; padding: 0; list-style: none; }
+.detail-list li {
+  padding: 4px 12px; border-radius: 999px;
+  font-size: .88rem; color: var(--fg-2);
+  background: rgba(148, 163, 186, .08);
+  border: 1px solid var(--glass);
+}
+.detail-chapters { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-3); }
+.detail-chapter { display: flex; gap: var(--s-3); align-items: baseline; }
+.detail-chapter-n { font-family: var(--font-mono); font-size: .78rem; color: var(--gold); }
+.detail-chapter-b { display: grid; gap: 2px; }
+.detail-chapter-t { color: var(--fg); font-size: .98rem; }
+.detail-chapter-n2 { color: var(--fg-3); font-size: .9rem; }
+.detail-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3); }
+.detail-gallery figure { margin: 0; min-width: 0; }
+/* the gallery is a contact sheet: small, uniform, and every one of them
+   opens the same viewer the certificate above opens */
+.detail-gallery img {
+  display: block; width: 100%; height: auto;
+  max-height: 200px; object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+.detail-gallery-open {
+  display: block; width: 100%; padding: 0;
+  background: none; border: 0; cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: box-shadow var(--motion-normal) var(--ease);
+}
+.detail-gallery-open:hover { box-shadow: 0 0 0 1px var(--violet), 0 0 26px -10px var(--violet); }
+.detail-gallery-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.detail-caption { margin: var(--s-2) 0 0; font-size: .84rem; color: var(--fg-3); }
+
+/* ============================================================
+   THE PRIMARY MEDIA IN THE DETAILS.
+
+   One region, centred, holding the record's own media at a size you can
+   actually read — the certificate is the evidence, and a details view that
+   hides the evidence behind a scroll is a worse version of the same page.
+
+   The budget, and why each half is here:
+     · max-width  min(100%, 760px) — prominent, and never wider than the
+                   dialog, so it cannot push the panel's own layout
+     · max-height 42svh of the VIEWPORT — measured against the screen, not
+                   the panel, because the panel is already capped at 92svh
+                   and a percentage of that would compound two ceilings
+     · width/height auto + object-fit contain — the file keeps its own
+                   ratio. A portrait scan stays portrait, a landscape one
+                   stays landscape, and nothing is cropped or stretched
+
+   `.detail-media` is deliberately a PLAIN BLOCK. It is the grid item in the
+   details column, and the media frame inside it is a scroll container
+   (`overflow: hidden` clips the certificate to its radius), so the frame
+   cannot be the item: a scroll container contributes a minimum size of zero
+   to its row, and the certificate measured 0px tall and disappeared on every
+   record whose details were long enough to fill the panel. This wrapper has
+   no overflow of its own, so the row is sized by the image again.
+
+   One rule for the mount, one for the file inside it, and the same recipe
+   whatever the media is — there is no certificate-only path. */
+.detail-media {
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  width: 100%;
+  max-width: min(100%, 760px);
+}
+.detail-media > .record-shot {
+  max-width: 100%;
+  max-height: min(42svh, 460px);
+}
+/* the file itself. `width: auto; height: auto` is the whole promise: the
+   browser scales the ORIGINAL to fit the budget and keeps its ratio. */
+.detail-media img,
+.detail-media video {
+  display: block;
+  width: auto; height: auto;
+  max-width: 100%;
+  max-height: min(42svh, 460px);
+  object-fit: contain;             /* never stretched, never cropped */
+  border-radius: var(--radius-sm);
+}
+/* a video or a document with no preview of its own still gets a real
+   region rather than a hairline: the same budget, its own aspect. */
+.detail-media > .record-shot.is-video,
+.detail-media > .record-shot.is-document,
+.detail-media > .record-shot.is-none {
+  width: 100%;
+  max-height: min(42svh, 460px);
+}
+
+.detail-actions { margin-inline-start: auto; }
+
+@media (max-width: 760px) {
+  .detail-body { padding: var(--s-4); gap: var(--s-4); }
+  .detail-actions { margin-inline-start: 0; }
+  /* only the HEIGHT is re-budgeted on a phone. The width needs no override:
+     `min(100%, 760px)` is already the column's width once 760px is wider
+     than the screen, so a second `max-width: 100%` here would state the
+     same thing twice. */
+  .detail-media img,
+  .detail-media video,
+  .detail-media > .record-shot { max-height: min(38svh, 340px); }
+}
+
+/* ============================================================
+   THE IMAGE STAGE.
+   One <img>, the original file, fitted by MEASUREMENT (records.js writes the
+   fitted width/height inline from natural dimensions × the real stage box)
+   with this CSS as the pre-JS fallback. Nothing is cropped, stretched,
+   tinted or re-encoded — a certificate stays exactly the document it is.
+
+   The stage must be a BOUNDED box: the panel is a flex column, so without
+   its own max-height the frame collapses toward zero, the image's capped
+   height then exceeds it, and the frame's overflow crops the landscape's
+   right side. It accounts for header + footer via svh (the same 92svh the
+   panel is capped at) so CSS and JS measure the same budget.
+
+   The transform carries zoom and pan, and its transition is what makes a
+   zoom step ease instead of jump. A drag turns the transition OFF for the
+   duration of the gesture, so the image tracks the pointer exactly, which
+   is the difference between panning and lagging behind your own hand.
+   ============================================================ */
+.cert-frame:has(.cert-image) {
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  min-height: 0;
+  max-height: calc(92svh - 190px);
+  cursor: zoom-in;
+}
+.cert-image {
+  display: block;
+  /* Contained by the STAGE, not the viewport: the dialog is capped at
+     1080px, so a viewport-relative max-width (the old 92vw) let a wide
+     landscape image grow past the stage and get cropped by the frame's
+     overflow. 100% keeps it inside even before JS measures. The exact
+     fit (fitScale from natural dimensions × measured stage budget) is
+     then set as explicit dimensions by records.js on image load. */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;              /* never stretched, never cropped — the JS
+     fit writes exact dimensions; this is only the pre-measure fallback */
+  transform-origin: center;
+  transition: transform var(--motion-slow) var(--ease-out),
+              translate var(--motion-slow) var(--ease-out);
+  -webkit-user-select: none; user-select: none;
+  -webkit-user-drag: none;
+}
+.cert-frame.is-dragging .cert-image { transition: none; }
+.cert-frame.is-dragging { cursor: grabbing; }
+
+/* the toolbar: quiet, centred, and the ONLY place a download can start */
+.cert-tools {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-inline: auto;
+}
+.zoom-btn {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  color: var(--fg-2);
+  background: rgba(148, 163, 186, .08);
+  border: 1px solid var(--glass-2);
+  border-radius: 50%; cursor: pointer;
+  transition: color var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease),
+              background var(--motion-normal) var(--ease);
+}
+.zoom-btn svg { width: 19px; height: 19px; }
+.zoom-btn:hover { color: var(--fg); border-color: var(--violet); background: rgba(124, 92, 255, .16); }
+.zoom-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.zoom-btn:active { transform: scale(.96); }
+.zoom-level {
+  min-width: 58px; text-align: center;
+  font-family: var(--font-mono); font-size: .82rem; color: var(--fg-3);
+}
+
+@media (max-width: 760px) {
+  /* the preview stacks above the text and keeps its own ratio — never beside
+     it, never cropped, and never in a frame so narrow it is unreadable */
+  .record.has-media { grid-template-columns: 1fr; gap: var(--s-4) 0; }
+   /* stacked, so nothing to stretch against: the actions follow the content
+     in normal flow instead of sitting at margin-top:auto */
+  .record-body { min-height: 0; }
+  .record-actions { margin-block-start: 0; }
+  .record-actions .record-action { flex: 1 1 200px; justify-content: center; }
+  .cert-frame iframe { min-height: 52svh; }
+  /* the mobile chrome is shorter, so the bounded stage keeps more room —
+     the desktop value would shrink a landscape to a strip at 360px */
+  .cert-frame:has(.cert-image) { max-height: calc(92svh - 150px); }
+  .cert-head { padding: var(--s-3) var(--s-4); padding-inline-end: 56px; }
+}
+
 @media (max-width: 560px) {
   .page-head { padding-block: 124px var(--s-7); }
   .band-search { padding-block: var(--s-5); }

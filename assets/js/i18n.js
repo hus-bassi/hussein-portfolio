@@ -457,6 +457,73 @@
       en: 'View certificate',
       ru: 'Смотреть сертификат'
     },
+    'rec.openCert': {
+      ar: 'فتح المستند الأصلي',
+      en: 'Open the original document',
+      ru: 'Открыть исходный документ'
+    },
+    'rec.openPdf': {
+      ar: 'فتح PDF في تبويب جديد',
+      en: 'Open the PDF in a new tab',
+      ru: 'Открыть PDF в новой вкладке'
+    },
+    'rec.downloadPdf': {
+      ar: 'تنزيل المستند',
+      en: 'Download the document',
+      ru: 'Скачать документ'
+    },
+    'rec.closeCert': {
+      ar: 'إغلاق المستند',
+      en: 'Close the document',
+      ru: 'Закрыть документ'
+    },
+    'rec.duration': { ar: 'المدة', en: 'Duration', ru: 'Длительность' },
+    'rec.credential': { ar: 'رقم الشهادة', en: 'Credential', ru: 'Номер документа' },
+    'rec.watchVideo': {
+      ar: 'شاهد الفيديو',
+      en: 'Watch video',
+      ru: 'Смотреть видео'
+    },
+    'rec.viewImage': {
+      ar: 'عرض الصورة بالحجم الكامل',
+      en: 'View the image full size',
+      ru: 'Открыть изображение полностью'
+    },
+    'rec.downloadImage': {
+      ar: 'تنزيل الصورة',
+      en: 'Download image',
+      ru: 'Скачать изображение'
+    },
+    'rec.zoomIn': { ar: 'تكبير', en: 'Zoom in', ru: 'Приблизить' },
+    'rec.zoomOut': { ar: 'تصغير', en: 'Zoom out', ru: 'Отдалить' },
+    'rec.zoomReset': { ar: 'إعادة الحجم', en: 'Reset zoom', ru: 'Сбросить масштаб' },
+    'rec.noMedia': {
+      ar: 'لا توجد وسائط',
+      en: 'No media available',
+      ru: 'Нет медиа'
+    },
+    'rec.kind.certificate': { ar: 'شهادة', en: 'Certificate', ru: 'Сертификат' },
+    'rec.kind.volunteering': { ar: 'تطوّع', en: 'Volunteering', ru: 'Волонтёрство' },
+    'rec.kind.course': { ar: 'دورة', en: 'Course', ru: 'Курс' },
+    'rec.kind.activity': { ar: 'نشاط', en: 'Activity', ru: 'Активность' },
+    'rec.kind.event': { ar: 'فعالية', en: 'Event', ru: 'Мероприятие' },
+
+    /* The details view. NEUTRAL by design: "topics covered", never
+       "what I learned" — a personal takeaway only ever appears when the
+       record's own data says so, under its own heading. */
+    'rec.d.overview': { ar: 'نظرة عامة', en: 'Overview', ru: 'Обзор' },
+    'rec.d.provider': { ar: 'الجهة', en: 'Provider', ru: 'Провайдер' },
+    'rec.d.date': { ar: 'التاريخ', en: 'Date', ru: 'Дата' },
+    'rec.d.role': { ar: 'الدور', en: 'Role', ru: 'Роль' },
+    'rec.d.location': { ar: 'المكان', en: 'Location', ru: 'Место' },
+    'rec.d.did': { ar: 'ما قمت به', en: 'What I did', ru: 'Что я делал' },
+    'rec.d.takeaway': { ar: 'ما استفدته', en: 'What I took away', ru: 'Что я вынес' },
+    'rec.d.topics': { ar: 'الموضوعات التي تناولها الدورة', en: 'Topics covered', ru: 'Темы курса' },
+    'rec.d.skills': { ar: 'المهارات', en: 'Skills', ru: 'Навыки' },
+    'rec.d.chapters': { ar: 'محتويات الدورة', en: 'Course structure', ru: 'Структура курса' },
+    'rec.d.resources': { ar: 'الموارد', en: 'Resources', ru: 'Материалы' },
+    'rec.d.collaborators': { ar: 'المتعاونون', en: 'Collaborators', ru: 'Соавторы' },
+    'rec.d.gallery': { ar: 'الصور', en: 'Gallery', ru: 'Галерея' },
     'rec.viewVolCert': {
       ar: 'شهادة التطوّع',
       en: 'Volunteering certificate',

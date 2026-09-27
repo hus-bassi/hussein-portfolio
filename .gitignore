@@ -5,6 +5,10 @@ node_modules/
 test-results/
 .playwright-mcp/
 .qodo/
+# console captures thrown beside the repo during a verification run.
+# They are evidence of a run, not source: ignored rather than deleted, so a
+# past session's output is still on disk to be read.
+_out_*.txt
 .env
 .env.*
 .DS_Store
