@@ -1095,16 +1095,24 @@
        position the media modes left behind — survived into the next
        details and the record opened halfway down.
 
-       So the offset is reset here, on the container, after the new content
-       is in it and before the dialog is shown: the visitor has not been
-       able to see the old position at any point, and there is no delay, no
-       animation and no second frame for it to be corrected on. The page
-       behind is not touched; its scroll position is a different element and
-       a different lock. */
-    frame.scrollTop = 0;
+       This reset used to sit BEFORE `showModal()`, which is where it reads
+       most naturally and where it does nothing at all. A closed <dialog> is
+       `display: none`, so its frame has no layout box and therefore no
+       scrolling box: assigning `scrollTop` is silently discarded — measured,
+       it reads back 0 — and `showModal()` then RE-APPLIES the offset the
+       frame was left at, which is how a long record kept reopening at
+       scrollTop 394 with a maximum of 483. The order was the bug, not the
+       assignment.
 
+       So the reset follows the dialog becoming visible, in the same task
+       and before any frame is painted: the visitor still cannot see the old
+       position, because nothing has been rendered between the two lines. No
+       delay, no animation, no second frame to correct it on, no timer. The
+       page behind is not touched; its scroll position is a different element
+       and a different lock. */
     if (typeof viewer.showModal === 'function') viewer.showModal();
     else viewer.setAttribute('open', '');
+    frame.scrollTop = 0;
   }
 
   function openMedia(rec, m) {

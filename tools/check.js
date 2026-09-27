@@ -18,7 +18,9 @@ const checks = [
   ['contrast-audit', [], 'every text pair clears 4.5:1, grain included'],
   ['image-fit-audit', [], 'viewer fit is one generic orientation-blind formula'],
   ['card-layout-audit', [], 'record cards balance from one generic recipe'],
-  ['details-media-selftest', [], 'the details-media rules above can still fail']
+  ['details-media-selftest', [], 'the details-media rules above can still fail'],
+  ['details-scroll-audit', [], 'details is header · one scroller · footer'],
+  ['details-scroll-selftest', [], 'the details-scroll rules above can still fail']
 ];
 
 let failed = 0;

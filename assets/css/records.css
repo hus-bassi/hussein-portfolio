@@ -388,7 +388,14 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
    ============================================================ */
 .cert-dialog {
   width: min(1080px, 94vw);
-  max-width: none; max-height: 92svh;
+  max-width: none;
+  /* the same bound twice, not two bounds: an engine that does not know
+     `svh` drops the second declaration outright, and with NO height limit
+     at all the panel grows to its full content height and the footer ends
+     up below the fold with nothing left to scroll it back. `92vh` is the
+     fallback for that engine, not a new constraint. */
+  max-height: 92vh;
+  max-height: 92svh;
   padding: 0; border: 0;
   background: none;
   color: var(--fg);
@@ -403,6 +410,7 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
   /* header · frame · footer — see the block comment above for why this is a
      grid and why the middle row is minmax(0, 1fr) */
   grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: 92vh;  /* fallback — see .cert-dialog */
   max-height: 92svh;
   background: rgba(8, 11, 19, .98);
   border: 1px solid var(--glass-2);
@@ -464,7 +472,12 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
   display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
   padding: var(--s-3) var(--s-5);
   border-block-start: 1px solid var(--glass);
-  background: rgba(4, 5, 10, .6);
+  /* The panel's own colour, not a second translucent one. At .6 this bar
+     let the scrolling column read through it, which is what turned "the
+     content ends behind the footer" into something a visitor could SEE
+     even where the geometry was right. Same value as `.cert-panel`, so it
+     is a reuse of the surface the footer already sits on. */
+  background: rgba(8, 11, 19, .98);
 }
 .cert-foot .btn, .cert-foot .record-action { min-height: 44px; }
 
@@ -485,19 +498,46 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
 .cert-dialog.is-details { width: min(940px, 94vw); }
 .cert-panel.is-wide { max-width: none; }
 .detail-body {
-  /* THE SCROLL CONTAINER. One of them, and it is here: `height: 100%`
-     makes this element take the frame's bounded height instead of its
-     content height, which is what turns `overflow-y: auto` into a scrollbar
-     that a wheel can actually drive. Without it this box grows past the
-     frame and nothing scrolls.
+  /* THE SCROLL CONTAINER. One of them, and it is here.
+
+     The bounded height comes from the LAYOUT, not from a percentage. The
+     panel's middle row is `minmax(0, 1fr)` and is clamped by the panel's
+     own max-height; a grid item's default `align-self` stretches it to
+     exactly that row, and `min-height: 0` is what makes shrinking legal —
+     with the automatic minimum in place the box would refuse to be shorter
+     than its content and the clamp would never engage.
+
+     This used to say `height: 100%`, and that was the fragile part. A
+     percentage resolves against the grid area, and the panel's height is
+     INDEFINITE (it has a max-height, not a height) until the clamp engages
+     — so a strict reading of the spec resolves it to `auto`. The box then
+     falls back to its content height, runs past the row it lives in, and
+     paints underneath the footer while its own `overflow-y: auto` has
+     nothing left to scroll. Chromium happens to resolve the percentage
+     after clamping, which is exactly why this survived a round of looking
+     correct in a browser. The percentage was never needed: the row and the
+     stretch ARE the architecture, and the audit below fails if the panel
+     ever grows an `align-items` that would switch the stretch off.
+
      `overscroll-behavior: contain` stops the chain: reaching the top or
      the bottom of the details does NOT hand the gesture to the page behind
      the dialog. The page is locked anyway — <dialog>.showModal() does that
      natively, and there is no second lock here on purpose.
+
+     `scroll-behavior: auto` is stated rather than left to chance. The page
+     sets `scroll-behavior: smooth` on `html` for its anchor links, and
+     that property INHERITS — so in any engine that inherits it, a details
+     panel driven by a wheel chases the pointer through an animation
+     instead of tracking it, and the scroll reads as broken. The page keeps
+     its smooth links; the dialog is a direct-manipulation surface and is
+     1:1 with the gesture.
+
      `auto`, never `scroll`: a record that fits shows no scrollbar at all. */
-  height: 100%;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
+  scroll-behavior: auto;
   padding: var(--s-5) var(--s-6);
   display: grid; gap: var(--s-5);
   grid-template-columns: minmax(0, 1fr);

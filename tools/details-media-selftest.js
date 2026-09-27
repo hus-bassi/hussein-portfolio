@@ -154,10 +154,12 @@ withJs(/frame\.innerHTML = '';[\s\S]*?\n(\s*)frame\.scrollTop = 0;/,
   (m, indent) => indent + 'frame.scrollTop = 0;\n\n    ' + m.replace(/\n[ \t]*frame\.scrollTop = 0;\s*$/, ''),
   () => check('caught: the reset moved BEFORE the content is mounted', caught('resets the container itself', audit())));
 
-/* and after showModal, which paints the old position first */
-withJs(/frame\.scrollTop = 0;\r?\n\r?\n(\s*)if \(typeof viewer\.showModal === 'function'\) viewer\.showModal\(\);\r?\n(\s*)else/,
-  "if (typeof viewer.showModal === 'function') viewer.showModal();\n$1frame.scrollTop = 0;\n$2else",
-  () => check('caught: the reset moved AFTER showModal', caught('resets the container itself', audit())));
+/* and ABOVE showModal, which is where this used to sit and where the write
+   is silently discarded: a closed <dialog> is display:none, so the frame has
+   no scrolling box, and showModal then re-applies the offset it was left at */
+withJs(/(    if \(typeof viewer\.showModal === 'function'\) viewer\.showModal\(\);\n    else viewer\.setAttribute\('open', ''\);\n)(    frame\.scrollTop = 0;)/,
+  '$2\n$1',
+  () => check('caught: the reset moved ABOVE showModal (a discarded write)', caught('resets the container itself', audit())));
 
 /* a delayed or animated reset, which was refused for a reason */
 withJs(/frame\.scrollTop = 0;/, 'setTimeout(function () { frame.scrollTop = 0; }, 50);',

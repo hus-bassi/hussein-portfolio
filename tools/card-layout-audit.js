@@ -293,10 +293,17 @@ check('the dialog is a bounded panel: three rows with a definite middle one',
   'auto · minmax(0,1fr) · auto, or the clamp never engages');
 check('the frame has no automatic minimum (minmax(0,…) exists for this)',
   !/flex:\s*1\b/.test(frameRule) && /min-height:\s*0/.test(frameRule));
-check('EXACTLY ONE details scroll container, and it fills its box',
-  /height:\s*100%/.test(bodyRule2) && /overflow-y:\s*auto/.test(bodyRule2) &&
-  (allCssNoComments.match(/overflow-y:\s*auto\s*;/g) || []).length === 1,
-  'height:100% is what makes overflow-y:auto a real scrollbar; and it must be the only one');
+check('EXACTLY ONE details scroll container, bounded by the row and not by a percentage',
+  (() => {
+    /* read the rule with its comment stripped: the comment above it NAMES
+       `height: 100%` while explaining why it is gone, and a comment that
+       documents the refusal must not trip the check that forbids it */
+    const b = bodyRule2.replace(/\/\*[\s\S]*?\*\//g, '');
+    return /min-height:\s*0/.test(b) && /overflow-y:\s*auto/.test(b) &&
+      /overflow-x:\s*hidden/.test(b) && !/height:\s*100%/.test(b) &&
+      (allCssNoComments.match(/overflow-y:\s*auto\s*;/g) || []).length === 1;
+  })(),
+  'minmax(0,1fr) + min-height:0 bounds it; a percentage would resolve to auto in the panel\'s indefinite height');
 check('scroll chaining out of the details is contained',
   /overscroll-behavior:\s*contain/.test(bodyRule2));
 check('the details scroll region is focusable and named',
@@ -308,11 +315,11 @@ check('scrolling is native: the ONLY scroll offset written anywhere is the detai
   /scrollTop\s*(\+|-)?=/.test(detailFn) &&
   !/scrollLeft\s*(\+|-)?=/.test(code) && !/requestAnimationFrame/.test(code),
   'one write, in openDetails, on the details container — nothing else scrolls anything');
-check('the details open path resets the container itself, after mounting and before showing',
+check('the details open path resets the container itself, after mounting AND after showing',
   /frame\.scrollTop = 0/.test(detailFn) &&
   detailFn.indexOf('frame.scrollTop = 0') > detailFn.lastIndexOf('frame.appendChild') &&
-  detailFn.indexOf('frame.scrollTop = 0') < detailFn.indexOf('showModal'),
-  'content first, then scrollTop = 0, then showModal — the old position is never painted');
+  detailFn.indexOf('frame.scrollTop = 0') > detailFn.indexOf('showModal'),
+  'mount, then showModal, then scrollTop = 0 — in the same task, before any paint. A reset placed BEFORE showModal is discarded: a closed <dialog> is display:none, so its frame has no scrolling box');
 check('the details reset never touches the page, and is never animated or deferred',
   !/window\.scrollTo/.test(code) && !/document\.scroll/.test(code) &&
   !/behavior:\s*'smooth'/.test(detailFn) && !/scrollIntoView/.test(detailFn) &&
