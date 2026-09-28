@@ -14,8 +14,11 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 const cssFiles = ['assets/css/site.css', 'assets/css/records.css'];
 /* Comments are prose, not selectors: a class named in a comment ("e.g.
-   .empty-state") or a filename inside one must never be reported. */
-const stripComments = s => s.replace(/\/\*[\s\S]*?\*\//g, '');
+   .empty-state") or a filename inside one must never be reported. The
+   comment is BLANKED rather than deleted, and keeps its newlines, so every
+   "line N" below points at the line N in the file a person opens. Deleting
+   it squashed the line numbers and sent every report to the wrong place. */
+const stripComments = s => s.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, ' '));
 const css = cssFiles.map(f => stripComments(fs.readFileSync(path.join(root, f), 'utf8'))).join('\n');
 
 /* ---- 1. unused custom properties ---- */
@@ -386,6 +389,280 @@ for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
   }
   if (/\[data-(id|record|slug)=/.test(sel) || /\.record\s*:nth-child/.test(sel) || /\.record\s*:first-child|\.record\s*:last-child/.test(sel)) {
     motionProblems.push(`line ${line}: ${sel.slice(0, 44)} targets ONE record — the card system is generic and every record must be laid out by the same rule`);
+  }
+}
+
+/* ============================================================
+   A DELAY ON A GATE THAT IS ONLY EVER LEFT.
+
+   A transition takes its duration, its easing and its DELAY from the state
+   it is ENTERING. `.is-loading` is added to <html> by assets/js/intro.js
+   before any hero element is styled, and it is only ever REMOVED — the
+   `released` flag in that file makes the removal idempotent, and nothing
+   anywhere adds the class back. So it is a state the page only ever leaves,
+   never enters from a rendered state, and there is therefore no transition
+   into it for a delay to govern.
+
+   Every beat in the hero's opening was written on the leaving side:
+
+       .is-loading .hero-head { transition-delay: 800ms; }
+
+   Measured, before this was fixed: the whole hero arrived as ONE 800ms block
+   at delay 0, and the three CTAs rode 28px out from under the pointer
+   together as a single rigid step. Seven beats, documented in the source,
+   none of which had ever run — the choreography was a comment describing an
+   intention rather than a behaviour.
+
+   The repair is not to make the gate clever. The delay goes on the RESTING
+   selector, which is the state being entered, and this check is what stops
+   the whole class from coming back. */
+for (const m of css.matchAll(/([^{}]*\.is-loading[^{}]*)\{([^{}]*)\}/g)) {
+  if (!/transition-delay\s*:/.test(m[2])) continue;
+  motionProblems.push(`line ${css.slice(0, m.index).split('\n').length}: \`${m[1].trim().replace(/\s+/g, ' ').slice(0, 46)}\` puts a transition-delay on \`.is-loading\` — that class is added before first paint and only ever removed (assets/js/intro.js), so nothing ever transitions INTO it and the delay governs nothing. The delay belongs on the resting selector, which is the state being entered`);
+}
+
+/* ============================================================
+   ONE TRANSITION LIST PER ELEMENT — the shorthand trap.
+   `transition` is a shorthand for the LIST of properties, not a property of
+   its own, so a second declaration on the same element REPLACES the list
+   instead of adding to it. Two rules can therefore each look correct and
+   together quietly delete half the motion:
+
+       .shot-media            { transition: opacity, translate }
+       button.record-shot img { transition: scale }
+
+   The picture that matches both is a video still inside a pressable frame.
+   It got `transition-property: scale`, so its `opacity: 0 -> 1` arrival and
+   its 14px rise had no transition on them at all: re-adding `is-loaded`
+   produced zero animations and the still snapped into the card in one frame.
+   The dialog's still was untouched, because `.cert-stage` is not a <button>
+   and never met the second rule — which is what made it read as intentional.
+
+   The same trap took the hero orbit: `.hero-visual` was given
+   `transition: scale …` for the scroll-speed response, and that replaced all
+   three of the opening sequence's properties — the live CSSOM read
+   `transition-property: scale` and `transition-delay: 0s` on it, so the orbit
+   never arrived and the 600ms beat written for it had nothing to delay. The
+   check used to be scoped to pictures, which is precisely why it sat there
+   green while the hero quietly lost its entrance.
+
+   So it is no longer scoped. Any two rules that can reach the SAME element
+   with a `transition` shorthand must name the SAME properties. That needs a
+   selector engine, so there is a small one below: it reads the three pages,
+   builds an element tree, and answers "is there an element both of these
+   could match". It deliberately OVER-approximates — `:nth-child()`, `:is()`,
+   `:not()` and `*` are read as always-true — because a check that misses a
+   collision because it modelled a corner correctly is the failure mode this
+   whole file exists to prevent. Being over-eager here costs a report line;
+   being under-eager costs a silent half-dead animation. And it refuses to
+   pass quietly on a selector it could not resolve. */
+/* The three pages, as a tree. Not a general parser — a tag scanner over
+   the attributes this site's markup actually uses.
+
+   `is-loading` is seeded onto <html> by hand for the one reason that matters
+   here: intro.js puts it there, so it is the parent of everything on the
+   page, and a rule scoped to it reaches every element. Without the seed the
+   matcher resolves `.is-loading .hero-head` to nothing and every collision
+   inside the opening sequence is invisible — the exact region this check
+   exists to police, and a blind spot shaped like the bug it was written for
+   is worse than no check at all. */
+const elements = [];
+for (const f of ['index.html', 'story.html', 'records.html']) {
+  const file = path.join(root, f);
+  if (!fs.existsSync(file)) continue;
+  const html = fs.readFileSync(file, 'utf8');
+  const stack = [];
+  const rootEl = { tag: 'html', file: f, classes: new Set(['is-loading']), attrs: new Set(), parent: null };
+  elements.push(rootEl);
+  stack.push(rootEl);
+  const tagRe = /<(\/?)([a-zA-Z][a-z0-9-]*)((?:\s[^>]*?))?(\/?)>/g;
+  let m;
+  while ((m = tagRe.exec(html))) {
+    const [, close, rawTag, rawAttrs, selfClose] = m;
+    const tag = rawTag.toLowerCase();
+    if (close) {
+      for (let i = stack.length - 1; i >= 0; i--) {
+        if (stack[i].tag === tag) { stack.length = i; break; }
+      }
+      continue;
+    }
+    const attrs = rawAttrs || '';
+    /* the real <html> IS the seeded node, not a child of it */
+    if (tag === 'html' && stack[0] === rootEl) {
+      for (const c of ((/\bclass="([^"]*)"/.exec(attrs) || [, ''])[1]).split(/\s+/)) if (c) rootEl.classes.add(c);
+      for (const a of attrs.matchAll(/\b([a-zA-Z-]+)=/g)) rootEl.attrs.add(a[1].toLowerCase());
+      continue;
+    }
+    const el = {
+      tag,
+      file: f,
+      classes: new Set(((/\bclass="([^"]*)"/.exec(attrs) || [, ''])[1]).split(/\s+/).filter(Boolean)),
+      attrs: new Set(Array.from(attrs.matchAll(/\b([a-zA-Z-]+)=/g), x => x[1].toLowerCase())),
+      parent: stack.length ? stack[stack.length - 1] : null
+    };
+    elements.push(el);
+    if (!selfClose && !/^(br|hr|img|input|meta|link|source|track|area|base|col|embed|param|wbr)$/.test(tag)) {
+      stack.push(el);
+    }
+  }
+}
+
+/* split a selector list on its top-level commas only */
+function splitTop(s, sep) {
+  const out = [];
+  let depth = 0, cur = '';
+  for (const ch of s) {
+    if (ch === '(' || ch === '[') depth++;
+    else if (ch === ')' || ch === ']') depth--;
+    if (ch === sep && depth === 0) { out.push(cur); cur = ''; continue; }
+    cur += ch;
+  }
+  out.push(cur);
+  return out.map(x => x.trim()).filter(Boolean);
+}
+
+/* one selector -> its compounds, outermost first. A dynamic pseudo decides
+   WHEN, never WHICH element, so `:hover` is dropped: the element a hover
+   rule reaches is the same element its base rule reaches, which is exactly
+   why the shorthand collides with it. */
+function parseSelector(sel) {
+  const parts = splitTop(sel.replace(/\s*>\s*/g, ' > ').replace(/\s+/g, ' '), ' ')
+    .flatMap(p => p.split('>').map(x => x.trim()).filter(Boolean));
+  return parts.map(compound => {
+    const c = { tag: null, classes: [], attrs: [], id: null };
+    const head = /^[a-zA-Z][a-z0-9-]*/.exec(compound);
+    let rest = compound;
+    if (head) { c.tag = head[0].toLowerCase(); rest = compound.slice(head[0].length); }
+    for (const t of rest.matchAll(/\.([a-zA-Z0-9_-]+)/g)) c.classes.push(t[1]);
+    for (const t of rest.matchAll(/#([a-zA-Z0-9_-]+)/g)) c.id = t[1];
+    for (const t of rest.matchAll(/\[[^\]]*?([a-zA-Z-]+)\s*[~|^$*]?=?/g)) c.attrs.push(t[1].toLowerCase());
+    return c;
+  });
+}
+
+function compoundMatches(c, el) {
+  if (c.tag && c.tag !== el.tag) return false;
+  for (const k of c.classes) if (!el.classes.has(k)) return false;
+  for (const k of c.attrs) if (!el.attrs.has(k)) return false;
+  return true;
+}
+
+function selectorMatches(compounds, el) {
+  if (!compoundMatches(compounds[compounds.length - 1], el)) return false;
+  let idx = compounds.length - 2;
+  let node = el.parent;
+  while (idx >= 0) {
+    if (!node) return false;
+    if (compoundMatches(compounds[idx], node)) idx--;
+    else node = node.parent;
+  }
+  return true;
+}
+
+/* Which of two rules actually WINS the list. Without this the check reports
+   every pair that differs, including the harmless case where the winner names
+   a SUPERSET of the loser's properties and nothing is lost at all — which is
+   exactly what `.primary-nav a { transition: color, background }` does to the
+   bare `a { transition: color }`, and reporting that would be a check crying
+   wolf on its first day.
+
+   Specificity is the normal (a, b, c) triple; on a tie the LATER rule in the
+   source wins, which is the second half of the real cascade. A `:hover` is a
+   class, `::before` is a tag, and the arguments of `:not()` / `:is()` /
+   `:where()` count as themselves. */
+function specificity(sel) {
+  let a = 0, b = 0, cc = 0;
+  for (const m of sel.matchAll(/#([a-zA-Z0-9_-]+)/g)) { a++; }
+  for (const m of sel.matchAll(/\.([a-zA-Z0-9_-]+)/g)) { b++; }
+  for (const m of sel.matchAll(/\[[^\]]*\]/g)) { b++; }
+  for (const m of sel.matchAll(/::[a-zA-Z-]+/g)) { cc++; }
+  for (const m of sel.matchAll(/:(?!:)[a-zA-Z-]+/g)) { b++; }
+  for (const m of sel.matchAll(/:(not|is|where|has)\(([^)]*)\)/g)) {
+    b += (m[2].match(/[.#a-zA-Z][a-zA-Z0-9_-]*/g) || []).length;
+  }
+  /* the tag count has to exclude anything already counted as a class or id */
+  const stripped = sel
+    .replace(/#[a-zA-Z0-9_-]+/g, '')
+    .replace(/\.[a-zA-Z0-9_-]+/g, '')
+    .replace(/\[[^\]]*\]/g, '')
+    .replace(/::?[a-zA-Z-]+/g, '')
+    .replace(/:(not|is|where|has)\([^)]*\)/g, '');
+  for (const m of stripped.matchAll(/\b[a-zA-Z][a-z0-9-]*\b/g)) { cc++; }
+  return [a, b, cc];
+}
+const specGreater = (x, y) => {
+  for (let k = 0; k < 3; k++) if (x[k] !== y[k]) return x[k] > y[k];
+  return false;   /* a tie is broken by source order, and `order` decides it */
+};
+
+/* every rule that can reach an element with a `transition` shorthand */
+const listRules = [];
+const unreadableSelectors = [];
+for (const m of css.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
+  const sel = m[1].trim();
+  if (!sel || sel.startsWith('@')) continue;
+  /* The reduced-motion block collapses the whole arrival into one plain
+     400ms fade on purpose — `transition: opacity 400ms linear !important`
+     is meant to replace a five-property list, because the whole point of
+     still mode is LESS movement rather than a tidier version of the same
+     movement. It is exempt here for the same reason it is exempt from the
+     raw-time rules, and the header line reports how many blocks were
+     skipped, so the exemption is visible rather than silent. */
+  if (inReduced(m.index)) continue;
+  /* `transition-property` / `-duration` / `-timing-function` / `-delay` are
+     longhands and ADD to the list. Only the bare shorthand replaces it. */
+  if (!/(^|[;{\s])transition\s*:/.test(m[2])) continue;
+  const line = css.slice(0, m.index).split('\n').length;
+  const order = m.index;
+  const props = (/transition\s*:\s*([^;}]+)/.exec(m[2])[1]).split(',').map(p => p.trim().split(/[\s(]/)[0]).filter(Boolean);
+  for (const one of splitTop(sel, ',')) {
+    /* a pseudo-ELEMENT is a different box with its own list. `.x` and
+       `.x::after` are two elements, not one, and their shorthands never
+       touch each other — the sweep under a button lives on `::before`
+       precisely so it can have its own clock. */
+    if (one.includes('::')) continue;
+    const compounds = parseSelector(one);
+    /* a compound with nothing in it is a selector this matcher cannot
+       resolve — `*`, `:is()`, a bare pseudo. Report it rather than skip it:
+       a check that quietly ignores what it cannot parse has already missed
+       one, which is the failure this file exists to prevent. */
+    if (!compounds.length || compounds.some(c => !c.tag && !c.classes.length && !c.attrs.length)) {
+      unreadableSelectors.push(one);
+      continue;
+    }
+    /* one line, always: a selector written as a comma list spans lines, and a
+       report that breaks mid-message cannot be grepped or asserted on */
+    listRules.push({ sel: one.replace(/\s+/g, ' '), compounds, props, line, order, spec: specificity(one) });
+  }
+}
+for (const one of unreadableSelectors) {
+  motionProblems.push(`a \`transition\` shorthand on \`${one}\` could not be resolved to any element — a selector the check cannot parse is a collision it has already missed`);
+}
+/* A check that reads nothing has not passed, it has stopped working. Two ways
+   this one goes blind without anyone noticing: the pages stop being found
+   (every rule then reaches nothing, so no pair ever collides), or the
+   shorthand stops being recognised. Both used to be silent. */
+if (!elements.length) {
+  motionProblems.push(`no markup was found for the transition-list check — it resolved ${listRules.length} rule(s) against ZERO elements, so it cannot detect a single collision. That is a broken check, not a clean stylesheet`);
+} else if (!listRules.length) {
+  motionProblems.push(`no \`transition\` shorthand was found in ${elements.length} elements of markup — the list-collision check has nothing to compare and is currently vacuous`);
+}
+
+const reached = listRules.map(r => new Set(elements.filter(el => selectorMatches(r.compounds, el))));
+for (let i = 0; i < listRules.length; i++) {
+  for (let j = i + 1; j < listRules.length; j++) {
+    if (![...reached[i]].some(el => reached[j].has(el))) continue;
+    /* which one owns the list, and what does the loser lose by it */
+    const iWins = specGreater(listRules[i].spec, listRules[j].spec) ||
+                 (!specGreater(listRules[j].spec, listRules[i].spec) && listRules[i].order > listRules[j].order);
+    const win = iWins ? listRules[i] : listRules[j];
+    const lose = iWins ? listRules[j] : listRules[i];
+    /* only the LOSER's properties can be dropped: a winner that names MORE
+       than the loser deletes nothing. That is the whole difference between a
+       real collision and two rules that happen to differ. */
+    const lost = lose.props.filter(p => !win.props.includes(p));
+    if (!lost.length) continue;
+    motionProblems.push(`line ${lose.line}: \`${lose.sel.slice(0, 40)}\` transitions ${lost.join(', ')} and \`${win.sel.slice(0, 40)}\` (line ${win.line}) wins the cascade on the same element without it — \`transition\` is a shorthand for the LIST, so it REPLACES rather than adds, and ${lost.join(' and ')} stop animating there. Write the list once as transition-property/-duration/-timing-function, or fold \`${lose.sel.split(/[ >:]/).pop()}\` into it`);
   }
 }
 

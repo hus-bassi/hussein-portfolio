@@ -426,12 +426,37 @@ button.record-shot.is-document:hover, button.record-shot.is-document:focus-visib
 
    `translate` again, for the same reason as everywhere else: the frame
    around it uses `translate` for its own press, and a `transform` here
-   would be a second opinion about the same axis. */
-.shot-media {
-  opacity: 0; translate: 0 14px;
+   would be a second opinion about the same axis.
+
+   AND THE LIST IS COMPLETE AND WRITTEN ONCE, which is not tidiness — it is
+   the whole fix. `transition` is a SHORTHAND, so a second declaration
+   REPLACES the list instead of adding to it. Three properties animate on a
+   picture: it arrives on `opacity` and `translate`, and it leans in on
+   `scale`. While the arrival named the first two and the hover rule named
+   only the third, the picture that is BOTH — a video still inside a
+   pressable frame, so `.shot-media` AND `button.record-shot img` — lost its
+   arrival outright. Measured on records.html: computed `transition-property`
+   on the still read `scale`, its `opacity: 0` came and went with no
+   transition on it at all, and re-adding `is-loaded` produced ZERO
+   animations. The still snapped from invisible to visible in a single
+   frame, with no fade and no rise. The dialog's still was never affected,
+   because `.cert-stage` is not a <button> and never met that rule — which
+   is exactly why it read as a deliberate difference rather than a bug until
+   somebody measured the transition instead of the declaration.
+
+   So all three names live in the one rule below, and nowhere else. The two
+   <button> selectors are in it for the LIST, not for the hidden state: a
+   certificate scan that never opts in still has to lean on hover. The
+   hidden state is JavaScript's opt-in alone and stays on its own line. */
+.shot-media,
+button.record-shot img,
+button.record-shot .media-poster {
+  scale: 1;
   transition: opacity var(--motion-reveal) var(--ease),
-              translate var(--motion-reveal) var(--ease-out);
+              translate var(--motion-reveal) var(--ease-out),
+              scale var(--motion-slow) var(--ease-out);
 }
+.shot-media { opacity: 0; translate: 0 14px; }
 .shot-media.is-loaded { opacity: 1; translate: none; }
 
 /* A frame that HOLDS A PICTURE is sized by the picture, not by the glyph
@@ -450,17 +475,17 @@ button.record-shot.is-document:hover, button.record-shot.is-document:focus-visib
 /* THE IMAGE INSIDE THE CARD moves a little on hover, and only there.
    `scale` is its own property, so it composes with the picture's own
    `translate` arrival and with the frame's press instead of cancelling
-   either. It is scoped to a real <button> frame — a mount with nothing to
+   either. What carries it is named ONCE, in the arrival recipe above, and
+   not here: a `transition` written in this rule replaced that list rather
+   than joining it, which is how the still stopped arriving. This rule is
+   the state and nothing else.
+
+   It is scoped to a real <button> frame — a mount with nothing to
    open is not a control and does not react — and to `.record-shot`, which
    is the CARD's preview frame and nothing else: the full-size certificate
    in the viewer is `.cert-image`, the draggable surface, and it keeps a
    `transform` for zoom and panning that a scale here would fight. The
    frame's own `overflow: hidden` is what makes the crop invisible. */
-button.record-shot img,
-button.record-shot .media-poster {
-  scale: 1;
-  transition: scale var(--motion-slow) var(--ease-out);
-}
 button.record-shot:hover img,
 button.record-shot:hover .media-poster { scale: 1.03; }
 .record-shot.is-video:has(.media-poster)::after,

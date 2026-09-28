@@ -208,7 +208,12 @@ svg { display: block; }
   border: 1px solid var(--violet);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   box-shadow: 0 18px 40px -20px var(--violet-d);
-  transition: top var(--motion-normal) var(--ease);
+  /* `color` is named here because the bare `a` above transitions it and this
+     shorthand REPLACES that list rather than adding to it — so without this
+     the one link a keyboard user lands on snapped from one colour to another
+     while every other label on the site answered in 300ms. */
+  transition: top var(--motion-normal) var(--ease),
+              color var(--motion-fast) var(--ease);
 }
 .skip-link:focus { top: 0; }
 
@@ -297,9 +302,17 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-block-end: 1px solid transparent;
-  transition: background var(--motion-normal) var(--ease),
-              border-color var(--motion-normal) var(--ease),
-              box-shadow var(--motion-normal) var(--ease);
+  /* ONE list for this element, and the opening sequence is folded into it
+     rather than written a second time further down. The second `transition`
+     shorthand used to sit there for the hero's arrival and it WON the
+     cascade on its own element, so the header's tint, its border and its
+     shadow had no transition at all: `.is-stuck` snapped from translucent to
+     solid in one frame, which is the one moment the header is most likely
+     to be moving under the reader's eye. Three clocks, one list — the
+     surface answers in 450ms, the arrival takes the full reveal. */
+  transition-property: background, border-color, box-shadow, opacity, transform;
+  transition-duration: var(--motion-normal), var(--motion-normal), var(--motion-normal), var(--motion-reveal), var(--motion-reveal);
+  transition-timing-function: var(--ease), var(--ease), var(--ease), var(--ease-out), var(--ease-out);
 }
 .site-header.is-stuck {
   background: rgba(4, 5, 10, .93);
@@ -488,7 +501,7 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   opacity: 1; visibility: visible; translate: none; scale: 1;
   transition-delay: 0s;
 }
-.to-top:hover { transform: translateY(-2px); background-position: var(--edge-hi); filter: drop-shadow(0 8px 20px rgba(124, 92, 255, .45)); }
+.to-top:hover { --lift: -2px; background-position: var(--edge-hi); filter: drop-shadow(0 8px 20px rgba(124, 92, 255, .45)); }
 .to-top svg { width: 20px; height: 20px; color: var(--gold); }
 
 /* ---------- 4a. The field and the cursor ----------
@@ -585,35 +598,124 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
    `.is-loading` is added by a tiny script in <head> and removed on the
    first animation frame, so nothing is ever "stuck" hidden: if the script
    is blocked or errors, the class is gone by the fallback timeout
-   (assets/js/intro.js, 3s) and the hero is simply already in place. */
+   (assets/js/intro.js, 3s) and the hero is simply already in place.
+
+   WHY THE DELAYS BELOW ARE ON THE RESTING SELECTOR, AND NOT ON `.is-loading`.
+   This is the bug behind the hero, and it is not a matter of taste.
+
+   A transition takes its duration, its easing and its DELAY from the state
+   it is ENTERING. The state the hero enters when `intro.js` drops
+   `is-loading` is the RESTING one — so `transition-delay` written on
+   `.is-loading .hero-head` was a delay on the state being LEFT, and it never
+   applied to anything. Measured before this pass: the hero arrived as ONE
+   800ms block at delay 0, every element at once, and the whole row of buttons
+   rode 28px out from under the pointer as a single rigid step. The beats
+   written in the comment below had been documented in the source for the
+   life of the file and had never run once.
+
+   So the delays live on the resting selectors, where the browser will
+   actually read them. `transition-delay` is not an entry state and needs no
+   `.is-loading` to pair with: the property is live from the first style, the
+   transition starts when the class comes off, and it waits out its own
+   delay. */
 .is-loading .hero-head,
 .is-loading .hero-lead,
 .is-loading .hero-desc,
-.is-loading .hero-actions,
 .is-loading .hero-quote,
 .is-loading .hero-visual {
   opacity: 0;
   transform: translateY(28px);
   filter: blur(12px);
 }
+
+.hero-head, .hero-lead, .hero-desc, .hero-quote, .hero-visual {
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              transform var(--motion-reveal) var(--ease-out),
+              filter var(--motion-reveal) var(--ease-out);
+}
 /*     0ms  the light field is already there — nothing to announce
      600ms  the orbit
      800ms  the eyebrow
     1000ms  the name
     1200ms  the lead, and the description just behind it
-    1400ms  the buttons
+    1400ms  the first button, and the next two one stagger behind it
     1600ms  the line that closes the hero                             */
-.is-loading .hero-head    { transition-delay: 800ms; }
-.is-loading .hero-visual  { transition-delay: 600ms; }
-.is-loading .hero-lead    { transition-delay: 1200ms; }
-.is-loading .hero-desc    { transition-delay: 1280ms; }
-.is-loading .hero-actions { transition-delay: 1400ms; }
-.is-loading .hero-quote   { transition-delay: 1600ms; }
+.hero-visual { transition-delay: 600ms; }
+.hero-head   { transition-delay: 800ms; }
+.hero-lead   { transition-delay: 1200ms; }
+.hero-desc   { transition-delay: 1280ms; }
+.hero-quote  { transition-delay: 1600ms; }
 
-.hero-head, .hero-lead, .hero-desc, .hero-actions, .hero-quote, .hero-visual {
-  transition: opacity var(--motion-reveal) var(--ease-out),
-              transform var(--motion-reveal) var(--ease-out),
-              filter var(--motion-reveal) var(--ease-out);
+/* THE HERO CTAs ARRIVE ONE AT A TIME, AND AS BUTTONS.
+   These three used to be the ENTRY STATE of `.hero-actions` itself — the
+   wrapper went `opacity: 0 / blur(12px) / translateY(28px)` and all three
+   rose together 1400ms late as one rigid block. There was no stagger at
+   all, because there was nothing to stagger: the row moved as a single
+   element, so it slid out from under the pointer's feet in one 28px step
+   and the last button in the reading order was the one that read as
+   misplaced. The measured truth before the fix, on the third button:
+   `translateY(28px)` for the whole 1400ms delay, then 800ms of travel,
+   with all three sharing one top edge to the hundredth of a pixel.
+
+   The row is LAYOUT and nothing else: `display: flex`, a gap and a wrap,
+   further down this file, with no transform, no animation and no negative
+   margin on it ever. The travel belongs to the buttons, and each button
+   has its own beat.
+
+   `translate`, not `transform`. These three are `[data-magnetic]`, and the
+   pointer's pull and the hover lift were put together into ONE `transform`
+   on every control (the recipe in §7). That leaves `translate` to the
+   entrance and to nothing else, so the two can never contest one property
+   — the failure that made a card's arrival and its hover fight, and that
+   cost a picture its fade. The resting value is `none`: a button that has
+   arrived sits exactly where the flex line put it, to the pixel, in both
+   writing directions.
+
+   No horizontal component anywhere, so there is nothing for RTL to mirror
+   and no `translateX` whose sign could come out backwards. */
+.is-loading .hero-actions > .btn {
+  opacity: 0;
+  translate: 0 14px;
+  filter: blur(4px);
+}
+/* THE STAGGER, and why it is an animation rather than three more delays.
+
+   A `transition-delay` is the delay before ONE transition starts, and it is
+   consumed by it. Put the three beats here, on the arrival, and the first
+   button's entrance would eat its own 1400ms — which is exactly what the
+   live CSSOM showed: `transition-delay` computed to `0s` on all three, the
+   1400ms/1520ms/1640ms written above never applied to anything, and the row
+   came in as one block.
+
+   A transition is also not a thing you can hold off and then play later
+   without holding the element in the pre-arrival state for the whole gap,
+   which is what a delayed arrival looks like from the outside. So the beat
+   is an `animation`, which has a first frame, a delay before it and an end:
+   the button holds its arrival state for its turn, then rises, then STOPS.
+   A transition would have to be re-triggered to do that; an animation plays
+   once and hands the property back.
+
+   The animation is `fill-mode: backwards` on purpose: it back-fills the
+   arrival state through the delay and does NOT hold the final state, so
+   when it ends the button's own resting declarations take over untouched —
+   `translate: none`, `transform: translate(0px, 0px)`. Nothing is pinned
+   afterwards, and the interaction half of the button is exactly as it was. */
+@keyframes cta-in {
+  from { opacity: 0; translate: 0 14px; filter: blur(4px); }
+}
+.hero-actions > .btn {
+  animation: cta-in var(--motion-reveal) var(--ease-out) backwards;
+  animation-delay: 1400ms;
+}
+.hero-actions > .btn:nth-child(2) { animation-delay: calc(1400ms + var(--stagger)); }
+.hero-actions > .btn:nth-child(3) { animation-delay: calc(1400ms + 2 * var(--stagger)); }
+/* and the arrival state has to be a real declaration of the button's own, not
+   only the keyframe's — the keyframe only back-fills, so the resting rule is
+   what the button is BEFORE its turn comes round */
+.is-loading .hero-actions > .btn {
+  opacity: 0;
+  translate: 0 14px;
+  filter: blur(4px);
 }
 
 /* the name arrives last and hardest — it is the subject of the page */
@@ -622,10 +724,14 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   transition: opacity var(--motion-cinematic) var(--ease-out),
               transform var(--motion-cinematic) var(--ease-out),
               filter var(--motion-cinematic) var(--ease-out);
+  /* the resting selector, for the reason the whole of §4b was rewritten:
+     a delay belongs to the state being ENTERED, and this is that state */
+  transition-delay: 1000ms;
 }
-.is-loading .hero-name { transition-delay: 1000ms; }
 .is-loading .site-header { opacity: 0; transform: translateY(-14px); }
-.site-header { transition: opacity var(--motion-reveal) var(--ease-out), transform var(--motion-reveal) var(--ease-out); }
+/* the header is part of the opening sequence, and its arrival is in the ONE
+   list it carries in §4c — see the note there. A second `transition`
+   shorthand here is what cost the header its own fade. */
 
 /* ---------- 5. Layout: bands and section heads ---------- */
 .band {
@@ -867,13 +973,6 @@ a.record-action.is-plain:hover { color: var(--fg); }
   border-radius: var(--radius-sm);
   cursor: pointer;
   animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
-  /* Three clocks. The label and the surface answer in 450ms and the glow
-     takes 650ms to come up; the light has its own, 800ms here and 1.2s on
-     the primary, and it is an ANIMATION rather than a transition so that it
-     runs once on the way in and does not run backwards on the way out. */
-  transition: transform var(--motion-normal) var(--ease),
-              background-position var(--motion-normal) var(--ease),
-              filter var(--motion-slow) var(--ease);
   /* A resting drop-shadow, fully transparent. The hover glow is a filter
      and not a box-shadow because the `aura` keyframe above OWNS
      box-shadow — an animation beats a normal declaration for the same
@@ -881,27 +980,60 @@ a.record-action.is-plain:hover { color: var(--fg); }
      silently discarded, and that is the other half of why the interaction
      felt weak. Two drop-shadows interpolate; `filter: none` does not
      interpolate with one, which is why this rests at zero alpha rather than
-     at `none`. */
+     at `none`. It is also what already gives a button a stacking context,
+     so the `z-index: -1` sweep below stays inside the button it belongs to. */
   filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
 }
+
+/* ONE TRANSFORM ON A CONTROL, FROM TWO INPUTS, AND ONE TRANSITION LIST.
+   A control is moved by two independent things: the pointer's magnetic pull
+   and the hover lift, plus the press. `transform` and `translate` are the
+   only two spatial channels, and three effects cannot share one, so the
+   pairing used to be arbitrary — the pull was on `translate` (because
+   `transform` belonged to the hover) and the entrance had nowhere to go and
+   ended up on the wrapper, dragging the whole row with it.
+
+   So the small persistent offsets are ADDED, in one declaration, and the
+   channel is left: `--lift` is the hover/press answer, set by the `:hover`
+   and `:active` rules below, and `--mag-x / --mag-y` are the pointer's
+   pull, written by assets/js/pointer.js for `[data-magnetic]`. They compose
+   by construction, so no two of them can overwrite each other, and
+   `translate` is free for the one-off entrance above.
+
+   The list is written as LONGSANDS, once. `transition` is a shorthand for
+   the list of properties, so a second declaration on the same element
+   REPLACES the list instead of adding to it — the trap that once deleted a
+   picture's arrival because a later rule named only `scale`. Four states of
+   this family each used to write the shorthand, and each had to remember
+   all five properties or it would drop the others. Now a state moves a
+   DURATION and the list is never rewritten. */
+.btn, .btn-solid, .btn-outline, .record-action, .to-top {
+  --lift: 0px;
+  transform: translate(var(--mag-x, 0px), calc(var(--mag-y, 0px) + var(--lift)));
+  transition-property: transform, background-position, opacity, translate, filter;
+  transition-duration: var(--motion-normal), var(--motion-normal), var(--motion-slow), var(--motion-slow), var(--motion-slow);
+  transition-timing-function: var(--ease), var(--ease), var(--ease-out), var(--ease-out), var(--ease);
+}
+/* The response and the return are different on purpose. A transition takes
+   its duration from the state being ENTERED, so the base rule above carries
+   the 450ms answer and the way back, and `:hover` shortens the same
+   properties to the response. `transition-duration` alone, never the
+   shorthand: one value applies to every property, and the two the entrance
+   owns are idle by the time a pointer can reach the button. */
 .btn:hover, .btn-solid:hover, .btn-outline:hover {
-  transform: translateY(-1px);
+  --lift: -2px;
   background-position: var(--edge-hi);
   filter: drop-shadow(0 10px 24px rgba(124, 92, 255, .45));
-  transition: transform var(--motion-normal) var(--ease),
-              background-position var(--motion-normal) var(--ease),
-              filter var(--motion-slow) var(--ease);
+  transition-duration: var(--motion-normal);
 }
-/* THE PRESS. Back to rest, in one step, on the site’s shortest rung. The
+/* THE PRESS. Back to rest, in one step, on the site's shortest rung. The
    button does not sink below the surface and does not bounce back out of
    it: `:active` sits on top of `:hover`, so this is the hover state with
-   its one pixel taken back, and a visitor pressing a control gets an
-   answer rather than a small performance. `translateY(0)` is written out
-   rather than left to the base rule because :active has to be unambiguous
-   against both the lift above and the resting transform below it. */
+   its lift taken back, and a visitor pressing a control gets an answer
+   rather than a small performance. */
 .btn:active, .btn-solid:active, .btn-outline:active,
 .record-action:active, .to-top:active {
-  transform: translateY(0);
+  --lift: 0px;
   transition-duration: var(--motion-instant);
 }
 
@@ -979,17 +1111,13 @@ a.record-action.is-plain:hover { color: var(--fg); }
   outline-offset: 3px;
 }
 
-/* THE MAGNETIC PULL. assets/js/pointer.js writes --mag-x / --mag-y at three
-   and two pixels, and removes them the moment the pointer leaves. It is
-   applied through the `translate` property rather than `transform`, so it
-   composes with the hover lift instead of overwriting it, and so that the
-   press and the sweep can each own something else. 650ms is both the
-   follow and the way back: a button that chased the pointer would be a
-   button nobody can click, and one that snapped back would read as a toy. */
-[data-magnetic] {
-  translate: var(--mag-x, 0px) var(--mag-y, 0px);
-  transition: translate var(--motion-slow) var(--ease-soft);
-}
+/* THE MAGNETIC PULL is `--mag-x` / `--mag-y`, and they are read by the one
+   `transform` in §7 — a pull of three and two pixels toward the pointer,
+   written by assets/js/pointer.js and removed the moment the pointer leaves.
+   It used to be its own `translate: var(--mag-x) var(--mag-y)` on
+   `[data-magnetic]`, which is what left the entrance with no channel of its
+   own. `[data-magnetic]` is now a MARKER, and it has no declarations here:
+   the two variables are the whole contract, and §7 is where they are spent. */
 
 /* the primary button is the lit spectrum with near-black text on it, over a
    DEEP spectrum edge — so its border is a real border, and it can get
@@ -1147,7 +1275,15 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   margin-block-end: var(--s-4);
 }
 .hero-desc { color: var(--fg-3); max-width: 46ch; margin-block-end: var(--s-7); }
-.hero-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block-end: var(--s-7); }
+/* LAYOUT AND NOTHING ELSE. The row is not an actor: no transform, no
+   animation, no negative margin, no absolute positioning, and no hard-coded
+   side — `flex-start` resolves to the right in Arabic and to the left in
+   English and Russian, so the reading order reads the same way in all three
+   without a single direction-aware coordinate. `align-items: center` is what
+   keeps a wrapped line from stretching a button to the height of the longest
+   one beside it, which in Russian — the longest of the three labels — is the
+   difference between a tidy second row and three boxes of three sizes. */
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-block-end: var(--s-7); }
 
 .hero-quote {
   position: relative;
@@ -1206,7 +1342,16 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
      one thing on screen that is purely decorative */
   translate: 0 calc(var(--hero-y, 0) * -30px);
   scale: calc(1 + var(--scroll-v, 0) * .012);
-  transition: scale var(--motion-slow) var(--ease);
+  /* `scale` is ADDED to the list the opening sequence gave this element,
+     never written as a `transition` shorthand. The shorthand is a shorthand
+     for the LIST, so declaring it here replaced all three of the entrance's
+     properties: the live CSSOM read `transition-property: scale` on
+     `.hero-visual` and `transition-delay: 0s`, which is the same defect as
+     the picture that lost its fade — the orbit never arrived at all, and
+     the 600ms beat written for it in §4b had nothing to delay. */
+  transition-property: opacity, transform, filter, scale;
+  transition-duration: var(--motion-reveal), var(--motion-reveal), var(--motion-reveal), var(--motion-slow);
+  transition-timing-function: var(--ease-out), var(--ease-out), var(--ease-out), var(--ease);
 }
 .hero-visual::before {
   content: ""; position: absolute; inset: 6%;
@@ -1463,7 +1608,7 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
    control inside a card, and a card that starts moving is a card that has
    stopped being a card */
 .record-action:hover {
-  transform: translateY(-1px);
+  --lift: -1px;
   background-position: var(--edge-hi);
   filter: drop-shadow(0 6px 16px rgba(124, 92, 255, .4));
 }
@@ -2042,9 +2187,12 @@ html[lang="ar"] .count {
     transition-duration: 200ms;
   }
   .btn:hover, .btn-solid:hover, .btn-outline:hover, .to-top:hover,
+  .record-action:hover,
   .card:hover, .record:hover, .stage:hover, .stat:hover, .social:hover,
   .empty-state:hover { transform: none; }
-  [data-magnetic] { translate: none; }
+  /* the magnetic pull is spent through `transform` now, so under reduce it
+     is neutralised where it is written rather than where it was read */
+  [data-magnetic] { --mag-x: 0px; --mag-y: 0px; }
 
   /* The light that crosses a button is travel, and travel is exactly what
      this mode is asking us not to do. Selector for selector with the rule it
@@ -2061,14 +2209,21 @@ html[lang="ar"] .count {
   .is-loading .hero-head,
   .is-loading .hero-lead,
   .is-loading .hero-desc,
-  .is-loading .hero-actions,
+  .is-loading .hero-actions > .btn,
   .is-loading .hero-quote,
   .is-loading .hero-visual,
   .is-loading .hero-name,
   .is-loading .site-header {
-    opacity: 0; transform: none; filter: none;
+    opacity: 0; transform: none; translate: none; filter: none;
     transition: opacity 400ms linear !important;
   }
+  /* …and the three CTAs keep no animation of their own, so the beat above is
+     the only thing that arrives. The delays on the text are reset too: a
+     400ms fade is meant to be a fade, and inheriting a 1600ms wait from the
+     motion version would turn "calm" into "slow". */
+  .hero-actions > .btn { animation: none; }
+  .hero-visual, .hero-head, .hero-lead, .hero-desc, .hero-quote,
+  .hero-name { transition-delay: 0s; }
 
   /* reveals resolve immediately, with no travel and no blur, and the
      trajectory is simply already drawn */

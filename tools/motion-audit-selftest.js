@@ -41,17 +41,23 @@ const CLEAN = `
   --ambient-long: 30s;
   --ambient-cinematic: 45s;
 }
+/* ONE transition list, written as longhands, on the ONE element that carries
+   all three of these classes. The fixture used to give each class its own
+   'transition' shorthand, which is the real defect the generalised shorthand
+   check is for: the second and third lists REPLACE the first, and the
+   generalised check caught the fixture the moment it was switched on. It is
+   left in that shape deliberately — this is what the shipped code has to look
+   like, and the fixture is the example everyone copies from. */
 .card {
-  transition: transform var(--motion-slow) var(--ease),
-              box-shadow var(--motion-normal) var(--ease);
+  transition-property: transform, box-shadow, stroke-dashoffset, opacity;
+  transition-duration: var(--motion-slow), var(--motion-normal), var(--motion-long), var(--motion-reveal);
+  transition-timing-function: var(--ease), var(--ease), var(--ease), var(--ease);
   animation: edge-shine var(--ambient-long) var(--ease) infinite;
 }
 .card:hover { transition-duration: var(--motion-fast); }
 .card:active { transform: translateY(1px); transition-duration: var(--motion-instant); }
-.trajectory { transition: stroke-dashoffset var(--motion-long) var(--ease);
-              animation: trace-run var(--ambient-slow) linear infinite; }
-.hero-scroll { transition: opacity var(--motion-reveal) var(--ease);
-               animation: orb-breathe var(--ambient-pulse) var(--ease) infinite alternate,
+.trajectory { animation: trace-run var(--ambient-slow) linear infinite; }
+.hero-scroll { animation: orb-breathe var(--ambient-pulse) var(--ease) infinite alternate,
                           field-drift var(--ambient-cinematic) var(--ease) infinite alternate; }
 .page-head { transition: opacity var(--motion-cinematic) var(--ease),
                          translate var(--motion-cinematic) var(--ease-out); }
@@ -68,6 +74,17 @@ const CLEAN = `
 `;
 
 const MARKUP = '<div class="card trajectory hero-scroll"><span class="page-head" data-reveal="line"></span></div>';
+
+/* The picture cases need the classes they select to be REAL, or the
+   dead-class rule fires first and the case proves nothing about motion. And
+   they carry the preview ceiling themselves: `.record-shot` in the markup
+   is a rule about a preview, so a case about a picture's transition has to
+   satisfy the preview rules too, or it fails for the wrong reason. */
+const PICTURE = MARKUP +
+  '<button class="record-shot is-video"><img class="shot-media media-poster" alt=""></button>';
+const PICTURE_CSS =
+  '.record-shot { max-height: clamp(210px, 22vw, 280px); }\n' +
+  '.record-shot img { object-fit: contain; }\n';
 
 const CASES = [
   {
@@ -91,8 +108,8 @@ const CASES = [
   },
   {
     name: 'an interaction that answers in a flash',
-    css: CLEAN.replace('transition: transform var(--motion-slow) var(--ease)',
-                        'transition: transform 120ms var(--ease)'),
+    css: CLEAN.replace('transition-duration: var(--motion-slow), var(--motion-normal), var(--motion-long), var(--motion-reveal);',
+                        'transition-duration: 120ms, var(--motion-normal), var(--motion-long), var(--motion-reveal);'),
     expect: /120ms transition — under 250ms/
   },
   {
@@ -249,6 +266,136 @@ const CASES = [
     name: 'a bounded, contained preview (must pass)',
     css: CLEAN + '\n.record-shot { max-height: clamp(210px, 22vw, 280px); }\n.record-shot img { object-fit: contain; }\n.record-body { align-self: start; }\n.record-actions { display: flex; gap: var(--s-3); margin-block-start: var(--s-4); }\n',
     markup: MARKUP + '<li class="record"><span class="record-shot"><img alt=""></span><div class="record-body"><div class="record-actions"></div></div></li>',
+    expect: null
+  },
+
+  /* ---- ONE TRANSITION LIST PER ELEMENT ----
+     `transition` is a shorthand for the list, so two rules that each look
+     right together delete half the motion on whatever matches both. The
+     real instance was a video still: `.shot-media` named `opacity,
+     translate` for its arrival and the hover rule named `scale`, the still
+     matched both, and it arrived with no transition at all — measured as
+     zero animations on the element, not as a missing declaration. */
+  {
+    name: 'the real bug: the hover rule replaces the poster\'s arrival list',
+    css: CLEAN + PICTURE_CSS + '\n.shot-media { opacity: 0; translate: 0 14px; transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out); }\nbutton.record-shot img,\nbutton.record-shot .media-poster { scale: 1; transition: scale var(--motion-slow) var(--ease-out); }\n',
+    markup: PICTURE,
+    expect: /so it REPLACES rather than adds/
+  },
+  {
+    /* The certificate dialog's still is an <img class="media-poster"> that is
+       NOT inside a <button>, so it misses the rule above and meets a different
+       one — which is exactly why the original bug read as intentional. The
+       check resolves that from the markup now, so this case has to put the
+       poster where the dialog really puts it. */
+    name: 'the dialog\'s still also met a scale-only rule',
+    css: CLEAN + PICTURE_CSS +
+      '\n.shot-media { transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out), scale var(--motion-slow) var(--ease-out); }\n' +
+      '.cert-stage .media-poster { transition: scale var(--motion-slow) var(--ease-out); }\n',
+    markup: PICTURE + '<div class="cert-stage"><img class="media-poster shot-media" alt=""></div>',
+    expect: /so it REPLACES rather than adds/
+  },
+  {
+    name: 'a property added to one picture rule later',
+    css: CLEAN + PICTURE_CSS + '\n.shot-media { transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out), scale var(--motion-slow) var(--ease-out); }\nbutton.record-shot:hover img { transition: filter var(--motion-normal) var(--ease); }\n',
+    markup: PICTURE,
+    expect: /so it REPLACES rather than adds/
+  },
+  {
+    name: 'one complete list, shared by every picture (must pass)',
+    css: CLEAN + PICTURE_CSS + '\n.shot-media,\nbutton.record-shot img,\nbutton.record-shot .media-poster { scale: 1; transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out), scale var(--motion-slow) var(--ease-out); }\n',
+    markup: PICTURE,
+    expect: null
+  },
+
+  /* ---- THE SHORTHAND TRAP, OUTSIDE PICTURES ----
+     The check used to be scoped to `img / .media-poster / .shot-media`,
+     which is why it sat there green while `.hero-visual` lost its entire
+     opening sequence to a `transition: scale` written for the scroll
+     response. It is generalised now — any two rules that can reach one
+     element with the shorthand must name the same properties. These cases
+     are the proof that generalising it did not make it vacuous. */
+  {
+    /* The real bug needs BOTH halves: a list the entrance owns, and the
+       scroll response replacing it. A single stray list on one element is
+       harmless, which is why this case writes the group as well. */
+    name: 'the real bug: the orbit\'s scroll response ate its whole entrance',
+    css: CLEAN + '\n.hero-head,\n.hero-visual { transition: opacity var(--motion-reveal) var(--ease), transform var(--motion-reveal) var(--ease-out); }\n.hero-visual { translate: 0 0; scale: 1; transition: scale var(--motion-slow) var(--ease); }\n',
+    markup: MARKUP + '<div class="hero-head"></div><div class="hero-visual"></div>',
+    expect: /so it REPLACES rather than adds/
+  },
+  {
+    name: 'the same trap on a control: a hover list that drops the arrival',
+    css: CLEAN + '\n.cta { transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out); }\n.cta:hover { transition: filter var(--motion-slow) var(--ease); }\n',
+    markup: MARKUP + '<a class="cta" href="#"></a>',
+    expect: /so it REPLACES rather than adds/
+  },
+  {
+    name: 'a winner that names a SUPERSET deletes nothing (must not be reported)',
+    css: CLEAN + '\n.cta { transition: opacity var(--motion-reveal) var(--ease); }\n.cta.is-wide { transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out); }\n',
+    markup: MARKUP + '<a class="cta is-wide" href="#"></a>',
+    expect: null
+  },
+  {
+    name: 'a pseudo-element is its own box: its list never replaces the parent\'s (must pass)',
+    css: CLEAN + '\n.cta { transition: opacity var(--motion-reveal) var(--ease); }\n.cta::before { transition: scale var(--motion-slow) var(--ease-out); }\n',
+    markup: MARKUP + '<a class="cta" href="#"></a>',
+    expect: null
+  },
+  {
+    name: 'two lists on one element, on a rule that matches nothing in the markup',
+    css: CLEAN + '\n.page-head[data-absent] { transition: opacity var(--motion-reveal) var(--ease); }\n.page-head[data-absent]:hover { transition: scale var(--motion-slow) var(--ease-out); }\n',
+    markup: MARKUP,
+    expect: null
+  },
+  {
+    name: 'one list per element, written as longhands (must pass)',
+    css: CLEAN + '\n.cta { transition-property: opacity, translate; transition-duration: var(--motion-reveal), var(--motion-reveal); transition-timing-function: var(--ease), var(--ease-out); }\n.cta:hover { transition-property: opacity, translate, filter; transition-duration: var(--motion-reveal), var(--motion-reveal), var(--motion-slow); }\n',
+    markup: MARKUP + '<a class="cta" href="#"></a>',
+    expect: null
+  },
+  {
+    /* `is-loading` never appears in a class= attribute — intro.js puts it on
+       <html> — so a matcher reading only the markup resolves this to nothing
+       and the opening sequence becomes the one region the check cannot see.
+       That is a blind spot shaped like the bug this check was written for. */
+    name: 'a collision inside the opening sequence, behind a class the markup never carries',
+    css: CLEAN + '\n.hero-scroll { transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out); }\n.is-loading .hero-scroll { transition: scale var(--motion-slow) var(--ease); }\n',
+    markup: MARKUP,
+    expect: /so it REPLACES rather than adds/
+  },
+  {
+    /* still mode deliberately collapses five properties into one plain fade —
+       that IS the reduced-motion design, not a collision, and the block is
+       exempt from the raw-time rules for the same reason */
+    name: 'the still-mode collapse to one fade (must pass)',
+    css: CLEAN + '\n.hero-scroll { transition: opacity var(--motion-reveal) var(--ease), translate var(--motion-reveal) var(--ease-out); }\n@media (prefers-reduced-motion: reduce) { .is-loading .hero-scroll { transition: opacity 400ms linear !important; } }\n',
+    markup: MARKUP,
+    expect: null
+  },
+
+  /* ---- A DELAY ON A GATE THAT IS ONLY EVER LEFT ----
+     Seven beats were written on `.is-loading`, which intro.js only ever
+     removes. Measured on the live site: the hero came in as one 800ms
+     block at delay 0 and the CTAs rode 28px as a single rigid step. A
+     check that cannot fail is worse than no check, so this one is proved
+     both ways. */
+  {
+    name: 'the real bug: a beat written on the gate that only ever gets removed',
+    css: CLEAN + '\n.is-loading .hero-scroll { transition-delay: 600ms; }\n',
+    markup: MARKUP,
+    expect: /puts a transition-delay on `\.is-loading`/
+  },
+  {
+    name: 'a delay on a state that is entered (the resting selector — must pass)',
+    css: CLEAN + '\n.hero-scroll { transition-delay: 600ms; }\n',
+    markup: MARKUP,
+    expect: null
+  },
+  {
+    name: 'a still-mode delay inside the reduced-motion block (must pass)',
+    css: CLEAN + '\n@media (prefers-reduced-motion: reduce) { .hero-scroll { transition-delay: 0s; } }\n',
+    markup: MARKUP,
     expect: null
   }
 ];
