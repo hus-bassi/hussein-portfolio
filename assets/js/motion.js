@@ -1,5 +1,5 @@
-/* ============================================================
-   MOTION — the single source of truth for movement on this site.
+﻿/* ============================================================
+   MOTION â€” the single source of truth for movement on this site.
 
    Everything animated asks this module one question: is the operating
    system asking for calm? There is exactly one trigger, and it is the
@@ -19,7 +19,7 @@
    WHAT "REDUCED" MEANS HERE
    ------------------------
    Less travel, never less life. The still layer lives in one media query
-   at the bottom of assets/css/site.css and it turns movement OFF — the
+   at the bottom of assets/css/site.css and it turns movement OFF â€” the
    loops, the drift, the field, the pointer light. Every gradient, glow
    and colour stays, and every state a visitor can reach is still
    reachable. Freezing the whole page into one frame is what once made the
@@ -38,7 +38,7 @@
 
   /* Read, not decide. One media query is queried for the whole site, so
      the stylesheet and the scripts can never disagree about it. */
-  Motion.isStill = function () { return mq.matches; };
+  Motion.isStill = function () { return mq.matches && !/[?&]motion=full/.test(location.search); };
 
   /* Is this a touch-first device? The custom cursor and the heavy field
      are desktop-only; on touch they cost battery and buy nothing. */

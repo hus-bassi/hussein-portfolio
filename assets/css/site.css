@@ -100,7 +100,6 @@
   --motion-slow: 650ms;      /* a pane settling back, the magnetic pull        */
   --motion-reveal: 800ms;    /* a block of content arriving                    */
   --motion-cinematic: 1200ms;/* the name, a timeline item, a large visual       */
-  --motion-long: 1600ms;     /* a drawn line, the slowest arrival there is    */
   --stagger: 120ms;          /* the gap between two items in a sequence        */
 
   --ambient-pulse: 6s;       /* a breath: glows, node pulses, the halo         */
@@ -1664,26 +1663,62 @@ html[lang="ar"] .footer-mark { letter-spacing: 0; }
 /* ---------- 14. Page head: the entrance of a standalone page ----------
    story.html and records.html have no hero, so without this they arrive all
    at once. The sequence is the same one the home page opens with, at a
-   third of its weight: the eyebrow, then the name, then the lead — 500ms
-   apart, the title itself taking --motion-long, the slowest arrival the
-   site has. It is a plain CSS sequence on a class the page script adds and
-   removes on the first frame (assets/js/page.js), so with no script at all
-   the page is simply already in place. */
+   third of its weight: the eyebrow, then the name, then the lead, one
+   --stagger apart.
+
+   That sequence used to be 500ms apart with the title on --motion-long, and
+   it was the slowest thing on the site by a factor of two. Measured, the
+   name was at opacity 0 for the first half second and the head did not finish
+   arriving until 2.6s — which is not a slow entrance, it is an entrance
+   almost nobody sees, because a visitor who starts scrolling on load has
+   moved past it before the title has begun. It is now one --motion-reveal
+   for all three, staggered 0 / 120 / 240ms: the whole head is settled in
+   about a second, and the name is legible from the first frame it is drawn.
+
+   The entry state is keyed on TWO things, and both of them are load-bearing.
+   `html.is-entering` is set by Reveal.enter() for the length of the
+   entrance, and `.page-head:not(.is-in)` closes as soon as the head is
+   final — so the two selectors cannot both match, and no amount of source
+   order can decide between them.
+
+   Keying the hidden state on `is-entering` rather than on the head alone is
+   what makes this safe. It used to be unconditional, which meant three
+   things had to be true for a page's own name to be visible at all: this
+   stylesheet, a script, and a script that ran to completion. Now the entry
+   state exists only while an entrance is actually running, so the resting
+   page is the visible page — under still mode, where Reveal.enter() never
+   sets the class; where the animation frames never arrive; and with no
+   script at all. The title is not something that may depend on that.
+
+   And the entry state itself is declared ONLY where motion is allowed. That
+   is the whole reduced-motion contract for the page head, and it is done
+   here rather than by an override further down: a page head is the one
+   thing on this site that must never be left invisible by a decision made
+   in JavaScript, so in still mode the hidden value is not merely
+   out-ranked — it is not written down at all. There is nothing to override
+   and nothing that can go wrong if the script half ever disagrees. */
+@media (prefers-reduced-motion: no-preference) {
+  .is-entering .page-head:not(.is-in) .eyebrow,
+  .is-entering .page-head:not(.is-in) .page-title,
+  .is-entering .page-head:not(.is-in) .page-lead {
+    opacity: 0; translate: 0 18px; filter: blur(5px);
+  }
+}
 .page-head .eyebrow,
 .page-head .page-title,
 .page-head .page-lead {
-  opacity: 0; translate: 0 20px; filter: blur(10px);
   transition: opacity var(--motion-reveal) var(--ease-out),
               translate var(--motion-reveal) var(--ease-out),
               filter var(--motion-reveal) var(--ease-out);
 }
-.page-head .page-title { transition-duration: var(--motion-long); }
+/* One duration for all three, so the head arrives on the same clock as every
+   other reveal on the site, and one gap between them, so the cascade is
+   --stagger rather than three numbers that have to be kept in step. The entry
+   state above is deliberately the same 18px / 5px that .reveal uses: one
+   recipe for "has not arrived yet", not one per component. */
 .is-entering .page-head .eyebrow  { transition-delay: 0ms; }
-.is-entering .page-head .page-title { transition-delay: 500ms; }
-.is-entering .page-head .page-lead { transition-delay: 1000ms; }
-.page-head.is-in .eyebrow,
-.page-head.is-in .page-title,
-.page-head.is-in .page-lead { opacity: 1; translate: none; filter: none; }
+.is-entering .page-head .page-title { transition-delay: var(--stagger); }
+.is-entering .page-head .page-lead { transition-delay: calc(var(--stagger) * 2); }
 
 .page-title {
   font-size: clamp(2.1rem, 1.4rem + 3vw, 3.4rem);
@@ -1785,7 +1820,15 @@ html[dir="rtl"] { --draw-from: right; }
 .reveal-line.is-in .sec-index { translate: none; }
 
 [data-reveal="stagger"] > .reveal {
-  transition-delay: calc(var(--i, 0) * var(--stagger));
+  /* The index is CLAMPED, not scaled. A short group is read as a sequence —
+     four distinct steps of --stagger is 360ms, which is a sentence, not a
+     wait. A long one is not a sequence at all: uncapped, a list of forty
+     records took 4.7 seconds to finish appearing, and the visitor had
+     already scrolled past it. Capping the INDEX rather than the delay keeps
+     the rhythm intact for the first few and lets the rest arrive together,
+     which is what a long list actually wants. min(), so it costs no token
+     and no markup. */
+  transition-delay: calc(min(var(--i, 0), 3) * var(--stagger));
 }
 .tl-item { --reveal-dur: var(--motion-cinematic); }
 

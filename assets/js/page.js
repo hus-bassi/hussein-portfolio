@@ -13,17 +13,12 @@
   'use strict';
 
   /* ---------- the page-head entrance ----------
-     The same trick as the hero: a class on <html> for one frame, so the
-     browser never paints the final position and then jumps to it. The
-     fallback timer is the safety net, and it is longer than the sequence
-     it protects — 2.6s of delay plus a 1.6s arrival. */
-  var root = document.documentElement;
-  root.classList.add('is-entering');
-  function enter() { root.classList.remove('is-entering'); }
-  var head = document.querySelector('.page-head');
-  if (head) requestAnimationFrame(function () { requestAnimationFrame(function () { head.classList.add('is-in'); }); });
-  else enter();
-  setTimeout(enter, 2800);
+     It is NOT here. The head used to be animated from this file, behind two
+     nested requestAnimationFrames — which meant records.html, which does not
+     load this file, never revealed its title at all. It belongs to the
+     reveal engine now (Reveal.enter, which also self-initialises), so that
+     a page cannot forget to ask for it and a page that never loads a script
+     of its own still gets a heading. Nothing to start here. */
 
   /* ---------- reveal ---------- */
   if (window.Reveal) Reveal.scan();

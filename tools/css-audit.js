@@ -172,7 +172,11 @@ for (const m of css.matchAll(/(--(?:motion|ambient|stagger)-[a-z0-9-]+)\s*:\s*([
   }
   (ladder[family] = ladder[family] || []).push([m[1], value]);
 }
-const ORDER = ['--motion-instant', '--motion-fast', '--motion-normal', '--motion-slow', '--motion-reveal', '--motion-cinematic', '--motion-long'];
+/* The ladder, slowest last. Every name here is asserted to exist just below,
+   so a rung cannot be deleted from :root without this list being updated too
+   — a token with no use and no rung is decoration, and the loop below is what
+   notices. */
+const ORDER = ['--motion-instant', '--motion-fast', '--motion-normal', '--motion-slow', '--motion-reveal', '--motion-cinematic'];
 for (const [family, names] of [['motion', ORDER], ['ambient', ['--ambient-pulse', '--ambient-slow', '--ambient-long', '--ambient-cinematic']]]) {
   const found = (ladder[family] || []).filter(e => names.includes(e[0])).sort((a, b) => names.indexOf(a[0]) - names.indexOf(b[0]));
   for (let i = 1; i < found.length; i++) {

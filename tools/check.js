@@ -20,7 +20,9 @@ const checks = [
   ['card-layout-audit', [], 'record cards balance from one generic recipe'],
   ['details-media-selftest', [], 'the details-media rules above can still fail'],
   ['details-scroll-audit', [], 'details is header · one scroller · footer'],
-  ['details-scroll-selftest', [], 'the details-scroll rules above can still fail']
+  ['details-scroll-selftest', [], 'the details-scroll rules above can still fail'],
+  ['reveal-audit', [], 'one reveal engine, and nothing is ever held back'],
+  ['reveal-selftest', [], 'the reveal rules above can still fail']
 ];
 
 let failed = 0;

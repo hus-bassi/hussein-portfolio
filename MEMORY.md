@@ -44,6 +44,37 @@ real brief, and it is my job to translate it, not to interrogate him about it.
   engages, and `IntersectionObserver` stays silent. Screenshots are impossible;
   Hussein has to eyeball the site himself. Force a reflow, re-fetch, and
   confirm bytes before believing any odd reading.
+- **An IntersectionObserver never reports a target that never intersected.**
+  Proved live, not read: a fresh observer with `threshold: .01` on a
+  non-intersecting element produced **no callback at all**, not even the
+  initial one. The spec queues an entry only when two states *disagree*, and a
+  target carried from below the band to above it in one frame is outside the
+  root rect on both sides — ratio 0 before, 0 after. So one big scroll step
+  leaves it at `opacity: 0` **for the rest of the session**. Measured on
+  `index.html`: 200px wheel steps revealed 41 of 42 targets; 1200–2000px steps
+  revealed 35, and six (a section heading, three stat cards, a record, another
+  heading) never arrived at all. A slow reader never sees it, which is exactly
+  why it survives. Anything that moves the scroll position in one go does it:
+  a flicked wheel, End, a restored position on reload, a deep link. Fixed with
+  `flushPassed()` in the observer's own callback — no new observer, no clock,
+  no listener, and it reads only elements that are still hidden.
+- **A `no-preference` block is inert in a headless browser, and that is a
+  feature, not a gap.** `prefers-reduced-motion: reduce` is the default there,
+  so an animated entrance cannot be observed locally at all. The way to prove
+  a still-mode guarantee is *CSS-backed* rather than JS-backed: force the class
+  the script would have set, and check the element is still visible. If it is,
+  the hidden value genuinely is not written down in still mode.
+- **Never answer a specificity problem with `!important` or an empty rule.**
+  I reached for `#page-head { }` + `!important` to beat a class-based entry
+  rule, and it was wrong twice over. The real answer was to declare the hidden
+  state only inside `@media (prefers-reduced-motion: no-preference)`, so in
+  still mode it is not written down at all — nothing to override, and no
+  JavaScript decision can leave the page's own name invisible.
+- **Line endings are not uniform in this repo** — `assets/js/reveal.js` is CRLF,
+  everything else is LF. A selftest mutation written against `\n` silently
+  does not apply, and a selftest whose mutations do not apply looks green while
+  proving nothing. The harness now flattens to LF, mutates, and writes back in
+  the ending the file came with, and reports MUTATION DID NOT APPLY loudly.
 - **Verify what I claim.** Hussein checks. A confident summary with a broken
   detail costs more trust than admitting uncertainty.
 
