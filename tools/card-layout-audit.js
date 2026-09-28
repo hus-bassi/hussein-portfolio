@@ -325,10 +325,23 @@ check('the details reset never touches the page, and is never animated or deferr
   !/behavior:\s*'smooth'/.test(detailFn) && !/scrollIntoView/.test(detailFn) &&
   !/setTimeout|requestAnimationFrame|setInterval/.test(detailFn),
   'no page scroll, no smooth reset, no delayed reset, no polling');
-check('the only wheel listener is the image zoomer, which stops the page default',
+/* THE WHEEL MUST NOT BE CANCELLED WHERE THE DETAILS SCROLL. One element
+   serves both modes: the details relabel `.cert-frame` to
+   `cert-frame detail-body` and it becomes the scrolling column, while the
+   zoomer's wheel listener is wired to that same element ONCE, at build time.
+   So a cancel stated BEFORE the zoomer's "is there an image?" guard cancels
+   the DETAILS' own scrolling instead of the page's - and in details mode there
+   is no `.cert-image` at all, so the cancel bought nothing and the wheel was
+   swallowed whole. The details could then only be moved by dragging the
+   scrollbar by hand. This reads the ORDER, because the order IS the defect:
+   a file that merely contains both statements passes either way. */
+const wheelFn = (code.match(/stage\.addEventListener\('wheel'[\s\S]*?\}\s*, \{ passive: false \}\)/) || [''])[0];
+check('the only wheel listener is the image zoomer, and it never cancels a wheel it will not use',
   (code.match(/addEventListener\('wheel'/g) || []).length === 1 &&
-  /stage\.addEventListener\('wheel'/.test(code) && /e\.preventDefault\(\)/.test(code),
-  'one listener, on the image stage, and it zooms rather than scrolls');
+  wheelFn.length > 0 &&
+  /if \(!img\(\)\) return;/.test(wheelFn) &&
+  wheelFn.indexOf('if (!img()) return;') < wheelFn.indexOf('e.preventDefault()'),
+  'one listener, on the image stage, with `if (!img()) return` BEFORE `e.preventDefault()` - so the details column, which is that same element, keeps its native wheel');
 check('the page scroll lock is the native one, not a second system',
   !/document\.body\.style\.overflow/.test(js) && !/classList\.\w+\('scroll-locked'/.test(js) &&
   /showModal/.test(js));

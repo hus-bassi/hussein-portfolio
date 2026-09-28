@@ -113,11 +113,39 @@ withJs(/(function openDetails\(rec\) \{[\s\S]*?)(frame\.scrollTop = 0;)/, '$1req
   () => check('caught: requestAnimationFrame() in the details init',
     caught('no rAF was added', audit())));
 
-/* 10. wheel interception */
+/* 10. wheel interception — the "just add a handler" non-fix */
 withJs(/(function openDetails\(rec\) \{[\s\S]*?)(frame\.scrollTop = 0;)/,
   '$1frame.addEventListener(\'wheel\', function (e) { e.preventDefault(); });$2',
   () => check('caught: a wheel listener was added to the details',
-    caught('no wheel listener was added', audit())));
+    caught('nothing can cancel the details wheel', audit())));
+
+/* 10b. THE REAL BUG, byte for byte. The zoomer cancels the wheel BEFORE it
+        asks whether there is an image to zoom. The stage is the same element
+        the details relabel into the scrolling column, so that cancel took the
+        DETAILS' scrolling away instead of the page's — and since details mode
+        has no `.cert-image` at all, the guard below it returned and the
+        cancel had bought nothing. The wheel was swallowed whole and the
+        column could only be moved by dragging its scrollbar. Reordering those
+        two statements is the entire fix, so reordering them back must fail
+        the audit. */
+withJs(/(stage\.addEventListener\('wheel', function \(e\) \{[\s\S]*?)\n(\s*)if \(!img\(\)\) return;\n(\s*)e\.preventDefault\(\);/,
+  '$1\n$3e.preventDefault();\n$2if (!img()) return;',
+  () => check('caught: the zoomer cancels the wheel BEFORE its no-image guard (the real bug)',
+    caught('nothing can cancel the details wheel', audit())));
+
+/* 10c. the guard deleted outright — a zoomer that always cancels, which is
+        the same swallowing with one fewer line to look at */
+withJs(/(stage\.addEventListener\('wheel', function \(e\) \{[\s\S]*?)\n\s*if \(!img\(\)\) return;/, '$1',
+  () => check('caught: the no-image guard removed from the zoomer wheel handler',
+    caught('nothing can cancel the details wheel', audit())));
+
+/* 10d. a second wheel listener that does not even cancel: harmless in
+        isolation, and still a second system on the one element that both
+        modes share. "It does not preventDefault today" is not a rule. */
+withJs(/(function openDetails\(rec\) \{[\s\S]*?)(frame\.scrollTop = 0;)/,
+  '$1frame.addEventListener(\'wheel\', function () {});$2',
+  () => check('caught: a second wheel listener on the shared element, cancelling or not',
+    caught('nothing can cancel the details wheel', audit())));
 
 /* 11. the giant bottom-padding hack */
 withCss(/(\.detail-body \{[\s\S]*?)\n  padding: var\(--s-5\) var\(--s-6\);/, '$1\n  padding: var(--s-5) var(--s-6) 200px;',

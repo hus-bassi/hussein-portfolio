@@ -802,11 +802,20 @@
       else { z = 1; px = 0; py = 0; apply(true); }
     });
     stage.addEventListener('wheel', function (e) {
-      /* prevent the page moving first, and unconditionally: the wheel over
-         a lightbox must never scroll the page behind it, whatever the
-         image happens to be doing */
-      e.preventDefault();
+      /* THE WHEEL BELONGS TO WHATEVER IS UNDER THE CURSOR, and `stage` is
+         not always the zoom surface. One element serves both modes: details
+         relabels it `cert-frame detail-body` and it becomes the scrolling
+         column. Cancelling the wheel BEFORE the guard — which is what this
+         used to do, "prevent the page moving first, and unconditionally" —
+         therefore cancelled the DETAILS' own scrolling, not the page's: in
+         details mode there is no `.cert-image` at all, the guard below
+         returned, the toolbar stayed hidden, and the wheel did nothing
+         anywhere. The details could only be scrolled by dragging the
+         scrollbar. So the cancel is stated where the zoom actually happens
+         and nowhere else, and the handler does nothing at all in a mode
+         that has no image to zoom. */
       if (!img()) return;
+      e.preventDefault();
       setZoom(z * (e.deltaY < 0 ? 1.12 : 1 / 1.12), e.clientX, e.clientY);
     }, { passive: false });
     stage.addEventListener('dblclick', function (e) {

@@ -156,9 +156,26 @@ check('10. the reset happens AFTER the dialog is shown, in the same task',
   iReset !== -1 && iShow !== -1 && iReset > iShow &&
   !/setTimeout|requestAnimationFrame/.test(detailFn),
   'a closed <dialog> is display:none, so its frame has no scrolling box and the assignment is discarded; showModal then RE-APPLIES the old offset. Resetting straight after showModal is still before any paint');
-check('11. no wheel listener was added for the details',
-  !/addEventListener\('wheel'/.test(detailFn) && !/onwheel/.test(detailFn),
-  'native `overflow-y: auto` is the wheel handler');
+/* THE ONE THAT WAS MISSING, and the reason the real bug reached a visitor.
+   "No wheel listener was added for the details" was asserted by reading
+   `openDetails` alone. That is TRUE and useless: the listener that stopped
+   the wheel is not in `openDetails`, it is in `wireZoom`, wired to
+   `.cert-frame` ONCE at build time — and the details RELABEL that same
+   element `cert-frame detail-body` and make it the scrolling column. One
+   element, two jobs, one listener, never re-wired. So the question is not
+   "is there a wheel listener" but "can the one that exists cancel a wheel
+   it has no use for", and that is a question about the ORDER of two
+   statements inside one handler. A file containing both statements passes
+   either way, so the order is what gets read. */
+const wheelFn = (code.match(/stage\.addEventListener\('wheel'[\s\S]*?\}\s*,\s*\{\s*passive:\s*false\s*\}\s*\)/) || [''])[0];
+check('11. nothing can cancel the details wheel: the scroller IS the zoomer\'s stage, and the zoomer guards before it cancels',
+  /var stage = d\.querySelector\('\.cert-frame'\)/.test(code) &&
+  /frame\.className = 'cert-frame detail-body'/.test(code) &&
+  (code.match(/addEventListener\('wheel'/g) || []).length === 1 &&
+  wheelFn.length > 0 &&
+  /if \(!img\(\)\) return;/.test(wheelFn) &&
+  wheelFn.indexOf('if (!img()) return;') < wheelFn.indexOf('e.preventDefault()'),
+  'the stage is the element the details relabel into the scroller, and the only wheel listener returns before it cancels — so a wheel with no image to zoom scrolls the column natively');
 check('12. no scroll listener was added for the details',
   !/addEventListener\('scroll'/.test(detailFn) && !/onscroll/.test(detailFn));
 check('13. no rAF was added for the details',
