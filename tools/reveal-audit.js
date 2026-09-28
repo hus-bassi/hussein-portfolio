@@ -79,7 +79,14 @@ const entryBlock = (() => {
   const inside = css.slice(start, i - 1);
   return (inside.match(/[\s\S]{0,140}?\.page-head[^{]*\{[^}]*opacity:\s*0[^}]*\}/) || [''])[0];
 })();
-/* whether that block is the one thing inside the query, or shares it */
+/* whether the query holds nothing but head entry states.
+   This used to be "exactly one rule", which was a proxy for "nothing else
+   lives in here". The proxy broke the moment the title needed a filter list
+   of its own, and it broke for a bad reason: it would have accepted a query
+   holding the entry state AND an unconditional hidden page title. So it now
+   says what it means — every rule inside must be a `.page-head` entry
+   state carrying `opacity: 0` — which is both stricter (a stray rule fails)
+   and correct (splitting one state in two does not). */
 const entryIsAloneInNoPref = (() => {
   const open = css.indexOf('@media (prefers-reduced-motion: no-preference)');
   if (open === -1) return true;
@@ -91,10 +98,29 @@ const entryIsAloneInNoPref = (() => {
     i++;
   }
   const inside = css.slice(start, i - 1);
-  return (inside.match(/\{/g) || []).length === 1;
+  const rules = inside.match(/[^{}]+\{[^{}]*\}/g) || [];
+  if (!rules.length) return false;
+  return rules.every(r => /\.page-head/.test(r) && /opacity:\s*0/.test(r));
 })();
 /* the resting state of the head, if one is still declared unconditionally */
 const unconditionalHeadRule = (css.match(/^\.page-head \.eyebrow,[\s\S]{0,200}?\{[^}]*\}/m) || [''])[0];
+
+/* THE TITLE'S TWO FILTERS, kept apart on purpose — see 8b. */
+const titleRestRule = (css.match(/^\.page-title \{[\s\S]*?\n\}/m) || [''])[0];
+const titleEntryFilter = (() => {
+  const open = css.indexOf('@media (prefers-reduced-motion: no-preference)');
+  if (open === -1) return '';
+  let depth = 1, i = css.indexOf('{', open) + 1;
+  const start = i;
+  while (i < css.length && depth > 0) {
+    if (css[i] === '{') depth++;
+    else if (css[i] === '}') depth--;
+    i++;
+  }
+  const inside = css.slice(start, i - 1);
+  const rule = (inside.match(/[^{}]*\.page-title[^{]*\{[^}]*\}/) || [''])[0];
+  return (rule.match(/filter:[^;}]*/) || [''])[0];
+})();
 
 /* Reveal.enter, the function whose whole job is the head */
 const enterFn = (code.match(/Reveal\.enter = function \(\) \{[\s\S]*?\n  \};/) || [''])[0];
@@ -219,6 +245,9 @@ if (read_('the head\'s entry state', entryBlock)) {
 check('9b. no unconditional hidden state is left on the head',
   !/opacity:\s*0/.test(unconditionalHeadRule),
   'an unconditional opacity:0 here is the original bug: three things had to be true for the title to be visible at all');
+check('8b. the title\'s entry blur and its resting blur are the same filter list',
+  !/blur\(/.test(titleEntryFilter) || (/blur\(/.test(titleRestRule) && /filter:/.test(titleEntryFilter)),
+  'a filter list only interpolates between lists of the SAME functions: blur(5px) -> drop-shadow(...) is a discrete swap, so the entry blur did not clear, it blinked out on the first frame');
 check('9c. the head is a transition, not an animation, and its travel is translate too',
   read_('the head\'s transition', headTransition) &&
   /opacity var\(--motion-reveal\)/.test(headTransition) &&

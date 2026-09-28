@@ -93,12 +93,59 @@ withCss(/(\.detail-media img,[\s\S]*?\{[\s\S]*?)(\n\})/, '$1\n  filter: invert(1
   () => check('caught: a filter over the certificate', caught('reused verbatim', audit())));
 
 console.log('\n— centring, in every language —');
-/* the file is CRLF, so a `;\n` anchor silently matches nothing */
-withCss(/\s*justify-self:\s*center;\r?\n/, '\n',
+/* SCOPED to the `.detail-media` rule on purpose. This was a bare
+   `justify-self: center` match, and the CARD's `.record-shot` now declares
+   one too — earlier in the file — so the mutation deleted the wrong
+   declaration, the audit correctly stayed green, and the case reported a
+   pass it had not earned. The same lesson as the site-wide qualifier rule:
+   a selector that matches too much is not a check. */
+withCss(/(\.detail-media \{[^}]*?)\s*justify-self:\s*center;/, '$1',
   () => check('caught: the media no longer centred', caught('centred without physical left/right', audit())));
 
 withCss(/(\.detail-media \{[\s\S]*?)(\n\})/, '$1\n  left: 50%;$2',
   () => check('caught: physical left/right positioning', caught('centred without physical left/right', audit())));
+
+console.log('\n— the mount centred in its column, on the card —');
+/* The card's half of the same idea, and the reason a screenshot showed a
+   thumbnail at the top of a 325px card with 143px of nothing under it. Each
+   case breaks ONE axis, because a check that only ever sees both broken at
+   once has never been shown to notice one of them. */
+withCss(/(\.record-shot \{[^}]*?)\s*align-self:\s*center;/, '$1',
+  () => check('caught: the mount back at the top of the row (the dead space under the thumbnail)',
+    caught('CENTRED in its column', audit())));
+
+withCss(/(\.record-shot \{[^}]*?)\s*justify-self:\s*center;/, '$1',
+  () => check('caught: the mount pinned to one end of its column',
+    caught('CENTRED in its column', audit())));
+
+withCss(/(\.record-shot \{[^}]*?)\s*align-self:\s*center;/, '$1\n  left: 0;',
+  () => check('caught: the mount centred with a physical offset on top',
+    caught('CENTRED in its column', audit())));
+
+withCss(/(\.record-body \{[^}]*?)\s*align-self:\s*start;/, '$1\n  align-self: center;',
+  () => check('caught: the text column centred too (the grid grew a second intention)',
+    caught('the TEXT column still is not', audit())));
+
+console.log('\n— the video still, and the rule it has to outrank —');
+/* The still is an <img> inside the mount, so `.record-shot img` (0,1,1)
+   sizes it unless a stronger rule says otherwise. Lowering the poster rule
+   back to a bare class is exactly the bug: 4:3 in a 16:9 mount, contained
+   instead of covered, and 51px clipped off by the mount's own overflow. */
+withCss(/\.record-shot \.media-poster,\r?\n\.cert-stage \.media-poster \{/, '.media-poster {',
+  () => check('caught: the still back under the certificate image rule (4:3 in a 16:9 mount)',
+    caught('specificity trap', audit())));
+
+withCss(/(\.record-shot \.media-poster,[\s\S]*?\{[^}]*?)object-fit:\s*cover;/, '$1object-fit: contain;',
+  () => check('caught: the still contained instead of covered (the letterbox bars come back)',
+    caught('specificity trap', audit())));
+
+withCss(/(\.record-shot \.media-poster,[\s\S]*?\{[^}]*?)max-height:\s*none;/, '$1',
+  () => check('caught: the still still under a scan\'s height ceiling',
+    caught('specificity trap', audit())));
+
+withCss(/(\.record-shot \.media-poster,[\s\S]*?\{[^}]*?)position:\s*absolute;/, '$1inset: 0;',
+  () => check('caught: the still out of the layering (in flow under the scrim)',
+    caught('specificity trap', audit())));
 
 console.log('\n— one recipe, not a certificate-only path —');
 /* 7. a second .detail-media rule, which is how a recipe forks */

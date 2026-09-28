@@ -228,6 +228,32 @@ html[lang="ar"] .record-fact-v { font-family: var(--font-ar); letter-spacing: 0;
   display: grid; place-items: center;
   padding: 0;
   position: relative;
+  /* CENTRED IN THE COLUMN, on both axes — this is the fix for the dead
+     space under a video thumbnail.
+
+     `.record.has-media` is a grid with `align-items: start`, which is right
+     for the TEXT column (it must not be stretched into the row) and wrong
+     for the media mount. The row is as tall as the taller of the two, and
+     the text is usually the taller: a volunteering record with a real
+     description runs to 275px while its 16:9 thumbnail is 157px. Pinned to
+     the start, the mount floated at the top of a 325px card and left 143px
+     of blank card underneath it — the thumbnail at the top, the emptiness
+     all on one side, which is what a screenshot showed.
+
+     `align-self: center` is the whole correction: the mount keeps its own
+     size (nothing is stretched to fill, and no height is invented), and the
+     leftover row height is split evenly above and below it. `justify-self`
+     does the same across the axis, so a narrow portrait mount stops being
+     pinned to the start of a 280px column. Both are the grid's own
+     placement properties, not offsets, so they mirror for free in RTL — no
+     `left`, no `right`, no magic numbers.
+
+     In the details view `.detail-media` is already `place-items: center`, so
+     these are the value it was giving the mount anyway. On a phone the card
+     is a single column and each item is its own row, so this is a no-op
+     there too: the mobile stack is untouched. */
+  align-self: center;
+  justify-self: center;
   /* THE MOUNT IS THE SIZE OF WHAT IT HOLDS, not a fixed box the media is
      poured into. `width: fit-content` lets the frame shrink to its own
      image, so a portrait certificate is a narrow tall mount and a landscape
@@ -316,6 +342,142 @@ button.record-shot.is-document:hover, button.record-shot.is-document:focus-visib
 .record-shot.is-video:hover .media-glyph { background: rgba(124, 92, 255, .28); box-shadow: 0 0 0 1px rgba(167, 139, 250, .7), 0 0 40px -8px var(--violet); }
 .record-shot.is-document .media-glyph { color: var(--gold); }
 .record-shot.is-none .media-glyph { color: var(--fg-4); }
+
+/* ============================================================
+   THE POSTER — a video that looks like a video before it plays.
+
+   The frame was designed as an empty violet rectangle with a glyph on
+   it, which is a control shaped like a video and showing nothing. Now
+   that branch renders YouTube's own still, and the three states that
+   go with it are pinned here so the layered result is one picture
+   rather than a stack that happens to work:
+
+       z 0   the still        absolutely filling the 16:9 frame
+       z 1   the scrim        only when a still is there (see :has)
+       z 2   the play control and the label
+       z 3   the record-type badge
+
+   The scrim exists for legibility and nothing else: a thumbnail is
+   somebody else's photograph, and the white play glyph plus the
+   uppercase label have to stay readable over any of them. It is a
+   DARK wash, not a light — the site's rule is that a surface never
+   paints a light inside itself, and a poster is a surface. It is
+   attached with :has(.media-poster) so a record whose poster failed
+   to load falls back to the designed frame with no scrim over it.
+
+   The poster is COVERED, not contained: hqdefault is 480x360 and its
+   4:3 frame carries black bars, and the mount here is 16:9 — so
+   `cover` crops precisely the bars and nothing else. The one thing it
+   can crop on a real upload is a sliver of the frame's own edge, and
+   `scale(1.02)` on the glyph's parent is not involved: the still does
+   not move at all.
+
+   ONE rule, and the qualifier is the whole point of it. A bare
+   `.media-poster` is (0,1,0) and loses to `.record-shot img` at (0,1,1),
+   which is a rule about a certificate scan and says `width: auto; height:
+   auto; object-fit: contain`. The still lost three declarations at once and
+   measured 278x208.5 inside a 280x157.5 frame: 4:3 where the mount is 16:9,
+   `contain` where the frame wanted `cover`, and — the part that showed — 51px
+   of the element hanging out of the bottom of its own mount and clipped by
+   the mount's `overflow: hidden`, so the still lost its top and bottom to a
+   rule that was never about it.
+
+   So the declarations live in a rule whose selector is STRONGER than the
+   rule they have to beat, rather than being written once and then restated
+   to win. `max-width`/`max-height: none` are in it for the same reason and
+   are not redundant: the certificate rule's `max-height: clamp(210px, 22vw,
+   280px)` is a ceiling for a scan, and a still covering a 16:9 mount must
+   not be measured against it.
+
+   The site's own link-colour trap says the same thing about a qualifier: it
+   has to be able to match, and it has to be strong enough to win. Here the
+   two containers are the only two that render a still, and both are written
+   out because a poster outside them would be styled by nothing at all.
+
+   There is deliberately no `.media-poster.is-loaded` here: the arrival
+   recipe below already answers that class, and the still always carries it. */
+.record-shot .media-poster,
+.cert-stage .media-poster {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  max-width: none; max-height: none;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* ============================================================
+   A PICTURE ARRIVING — one recipe, and JavaScript opts in.
+
+   A record's evidence can be a remote thumbnail, a lazy certificate scan or
+   a file that turns out not to be there, so it is nearly always painted
+   after the frame around it. Two jobs follow from that, and they are the
+   same job: fade the picture in, and lift it out of the surface it was
+   pasted onto.
+
+   The hidden state is ADDED BY SCRIPT, never written into the markup's
+   resting style. `.shot-media` is applied immediately before `src` is set,
+   so if there is no script — or the script is still on the way, or a
+   browser refuses to run it — the image is simply there. That is the
+   opposite arrangement to the scroll reveal, and deliberately so: a
+   reveal hides a block of TEXT that the engine is guaranteed to un-hide,
+   while this hides the one thing on the card that may never load at all.
+   Getting that backwards leaves a visitor looking at an empty certificate
+   mount, which is the failure this whole change set exists to remove.
+
+   `translate` again, for the same reason as everywhere else: the frame
+   around it uses `translate` for its own press, and a `transform` here
+   would be a second opinion about the same axis. */
+.shot-media {
+  opacity: 0; translate: 0 14px;
+  transition: opacity var(--motion-reveal) var(--ease),
+              translate var(--motion-reveal) var(--ease-out);
+}
+.shot-media.is-loaded { opacity: 1; translate: none; }
+
+/* A frame that HOLDS A PICTURE is sized by the picture, not by the glyph
+   sitting on it. `width: fit-content` is right for the frame that holds
+   nothing — it lets a portrait certificate come out narrow and a landscape
+   one wide, with no empty mat beside either — but its content in that
+   state is a 74px circle, so a video frame measured 76x43: the exact shape
+   of the bug this poster fixes, one size down. With a still inside, the
+   frame takes its column and the 16:9 above sizes it.
+
+   Scoped to :has(.media-poster) on purpose. A video with no still — no
+   YouTube link, or a poster that failed and has already fallen through the
+   chain — is still the designed glyph frame it was, and keeps its size. */
+.record-shot.is-video:has(.media-poster) { width: 100%; }
+
+/* THE IMAGE INSIDE THE CARD moves a little on hover, and only there.
+   `scale` is its own property, so it composes with the picture's own
+   `translate` arrival and with the frame's press instead of cancelling
+   either. It is scoped to a real <button> frame — a mount with nothing to
+   open is not a control and does not react — and to `.record-shot`, which
+   is the CARD's preview frame and nothing else: the full-size certificate
+   in the viewer is `.cert-image`, the draggable surface, and it keeps a
+   `transform` for zoom and panning that a scale here would fight. The
+   frame's own `overflow: hidden` is what makes the crop invisible. */
+button.record-shot img,
+button.record-shot .media-poster {
+  scale: 1;
+  transition: scale var(--motion-slow) var(--ease-out);
+}
+button.record-shot:hover img,
+button.record-shot:hover .media-poster { scale: 1.03; }
+.record-shot.is-video:has(.media-poster)::after,
+.cert-stage:has(.media-poster)::after {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 5, 10, .62) 0%,
+    rgba(4, 5, 10, .34) 46%,
+    rgba(4, 5, 10, .78) 100%);
+}
+.record-shot.is-video .media-glyph,
+.record-shot.is-video .media-kind { position: relative; z-index: 2; }
+.record-shot .media-badge { z-index: 3; }
 .media-kind {
   font-family: var(--font-mono); font-size: .74rem; letter-spacing: .12em;
   text-transform: uppercase; color: var(--fg-3);
@@ -404,7 +566,15 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
 .cert-dialog::backdrop {
   background: rgba(2, 3, 6, .88);
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  /* the backdrop gets its own entrance rather than appearing with the
+     panel. It is one shared surface behind everything, and a backdrop that
+     is already at full strength under a panel that is still arriving makes
+     the panel look like it is being revealed from behind something solid
+     instead of out of the dark. Fading it under the panel's own clock puts
+     the two in the same moment. */
+  animation: backdrop-in var(--motion-fast) var(--ease-out) 1 both;
 }
+@keyframes backdrop-in { from { opacity: 0; } }
 .cert-panel {
   display: grid;
   /* header · frame · footer — see the block comment above for why this is a
@@ -417,14 +587,18 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
   border-radius: var(--radius);
   box-shadow: 0 40px 120px -40px rgba(0, 0, 0, .95);
   overflow: hidden;
-  /* the panel is brought into focus rather than thrown on screen: one short
-     fade and settle, on open. The reduced-motion block in site.css removes
-     the travel and keeps the panel. */
-  animation: panel-in var(--motion-slow) var(--ease-out) 1 both;
+  /* the panel is brought into focus rather than thrown on screen: a short
+     fade, a 10px rise and a 1.5% settle, on the site's FAST rung. A dialog
+     is the one surface a visitor opened on purpose and is waiting inside of,
+     so it answers in 300ms — the reveal rung is for content arriving under
+     a reader who is already reading, not for a control they just pressed.
+     The reduced-motion block in site.css removes the travel and the scale
+     and keeps the panel. */
+  animation: panel-in var(--motion-fast) var(--ease-out) 1 both;
 }
 @keyframes panel-in {
-  from { opacity: 0; scale: .985; }
-  to   { opacity: 1; scale: 1; }
+  from { opacity: 0; translate: 0 10px; scale: .985; }
+  to   { opacity: 1; translate: none; scale: 1; }
 }
 /* the record title is a real control — the keyboard door into the details —
    so it reads as a heading first and a link second, and the card itself
@@ -468,6 +642,44 @@ html[lang="ar"] .media-badge { font-family: var(--font-ar); letter-spacing: 0; }
 .cert-close svg { width: 17px; height: 17px; }
 .cert-frame { min-height: 0; background: #05070e; }
 .cert-frame iframe { display: block; width: 100%; height: 100%; min-height: 60svh; border: 0; }
+.cert-stage { min-height: 60svh; }
+
+/* The video stage is the SAME BOX the embed occupies — same width, same
+   height, the very two rules below, declared once for both — so pressing
+   play swaps a picture for a player and nothing in the panel resizes under
+   the visitor's cursor. It is deliberately not given its own aspect-ratio:
+   an embed sizes itself to whatever the panel has left, and a poster that
+   disagreed with that would move the footer when play was pressed. The
+   still is `object-fit: cover`, so it fills the box it is given and is
+   cropped rather than letterboxed. */
+.cert-stage {
+  position: relative;
+  display: grid; place-items: center;
+  width: 100%; height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+.stage-play {
+  position: relative; z-index: 2;
+  display: grid; place-items: center;
+  width: 92px; height: 92px;
+  padding: 0; border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--fg);
+  background: rgba(124, 92, 255, .2);
+  box-shadow: 0 0 0 1px rgba(167, 139, 250, .5), 0 0 44px -10px var(--violet);
+  transition: transform var(--motion-normal) var(--ease-out),
+              background var(--motion-normal) var(--ease),
+              box-shadow var(--motion-normal) var(--ease);
+}
+.stage-play svg { width: 52px; height: 52px; }
+/* the response is a small step inward and a stronger ring, and the press
+   answers by taking the step back — the same three states every other
+   control on this site has, at this site's speeds */
+.stage-play:hover { transform: scale(1.06); background: rgba(124, 92, 255, .34); box-shadow: 0 0 0 1px rgba(167, 139, 250, .8), 0 0 60px -10px var(--violet); }
+.stage-play:active { transform: scale(.99); transition-duration: var(--motion-instant); }
+.stage-play:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 .cert-foot {
   display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
   padding: var(--s-3) var(--s-5);
@@ -736,7 +948,7 @@ html[lang="ar"] .detail-h { font-family: var(--font-ar); letter-spacing: 0; }
   .record-body { min-height: 0; }
   .record-actions { margin-block-start: 0; }
   .record-actions .record-action { flex: 1 1 200px; justify-content: center; }
-  .cert-frame iframe { min-height: 52svh; }
+  .cert-frame iframe, .cert-stage { min-height: 52svh; }
   /* the mobile chrome is shorter, so the bounded stage keeps more room —
      the desktop value would shrink a landscape to a strip at 360px */
   .cert-frame:has(.cert-image) { max-height: calc(92svh - 150px); }

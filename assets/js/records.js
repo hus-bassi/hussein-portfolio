@@ -290,6 +290,52 @@
     var m = s.match(/(?:youtu\.be\/|v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{6,})/);
     return m ? m[1] : '';
   }
+
+  /* ============================================================
+     THE POSTER — YouTube's own frame for that exact video.
+
+     A record whose only evidence is a video used to render an empty
+     violet rectangle with a play glyph on it: a control shaped like a
+     video, showing nothing. YouTube already publishes a still for
+     every video, at a fixed address derived from the id the record
+     already stores, so the fix is to ASK FOR IT rather than to invent
+     one: nothing here is authored, cropped or associated by hand, and
+     a record with no video gets no poster at all.
+
+     `hqdefault` is the one that is always there. `maxresdefault` is
+     better and is 404 for a large share of uploads, so a chain through
+     it would be an extra request on every miss; `hqdefault` is 480x360
+     and exists for anything you can watch. It is 4:3 with black bars
+     top and bottom, which `object-fit: cover` on a 16:9 frame crops
+     away exactly — the frame is already 16:9, so the crop is free and
+     the letterbox is the only thing lost.
+
+     Not a fabricated poster: if YouTube has nothing, `error` sends the
+     record down the same chain a dead image already took, and it lands
+     on the designed placeholder. */
+  function youTubePoster(url) {
+    var id = youTubeId(url);
+    return id ? 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg' : '';
+  }
+
+  /* A picture ARRIVES: the hidden state is opted into by this function, and
+     only ever by this function.
+
+     `.shot-media` is added immediately before `src` is set, so the class is
+     always in place before the browser has anything to paint, and a browser
+     that never runs this file simply never gets the class — the image is
+     then visible from its first frame rather than permanently invisible.
+     The two halves use the element's own state for the same reason: an
+     image served from cache is already `complete` before the listener is
+     attached, and an event-only recipe leaves those at opacity 0 forever.
+     `naturalWidth` is the discriminator — a failed image is also
+     `complete`, and it has no width. */
+  function fadeIn(img) {
+    img.classList.add('shot-media');
+    if (img.complete && img.naturalWidth) { img.classList.add('is-loaded'); return; }
+    img.addEventListener('load', function () { img.classList.add('is-loaded'); });
+  }
+
   function isRemote(u) { return /^(https?:)?\/\//i.test(String(u || '')); }
 
   function resolveRecordMedia(rec) {
@@ -298,7 +344,7 @@
       /* 1 — an image, local or remote */
       { kind: 'image', src: rec.image },
       /* 2 — a video: a YouTube link, or any other video URL */
-      { kind: 'video', video: rec.video, embed: yt ? 'https://www.youtube-nocookie.com/embed/' + yt + '?rel=0' : '', src: yt ? '' : rec.video },
+      { kind: 'video', video: rec.video, embed: yt ? 'https://www.youtube-nocookie.com/embed/' + yt + '?rel=0' : '', src: yt ? '' : rec.video, poster: youTubePoster(rec.video) },
       /* 3 — the official document, as a designed frame rather than a render */
       { kind: 'document', src: rec.pdf },
       /* 4 — nothing, which is a designed state and not a broken one */
@@ -378,10 +424,27 @@
     } else if (m.kind === 'video') {
       var ytId = youTubeId(m.video);
       if (m.embed) {
-        /* no poster exists for these links and one will not be invented:
-           a clean frame with a play control, and the video itself plays in
-           the viewer. preload="none" — nothing is fetched until it is asked
-           for, so a page of activities never loads a page of video. */
+        /* POSTER FIRST. The frame shows YouTube's own still for this video
+           with a play control over it, so a record is recognisable from the
+           list instead of from its title alone. Nothing is asked of YouTube
+           beyond that one image: the embed is still only created on click,
+           in the viewer, so a page of activities costs a page of thumbnails
+           rather than a page of players.
+
+           The poster is not trusted to exist. A dead one calls the same
+           swapMediaDown a dead certificate image calls, so the worst case
+           is the designed placeholder this branch used to always be. */
+        if (m.poster) {
+          var poster = document.createElement('img');
+          poster.className = 'media-poster';
+          poster.src = m.poster;
+          poster.alt = '';
+          poster.loading = 'lazy';
+          poster.decoding = 'async';
+          fadeIn(poster);
+          poster.addEventListener('error', function () { swapMediaDown(rec, btn, m); });
+          btn.appendChild(poster);
+        }
         btn.appendChild(el('span', 'media-glyph', playGlyph()));
         btn.appendChild(el('span', 'media-kind', t('rec.watchVideo')));
       } else {
@@ -418,7 +481,7 @@
     after = after.slice(after.indexOf(failed.kind) + 1);
     var yt = youTubeId(rec.video);
     var candidates = [
-      { kind: 'video', video: rec.video, embed: yt ? 'https://www.youtube-nocookie.com/embed/' + yt + '?rel=0' : '', src: '' },
+      { kind: 'video', video: rec.video, embed: yt ? 'https://www.youtube-nocookie.com/embed/' + yt + '?rel=0' : '', src: '', poster: youTubePoster(rec.video) },
       { kind: 'document', src: rec.pdf },
       { kind: 'none', src: '' }
     ];
@@ -934,6 +997,7 @@
     frame.tabIndex = 0;
     frame.setAttribute('role', 'region');
     frame.setAttribute('aria-labelledby', 'cert-viewer-title');
+
     frame.innerHTML = '';
 
     /* THE PRIMARY MEDIA, and the first thing in the details after the
@@ -1198,6 +1262,50 @@
         v.preload = 'metadata';
         v.setAttribute('aria-label', rec.titlePlain);
         frame.appendChild(v);
+      } else if (isVideo && embed) {
+        /* POSTER, THEN PLAYER. The dialog opens on the same still the card
+           used, with a play control, and the iframe is built when — and only
+           when — that control is pressed.
+
+           Two reasons, and the second is the architecture one. A dialog that
+           is open is a dialog YouTube is loading, running its player, its
+           beacon and its ad scripts behind a visitor who may only be reading
+           the details; and an embed that appears with no visible cause reads
+           as a blank frame that filled in by itself, which is what the old
+           version looked like whenever the network was slow.
+
+           autoplay is deliberate here and nowhere else on the site: the
+           visitor has just pressed play. It arrives muted, because that is
+           YouTube's own rule for an embed nobody asked to unmute, so pressing
+           play never starts sound at a visitor who did not expect it. */
+        var stage = document.createElement('div');
+        stage.className = 'cert-stage';
+        if (m.poster) {
+          var shot = document.createElement('img');
+          shot.className = 'media-poster';
+          shot.src = m.poster;
+          shot.alt = '';
+          shot.decoding = 'async';
+          fadeIn(shot);
+          stage.appendChild(shot);
+        }
+        var play = document.createElement('button');
+        play.type = 'button';
+        play.className = 'stage-play';
+        play.setAttribute('aria-label', t('rec.watchVideo') + ' — ' + rec.titlePlain);
+        play.innerHTML = playGlyph();
+        play.addEventListener('click', function () {
+          var f2 = document.createElement('iframe');
+          f2.title = rec.titlePlain;
+          f2.setAttribute('allow', 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          f2.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+          f2.src = m.embed + '&autoplay=1';
+          /* the poster leaves the tree in the same frame the player arrives
+             in, so there is no moment with both and no reflow of the stage */
+          if (stage.parentNode) stage.parentNode.replaceChild(f2, stage);
+        });
+        stage.appendChild(play);
+        frame.appendChild(stage);
       } else {
         var f = document.createElement('iframe');
         f.title = rec.titlePlain;

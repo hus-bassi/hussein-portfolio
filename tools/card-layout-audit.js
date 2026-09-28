@@ -97,6 +97,66 @@ check('the mount hugs its media (no fixed column of empty mat beside it)',
   /width:\s*fit-content/.test(shotRule), 'a fixed media width pads a portrait preview with empty space');
 check('the preview contains its media (a certificate is never cropped)',
   /object-fit:\s*contain/.test(shotImgRule));
+
+/* 2b. THE MOUNT IS CENTRED IN ITS COLUMN, on both axes.
+
+   This is a screenshot bug, so it is worth a static guard: the card grid
+   carries `align-items: start` for the TEXT column, which is correct there
+   and wrong for the mount. The row is as tall as the taller of the two, and
+   a volunteering record's description is taller than its 16:9 thumbnail by
+   143px — pinned to the start, the thumbnail sat at the top of a 325px card
+   with all the emptiness underneath it. `align-self: center` splits the
+   leftover evenly; `justify-self: center` does the same across, so a narrow
+   portrait mount is not pinned to one end of a 280px column. Both are the
+   grid's own placement properties: no offsets, so RTL mirrors for free, and
+   nothing is stretched and no height invented.
+
+   The check reads `.record-shot` and insists on BOTH axes: an
+   `align-self: center` on its own would leave the horizontal asymmetry, and
+   the word "center" appearing anywhere in the file must not be enough —
+   hence the rule body, not the stylesheet. */
+/* The centring checks read the mount with its COMMENTS stripped. A rule
+   body that explains itself is still the rule body to a naive regex: the
+   prose here says "`align-self: center` is the whole correction", and an
+   audit that matched the raw file read that sentence as the declaration.
+   The mutation that deletes the real one then passes, which is the worst
+   possible outcome for a check — a green line for a bug that is present. */
+const cssNoComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+const shotSelfRule = (cssNoComments.match(/\.record-shot\s*\{[^}]*\}/) || [''])[0];
+const shotSelf = (shotSelfRule.match(/align-self:\s*([a-z-]+)/) || [])[1] || '';
+const shotJust = (shotSelfRule.match(/justify-self:\s*([a-z-]+)/) || [])[1] || '';
+check('the mount is CENTRED in its column, on both axes (the dead space under a thumbnail)',
+  shotSelf === 'center' && shotJust === 'center' && !/left:|right:/.test(shotSelfRule),
+  'align-self=' + (shotSelf || 'unset') + ' justify-self=' + (shotJust || 'unset'));
+check('the mount is centred, and the TEXT column still is not (one grid, two intentions)',
+  /align-items:\s*start/.test(hasMediaRule) && /align-self:\s*start/.test(bodyRule) &&
+  !/align-items:\s*center/.test(hasMediaRule),
+  'align-items:start keeps the description out of the mount\'s stretch; only the mount centres itself');
+
+/* 2c. THE POSTER OUTRANKS THE GENERIC IMAGE RULE.
+
+   `.record-shot img` is a rule about a certificate scan — it sizes the FILE
+   by its own ratio, `width: auto; height: auto; object-fit: contain` — and it
+   sits at (0,1,1). A bare `.media-poster` is (0,1,0) and loses: the still
+   measured 278x208.5 inside a 280x157.5 16:9 mount, i.e. 4:3 where the mount
+   was 16:9, `contain` where the mount wanted `cover`, and 51px of the element
+   hanging out past the bottom of its own mount to be clipped by
+   `overflow: hidden`. The still lost its top and bottom to a rule that was
+   never about it.
+
+   The still has to be covered, not contained: hqdefault is 480x360 and its
+   letterbox bars are exactly what a 16:9 mount exists to crop. And the
+   generic `max-height` has to be released, or the still is capped by a
+   ceiling meant for a scan and can stop short of the box it is covering. */
+const posterRule = (cssNoComments.match(/[^}]*\.record-shot \.media-poster[^{]*\{[^}]*\}/) || [''])[0];
+check('the video still is sized by its MOUNT, not by the certificate rule (a specificity trap)',
+  !!posterRule &&
+  /position:\s*absolute/.test(posterRule) &&
+  /width:\s*100%/.test(posterRule) && /height:\s*100%/.test(posterRule) &&
+  /object-fit:\s*cover/.test(posterRule) &&
+  /max-width:\s*none/.test(posterRule) && /max-height:\s*none/.test(posterRule),
+  'a bare .media-poster is (0,1,0) and loses to .record-shot img at (0,1,1): ' +
+  'the still came out 4:3 in a 16:9 mount and overflowed it by 51px');
 check('no absolute-positioned .record-action buttons', !/\.record-action[^{]*\{[^}]*position:\s*absolute/.test(css));
 check('no artificial card min-height (any 300px-style filler)', !/\.record[^{]*\{[^}]*min-height:\s*[3-9]\d\dpx/.test(css));
 check('action gap is 10–14px (var(--s-3) = 12px)', /gap:\s*var\(--s-3\)/.test(actionsRule));

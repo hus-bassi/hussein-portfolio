@@ -199,18 +199,25 @@ with_('reveal', /io\.unobserve\(en\.target\);/, '',
 
 console.log('\n— what a reveal is allowed to touch —');
 
-with_('css', /^(\.reveal \{\n  opacity: 0; translate: 0 18px; filter: blur\(5px\);)/m,
+/* The travel DISTANCE is deliberately not written into these anchors. It
+   moved once already (18px -> 22px) and every one of these three cases
+   failed to apply, which is the selftest doing its job: a mutation that
+   cannot be made proves nothing, and a green line from a mutation that
+   never happened is worse than no line. `\d+` keeps these anchored to the
+   shape of the rule — opacity, then the travel, then the blur — which is
+   what the audit reads, and indifferent to how far it travels. */
+with_('css', /^(\.reveal \{\n  opacity: 0; translate: 0 \d+px; filter: blur\(5px\);)/m,
   '$1\n  display: none;',
   () => check('caught: display:none on the hidden reveal state',
     caught('6. the hidden state is opacity', audit())));
 
-with_('css', /^(\.reveal \{\n  opacity: 0; translate: 0 18px; filter: blur\(5px\);)/m,
+with_('css', /^(\.reveal \{\n  opacity: 0; translate: 0 \d+px; filter: blur\(5px\);)/m,
   '$1\n  height: 0;',
   () => check('caught: a layout property animated by a reveal',
     caught('6. the hidden state is opacity', audit()),
     'the page must not jump while it is being read'));
 
-with_('css', /^(\.reveal \{\n  opacity: 0;) translate: 0 18px;/m, '$1 transform: translateY(18px);',
+with_('css', /^(\.reveal \{\n  opacity: 0;) translate: 0 \d+px;/m, '$1 transform: translateY(22px);',
   () => check('caught: the travel moved onto `transform`',
     caught('6b.', audit()),
     'every card is both .reveal.is-in and .card:hover, and one of them would lose'));

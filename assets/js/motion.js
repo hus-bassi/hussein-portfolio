@@ -38,7 +38,7 @@
 
   /* Read, not decide. One media query is queried for the whole site, so
      the stylesheet and the scripts can never disagree about it. */
-  Motion.isStill = function () { return mq.matches && !/[?&]motion=full/.test(location.search); };
+  Motion.isStill = function () { return mq.matches; };
 
   /* Is this a touch-first device? The custom cursor and the heavy field
      are desktop-only; on touch they cost battery and buy nothing. */
