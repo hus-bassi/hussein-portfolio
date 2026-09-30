@@ -487,21 +487,24 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
   border: 1px solid transparent;
   border-radius: 50%; cursor: pointer;
   animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
-  opacity: 0; visibility: hidden; translate: 0 12px; scale: .94;
-  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
-  transition: transform var(--motion-normal) var(--ease),
-              background-position var(--motion-reveal) var(--ease),
-              filter var(--motion-slow) var(--ease),
+  /* its arrival rides the SAME channel as every other control: --enter-y,
+     read by the one composed transform in §7. It used to write `translate`
+     and its own `filter`, which is the second thing this audit now fails on
+     — the family is one recipe, and a control that keeps a private channel
+     is how the layers came apart in the first place. */
+  --enter-y: 12px;
+  opacity: 0; visibility: hidden; scale: .94;
+  transition: background-position var(--motion-reveal) var(--ease),
               opacity var(--motion-normal) var(--ease),
-              translate var(--motion-normal) var(--ease-out),
               scale var(--motion-normal) var(--ease-out),
               visibility 0s linear var(--motion-normal);
 }
 .to-top.is-on {
-  opacity: 1; visibility: visible; translate: none; scale: 1;
+  --enter-y: 0px;
+  opacity: 1; visibility: visible; scale: 1;
   transition-delay: 0s;
 }
-.to-top:hover { --lift: -2px; background-position: var(--edge-hi); filter: drop-shadow(0 8px 20px rgba(124, 92, 255, .45)); }
+.to-top:hover { --lift: -2px; background-position: var(--edge-hi); filter: blur(var(--enter-blur)) drop-shadow(0 8px 20px rgba(124, 92, 255, .45)); }
 .to-top svg { width: 20px; height: 20px; color: var(--gold); }
 
 /* ---------- 4a. The field and the cursor ----------
@@ -524,9 +527,17 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
    The ring below is the part that carries precision; this is the part that
    carries mood, and it stays behind everything. */
 .cursor-light {
-  position: fixed; inset-block-start: 0; inset-inline-start: 0;
+  /* ONE coordinate system for the pointer: the viewport, physically.
+     `clientX`/`clientY` are physical, so the anchor is `left: 0; top: 0` and
+     never a logical inset. `inset-inline-start: 0` put this element's origin
+     on the RIGHT in Arabic and the two disagreed by a full viewport width;
+     and a `margin` that also tried to centre it double-counted against the
+     transform, which put the light 130px above the pointer. There is no
+     margin now: assets/js/pointer.js subtracts half the element's own size,
+     so the element's CENTRE is the pointer coordinate and nothing else can
+     shift it. */
+  position: fixed; left: 0; top: 0;
   z-index: 1; width: 260px; height: 260px;
-  margin-block-start: -130px; margin-inline-start: -130px;
   pointer-events: none;
   border-radius: 50%;
   background: radial-gradient(closest-side,
@@ -541,33 +552,29 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
 }
 .cursor-light.is-on { opacity: 1; }
 
-.cursor-ring {
-  position: fixed; inset-block-start: 0; inset-inline-start: 0;
-  z-index: 2; width: 34px; height: 34px;
-  margin-block-start: -17px; margin-inline-start: -17px;
-  pointer-events: none;
-  border: 1px solid rgba(167, 139, 250, .5);
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity var(--motion-fast) var(--ease),
-              width var(--motion-fast) var(--ease), height var(--motion-fast) var(--ease),
-              margin var(--motion-fast) var(--ease),
-              border-color var(--motion-fast) var(--ease), background var(--motion-fast) var(--ease);
-  will-change: transform;
-}
-.cursor-ring.is-hot {
-  width: 52px; height: 52px;
-  margin-block-start: -26px; margin-inline-start: -26px;
-  border-color: rgba(240, 206, 126, .75);
-  background: rgba(167, 139, 250, .07);
-}
-.cursor-ring.is-down { width: 42px; height: 42px; margin-block-start: -21px; margin-inline-start: -21px; }
-.cursor-ring.is-on { opacity: 1; }
+/* THE RING IS GONE, and it is worth saying why, because it looked like part
+   of the buttons and it was not.
+
+   It was a 34px circle that grew to 52px, turned gold and took a fill
+   precisely when the pointer was over a control — `HOT` listed `a, button`,
+   so hovering a button is what made it grow — painted at z-index 2, which
+   is ON TOP of the button. On a screenshot it read as a second, misaligned
+   visual layer belonging to the control, and because it followed the pointer
+   it was the one piece that appeared to move in a direction of its own.
+
+   It was never attached to anything. A cursor is the one thing on the page
+   that is allowed to be somewhere else, but a hard-edged ring that reacts to
+   the surface underneath it stops reading as a cursor and starts reading as
+   part of that surface. The soft light below is the whole of the pointer's
+   atmosphere now, and it has no edge, so it cannot be mistaken for a shape. */
 
 .cursor-dot {
-  position: fixed; inset-block-start: 0; inset-inline-start: 0;
+  /* the same anchor as the light, for the same reason: the dot and the
+     light are two renderings of ONE pointer position, and the only honest
+     way to guarantee they agree is for both to be placed from the same
+     physical origin with the same half-size subtracted in script. */
+  position: fixed; left: 0; top: 0;
   z-index: 3; width: 6px; height: 6px;
-  margin-block-start: -3px; margin-inline-start: -3px;
   pointer-events: none;
   border-radius: 50%;
   background: var(--fg);
@@ -580,7 +587,7 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
 /* The native cursor is never hidden — the light is cast ALONGSIDE it.
    Removing it would break every affordance the site depends on. */
 @media (hover: none), (pointer: coarse) {
-  .field-canvas, .cursor-light, .cursor-ring, .cursor-dot { display: none; }
+  .field-canvas, .cursor-light, .cursor-dot { display: none; }
 }
 
 /* ---------- 4b. THE OPENING SEQUENCE ----------
@@ -672,12 +679,20 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
    writing directions.
 
    No horizontal component anywhere, so there is nothing for RTL to mirror
-   and no `translateX` whose sign could come out backwards. */
-.is-loading .hero-actions > .btn {
-  opacity: 0;
-  translate: 0 14px;
-  filter: blur(4px);
-}
+   and no `translateX` whose sign could come out backwards.
+
+   And the arrival state has to be a real declaration of the button's own,
+   not only the keyframe's — the keyframe only back-fills, so this resting
+   rule is what the button is BEFORE its turn comes round.
+
+   IT NO LONGER EXISTS, and that is the point. There were two mechanisms for
+   one arrival: this resting rule and the `cta-in` keyframe, each writing the
+   same three properties, in two places, which is the arrangement that let
+   them disagree. The arrival is now a SINGLE writer — the keyframe below,
+   animating `--enter-y` and `--enter-blur` — whose `backwards` fill covers
+   exactly the gap this rule used to cover, and the resting state is the
+   registered properties' own initial value of 0px. One place to look, one
+   place to change. */
 /* THE STAGGER, and why it is an animation rather than three more delays.
 
    A `transition-delay` is the delay before ONE transition starts, and it is
@@ -698,25 +713,50 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
    The animation is `fill-mode: backwards` on purpose: it back-fills the
    arrival state through the delay and does NOT hold the final state, so
    when it ends the button's own resting declarations take over untouched —
-   `translate: none`, `transform: translate(0px, 0px)`. Nothing is pinned
-   afterwards, and the interaction half of the button is exactly as it was. */
+   `--enter-y` and `--enter-blur` return to their registered initial value of
+   0px. Nothing is pinned afterwards, and the interaction half of the button
+   is exactly as it was.
+
+   The keyframe writes NO `transform`, NO `translate` and NO `filter`. It
+   writes two registered lengths and the opacity; §7's one `transform` and
+   one `filter` consume them. That is the whole of the arrangement: the
+   arrival, the pointer and the hover can no longer disagree, because there
+   is only one expression for them to disagree about. */
 @keyframes cta-in {
-  from { opacity: 0; translate: 0 14px; filter: blur(4px); }
+  from { opacity: 0; --enter-y: 14px; --enter-blur: 4px; }
 }
+/* THE ARRIVAL IS NOT THE ONLY ANIMATION ON THIS BUTTON, and the shorthand
+   is what lost the other one. `animation` REPLACES the whole list — the
+   same trap as `transition` and the reason for the longhand discipline in
+   §7 — so writing `animation: cta-in …` here deleted `.btn`'s infinite
+   `aura` outright rather than adding to it. Measured on the live site
+   after the fact: `getAnimations()` on the third CTA came back EMPTY at
+   rest, and its computed `box-shadow` was `none`. The hero CTAs were the
+   only controls on the site with no glow at all, which is what made the
+   rise read as detached — a hard-edged rectangle moving with no light on
+   it, landing with none. The box geometry was correct the whole time,
+   which is exactly why the bug survived a geometry probe.
+
+   So `aura` is written back as the FIRST entry, in the family's own
+   order: the always-lit breath, then the arrival. The two own different
+   properties — `aura` owns `box-shadow`, `cta-in` owns `opacity`,
+   `translate` and `filter` — so they cannot contest one channel, and the
+   button is lit from the first frame instead of arriving unlit and
+   picking its glow up afterwards.
+
+   AND THE DELAY IS PER-ENTRY, which is the part that has to be right.
+   `animation-delay` is itself a list, matched positionally to
+   `animation-name`, so the single `1400ms` that used to be the whole
+   rule would have delayed BOTH animations and put the glow 1400ms behind
+   the arrival — reintroducing the unlit entrance through the back door.
+   The breath takes `0s` and the arrival takes the beat. */
 .hero-actions > .btn {
-  animation: cta-in var(--motion-reveal) var(--ease-out) backwards;
-  animation-delay: 1400ms;
+  animation: aura var(--ambient-pulse) var(--ease-soft) infinite,
+             cta-in var(--motion-reveal) var(--ease-out) backwards;
+  animation-delay: 0s, 1400ms;
 }
-.hero-actions > .btn:nth-child(2) { animation-delay: calc(1400ms + var(--stagger)); }
-.hero-actions > .btn:nth-child(3) { animation-delay: calc(1400ms + 2 * var(--stagger)); }
-/* and the arrival state has to be a real declaration of the button's own, not
-   only the keyframe's — the keyframe only back-fills, so the resting rule is
-   what the button is BEFORE its turn comes round */
-.is-loading .hero-actions > .btn {
-  opacity: 0;
-  translate: 0 14px;
-  filter: blur(4px);
-}
+.hero-actions > .btn:nth-child(2) { animation-delay: 0s, calc(1400ms + var(--stagger)); }
+.hero-actions > .btn:nth-child(3) { animation-delay: 0s, calc(1400ms + 2 * var(--stagger)); }
 
 /* the name arrives last and hardest — it is the subject of the page */
 .is-loading .hero-name { opacity: 0; transform: translateY(38px) scale(.96); filter: blur(18px); }
@@ -950,6 +990,28 @@ a.record-action.is-plain:hover { color: var(--fg); }
   min-height: 52px; padding: var(--s-3) var(--s-6);
   font-family: inherit; font-size: 1rem; font-weight: 600;
   color: var(--fg);
+  /* THE BUTTON OWNS ITS OWN SHINE, and these two lines are the whole of
+     that. The sweep and the tint below are absolutely positioned with
+     `inset: 0`, which resolves against the NEAREST POSITIONED ANCESTOR —
+     and without `position: relative` here that ancestor was `.hero-copy` or
+     `.hero-actions`, not the button. A 100%-wide spectrum band then landed
+     at the ancestor's edge instead of the button's, and a second one sat
+     beside the control as a detached violet/gold rectangle that belonged to
+     nothing. Adding a translate of a full button-width finished the job:
+     the light was a button-width outside a box that nothing clipped.
+
+     `position: relative` gives the pseudo-elements the button's own box as
+     their containing block, and `overflow: hidden` clips both of them to it —
+     so the band is invisible at rest by being outside the clip, and travels
+     ACROSS the surface on hover instead of beside it. This is geometry, not
+     an offset: there is no per-button correction anywhere, and none is
+     needed, because a child cannot paint outside a clipped parent.
+
+     `.record-action` and `.tag` already carried both declarations; this
+     block had lost them when the button recipe was rewritten, which is
+     exactly the kind of quiet regression the audit now checks for. */
+  position: relative;
+  overflow: hidden;
   /* THREE background layers, and the order is the whole point:
        1. the fill   — the opaque pane body
        2. the edge   — the spectrum, clipped to the 1px border
@@ -973,16 +1035,10 @@ a.record-action.is-plain:hover { color: var(--fg); }
   border-radius: var(--radius-sm);
   cursor: pointer;
   animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
-  /* A resting drop-shadow, fully transparent. The hover glow is a filter
-     and not a box-shadow because the `aura` keyframe above OWNS
-     box-shadow — an animation beats a normal declaration for the same
-     property, so every hover shadow written into this file was being
-     silently discarded, and that is the other half of why the interaction
-     felt weak. Two drop-shadows interpolate; `filter: none` does not
-     interpolate with one, which is why this rests at zero alpha rather than
-     at `none`. It is also what already gives a button a stacking context,
-     so the `z-index: -1` sweep below stays inside the button it belongs to. */
-  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
+  /* No `filter`, no `transform` and no `transition` here: §7 owns all three
+     for this whole family, as one composed expression per property. This
+     block is the button's PAINT — its layers, its radius, its glow loop —
+     and nothing about its motion. */
 }
 
 /* ONE TRANSFORM ON A CONTROL, FROM TWO INPUTS, AND ONE TRANSITION LIST.
@@ -1007,9 +1063,54 @@ a.record-action.is-plain:hover { color: var(--fg); }
    this family each used to write the shorthand, and each had to remember
    all five properties or it would drop the others. Now a state moves a
    DURATION and the list is never rewritten. */
+/* ============================================================
+   THE CANONICAL MOTION OF A CONTROL — one owner per channel.
+
+   A button is ONE object, and the three things that used to move it were
+   three separate writers on the same element:
+
+     · the ENTRANCE wrote `translate: 0 14px` (a resting rule AND a
+       keyframe — two mechanisms for one arrival)
+     · the HOVER and the magnetic pull wrote `transform`
+     · the ENTRANCE also wrote `filter: blur(4px)` while `:hover` wrote
+       `filter: drop-shadow(…)` — one property, two systems, so the glow
+       was a blur for two seconds and popped to a shadow afterwards
+
+   So the rule is one line of arithmetic and two registered properties:
+
+     transform = the entrance offset + the magnetic pull + the lift
+     filter    = the entrance blur + the glow
+
+   Every system writes a VARIABLE and nothing else. The entrance animates
+   `--enter-y`/`--enter-blur` (registered, so they interpolate), the
+   magnetic writes `--mag-x`/`--mag-y`, and hover/press write `--lift`. No
+   system writes `transform`, `translate` or `filter` on a control any more,
+   so there is nothing left to contest and nothing left to snap when one
+   of them hands the property back.
+
+   The layers that are supposed to move INSIDE the button — the shine
+   strip, the tint — are separate elements, clipped to it, and carry their
+   own transforms. They are attached by geometry, not by a shared value.
+   ============================================================ */
+@property --enter-y {
+  syntax: '<length>'; inherits: false; initial-value: 0px;
+}
+@property --enter-blur {
+  syntax: '<length>'; inherits: false; initial-value: 0px;
+}
 .btn, .btn-solid, .btn-outline, .record-action, .to-top {
   --lift: 0px;
-  transform: translate(var(--mag-x, 0px), calc(var(--mag-y, 0px) + var(--lift)));
+  /* THE ONE TRANSFORM. Three inputs, one expression, in the order a
+     visitor would describe them: where the button has arrived, where the
+     pointer has pulled it, and how high hover is holding it. */
+  transform: translate3d(var(--mag-x, 0px),
+                         calc(var(--enter-y) + var(--mag-y, 0px) + var(--lift)),
+                         0);
+  /* THE ONE FILTER. The entrance's blur rides in front of the glow rather
+     than replacing it, which is what made the button look unlit while it
+     arrived. `none` is never written here: two drop-shadows interpolate and
+     `none` does not. */
+  filter: blur(var(--enter-blur)) drop-shadow(0 0 0 rgba(124, 92, 255, 0));
   transition-property: transform, background-position, opacity, translate, filter;
   transition-duration: var(--motion-normal), var(--motion-normal), var(--motion-slow), var(--motion-slow), var(--motion-slow);
   transition-timing-function: var(--ease), var(--ease), var(--ease-out), var(--ease-out), var(--ease);
@@ -1023,7 +1124,10 @@ a.record-action.is-plain:hover { color: var(--fg); }
 .btn:hover, .btn-solid:hover, .btn-outline:hover {
   --lift: -2px;
   background-position: var(--edge-hi);
-  filter: drop-shadow(0 10px 24px rgba(124, 92, 255, .45));
+  /* the same composition §7 declares, with this state's shadow: the
+     arrival's blur channel survives the hover instead of being replaced by
+     the word `filter` a second time */
+  filter: blur(var(--enter-blur)) drop-shadow(0 10px 24px rgba(124, 92, 255, .45));
   transition-duration: var(--motion-normal);
 }
 /* THE PRESS. Back to rest, in one step, on the site's shortest rung. The
@@ -1599,10 +1703,9 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   animation: aura var(--ambient-pulse) var(--ease-soft) infinite;
-  filter: drop-shadow(0 0 0 rgba(124, 92, 255, 0));
-  transition: background-position var(--motion-normal) var(--ease),
-              transform var(--motion-normal) var(--ease),
-              filter var(--motion-slow) var(--ease);
+  /* no filter and no transition here: §7 owns the motion channels for this
+     control as well, so it enters and leaves by the same one expression a
+     button does. */
 }
 /* the same language as the buttons, one step quieter: it is a small
    control inside a card, and a card that starts moving is a card that has
@@ -1610,7 +1713,7 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
 .record-action:hover {
   --lift: -1px;
   background-position: var(--edge-hi);
-  filter: drop-shadow(0 6px 16px rgba(124, 92, 255, .4));
+  filter: blur(var(--enter-blur)) drop-shadow(0 6px 16px rgba(124, 92, 255, .4));
 }
 .record-action.is-plain { animation: none; box-shadow: none; }
 

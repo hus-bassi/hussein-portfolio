@@ -284,6 +284,122 @@ for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
   }
 }
 
+/* the rules of both stylesheets, parsed once, comments removed, for the
+   structural checks below (one owner per channel, an overlay inside a
+   clipped box) — these are questions about the SHAPE of the sheet, not
+   about a declaration in one place */
+const ruleList = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(m => ({ sel: m[1].trim(), body: m[2].replace(/\/\*[\s\S]*?\*\//g, '') }));
+
+/* (g) A CONTROL HAS ONE OWNER PER MOTION CHANNEL.
+   The button had three writers on one element: the arrival wrote
+   `translate`, hover and the magnetic pull wrote `transform`, and the
+   arrival ALSO wrote `filter: blur()` while hover wrote
+   `filter: drop-shadow()` — one property, two systems, so the glow was a
+   blur for two seconds and popped afterwards. Nothing looks broken in a
+   screenshot of the result, which is why it needs a rule: there must be
+   exactly ONE transform expression for the control family, no `translate`
+   on a control at all, the arrival keyframe must write only registered
+   variables, and every hover `filter` must keep the arrival's blur channel
+   instead of replacing the whole property. */
+const FAMILY = /(^|[\s,>+~])(:is|\.)(btn|btn-solid|btn-outline|record-action|to-top)([\s,.:>+~]|$)/;
+const isState = sel => /:(hover|active|focus|focus-visible|disabled|is-[a-z-]+)|\.is-loading/.test(sel);
+const cancelsMotion = body => /transform:\s*none|translate:\s*none/.test(body);
+let canonicalTransforms = 0;
+let familyRules = 0;
+let familyTransforms = 0;
+for (const r of ruleList) {
+  /* a PSEUDO-ELEMENT is a different element and is allowed its own transform:
+     the shine is supposed to travel inside the button, and that is what it is
+     for. The rule is about writers on the CONTROL itself. */
+  if (r.sel.includes('::')) continue;
+  if (!FAMILY.test(r.sel) || r.sel.trim().startsWith('@')) continue;
+  familyRules++;
+  const declares = p => new RegExp('(^|[;{ ])' + p + '\\s*:').test(r.body);
+  const line = css.slice(0, css.indexOf(r.sel)).split('\n').length;
+  if (!cancelsMotion(r.body) && !isState(r.sel)) {
+    if (declares('transform')) {
+      familyTransforms++;
+      if (/transform\s*:[^;]*var\(--enter-y\)/.test(r.body)) canonicalTransforms++;
+      else if (!cancelsMotion(r.body)) {
+        motionProblems.push(`line ${line}: ${r.sel.trim().slice(0, 46)} writes its own transform — the control family's ONE transform is the composed expression that reads --enter-y`);
+      }
+    }
+    if (declares('translate')) {
+      motionProblems.push(`line ${line}: ${r.sel.trim().slice(0, 46)} writes \`translate\` on a control — the arrival channel is \`--enter-y\`, and a second channel is how the body and its layers came apart`);
+    }
+    if (declares('filter') && /drop-shadow/.test(r.body) && !/var\(--enter-blur\)/.test(r.body) && !/filter:\s*none/.test(r.body)) {
+      motionProblems.push(`line ${line}: ${r.sel.trim().slice(0, 46)} writes a bare drop-shadow — the arrival's blur channel must ride in the same filter or the glow is replaced mid-animation`);
+    }
+  }
+}
+/* only meaningful on a sheet whose controls actually MOVE: the self-test's
+   fixtures deliberately have controls with no motion, and a rule that cannot
+   be satisfied by a minimal stylesheet is a rule that reports noise */
+if (familyTransforms && canonicalTransforms !== 1) {
+  motionProblems.push(`the control family declares ${familyTransforms} transforms across ${familyRules} rules but only ${canonicalTransforms} composed one — exactly one expression may own a control's motion`);
+}
+for (const [, name, body] of css.matchAll(/@keyframes\s+([\w-]+)\s*\{([\s\S]*?)\n\}/g)) {
+  if (!/cta-in|arrive|enter/.test(name)) continue;
+  if (/(^|[;{ ])(transform|translate|filter)\s*:/.test(body)) {
+    motionProblems.push(`@keyframes ${name} writes a composed property directly — an arrival may only write registered variables and opacity, so the control's one expression is never contested`);
+  }
+  if (!/--enter-y/.test(body)) {
+    motionProblems.push(`@keyframes ${name} does not move the control at all — the arrival belongs in --enter-y, which the one transform reads`);
+  }
+}
+
+/* (f) A MOVING OVERLAY MUST LIVE INSIDE A CLIPPED BOX.
+   The hero buttons lost `position: relative; overflow: hidden` when the
+   button recipe was rewritten, and nothing noticed for a long time: the
+   sweep and the tint are absolutely positioned with `inset: 0`, which
+   resolves against the nearest POSITIONED ANCESTOR — so with no containing
+   block of their own they were laid out against `.hero-copy`, and a
+   100%-wide spectrum rectangle appeared BESIDE the control instead of on
+   it. No offset was ever wrong; the coordinate system was.
+
+   So for every absolutely positioned pseudo-element that TRAVELS (a
+   translate, a transform, or a negative inset), the host must both
+   establish a containing block and clip. A child cannot paint outside a
+   clipped parent, which is why this is a structural rule and not a
+   position-tweak rule. */
+/* Overlays that are ALLOWED to be seen outside their host, and why. Each
+   one is a designed halo rather than a surface that belongs to a control:
+   the language pill's glow is the same kind of thing as the buttons' aura,
+   and clipping it would cut a glow that was approved. The pill's own box is
+   contained by measurement — it is placed from the active button's real
+   offset — so it has no geometry to escape with. */
+const haloIsDesigned = new Set(['.lang-switch']);
+const declsFor = (base) => {
+  const out = [];
+  for (const r of ruleList) {
+    if (r.sel === base || r.sel.split(',').map(s => s.trim()).includes(base)) out.push(r.body);
+  }
+  return out.join(';');
+};
+for (const r of ruleList) {
+  const moving = /position:\s*absolute/.test(r.body) &&
+    (/(^|[;{\s])translate:\s*(?!none)/.test(r.body) || /transform:\s*(?!none)\s*[a-z]/.test(r.body) ||
+     /(^|[;{\s])(inset|inset-inline|inset-block|left|right|top|bottom|inset-inline-start|inset-inline-end)[^:;]*:\s*-/.test(r.body));
+  if (!moving) continue;
+  for (const part of r.sel.split(',')) {
+    const t = part.trim();
+    const m = t.match(/^(.+?)::(before|after)$/);
+    if (!m) continue;
+    const base = m[1].trim();
+    if (!base || /[\s>+~]/.test(base) || base.includes(':')) continue;
+    if (haloIsDesigned.has(base)) continue;
+    const d = declsFor(base);
+    const ctx = /position:\s*(relative|absolute|sticky)/.test(d);
+    const clip = /overflow:\s*(hidden|clip)/.test(d);
+    const line = css.slice(0, css.indexOf(r.sel)).split('\n').length;
+    if (!ctx) {
+      motionProblems.push(`line ${line}: ${t} is positioned against the nearest positioned ANCESTOR, not against ${base} — a moving overlay needs \`position: relative\` on its own host`);
+    } else if (!clip) {
+      motionProblems.push(`line ${line}: ${t} travels but ${base} does not clip — it will be seen outside the control it belongs to`);
+    }
+  }
+}
+
 /* (d) A DECORATIVE NUMERAL MUST NOT BE TAKEN OUT OF THE FLOW.
    `.sec-index` was absolutely positioned at `inset-inline-start: -.06em`,
    which put a 104px block of digits six hundredths of an em before the

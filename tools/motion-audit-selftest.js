@@ -268,6 +268,24 @@ const CASES = [
     markup: MARKUP + '<li class="record"><span class="record-shot"><img alt=""></span><div class="record-body"><div class="record-actions"></div></div></li>',
     expect: null
   },
+  {
+    name: 'a shine that travels with no containing block on its host',
+    css: CLEAN + '\n.btn { background-image: none; }\n.btn::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 100%; translate: -100% 0; }\n',
+    markup: MARKUP + '<button class="btn"></button>',
+    expect: /nearest positioned ANCESTOR/
+  },
+  {
+    name: 'a shine that travels on a host that does not clip',
+    css: CLEAN + '\n.btn { position: relative; background-image: none; }\n.btn::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 100%; translate: -100% 0; }\n',
+    markup: MARKUP + '<button class="btn"></button>',
+    expect: /does not clip/
+  },
+  {
+    name: 'a shine clipped to its own button (must pass)',
+    css: CLEAN + '\n.btn { position: relative; overflow: hidden; background-image: none; }\n.btn::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 100%; translate: -100% 0; }\n',
+    markup: MARKUP + '<button class="btn"></button>',
+    expect: null
+  },
 
   /* ---- ONE TRANSITION LIST PER ELEMENT ----
      `transition` is a shorthand for the list, so two rules that each look

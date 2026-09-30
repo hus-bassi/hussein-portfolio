@@ -27,7 +27,7 @@
    -------------
      · a soft light that trails the pointer with easing
      · a small dot that tracks it exactly
-     · a ring that grows and warms over anything interactive
+     · a soft light that follows the pointer and warms over a control
 
    The REAL cursor is never hidden. This is light cast on the page, not a
    replacement for the thing people click with.
@@ -35,7 +35,7 @@
    Cost control: one pointermove and one pointerover listener, both passive,
    both on the document. Nothing on the pointer path reads a layout box
    except a magnetic element's own, and only when the page has scrolled
-   since. No custom property is published at all: the light, the ring and
+   since. No custom property is published at all: the light and the dot are
    the dot are positioned by their own transforms, so the pointer path does
    arithmetic and nothing else.
 
@@ -53,7 +53,7 @@
   var LIT = '.btn, .record-action, .to-top';
   /* things that lean toward the pointer */
   var MAGNET = '[data-magnetic]';
-  /* what counts as interactive for the ring */
+  /* what counts as interactive: the light warms over it */
   var HOT = 'a, button, .card, .record, .stage, .stat, .social, .lang-btn, .tag, .search, .to-top, .sec-more';
 
   function isStill() {
@@ -71,25 +71,18 @@
     light.className = 'cursor-light';
     light.setAttribute('aria-hidden', 'true');
 
-    var ring = document.createElement('div');
-    ring.className = 'cursor-ring';
-    ring.setAttribute('aria-hidden', 'true');
 
     var dot = document.createElement('div');
     dot.className = 'cursor-dot';
     dot.setAttribute('aria-hidden', 'true');
 
     host.appendChild(light);
-    host.appendChild(ring);
     host.appendChild(dot);
 
-    /* target position; the drawn positions lag behind it. The lag IS the
-       trail — the light is heavier than the ring, which is heavier than the
-       dot, and that difference is what makes it read as light rather than
-       as a second cursor. */
+    /* THE pointer position, in viewport coordinates, and the only one there
+       is: `clientX`/`clientY` from the event, and both elements are drawn
+       from it in the same frame. There is no second, eased copy. */
     var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
-    var lx = tx, ly = ty;
-    var rx = tx, ry = ty;
     var visible = false;
 
     /* the magnetic element under the pointer, and its cached box */
@@ -129,13 +122,10 @@
     function show(state) {
       visible = state;
       light.classList.toggle('is-on', state);
-      ring.classList.toggle('is-on', state);
       dot.classList.toggle('is-on', state);
       if (state) return;
       clearLit();
       clearMagnet();
-      ring.classList.remove('is-hot');
-      ring.classList.remove('is-down');
       light.classList.remove('is-bright');
     }
 
@@ -145,10 +135,9 @@
       tx = e.clientX;
       ty = e.clientY;
       if (!visible) {
-        /* first appearance: start under the pointer, never swoop in from
-           wherever the light happened to be resting */
-        lx = rx = tx;
-        ly = ry = ty;
+        /* first appearance: both elements are already AT the pointer, so
+           there is nothing to fly in from — the only thing that changes on
+           the first move is the opacity fade */
         show(true);
       }
 
@@ -164,7 +153,6 @@
       if (!t || t.nodeType !== 1) return;
 
       var hot = t.closest(HOT);
-      ring.classList.toggle('is-hot', !!hot);
       light.classList.toggle('is-bright', !!hot);
 
       /* only controls answer this, and only by lighting their own aura —
@@ -178,30 +166,28 @@
     function onLeave() { show(false); }
 
     /* ---- the frame ----
-       Easing is expressed per second, not per frame, so the trail feels the
-       same at 60 Hz and at 120 Hz. `1 - (1 - k)^(dt·60)` is the same curve
-       sampled at a different rate.
+       ONE pointer position, used by both elements, with no easing of
+       position at all.
 
-       Three weights, and the order is the design: the dot is not eased at
-       all (it is the cursor, and a cursor must never lag), the ring closes
-       about 90% of the gap in ~170ms, and the light takes ~400ms because a
-       380px glow is heavy and heavy things should trail. */
-    function tick(dt) {
-      var k = 1 - Math.pow(1 - 0.09, dt * 60);
-      var kRing = Math.min(1, k * 2.2);
-      lx += (tx - lx) * k;
-      ly += (ty - ly) * k;
-      rx += (tx - rx) * kRing;
-      ry += (ty - ry) * kRing;
+       There used to be two: `tx/ty` straight from `clientX/clientY` for
+       the dot, and `lx/ly` eased toward it at ~0.09 per frame for the
+       light, on the theory that a heavy glow should trail. Measured, the
+       trail was the whole of the visible separation between the white dot
+       and the light behind it — a 260px halo is exactly the size where a
+       fourth-of-a-second lag reads as two objects, not one. The softness
+       belongs in the gradient, the opacity and the size, which is where it
+       now is; the position is simply the pointer.
 
-      light.style.transform = 'translate3d(' + (lx - 130).toFixed(1) + 'px,' + (ly - 130).toFixed(1) + 'px,0)';
-      ring.style.transform = 'translate3d(' + (rx - 17).toFixed(1) + 'px,' + (ry - 17).toFixed(1) + 'px,0)';
+       The two elements differ only in the half-size subtracted, which is
+       their own radius: 130 for the 260px light, 3 for the 6px dot. That
+       is what puts each element's CENTRE on the pointer rather than its
+       top-left corner. */
+    function tick() {
+      light.style.transform = 'translate3d(' + (tx - 130).toFixed(1) + 'px,' + (ty - 130).toFixed(1) + 'px,0)';
       dot.style.transform = 'translate3d(' + (tx - 3).toFixed(1) + 'px,' + (ty - 3).toFixed(1) + 'px,0)';
     }
 
     window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('pointerdown', function () { ring.classList.add('is-down'); }, { passive: true });
-    window.addEventListener('pointerup', function () { ring.classList.remove('is-down'); }, { passive: true });
     document.addEventListener('pointerover', onOver, { passive: true });
     document.addEventListener('pointerleave', onLeave, { passive: true });
     window.addEventListener('resize', function () { magRect = null; }, { passive: true });
@@ -220,7 +206,6 @@
         clearLit();
         clearMagnet();
         light.remove();
-        ring.remove();
         dot.remove();
         Pointer.mounted = false;
       });
