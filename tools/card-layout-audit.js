@@ -66,9 +66,24 @@ check('the DATA still carries duration and credentialId',
 check('the details view can still render both',
   /addFact\(h, t\('rec\.duration'\), rec\.duration/.test(detailFn) &&
   /addFact\(h, t\('rec\.credential'\), rec\.credentialId/.test(detailFn));
-check('details facts use ONLY duration + credentialId (no invented fields)',
-  /rec\.duration/.test(detailFn) && /rec\.credentialId/.test(detailFn) &&
-  !/factNode\(t\('rec\.(provider|date|category|title|body)'/.test(detailFn));
+/* THE FACTS IN THE DETAILS. Every one of them is a field the record itself
+   carries, added through `addFact` — which drops an empty value, so a
+   record with no nomination shows no nomination. What this refuses is a
+   fact that is not the record's own data: a label borrowed from the card to
+   mean something else, a literal typed into the builder. The list is the
+   one that exists; it is written out here so that deleting a fact from the
+   block fails this check instead of quietly changing what a record shows. */
+const DETAIL_FACTS = [
+  'rec\\.duration', 'rec\\.credentialId', 'rec\\.metaPlain', 'rec\\.datePlain',
+  'd\\.event', 'd\\.role', 'd\\.location', 'd\\.nomination', 'd\\.languages'
+];
+check('every details fact is a record field, added conditionally (none invented)',
+  DETAIL_FACTS.every(function (f) {
+    return new RegExp("addFact\\(h, t\\('rec\\.[a-z.]+'\\), " + f + "[,)\\s|]").test(detailFn);
+  }) &&
+  !/factNode\(t\('rec\.(provider|date|category|title|body)'/.test(detailFn) &&
+  !/addFact\(h, ['"]/.test(detailFn),
+  'a fact whose value is not `rec.…` or `d.…` is not the record\'s data');
 check('facts and actions are conditional (missing data leaves no UI)',
   /addFact\(h, t\('rec\.duration'\), rec\.duration/.test(detailFn) &&
   /hasAction/.test(nodeCode) && !/['"]N\/A['"]/.test(nodeFn));

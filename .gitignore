@@ -9,6 +9,9 @@ test-results/
 # They are evidence of a run, not source: ignored rather than deleted, so a
 # past session's output is still on disk to be read.
 _out_*.txt
+# proof screenshots from the records-page browser run: evidence of a run,
+# not source — same rule as the _out_ captures above.
+_dictation_*.png
 .env
 .env.*
 .DS_Store

@@ -18,15 +18,19 @@
    of Helsinki" has to read "ميناليرن · جامعة هلسنكي".
 
    IMAGE PATHS are written relative to the academic/ folder itself
-   (e.g. `assets/certificates/x.jpg`), NOT to any one page. js/certificates.js
-   resolves them per page through EventSystem.resolveMediaPath, so the SAME
-   data renders correctly on the homepage preview, the full Certificates page,
-   and the root mirror — with no build step. Don't prefix them with `../`.
+   (e.g. `assets/certificates/x.jpg`), NOT to any one page. mediaPath() in
+   assets/js/records.js adds the `academic/` hop when records.html renders
+   them, so the SAME data works with no build step. Don't prefix them
+   with `../`.
 
-   ONE EXCEPTION: a path that starts with `../` is already relative to the
-   PROJECT ROOT and is used as it stands. That is for files which live outside
-   academic/ — the DataCamp certificate's image and PDF, which were left
-   exactly where they were placed rather than being copied or moved.
+   ONE EXCEPTION: a path that starts with `../` marks a file that lives
+   outside academic/ — at the PROJECT ROOT, where the DataCamp images and
+   PDF and the dictation scan were left exactly where they were placed
+   rather than being copied or moved. mediaPath() strips the leading `../`,
+   because records.html sits at the root itself: keeping it would climb
+   above a site deployed under a subpath (GitHub Pages serves the repo at
+   /hussein-portfolio/, so `../x` 404s — measured) and above the project
+   folder under file://.
    ------------------------------------------------------------
    TO ADD A REAL CERTIFICATE:
    1. Copy the object below (the real one is a good template).
@@ -130,6 +134,130 @@ const certificatesData = [
        only introduce a genuinely new one. See "The Tagging Rule" in AGENTS.md.
        Current vocabulary: ai · first-aid · data · python · excel */
     tags: ['first-aid'],
+  },
+  {
+    /* ============================================================
+       INTERNATIONAL DICTATION 2026 — A PARTICIPATION CERTIFICATE.
+       The word that matters in this record is PARTICIPATION, and every
+       language says it.
+       ------------------------------------------------------------
+       WHAT THE DOCUMENT ITSELF SAYS, read off the certificate:
+         · "This certificate is proudly presented to Hussein Mohamed
+           Mostafa Ahmed ElBassiouni"
+         · "in recognition of (his\her) participation in the annual
+           international educational campaign «International dictation»
+           2026 in the nomination Arabic Language"
+         · signed by Zakharenko M. P., General Director
+         · dated September 18, 2026 — Moscow
+
+       WHAT IT DOES NOT SAY, and what may therefore never be written
+       anywhere: no place, no rank, no prize, no award, no shortlist.
+       This is not a win and it is not a 1st/2nd/3rd place; it is a
+       certificate of having taken part. "حصلتُ على شهادة مشاركة" is
+       the strongest true sentence this record is allowed to contain,
+       and `category` below carries exactly that word in all three
+       languages so no reader can mistake it for one.
+
+       MOSCOW IS NOT WHERE HE WAS. It is printed under the date, which
+       is where the organisation signed it — the issuer's line. He took
+       part in Cairo, and `location` says Cairo. The two are different
+       facts and they are deliberately not merged into one field.
+
+       THE CAMPAIGN NAME is printed in English on the document, so EN
+       and RU keep that exact wording; the Arabic version carries it in
+       Arabic script, like every other Arabic string on this site. The
+       NOMINATION is the document's own wording too: Latin in EN and
+       RU, Arabic in AR.
+
+       THE FILE sits at the project root, where it was placed, so its
+       path starts with `../` exactly like the DataCamp certificate's —
+       see the path note at the top of this file. Nothing was renamed,
+       copied or moved. */
+    title: {
+      en: 'International Dictation 2026 — Participation Certificate',
+      ar: 'شهادة مشاركة في الإملاء متعدد القوميات 2026',
+      ru: 'Межнациональный диктант 2026 — Сертификат участника',
+    },
+    /* THE EVENT the certificate was issued for — the campaign, which is not
+       the same fact as the organisation that hosted it below, and not the
+       same fact as the title either. Its name is printed on the document. */
+    event: {
+      en: 'International Dictation 2026',
+      ar: 'الإملاء متعدد القوميات 2026',
+      ru: 'Межнациональный диктант 2026',
+    },
+    /* the organisation that ran the campaign Hussein took part in */
+    provider: {
+      en: 'Russian House in Cairo',
+      ar: 'البيت الروسي بالقاهرة',
+      ru: 'Русский дом в Каире',
+    },
+    date: {
+      en: 'September 18, 2026',
+      ar: '18 سبتمبر 2026',
+      ru: '18 сентября 2026',
+    },
+    /* the credential TYPE, in the words the document itself uses —
+       the same slot the DataCamp record fills with "Statement of
+       Accomplishment", and the reason the card reads "شهادة مشاركة"
+       rather than anything that sounds like a prize */
+    category: {
+      en: 'Participation certificate',
+      ar: 'شهادة مشاركة',
+      ru: 'Сертификат участника',
+    },
+    /* the part he took in it: he participated. That is the whole claim. */
+    role: {
+      en: 'Participant',
+      ar: 'مشارك',
+      ru: 'Участник',
+    },
+    /* where the ACTIVITY happened — Cairo, never Moscow */
+    location: {
+      en: 'Russian House in Cairo, Cairo, Egypt',
+      ar: 'البيت الروسي بالقاهرة — القاهرة، مصر',
+      ru: 'Русский дом в Каире, Каир, Египет',
+    },
+    /* the category the certificate was issued under */
+    nomination: {
+      en: 'Arabic Language',
+      ar: 'اللغة العربية',
+      ru: 'Arabic Language',
+    },
+    /* the languages the dictation itself was written in */
+    languages: {
+      en: 'Arabic and Russian',
+      ar: 'العربية والروسية',
+      ru: 'Арабский и русский',
+    },
+    image: '../شهادة مشاركة في يوم الإملاء العالمي بالبيت الروسي.jpeg',
+    /* no credentialUrl and no verificationUrl: the document itself is the
+       credential, and no verified address for this campaign exists in the
+       project. Inventing one would be fabricating a link. */
+    description: {
+      en: 'On September 18, 2026, International Dictation 2026 was held at the Russian House in Cairo with the participation of Youth Club members. Participants completed the dictation in Arabic and Russian as part of the international educational campaign. I received a participation certificate in the Arabic Language nomination.',
+      ar: 'في 18 سبتمبر 2026، أُقيمت فعاليات الإملاء متعدد القوميات في البيت الروسي بالقاهرة بمشاركة أعضاء نادي الشباب. شارك الحضور في كتابة الإملاء باللغتين العربية والروسية، ضمن الحملة التعليمية الدولية «الإملاء متعدد القوميات 2026». حصلتُ على شهادة مشاركة ضمن فئة اللغة العربية.',
+      ru: '18 сентября 2026 года в Русском доме в Каире состоялся Межнациональный диктант 2026 с участием членов Молодёжного клуба. Участники писали диктант на арабском и русском языках в рамках международной просветительской акции. Я получил сертификат участника в номинации «Arabic Language».',
+    },
+    /* the sentence a screen reader is given instead of a filename: what the
+       document is, whose it is, and under which nomination — written in the
+       visitor's own language. */
+    alt: {
+      en: "Hussein ElBassiouni's participation certificate for International Dictation 2026 in the Arabic Language nomination",
+      ar: 'شهادة مشاركة لحسين البسيوني في الإملاء متعدد القوميات 2026 ضمن فئة اللغة العربية',
+      ru: 'Сертификат участника Хусейна Эльбасьюни в Межнациональном диктанте 2026 в номинации «Arabic Language»',
+    },
+    isDemo: false,
+    /* Concept tags — the controlled vocabulary used by the filter buttons on
+       the site. ONE slug, because the concept this record teaches is the
+       LANGUAGE and nothing in the vocabulary covered it. Everything else a
+       visitor might type — الإملاء، البيت الروسي, Cairo, Русский дом, 2026,
+       the nomination, the two languages — is already text on the record and
+       is matched by the search index, so no near-duplicate slug was created
+       to carry it. See "The Tagging Rule" in AGENTS.md.
+       Current vocabulary: ai · first-aid · data · python · excel ·
+       language · volunteering */
+    tags: ['language'],
   },
    {
     // A DataCamp Statement of Accomplishment for a completed course.
@@ -242,6 +370,98 @@ const certificatesData = [
        invented here: every new tag has to be translated into three
        languages, and that is Hussein's call. See "The Tagging Rule" in
        AGENTS.md. Current vocabulary: ai · first-aid · data · python · excel */
+    tags: ['data'],
+  },
+  {
+    /* ============================================================
+       A SECOND DATACAMP STATEMENT — same issuer, same credential
+       type as the record above, a different course. Everything here
+       was read off the certificate image itself before anything was
+       written:
+         · "STATEMENT OF ACCOMPLISHMENT"
+         · "#50,161,411"
+         · "HAS BEEN AWARDED TO Hussein Mohamed Mostafa Ahmed
+            ElBassiouni"
+         · "FOR SUCCESSFULLY COMPLETING Data Analysis in Google Sheets"
+         · "LENGTH 3 HRS"
+         · "COMPLETED ON OCT 06, 2026"
+         · signed Jonathan Cornelissen, CEO, DataCamp
+       ------------------------------------------------------------
+       NOT A CERTIFICATION, exactly like the record above: this is a
+       course completion and it claims nothing beyond the words
+       printed on the document. In particular there is NO XP figure
+       anywhere — the document prints none, so none is written, no
+       matter what the learner account may show.
+       ------------------------------------------------------------
+       The course title is the document's exact English string and
+       is not translated, for the reason given above; "DataCamp"
+       stays in Latin in all three languages as a brand, like
+       LinkedIn and GitHub.
+       ------------------------------------------------------------
+       NO PDF WAS SUPPLIED for this one — only the JPEG — so there is
+       deliberately no `pdf` field and, with no verification URL
+       published, no `credentialUrl` either: the image is the whole
+       of the credential here, and inventing a link would be
+       fabricating one. The file sits at the project root exactly as
+       it was placed (nothing renamed, copied or moved), so its path
+       starts with `../` like its sibling's — see the path note at
+       the top of this file. */
+    title: 'Data Analysis in Google Sheets',
+    provider: 'DataCamp',
+    date: {
+      en: '6 Oct 2026',
+      ar: '6 أكتوبر 2026',
+      ru: '6 октября 2026',
+    },
+    /* the credential TYPE, printed exactly as the document prints it */
+    category: {
+      en: 'Statement of Accomplishment',
+      ar: 'بيان إتمام',
+      ru: 'Подтверждение о прохождении курса',
+    },
+    duration: {
+      en: '3 hrs',
+      ar: 'ثلاث ساعات',
+      ru: '3 часа',
+    },
+    /* printed verbatim, commas and all, exactly as the document shows it */
+    credentialId: '#50,161,411',
+    image: '../Data Analysis in Google Sheets_page-0001.jpg',
+    description: {
+      en: 'A three-hour DataCamp course on data analysis in Google Sheets: looking values up across tables with VLOOKUP, sorting and filtering data, and cleaning spreadsheet data before analysing it.',
+      ar: 'دورة من ثلاث ساعات على منصة DataCamp لتحليل البيانات في الجداول الإلكترونية: البحث عن القيم داخل الجداول، وترتيب البيانات وتصفيتها، وتنظيف بيانات الجداول قبل التحليل.',
+      ru: 'Трёхчасовой курс DataCamp по анализу данных в Google Sheets: поиск значений по таблицам с помощью VLOOKUP, сортировка и фильтрация данных, а также очистка табличных данных перед анализом.',
+    },
+    /* the sentence a screen reader is given instead of a filename, in the
+       visitor's own language — same recipe as the participation record */
+    alt: {
+      en: "Hussein ElBassiouni's DataCamp Statement of Accomplishment for completing Data Analysis in Google Sheets",
+      ar: 'بيان إتمام من DataCamp لحسين البسيوني عن إتمام دورة تحليل البيانات في الجداول الإلكترونية',
+      ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании курса анализа данных в Google Sheets',
+    },
+    isDemo: false,
+    /* THE DETAIL VIEW — only what was supplied: three course topics, in
+       the course's own English terminology, kept English in every
+       language for the reason the record above gives. No chapters, no
+       resources and no collaborators were given for this course, so
+       none are written — the block renders its one section and nothing
+       is invented to fill the gap. */
+    details: {
+      topics: {
+        en: [
+          'VLOOKUP',
+          'Sorting and filtering data',
+          'Data cleaning in spreadsheets',
+        ],
+      },
+    },
+    /* Concept tags — ONE slug: the concept this course teaches is data
+       analysis, which the existing `data` slug already covers — the same
+       slug its sibling spreadsheet course carries. Tag the concept, not
+       the tool: no near-duplicate was created for "Sheets", and no new
+       translation was invented. See "The Tagging Rule" in AGENTS.md.
+        Current vocabulary: ai · first-aid · data · python · excel ·
+        language · volunteering */
     tags: ['data'],
   },
 ];

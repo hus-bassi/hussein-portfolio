@@ -78,6 +78,7 @@
     data:         { ar: 'تحليل البيانات',   en: 'Data analysis',    ru: 'Анализ данных' },
     python:       { ar: 'بايثون',            en: 'Python',           ru: 'Python' },
     excel:        { ar: 'إكسل',              en: 'Excel',            ru: 'Excel' },
+    language:     { ar: 'اللغات',            en: 'Languages',        ru: 'Языки' },
     volunteering: { ar: 'التطوّع',           en: 'Volunteering',     ru: 'Волонтёрство' }
   };
   function tagLabel(slug) {
@@ -105,13 +106,21 @@
   /* Image and PDF paths in the data are written relative to academic/ (see
      the note at the top of academic/data/certificates.js), because that is
      where the other certificates' files live. A path that starts with `../`
-     is ALREADY relative to the project root, which is where the DataCamp
-     certificate's own image and PDF are — those two files were left exactly
-     where they were placed, and this is the whole of the accommodation. */
+     is relative to the PROJECT ROOT — where the DataCamp images and PDF and
+     the dictation scan were left exactly as placed. records.html itself
+     lives at that root, so the leading `../` is STRIPPED and the page
+     resolves the rest against its own directory: the same file on the same
+     root page, without climbing out of where the site is served from.
+     Keeping `../` escapes a site deployed under a subpath — GitHub Pages
+     serves this repo at /hussein-portfolio/, so `../x` asks the domain root
+     for x and gets a 404 (measured against the live site) — and it escapes
+     the project folder under file:// too. Absolute http(s) and / paths are
+     handed through untouched. */
   function mediaPath(p) {
     if (!p) return '';
     var s = String(p);
-    if (/^(\.\.\/|\/|https?:)/i.test(s)) return s;
+    if (/^\.\.\//.test(s)) return s.slice(3);
+    if (/^(\/|https?:)/i.test(s)) return s;
     return 'academic/' + s.replace(/^academic\//, '');
   }
   function fileName(url) {
@@ -149,6 +158,15 @@
       role: tv(c.role),
       location: tv(c.location),
       organisation: tv(c.organization),
+      /* Three more facts of the same kind, all optional and all read the
+         same way: a participation certificate is about an EVENT, it was
+         issued under a NOMINATION, and it covers certain LANGUAGES, and
+         none of those three is the provider, the role or the place. A record
+         with none of them — every course record today — simply loses three
+         lines, because addFact drops an empty value. */
+      event: tv(c.event),
+      nomination: tv(c.nomination),
+      languages: tv(c.languages),
       whatIDid: tv(c.whatIDid),
       takeaway: tv(c.whatILearned),
       skills: (c.skills || []).map(function (s) { return tv(s); }).filter(Boolean),
@@ -176,6 +194,9 @@
       return index({
         title: tv(c.title),
         titlePlain: tv(c.title),
+        /* a record's own alt sentence, in the current language; the fallback
+           is the title, so a record without one still has a real one */
+        altPlain: tv(c.alt),
         meta: [tv(c.provider), tv(c.date), tv(c.category)].filter(Boolean).join(' · '),
         /* the two fields the details view needs as their own facts rather
            than as a sentence, because they are facts there */
@@ -361,6 +382,12 @@
     return found;
   }
   function mediaAlt(rec) {
+    /* A record may CARRY its own alt text, in all three languages, in the
+       data beside its title — and when it does that sentence IS the alt,
+       because it says what the document is and whose it is where the title
+       alone may not. Everything else falls back to the title, which is
+       already this record's own name in the current language. */
+    if (rec.altPlain) return rec.altPlain;
     return rec.titlePlain + (rec.credentialId ? ' — ' + rec.credentialId : '');
   }
 
@@ -1037,12 +1064,19 @@
        and an activity are not the same thing and the data knows which */
     var meta = 0;
     var metaHost = section(null, function (h) {
+      /* an event certificate leads with the EVENT it was issued for, then the
+         body that ran it, then when and where — and the same recipe carries
+         the last three, so "the nomination" and "the languages" are never
+         smuggled into the provider or the role to avoid a line */
+      meta += addFact(h, t('rec.d.event'), d.event);
       meta += addFact(h, t('rec.d.provider'), rec.metaPlain || '');
       meta += addFact(h, t('rec.d.date'), rec.datePlain || '');
       meta += addFact(h, t('rec.duration'), rec.duration, false);
       meta += addFact(h, t('rec.credential'), rec.credentialId, true);
       meta += addFact(h, t('rec.d.role'), d.role);
       meta += addFact(h, t('rec.d.location'), d.location);
+      meta += addFact(h, t('rec.d.nomination'), d.nomination);
+      meta += addFact(h, t('rec.d.languages'), d.languages);
       return meta;
     });
     if (metaHost) { metaHost.classList.add('detail-facts'); frame.appendChild(metaHost); sections++; }

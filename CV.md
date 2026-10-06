@@ -12,7 +12,7 @@
 > files and the final CV/PDF are both generated from this ledger, so they
 > can never drift apart.
 >
-> Last updated: 2026-09-25
+> Last updated: 2026-10-06
 
 ---
 
@@ -73,6 +73,38 @@ never as an accomplishment.
 - **AR:** دورة من ساعتين على منصة DataCamp تتناول أساسيات الجداول: إدخال البيانات وتنسيقها، وكتابة الصيغ والحسابات، واستخدام معاملات المقارنة، والإشارة إلى الخلايا بشكل صحيح.
 - **RU:** Двухчасовой курс DataCamp по основам работы с таблицами: ввод и форматирование данных, написание формул и вычислений, использование операторов сравнения и корректные ссылки на ячейки.
 - **⚠ Claiming note:** this is a completed course, NOT a "DataCamp certification" and NOT a Google certification. It does not by itself make it a "Google Sheets expert", a "Certified Data Analyst" or a "Professional Spreadsheet Architect". The official course title is kept in English in all three languages, because that is the exact string printed on the document.
+
+### 4. International Dictation 2026 — Participation Certificate
+- **Type:** Participation certificate · شهادة مشاركة · Сертификат участника
+- **Event:** International Dictation 2026 (الإملاء متعدد القوميات 2026 · Межнациональный диктант 2026)
+- **Organisation / venue:** Russian House in Cairo (البيت الروسي بالقاهرة · Русский дом в Каире)
+- **Date:** September 18, 2026 (18 سبتمبر 2026 · 18 сентября 2026)
+- **Nomination on the document:** Arabic Language
+- **Languages the dictation was written in:** Arabic and Russian
+- **Issued by:** signed by Zakharenko M. P., General Director
+- **Verification:** none published — the document itself is the credential, and no verification URL has been invented for it.
+- **File:** `شهادة مشاركة في يوم الإملاء العالمي بالبيت الروسي.jpeg`, at the project root exactly as it was placed (nothing renamed, copied or moved)
+- **EN:** Took part in International Dictation 2026 at the Russian House in Cairo on September 18, 2026, and received a participation certificate in the Arabic Language nomination.
+- **AR:** شاركتُ في الإملاء متعدد القوميات 2026 في البيت الروسي بالقاهرة يوم 18 سبتمبر 2026، وحصلت على شهادة مشاركة ضمن فئة اللغة العربية.
+- **RU:** Принял участие в Межнациональном диктанте 2026 в Русском доме в Каире 18 сентября 2026 года и получил сертификат участника в номинации «Arabic Language».
+- **⚠ Claiming note:** this is a certificate of **participation**. The document carries no place, no rank, no award and no prize, so neither may this ledger: it must never be described as a win, a placing, an award or a top result. The strongest true sentence about it is "participated in International Dictation 2026 and received a participation certificate in the Arabic Language nomination."
+- **⚠ Moscow note:** the document is dated *September 18, 2026 — Moscow*. That is the issuer's signing/date line. He took part in **Cairo**, at the Russian House. The two must never be merged.
+
+### 5. Data Analysis in Google Sheets
+- **Provider:** DataCamp
+- **Credential type:** Statement of Accomplishment / بيان إتمام / Подтверждение о прохождении курса
+- **Date:** October 6, 2026 (6 Oct 2026 · 6 أكتوبر 2026 · 6 октября 2026)
+- **Length:** 3 hrs
+- **Credential number:** #50,161,411
+- **Signed by:** Jonathan Cornelissen, CEO, DataCamp
+- **Verification:** none published — no PDF was supplied for this certificate and no verification URL exists, so no URL has been invented for it. The image below is the document itself.
+- **File:** `Data Analysis in Google Sheets_page-0001.jpg`, at the project root exactly as it was placed (nothing renamed, copied or moved)
+- **Topics:** VLOOKUP · sorting and filtering data · data cleaning in spreadsheets
+- **EN:** A three-hour DataCamp course on data analysis in Google Sheets: looking values up across tables with VLOOKUP, sorting and filtering data, and cleaning spreadsheet data before analysing it.
+- **AR:** دورة من ثلاث ساعات على منصة DataCamp لتحليل البيانات في الجداول الإلكترونية: البحث عن القيم داخل الجداول، وترتيب البيانات وتصفيتها، وتنظيف بيانات الجداول قبل التحليل.
+- **RU:** Трёхчасовой курс DataCamp по анализу данных в Google Sheets: поиск значений по таблицам с помощью VLOOKUP, сортировка и фильтрация данных, а также очистка табличных данных перед анализом.
+- **⚠ Claiming note:** same as entry 3 — a completed course, not a "DataCamp certification", not a Google certification, and not proof of expertise. The official course title stays in English in all three languages because that is the exact string printed on the document.
+- **⚠ XP question for Hussein:** the supplied payload mentions 2,800 XP, but the document prints no XP figure, so it is recorded nowhere yet. Confirm it and it can be added as its own fact; until then it stays out.
 
 ---
 
@@ -190,3 +222,4 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-09-27 | Introduction to Google Sheets (DataCamp) added | Certificate #3, from the PDF Hussein supplied. Verified against the document itself: the PDF's text streams were decoded and every field (name, credential #47,542,476, 2 HRS, SEP 27 2026, Jonathan Cornelissen) matches. Published on records.html with the real image as the preview and the real PDF behind "view certificate". Filed under the existing `data` tag. **Proposed, not created:** a dedicated `spreadsheets` tag (ar/en/ru) — every new tag needs three translations and that is Hussein's call. **Open question:** the two files sit at the project root rather than in `academic/assets/certificates/`; they were referenced where they are and not moved, since moving or copying them was not authorised. |
 | 2026-09-27 | Records page became one achievement-card system | Every record — the 3 certificates and the 2 volunteering activities — now renders through ONE media resolver with a fixed priority: image → video → document → designed placeholder. No record-specific code; the Russian House activity shows its photo (and keeps its video behind "watch video"), and the chess activity, which has only a video, shows the video. A media path that fails at runtime falls through to the next tier, so a broken path can never leave a broken icon. Verified: 5 records, 4 images, 2 videos, 2 PDFs, 0 with no media, 0 console errors, no 404s, and the existing search and tag filters unchanged. |
 | 2026-09-27 | Record cards became previews, with a details view | The card is a preview and stays compact; everything a record has to say lives in a details view opened by clicking the card (or its title, from the keyboard). The DataCamp course detail is now recorded in `certificates.js`: 10 topics, 2 chapters, 3 resources and 2 collaborators, all supplied by Hussein and all kept in English as the course's own terminology. Deliberately NOT recorded: any learning outcome, any personal takeaway, and any certification claim — none was supplied, and a completed course is still a Statement of Accomplishment. The two volunteering activities gain their details from fields that were already in `events.js` and had never been shown anywhere (what was done, what was taken away, skills, photo gallery). |
+| 2026-10-03 | International Dictation 2026 — participation certificate added | Certificate #4, from the certificate image itself, which was read before anything was written: it is presented to Hussein Mohamed Mostafa Ahmed ElBassiouni "in recognition of participation in the annual international educational campaign «International dictation» 2026 in the nomination Arabic Language", signed by Zakharenko M. P., General Director, dated September 18, 2026, Moscow. Published on `records.html` through the existing card, media resolver and details view — no new card, no new component, no new CSS. **It is participation and nothing more:** the document has no place, no rank and no award on it, so the record carries none either, and `category` states the credential type in all three languages (شهادة مشاركة · Participation certificate · Сертификат участника) so no reader can mistake it for a prize. The file was left at the project root exactly where it was placed and referenced with `../`, the documented convention already used by the DataCamp certificate; nothing was renamed, copied or moved. Three optional facts (`event`, `nomination`, `languages`) were added to the shared details model so the modal can show what a participation certificate actually has, and they render through the one existing `addFact` recipe — a record without them simply loses three lines. **One** new tag, `language` (ar/en/ru), because no existing slug covered the concept; every other search phrase works through the existing index, with no tag invented to carry it. Verified: 4 records, no duplicate, the asset answers 200 as `image/jpeg` byte-for-byte, every required query scores > 0 in ar/en/ru, no Latin letter in any Arabic string, and `node tools/check.js` is green. **Open question for Hussein:** "الأدب الروسي / Russian Literature / Русская литература" and "ثقافة روسية / Russian Culture" are in the requested keyword list but the supplied descriptions never mention the text or call it a cultural event, so they were not written — say the word and they go in. |

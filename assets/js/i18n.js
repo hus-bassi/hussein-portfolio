@@ -323,10 +323,16 @@
       en: 'Learning & certificates',
       ru: 'Обучение и сертификаты'
     },
+    /* Same trap as `rec.lead` below, and the same correction. This sentence
+       promised a verification link for EVERY certificate, which stopped being
+       true the moment the International Dictation participation certificate was
+       published: its credential is the document itself, and no verified address
+       for that campaign exists. It now says what is actually true — each entry
+       is documented with the evidence that exists for it. */
     'learning.lead': {
-      ar: 'كل شهادة موثّقة برابط التحقق من الجهة المانحة. السجل كامل — مع البحث الفوري والتصفية حسب المجال — في صفحة مستقلة.',
-      en: 'Every certificate is documented with a verification link from the issuing body. The full record — with instant search and filtering by field — is on a dedicated page.',
-      ru: 'Каждый сертификат подтверждён ссылкой на выдавшую организацию. Полный список — с мгновенным поиском и фильтром по направлениям — на отдельной странице.'
+      ar: 'شهاداتي ووثائق تعلّمي موثّقة بالمصادر المتاحة لكل سجل. السجل كامل — مع البحث الفوري والتصفية حسب المجال — في صفحة مستقلة.',
+      en: 'My certificates and learning records are documented with the available evidence for each entry. The full record — with instant search and filtering by field — is on a dedicated page.',
+      ru: 'Мои сертификаты и учебные записи подтверждены доступными материалами по каждому пункту. Полный список — с мгновенным поиском и фильтром по направлениям — на отдельной странице.'
     },
     'learning.open': {
       ar: 'افتح سجل التعلم والشهادات',
@@ -413,10 +419,17 @@
       en: 'Learning & certificates',
       ru: 'Обучение и сертификаты'
     },
+    /* The lead used to promise a verification link for EVERY certificate.
+       Two records have none — the DataCamp course, whose credential is the
+       PDF itself, and the International Dictation participation certificate,
+       which is evidenced by the document itself — so the sentence was
+       promising something the page does not deliver. It now says what is
+       actually true: each record is documented with the evidence that exists
+       for it, and some of that evidence is a verification link. */
     'rec.lead': {
-      ar: 'كل شهادة هنا موثّقة برابط التحقق من الجهة المانحة. ابحث أو صفِّ حسب المجال.',
-      en: 'Every certificate here is documented with a verification link from the issuing body. Search or filter by field.',
-      ru: 'Каждый сертификат здесь подтверждён ссылкой на выдавшую организацию. Ищите или фильтруйте по направлениям.'
+      ar: 'شهاداتي ووثائق تعلّمي ومشاركتي موثّقة بالمصادر المتاحة لكل سجل. ابحث أو صفِّ حسب المجال.',
+      en: 'Certificates and learning records are documented with the available evidence for each entry. Search or filter by field.',
+      ru: 'Здесь собраны сертификаты и учебные записи с доступными подтверждающими материалами. Используйте поиск или фильтры.'
     },
     'search.srLabel': {
       ar: 'البحث في السجلات',
@@ -516,6 +529,9 @@
     'rec.d.date': { ar: 'التاريخ', en: 'Date', ru: 'Дата' },
     'rec.d.role': { ar: 'الدور', en: 'Role', ru: 'Роль' },
     'rec.d.location': { ar: 'المكان', en: 'Location', ru: 'Место' },
+    'rec.d.event': { ar: 'الفعالية', en: 'Event', ru: 'Мероприятие' },
+    'rec.d.nomination': { ar: 'الفئة', en: 'Nomination', ru: 'Номинация' },
+    'rec.d.languages': { ar: 'اللغات', en: 'Languages', ru: 'Языки' },
     'rec.d.did': { ar: 'ما قمت به', en: 'What I did', ru: 'Что я делал' },
     'rec.d.takeaway': { ar: 'ما استفدته', en: 'What I took away', ru: 'Что я вынес' },
     'rec.d.topics': { ar: 'الموضوعات التي تناولها الدورة', en: 'Topics covered', ru: 'Темы курса' },
