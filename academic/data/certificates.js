@@ -440,19 +440,64 @@ const certificatesData = [
       ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании курса анализа данных в Google Sheets',
     },
     isDemo: false,
-    /* THE DETAIL VIEW — only what was supplied: three course topics, in
-       the course's own English terminology, kept English in every
-       language for the reason the record above gives. No chapters, no
-       resources and no collaborators were given for this course, so
-       none are written — the block renders its one section and nothing
-       is invented to fill the gap. */
+    /* THE DETAIL VIEW. Everything here came from Hussein's course
+       payload for this course, in the course's own English terminology,
+       kept English in every language for the same reason the record
+       above gives: these are the provider's words, not the project's.
+       The four blocks are the same four the sibling DataCamp record
+       carries, so the two Statements of Accomplishment read alike.
+       Nothing was inferred from the course name and nothing invented:
+         · chapters — titles only; no chapter description was supplied, so
+           none is written and each chapter renders as its title;
+         · resources — the practice files that ship with the course, NAMES
+           only; no URL was supplied, and inventing one would fabricate a
+           link, so they render as plain labels;
+         · two collaborators named in the course material, labelled no more
+           strongly than the sibling record labels its own.
+       The brief's skill list is folded into `topics` (what the course
+       covers), deliberately NOT written as a `skills` claim: a completed
+       course is not a claim of a skill level — see the sibling record's
+       note and the ⚠ claiming note in CV.md. */
     details: {
       topics: {
         en: [
+          'Data analysis in spreadsheets',
+          'Data cleaning',
+          'Data preparation',
+          'Data exploration',
+          'Summary statistics',
+          'Sorting and filtering',
+          'Unique values',
+          'Conditional functions',
+          'Logical expressions',
+          'Conditional aggregation',
           'VLOOKUP',
-          'Sorting and filtering data',
-          'Data cleaning in spreadsheets',
+          'Combining data from different tables',
+          'Text data cleaning',
+          'Date and time data cleaning',
+          'Spreadsheet workflows',
+          'Data manipulation',
         ],
+      },
+      chapters: {
+        en: [
+          { title: 'Exploring Data' },
+          { title: 'Cleaning and Preparing Data' },
+          { title: 'Analyzing Data' },
+        ],
+      },
+      resources: {
+        en: [
+          { label: 'Educational Programs' },
+          { label: 'Moons of the Solar System' },
+          { label: 'Kickstarter Games' },
+          { label: 'Employee Expenses' },
+          { label: 'Manufacturing Costs' },
+          { label: 'Highest Grossing Films' },
+        ],
+      },
+      collaborators: {
+        en: ['Amy Peterson', 'James Chapman'],
       },
     },
     /* Concept tags — ONE slug: the concept this course teaches is data
