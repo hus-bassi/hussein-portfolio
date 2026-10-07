@@ -115,6 +115,26 @@
       en: 'The story of Hussein ElBassiouni: from secondary school to volleyball, then the injury, then the path toward data science, astronomy and studying in Russia.',
       ru: 'История Хусейна Эль-Басьюни: от старшей школы к волейболу, затем травма, затем путь к науке о данных, астрономии и учёбе в России.'
     },
+    'meta.projects.title': {
+      ar: 'المشاريع | حسين البسيوني',
+      en: 'Projects | Hussein ElBassiouni',
+      ru: 'Проекты | Хусейн Эль-Басьюни'
+    },
+    'meta.projects.desc': {
+      ar: 'مشاريع حسين البسيوني: منصّة التجارة الإلكترونية الحقيقية «سوق المجد الطبي» مع تفاصيل الهندسة الكاملة في صفحاتها الخاصة.',
+      en: 'The projects of Hussein ElBassiouni: the real-world Elmajd Medical Store e-commerce platform, with full engineering details on its own page.',
+      ru: 'Проекты Хусейна Эль-Басьюни: реальная платформа интернет-торговли Elmajd Medical Store с полными инженерными деталями на отдельной странице.'
+    },
+    'meta.project.title': {
+      ar: 'تفاصيل المشروع | حسين البسيوني',
+      en: 'Project details | Hussein ElBassiouni',
+      ru: 'Проект | Хусейн Эль-Басьюни'
+    },
+    'meta.project.desc': {
+      ar: 'تفاصيل الهندسة الكاملة لمشروع «سوق المجد الطبي»: التجارة، الإدارة، تجربة العميل، الأتمتة، البحث، الأمان، والاختبار.',
+      en: 'The full engineering details of the Elmajd Medical Store project: commerce, operations, customer experience, automation, search, security and testing.',
+      ru: 'Полные инженерные детали проекта Elmajd Medical Store: торговля, управление, клиентский опыт, автоматизация, поиск, безопасность и тестирование.'
+    },
 
     /* ---------- home: hero ---------- */
     'hero.eyebrow': { ar: 'الاسم', en: 'Name', ru: 'Имя' },
@@ -316,6 +336,60 @@
       en: 'I am currently developing my skills; my projects will appear here when they are complete.',
       ru: 'Сейчас я развиваю навыки; мои проекты появятся здесь, когда будут готовы.'
     },
+    'projects.featured': {
+      ar: 'مشروع حقيقي مميّز',
+      en: 'Featured real-world project',
+      ru: 'Избранный реальный проект'
+    },
+    /* The projects LIST page (projects.html) and the detail page
+       (project.html?id=<id>). The card on the home page opens the detail
+       page; the engineering story lives there, never in the card. */
+    'projects.pageTitle': { ar: 'المشاريع', en: 'Projects', ru: 'Проекты' },
+    'projects.eyebrow': {
+      ar: 'مشاريع المحفظة',
+      en: 'Portfolio projects',
+      ru: 'Проекты портфолио'
+    },
+    'projects.lead': {
+      ar: 'مشاريع حقيقية معروضة هنا، ولكلٍّ قصته الهندسية الكاملة في صفحة مستقلة. اضغط على أي بطاقة لفتح تفاصيل المشروع.',
+      en: 'The real-world projects presented in this portfolio; each one has its full engineering story on a page of its own. Open a card to read the details.',
+      ru: 'Реальные проекты, представленные в портфолио; у каждого — полная инженерная история на отдельной странице. Откройте карточку, чтобы прочитать детали.'
+    },
+    'projects.viewAll': {
+      ar: 'الانتقال إلى المشاريع',
+      en: 'View all projects',
+      ru: 'Смотреть все проекты'
+    },
+    'projects.back': {
+      ar: 'العودة إلى المشاريع',
+      en: 'Back to projects',
+      ru: 'Назад к проектам'
+    },
+    'projects.backHome': {
+      ar: 'العودة إلى الرئيسية',
+      en: 'Back to home',
+      ru: 'Назад на главную'
+    },
+    'projects.viewProject': {
+      ar: 'عرض تفاصيل المشروع',
+      en: 'View project details',
+      ru: 'Открыть детали проекта'
+    },
+    'projects.notFound.title': {
+      ar: 'المشروع غير موجود',
+      en: 'Project not found',
+      ru: 'Проект не найден'
+    },
+    'projects.notFound.text': {
+      ar: 'لم يُعثر على مشروع بهذا المعرّف. يمكنك العودة إلى قائمة المشاريع.',
+      en: 'No project with that identifier was found. You can return to the projects list.',
+      ru: 'Проект с таким идентификатором не найден. Вы можете вернуться к списку проектов.'
+    },
+    'projects.visit': {
+      ar: 'زيارة الموقع',
+      en: 'Visit website',
+      ru: 'Посетить сайт'
+    },
 
     /* ---------- home: learning summary ---------- */
     'learning.title': {
@@ -402,9 +476,9 @@
       ru: 'Остаёмся на связи'
     },
     'contact.lead': {
-      ar: 'للتواصل بشأن الدراسة أو المشاريع أو فرص التعلم، يمكن استخدام وسائل التواصل التي سأضيفها هنا.',
-      en: 'To get in touch about studies, projects or learning opportunities, you can use the contact channels I will add here.',
-      ru: 'Чтобы связаться по поводу учёбы, проектов или возможностей обучения, можно использовать контакты, которые я добавлю здесь.'
+      ar: 'للتواصل بشأن الدراسة أو المشاريع أو فرص التعلّم، هذه قنواتي على المنصّات المختلفة.',
+      en: 'For study, projects or learning opportunities, these are the platforms where you can reach me.',
+      ru: 'По вопросам учёбы, проектов или возможностей обучения — вот площадки, где со мной можно связаться.'
     },
     'contact.pending': {
       ar: 'ستُضاف بيانات التواصل قريبًا.',
@@ -689,9 +763,13 @@
     /* document head */
     var page = document.body ? document.body.getAttribute('data-page') : null;
     var titleKey = page === 'records' ? 'meta.records.title'
-      : page === 'story' ? 'meta.story.title' : 'meta.index.title';
+      : page === 'story' ? 'meta.story.title'
+      : page === 'projects' ? 'meta.projects.title'
+      : page === 'project' ? 'meta.project.title' : 'meta.index.title';
     var descKey = page === 'records' ? 'meta.records.desc'
-      : page === 'story' ? 'meta.story.desc' : 'meta.index.desc';
+      : page === 'story' ? 'meta.story.desc'
+      : page === 'projects' ? 'meta.projects.desc'
+      : page === 'project' ? 'meta.project.desc' : 'meta.index.desc';
     document.title = t(titleKey, lang);
     var md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', t(descKey, lang));

@@ -951,7 +951,7 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
    because it is dark-on-bright, and letting both rules apply would make
    the winner depend on source order. */
 a.btn:not(.btn-primary), a.btn-solid:not(.btn-primary), a.btn-outline,
-a.record-action, a.social, a.stat-link,
+a.record-action, a.social, a.stat-link, a.card-link,
 .footer-nav a, a.skip-link { color: var(--fg); }
 /* NOTE the type qualifier's ABSENCE here, and it is not a slip. These were
    written `a.primary-nav a` and `a.footer-nav a`, on the assumption that
@@ -973,7 +973,7 @@ a.record-action.is-plain { color: var(--fg-2); }
 
 a.btn:not(.btn-primary):hover, a.btn-solid:not(.btn-primary):hover,
 a.btn-outline:hover,
-a.record-action:hover, a.social:hover, a.stat-link:hover,
+a.record-action:hover, a.social:hover, a.stat-link:hover, a.card-link:hover,
 .footer-nav a:hover, a.skip-link:hover { color: var(--fg); }
 .primary-nav a:hover { color: var(--fg); }
 .primary-nav a.is-current:hover { color: var(--gold); }
@@ -1562,10 +1562,109 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
 /* ---------- 10. Content components ---------- */
 /* cards (interests + projects) */
 .cards { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(272px, 1fr)); }
-.card { padding: var(--s-5); }
+/* position: relative is the containing block for the stretched card link
+   (.card-link::after below) — the overlay has to resolve against the card,
+   not against whatever pane ancestor happens to be positioned. */
+.card { position: relative; padding: var(--s-5); }
 .card-ico { display: block; width: 24px; height: 24px; margin-block-end: var(--s-4); color: var(--azure); }
 .card-title { font-size: 1.08rem; color: var(--fg); margin-block-end: var(--s-2); }
 .card-text { color: var(--fg-2); font-size: .97rem; line-height: 1.8; }
+
+/* ---------- the featured project card ----------
+   The one card on the page that is a real, running thing, so it is
+   allowed to read a step stronger than the rest — a labelled eyebrow
+   and a slightly larger title. Nothing new is lit: same spectrum, same
+   edge recipe, same motion. */
+.card.is-featured .card-title { font-size: 1.28rem; }
+/* The store's Latin brand name under the Arabic title. Same treatment as
+   .social-name below: isolated so its letters stay LTR inside the RTL
+   layout, and right-aligned so it lines up with the Arabic line above it. */
+.card-brand {
+  margin-block-end: var(--s-3);
+  font-size: .92rem; font-weight: 600; color: var(--fg-3);
+  direction: ltr; unicode-bidi: isolate; text-align: right;
+}
+/* The project's single action follows the text it belongs to. z-index
+   lifts it above the stretched .card-link overlay so it stays its own
+   clickable target (the card is clickable everywhere else). */
+.card .record-action { position: relative; z-index: 1; margin-block-start: var(--s-4); }
+/* The tech tags reuse the metadata recipe the volunteering records use, so
+   there is one mono row on the site rather than a second chip. The card
+   provides the spacing; the recipe stays where it lives. */
+.card .record-meta { margin-block-start: var(--s-3); }
+
+/* ---------- the clickable project card ----------
+   A project card opens project.html?id=<id>. The title is the semantic
+   anchor and its ::after stretches over the whole card, so the card reads
+   as ONE target without wrapping the card itself in an anchor — which
+   would make the website CTA a nested link, and HTML does not nest
+   anchors. The CTA lifts above the overlay instead (see .card
+   .record-action above), so it keeps its own clickable surface. */
+.card-link::after { content: ""; position: absolute; inset: 0; }
+/* A keyboard user focuses the same target a pointer user sees — the ring
+   is drawn where the link is. Same recipe the disclosure summary used. */
+a.card-link:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- the projects pages (projects.html + project.html) ----------
+   The list page shows the running count as a spectrum numeral — the stat
+   recipe, unhoused: same mono figure, same gradient, same glow. It is a
+   { ar, en, ru } label, so the word under the number is rebuilt by the
+   page script on every language change, never written in the markup. */
+.proj-count {
+  display: flex; align-items: baseline; gap: var(--s-3);
+  margin-block: var(--s-5) var(--s-7);
+}
+.proj-count-num {
+  font-family: var(--font-mono); font-size: clamp(2.2rem, 1.5rem + 3vw, 3.4rem);
+  font-weight: 700; line-height: 1; letter-spacing: -.03em;
+  background: var(--spectrum-lit); background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(124, 92, 255, .45));
+}
+.proj-count-label { color: var(--fg-2); font-size: clamp(1rem, .9rem + .5vw, 1.2rem); }
+
+/* The brand under the detail-page title lines up with the title — start-
+   aligned in both writing directions — while its letters stay LTR. On the
+   card, .card-brand pins itself to the right to match the Arabic card;
+   here the head is a normal block flow, so the alignment is inherited. */
+.proj-brand {
+  margin-block-end: var(--s-3);
+  font-size: .92rem; font-weight: 600; color: var(--fg-3);
+  direction: ltr; unicode-bidi: isolate;
+}
+
+/* the engineering groups on project.html: the paragraph + dotted list
+   recipe, owned by the page instead of a disclosure, with the section
+   heads numbered 01..07 by UI.sectionIndex exactly like every band. */
+.proj-text {
+  color: var(--fg-2); font-size: .97rem; line-height: 1.85;
+  max-width: var(--measure); margin-block-end: var(--s-4);
+}
+.proj-list {
+  display: grid; gap: var(--s-2);
+  color: var(--fg-2); font-size: .97rem; line-height: 1.8;
+}
+.proj-list li {
+  position: relative;
+  padding-inline-start: var(--s-5);
+  max-width: var(--measure);
+}
+.proj-list li::before {
+  content: ""; position: absolute;
+  inset-block-start: .72em; inset-inline-start: var(--s-2);
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--violet);
+}
+/* the page actions sit on their own line, never inside a text paragraph */
+.proj-actions {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--s-4) var(--s-5); margin-block-start: var(--s-6);
+}
 
 /* bento rhythm instead of six identical boxes (desktop only, so the
    mobile stacking rules are never overridden) */
@@ -1864,6 +1963,13 @@ html[lang="en"] .marquee-item, html[lang="ru"] .marquee-item {
   text-align: right;
 }
 .social-label { display: block; font-size: .82rem; color: var(--fg-3); font-weight: 400; text-align: right; }
+/* A platform with no official glyph renders a letter in the icon's own
+   box — honest, and the same size as every real mark beside it. */
+.social-mono {
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: .95rem; font-weight: 700;
+  color: var(--gold);
+}
 
 .pending { margin-block-start: var(--s-5); color: var(--fg-3); font-size: .96rem; }
 
@@ -2124,7 +2230,7 @@ html[lang="ar"] .count {
    cannot clip a background to text, it gets solid light text instead. */
 @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
   .hero-name, .page-title, .sec-index, .marquee-item,
-  .stat-num, .stage-num, .footer-mark {
+  .stat-num, .stage-num, .footer-mark, .proj-count-num {
     color: var(--fg);
     background-image: none;
     -webkit-text-fill-color: currentColor;
