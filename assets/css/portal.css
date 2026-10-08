@@ -1,0 +1,475 @@
+/* ============================================================
+   PORTAL.CSS — the gateway page's own layer. portal.html only.
+
+   The portal left the homepage and became a page, so its stylesheet
+   left site.css with it: the stage, the two doorways, the gate, the
+   character slot and this page's opening beats all live here, next to
+   the markup they style. site.css keeps the shared furniture the
+   gateway borrows (.hero-sky, .hero-head, .eyebrow, .hero-name, the
+   button recipe) — a rule that both the homepage and the gateway need
+   stays in the one sheet, and a rule only this page needs is here.
+
+   THE INPUTS, published by assets/js/portal.js onto <section class="gateway">:
+
+      --ath      0…1   how far the VOLLEYBALL door is lit   (physical left)
+      --aca      0…1   how far the ACADEMIC door is lit     (physical right)
+      --lean-px  px    the lean of the gate as a physical shift
+
+   The three inputs are physical: 0 is far left on the screen in every
+   language, so the two worlds hold their sides when the page is Arabic
+   and the row runs the other way. `.gateway-stage` pins `direction:
+   ltr` for the same reason — a mirrored grid would swap the doors
+   under the pointer.
+
+   THE OPENING uses the site-wide `.is-loading` ladder (intro.js), and
+   the beats sit on the RESTING selectors, where a transition-delay
+   governs the state being entered (site.css §4b). The delays below are
+   written in COMMA FORM per property, and that is load-bearing: a
+   single delay on the list would also delay the gate's lean and the
+   doors' hover by their entrance beat — which is exactly how the old
+   homepage gate came to trail the pointer by 1.4s. Entrance waits;
+   live state answers immediately.
+
+   STATE ON THE DOORS: each door reads the vars directly —
+   opacity of its inner world, a world-coloured breath on its arch,
+   no second mechanism. The keyboard stance and the press surge are
+   portal.js's, and the surge is decorative: ui.js owns the navigation.
+   ============================================================ */
+
+/* ---------- 1. the page: a full-height stage over the night sky ---------- */
+.gateway {
+  position: relative; overflow: hidden;
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding-block: 124px 76px;
+  background:
+    radial-gradient(56% 46% at 50% 32%, rgba(124, 92, 255, .20), transparent 72%),
+    radial-gradient(72% 50% at 50% 104%, rgba(46, 134, 255, .10), transparent 70%),
+    linear-gradient(180deg, #05060C 0%, #070A13 48%, #0A0E18 100%);
+}
+
+/* one centred column: the question, then the stage. `.hero-sky` is the
+   homepage's star layer reused as-is — one night sky, two pages. */
+.gateway-inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  text-align: center;
+}
+
+/* the question the gateway asks — its three entrance properties share one
+   beat, written on the RESTING selector where a delay governs the state
+   being entered (site.css §4b) */
+.gateway-prompt {
+  font-size: clamp(1.15rem, .95rem + 1.1vw, 1.75rem);
+  font-weight: 600; color: var(--fg);
+  margin-block-end: var(--s-2);
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              transform var(--motion-reveal) var(--ease-out),
+              filter var(--motion-reveal) var(--ease-out);
+  transition-delay: 1200ms;
+}
+.is-loading .gateway-prompt { opacity: 0; transform: translateY(28px); filter: blur(12px); }
+
+/* ---------- 2. THE STAGE — door, gate, door, one row ----------
+   `direction: ltr` pins the composition PHYSICAL: volley on the left of
+   the screen and academic on the right in all three languages, which is
+   the sides portal.js's pointer axis is written against. */
+.gateway-stage {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: center; justify-content: center;
+  gap: clamp(16px, 3.5vw, 56px);
+  width: 100%;
+  margin-block-start: var(--s-2);
+}
+
+/* ---------- 3. the centre: the gate the figure stands in ---------- */
+.portal {
+  position: relative;
+  grid-column: 2;
+  width: clamp(210px, 24vw, 340px);
+  aspect-ratio: 480 / 560;
+  z-index: 2;
+  /* the entrance fade and its beat. Nothing live writes this box — the
+     lean belongs to the gate SVG, the crossfade to the slot's images —
+     so one delayed property cannot hold anything back. */
+  transition: opacity var(--motion-reveal) var(--ease-out);
+  transition-delay: 1350ms;
+}
+.is-loading .portal { opacity: 0; }
+
+/* the tunnel receding toward a light. `translate` carries the lean from
+   portal.js (`--lean-px`) and the figure's slot below reads the same var,
+   so the mouth and whoever stands in it move as one object. It is
+   `translate`, not `transform`, so the entrance and the lean can never
+   contest one property. The box fills `.portal` exactly — same aspect as
+   the viewBox — so there is no centring offset to fold in; a `-50%` here
+   would slide the mouth half its width out of the frame.
+   COMMA DELAYS: the fade waits its 1380ms beat, the lean answers at 0. */
+.portal-gate {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  translate: var(--lean-px, 0px) 0;
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-slow) var(--ease),
+              filter var(--motion-slow) var(--ease);
+  transition-delay: 1380ms, 0s, 0s;
+  filter: drop-shadow(0 0 34px rgba(124, 92, 255, .30));
+}
+.is-loading .portal-gate { opacity: 0; }
+
+/* the tunnel rings: five recessed ellipses wearing the site's spectrum
+   hairline, fading toward the vanishing point. They are open rings, so
+   the light at the end shows through every one of them. */
+.pg-ring { stroke: url(#pg-frame); stroke-width: 1.5; opacity: .5; }
+.pg-ring:nth-of-type(2) { opacity: .4; }
+.pg-ring:nth-of-type(3) { opacity: .3; }
+.pg-ring:nth-of-type(4) { opacity: .22; }
+.pg-ring:nth-of-type(5) { opacity: .15; }
+
+/* the light at the end of the tunnel: a neutral violet heart, and the
+   two world tints laid over it by the pointer — three layers, one
+   opacity knob each. */
+.pg-core { transition: opacity var(--motion-slow) var(--ease); }
+.pg-core--violet { fill: #7C5CFF; opacity: .26; }
+.pg-core--warm   { fill: url(#pg-warm); opacity: calc(var(--ath, 0) * .9); }
+.pg-core--cool   { fill: url(#pg-cool);  opacity: calc(var(--aca, 0) * .9); }
+
+.pg-frame { stroke-width: 3; stroke-linecap: round; }
+.pg-lip   { stroke-width: 1.6; }
+.pg-floor { stroke: rgba(167, 139, 250, .32); stroke-width: 2; }
+
+/* the departure: the gate flares when a doorway is chosen. portal.js
+   writes the chosen stance in the same beat (the cores above brighten
+   through the same vars), and the whole thing is killed under reduce. */
+.is-opening .portal-gate { filter: drop-shadow(0 0 64px rgba(124, 92, 255, .6)); }
+.is-opening .portal { animation: portal-surge 420ms var(--ease-out); }
+@keyframes portal-surge {
+  0%   { scale: 1; }
+  55%  { scale: 1.028; }
+  100% { scale: 1; }
+}
+
+/* ---------- 4. THE CHARACTER SLOT ----------
+   An empty stage INSIDE the gate, built to receive transparent
+   character assets without restructuring this page: drop one <img>
+   layer per state (base / volleyball / academic) into
+   [data-portal-character] and the crossfade below takes over. Until
+   then it is an intentional presence — a soft aura where the figure
+   will stand — never a placeholder box. */
+.gateway-character {
+  position: absolute; inset-block-start: 24%;
+  inset-inline-start: 50%;
+  width: min(72%, 250px); height: min(46%, 250px);
+  /* the -50% centres it on the inline-start: 50% anchor (the stage is
+     pinned ltr, so that is physical left in every language); the second
+     term is the same lean the gate reads, so the figure rides with it */
+  translate: calc(-50% + var(--lean-px, 0px)) 0;
+  z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(52% 46% at 50% 44%, rgba(124, 92, 255, .15), transparent 72%),
+    radial-gradient(36% 44% at 50% 62%, rgba(240, 206, 126, .05), rgba(46, 134, 255, .05) 58%, transparent 76%);
+  transition: opacity var(--motion-cinematic) var(--ease),
+              translate var(--motion-slow) var(--ease);
+  /* the entrance waits its 1420ms beat; the lean answers at 0 — and it
+     eases on the gate's exact clock (motion-slow, same easing), so the
+     figure rides the gate instead of snapping beside it */
+  transition-delay: 1420ms, 0s;
+}
+.is-loading .gateway-character { opacity: 0; }
+.gateway-character::before {
+  content: ""; position: absolute; inset: 18% 26%;
+  border: 1px solid rgba(167, 139, 250, .16);
+  border-radius: 50%;
+  box-shadow: 0 0 70px -22px rgba(111, 195, 255, .28);
+}
+.gateway-character[data-state="base"]       .hero-character-img[data-state="base"],
+.gateway-character[data-state="volleyball"] .hero-character-img[data-state="volleyball"],
+.gateway-character[data-state="academic"]   .hero-character-img[data-state="academic"] {
+  opacity: 1;
+}
+
+/* ---------- 5. THE DOORS ----------
+   Two arch-topped doorways, one per physical side, NOT two cards and
+   not two buttons: the shape is the argument. Each door is a real <a>
+   to its world page — a no-JS visitor still has the same choice, ui.js
+   owns the departure, and portal.js only leans the gate and plays the
+   surge. State lives in the arch's edge and breath, never in the
+   label: the label's colour is re-stated in this sheet's §7 block
+   below, with the same rule every coloured anchor on the site follows. */
+.portal-door {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  grid-row: 1;
+  width: clamp(150px, 15vw, 220px);
+  height: clamp(250px, 44vh, 380px);
+  padding: var(--s-4) var(--s-3) var(--s-4);
+  overflow: hidden;
+  text-align: center; text-decoration: none;
+  border: 1px solid rgba(167, 139, 250, .24);
+  border-radius: 48% 48% 14px 14px / 34% 34% 14px 14px;
+  background: linear-gradient(180deg, rgba(10, 14, 26, .30), rgba(4, 5, 10, .82));
+  /* one list, two clocks, comma delays: the fade waits the entrance
+     beat (1580ms), the edge/glow/lift answer pointer state at 0 — a
+     delay on this whole list is what made the old gate lean late.
+     `color` is in the list because the base `a { transition: color }`
+     reaches these links too, and a shorter list would delete it — every
+     anchor list on this site carries it for exactly that reason. */
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              border-color var(--motion-slow) var(--ease),
+              box-shadow var(--motion-slow) var(--ease),
+              translate var(--motion-slow) var(--ease),
+              color var(--motion-fast) var(--ease);
+  transition-delay: 1580ms, 0s, 0s, 0s, 0s;
+}
+.is-loading .portal-door { opacity: 0; }
+.portal-door--volley {
+  grid-column: 1;
+  --door-glow: rgba(240, 206, 126, .95);
+  --ath-door: var(--ath, 0);
+}
+.portal-door--acad {
+  grid-column: 3;
+  --door-glow: rgba(56, 189, 248, .95);
+  --ath-door: var(--aca, 0);
+}
+
+/* the response is faster than the return: the hover rule restates the
+   SAME five properties (a shorthand replaces the list, so a shorter one
+   would delete the entrance), at the control's own beat. */
+a.portal-door--volley:hover, a.portal-door--acad:hover {
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              border-color var(--motion-normal) var(--ease),
+              box-shadow var(--motion-normal) var(--ease),
+              translate var(--motion-normal) var(--ease),
+              color var(--motion-fast) var(--ease);
+  transition-delay: 1580ms, 0s, 0s, 0s, 0s;
+}
+a.portal-door--volley:hover {
+  border-color: rgba(240, 206, 126, .62);
+  translate: 0 -6px;      /* a lift, not a lean — surfaces never rotate */
+}
+a.portal-door--acad:hover {
+  border-color: rgba(56, 189, 248, .62);
+  translate: 0 -6px;
+}
+.portal-door:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+}
+
+/* the breath of the chosen world around the arch: a world-coloured glow
+   whose opacity is the same var the pointer writes, so hover, keyboard
+   focus and pointer position are all ONE mechanism. */
+.portal-door::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 26px -14px var(--door-glow, transparent),
+              0 0 34px -16px var(--door-glow, transparent);
+  opacity: var(--ath-door, 0);
+  transition: opacity var(--motion-slow) var(--ease);
+}
+
+/* a scrim, so the label reads over whatever the world is doing behind
+   it. Dark, from the doorway's own floor up — the light in a door
+   belongs to the world through it, not to its text. */
+.portal-door::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 44%, rgba(4, 5, 10, .86) 92%);
+  pointer-events: none;
+}
+.portal-door-words {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.portal-door-name {
+  font-size: clamp(.98rem, .9rem + .3vw, 1.14rem);
+  font-weight: 600;
+}
+.portal-door-sub {
+  font-size: .8rem; color: var(--fg-3);
+  /* wraps: the Russian sub-line is longer than any door is wide */
+  line-height: 1.35;
+}
+
+/* ---------- 6. what is seen THROUGH each door ----------
+   The world itself, lit by the pointer: at rest a whisper, under the
+   pointer a flare. The layers are decorative (aria-hidden in the
+   markup) and never receive an event — the arch around them is the
+   control. */
+.door-world {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-slow) var(--ease);
+}
+.portal-door--volley .door-world { opacity: calc(.16 + var(--ath, 0) * .84); }
+.portal-door--acad   .door-world { opacity: calc(.16 + var(--aca, 0) * .84); }
+
+/* the light source in each world — a plain disc, blurred into a glow */
+.portal-orb {
+  position: absolute; top: 56%; left: 50%;
+  width: 66px; height: 66px; border-radius: 50%;
+  translate: -50% -50%;
+  filter: blur(9px);
+  animation: orb-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
+}
+.portal-door--volley .portal-orb { background: var(--gold); }
+.portal-door--acad   .portal-orb { background: var(--azure); }
+
+/* the volleyball world: three court hairlines, a ball, and two streaks
+   of warm light drifting across the doorway — discipline and movement,
+   at a clock no one can catch running */
+.portal-court {
+  position: absolute; left: 12%; right: 12%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .5), transparent);
+}
+.portal-court--a { top: 16%; }
+.portal-court--b { top: 28%; }
+.portal-court--c { top: 40%; }
+.portal-ball {
+  position: absolute; top: 74%; left: 50%;
+  width: 26px; height: 26px; translate: -50% 0;
+  color: var(--gold); opacity: .8;
+}
+.door-streak {
+  position: absolute; width: 1px; height: 32%;
+  background: linear-gradient(180deg, transparent, rgba(240, 206, 126, .55), transparent);
+  rotate: 24deg;
+  animation: streak-drift var(--ambient-slow) var(--ease-soft) infinite alternate;
+}
+.door-streak--a { top: 10%; left: 26%; animation-delay: -6s; }
+.door-streak--b { top: 34%; left: 62%; height: 22%; animation-delay: -13s; }
+@keyframes streak-drift {
+  from { translate: -6px 10px; opacity: .45; }
+  to   { translate: 6px -10px;  opacity: .9; }
+}
+
+/* the academic world: a drawn chart and three quiet stars */
+.portal-chart {
+  position: absolute; top: 46%; inset-inline-start: 16%;
+  width: 64%; color: var(--azure); opacity: .85;
+}
+.portal-chart-axis { stroke: rgba(148, 163, 186, .4); stroke-width: 1.2; }
+.portal-chart-line {
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;
+}
+.portal-star {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: var(--azure); color: var(--azure);
+  box-shadow: 0 0 6px 1px currentColor;
+  animation: twinkle var(--twinkle, 26s) var(--ease-soft) infinite,
+             star-drift var(--drift, 92s) var(--ease-soft) infinite alternate;
+}
+.portal-star--a { top: 14%; inset-inline-end: 16%; --twinkle: 24s; --drift: 96s; animation-delay: -5s, -18s; }
+.portal-star--b { top: 36%; inset-inline-end: 44%; --twinkle: 31s; --drift: 112s; animation-delay: -13s, -52s; }
+.portal-star--c { top: 54%; inset-inline-end: 22%; width: 3px; height: 3px; --twinkle: 22s; --drift: 104s; animation-delay: -21s, -76s; }
+
+/* ---------- 7. label colours, with every other coloured anchor ----------
+   The base `a:hover { color: var(--gold) }` in site.css outranks a bare
+   class rule, so each coloured anchor restates its own colour on hover
+   — type-qualified, so the tie can never be won by source order. The
+   door label itself never moves; its state is the arch, the glow and
+   the lift above. */
+a.portal-door { color: var(--fg); }
+a.portal-door:hover, a.portal-door:focus-visible { color: var(--fg); }
+
+/* ---------- 8. opening sequence — the gateway's beats ----------
+   0ms     the night sky is already there
+   800ms   the eyebrow          (site.css §4b, shared with the homepage)
+   1000ms  the welcome          (site.css §4b, .hero-name)
+   1200ms  the question         (above, on its own resting selector)
+   1350ms  the stage blooms     (.portal, above)
+   1420ms  the figure in the gate (.gateway-character, above)
+   1580ms  the two doors        (.portal-door, above)
+   Every one of those delays sits on the resting selector beside its own
+   transition — none of them is on `.is-loading`, which is only ever
+   left, so a delay there would govern nothing (css-audit refuses it). */
+
+/* ---------- 9. Responsive ----------
+   Touch has no pointer axis, so the composition stacks the way the
+   brief reads it: Hussein's gate first, then the two doors under it,
+   large enough to be the whole interaction. Two columns keep both
+   doors on ONE screen side by side — a stacked pair would cost a full
+   screen of scrolling between them; nothing may exceed the viewport. */
+@media (max-width: 900px) {
+  .gateway { padding-block: 112px 56px; }
+  .gateway-stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: var(--s-5) var(--s-4);
+    max-width: 560px; margin-inline: auto;
+  }
+  .portal {
+    grid-column: 1 / -1; grid-row: 1;
+    justify-self: center;
+    width: clamp(190px, 52vw, 300px);
+  }
+  .portal-door { width: auto; height: clamp(220px, 34vh, 300px); }
+  .portal-door--volley { grid-column: 1; grid-row: 2; }
+  .portal-door--acad   { grid-column: 2; grid-row: 2; }
+}
+@media (max-width: 560px) {
+  .gateway-stage { gap: var(--s-4) var(--s-3); }
+  .portal-door { height: clamp(200px, 30vh, 260px); padding-inline: var(--s-2); }
+  .portal-door-name { font-size: .95rem; }
+  .portal-door-sub { font-size: .74rem; }
+  .portal-ball { width: 22px; }
+}
+
+/* ---------- 10. Reduced motion: less movement, never less life ----------
+   The loops go off (each element falls back to the rest state its own
+   base rule describes), the doors keep working as instant states, and
+   the opening becomes one ordered plain fade — with the entrance
+   delays reset, because a 400ms fade that waits 1.5s first is "slow",
+   not "calm". */
+@media (prefers-reduced-motion: reduce) {
+  .portal-orb, .portal-star, .door-streak,
+  .is-opening .portal, .is-opening .portal-gate {
+    animation: none;
+  }
+
+  .is-loading .portal,
+  .is-loading .portal-gate,
+  .is-loading .portal-door,
+  .is-loading .gateway-prompt {
+    opacity: 0; transform: none; translate: none; filter: none;
+    transition: opacity 400ms linear !important;
+  }
+  /* NOT in the list above: the slot's resting `translate` is its
+     CENTRING (−50% + lean), not its travel. `translate: none` here would
+     park the aura half a box off during the load and slide it into place. */
+  .is-loading .gateway-character {
+    opacity: 0; transform: none; filter: none;
+    transition: opacity 400ms linear !important;
+  }
+  .portal, .portal-gate, .gateway-character, .portal-door,
+  .gateway-prompt, .door-world, .pg-core {
+    transition-delay: 0s;
+    transition-duration: 200ms;
+  }
+  .portal-door::after { transition-duration: 200ms; }
+
+  /* the lift is travel; the edge, the glow and the focus ring stay — and
+     the hover rule's OWN shorthand outranks the element reset above, so
+     its 1580ms entrance delay has to be cleared right here, on the same
+     selector, or the first hover would wait a beat and a half in a mode
+     that asked for calm */
+  a.portal-door--volley:hover, a.portal-door--acad:hover {
+    transition-delay: 0s;
+    transition-duration: 200ms;
+    translate: none;
+  }
+}
+
+@media print {
+  /* the gateway prints as its words: the question and the two labelled
+     doors — not the tunnel, the aura or the star layer */
+  .gateway .hero-sky, .portal, .gateway-character,
+  .door-world, .portal-door::before, .portal-door::after {
+    display: none !important;
+  }
+}

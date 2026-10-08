@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const cssFiles = ['assets/css/site.css', 'assets/css/records.css'];
+const cssFiles = ['assets/css/site.css', 'assets/css/records.css', 'assets/css/portal.css'];
 /* Comments are prose, not selectors: a class named in a comment ("e.g.
    .empty-state") or a filename inside one must never be reported. The
    comment is BLANKED rather than deleted, and keeps its newlines, so every
@@ -262,7 +262,7 @@ for (const m of css.matchAll(/transition(-duration)?\s*:\s*([^;}]+)/g)) {
    So: a type-qualified ANCESTOR link rule is only honest if the class it
    names is on an element in the markup that is not itself an anchor. */
 const classOwners = new Map();
-for (const f of ['index.html', 'story.html', 'records.html', 'volleyball.html', 'academic.html', 'projects.html', 'project.html']) {
+for (const f of ['index.html', 'story.html', 'records.html', 'volleyball.html', 'academic.html', 'projects.html', 'project.html', 'portal.html']) {
   const file = path.join(root, f);
   if (!fs.existsSync(file)) continue;   /* a partial tree is still worth auditing */
   const html = fs.readFileSync(file, 'utf8');
@@ -589,7 +589,7 @@ for (const m of css.matchAll(/([^{}]*\.is-loading[^{}]*)\{([^{}]*)\}/g)) {
    exists to police, and a blind spot shaped like the bug it was written for
    is worse than no check at all. */
 const elements = [];
-for (const f of ['index.html', 'story.html', 'records.html', 'volleyball.html', 'academic.html', 'projects.html', 'project.html']) {
+for (const f of ['index.html', 'story.html', 'records.html', 'volleyball.html', 'academic.html', 'projects.html', 'project.html', 'portal.html']) {
   const file = path.join(root, f);
   if (!fs.existsSync(file)) continue;
   const html = fs.readFileSync(file, 'utf8');

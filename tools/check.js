@@ -104,7 +104,9 @@ process.on('SIGINT', function () { release(); process.exit(130); });
 process.on('SIGTERM', function () { release(); process.exit(143); });
 
 const checks = [
-  ['css-parse-check', ['assets/css/site.css'], 'CSS parses, braces balance, no dangling var()'],
+  /* the sheets together, not one row each: :root lives in site.css and the
+     other two consume it, so the dangling-var check needs all of them */
+  ['css-parse-check', ['assets/css/site.css', 'assets/css/records.css', 'assets/css/portal.css'], 'CSS parses, braces balance, no dangling var()'],
   ['css-audit', [], 'no unused tokens, dead classes or keyframes'],
   ['motion-audit-selftest', [], 'the motion rules above can still fail'],
   ['hover-colour-audit', [], 'no link loses its label colour on hover'],

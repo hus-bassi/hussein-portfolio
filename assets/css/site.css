@@ -628,58 +628,45 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
 .is-loading .hero-head,
 .is-loading .hero-lead,
 .is-loading .hero-quote,
-.is-loading .hero-prompt,
-.is-loading .portal,
-.is-loading .portal-dest,
-.is-loading .portal-gate,
-.is-loading .hero-character,
-.is-loading .portal-paths,
+.is-loading .hero-actions,
 .is-loading .hero-visual {
   opacity: 0;
   transform: translateY(28px);
   filter: blur(12px);
 }
 
-.hero-head, .hero-lead, .hero-quote, .hero-prompt, .hero-visual {
+.hero-head, .hero-lead, .hero-quote, .hero-actions, .hero-visual {
   transition: opacity var(--motion-reveal) var(--ease-out),
               transform var(--motion-reveal) var(--ease-out),
               filter var(--motion-reveal) var(--ease-out);
 }
-/* the portal stage and its people are decorative layers who only need to
-   fade in; the reveal travel belongs to the copy column and the gate's own
-   `translate` (its lean), so opacity is the only property they animate.
-   Their transitions live with their rules in §8c — only the delays are
-   here, in the ladder below, because a transition-delay on a :hover or an
-   animation is the thing the audit exists to catch. */
+/* THE OPENING BEATS. The gateway took its own beats with it when the
+   portal became a page — they live beside their transitions in
+   assets/css/portal.css now. These are the homepage's, and every delay
+   sits on the RESTING selector, which is the state being entered (the
+   reason for that is the whole of §4b): none is on `.is-loading`,
+   which is only ever left. */
 /*     0ms  the light field is already there — nothing to announce
-     600ms  the instrument (now in the academic world)
+     600ms  the instrument (in the academic world)
      800ms  the eyebrow
     1000ms  the name
-    1200ms  the question
-    1350ms  the portal blooms: destinations and gate, one beat
-    1420ms  the figure in the gate
-    1580ms  the doorway entries
-    1760ms  the lead
-    1980ms  the line that closes the hero                             */
-.hero-visual { transition-delay: 600ms; }
-.hero-head   { transition-delay: 800ms; }
-.hero-prompt { transition-delay: 1200ms; }
-.portal      { transition-delay: 1350ms; }
-.portal-dest { transition-delay: 1380ms; }
-.portal-gate { transition-delay: 1380ms; }
-.hero-character { transition-delay: 1420ms; }
-.portal-paths   { transition-delay: 1580ms; }
-.hero-lead   { transition-delay: 1760ms; }
-.hero-quote  { transition-delay: 1980ms; }
+    1400ms  the lead
+    1620ms  the line that closes the hero
+    1840ms  the way into the gateway                                */
+.hero-visual  { transition-delay: 600ms; }
+.hero-head    { transition-delay: 800ms; }
+.hero-lead    { transition-delay: 1400ms; }
+.hero-quote   { transition-delay: 1620ms; }
+.hero-actions { transition-delay: 1840ms; }
 
-/* THE HERO CTAs ARE GONE, and that is the point. Their whole arrival
-   mechanism — the per-button stagger, the `cta-in` keyframe, the
-   `animation: aura, cta-in` pairing — described a row that no longer
-   exists: the two paths are now the DOORWAY ENTRIES in §8c, which arrive
-   like links (opacity + the portal fade), not like buttons. The lesson
-   that lived here — an `animation` shorthand replaces the whole list, so
-   `aura` must be written back first — lives on in §7, where the button
-   recipe owns it, with the class names that still exist. */
+/* THE HERO CTA IS BACK, as ONE link: "استكشف عالمي" into the gateway.
+   The old row of per-path buttons — with its `cta-in` keyframe and its
+   `animation: aura, cta-in` pairing — stayed gone, because the lesson it
+   taught is the one that matters: an `animation` shorthand REPLACES the
+   whole list, so `aura` has to be written back first. That pairing now
+   lives only in §7, where the button recipe owns it; the hero's button
+   gets the aura from there and its arrival from the `.hero-actions`
+   entrance above, with no special case of its own. */
 
 /* the name arrives last and hardest — it is the subject of the page */
 .is-loading .hero-name { opacity: 0; transform: translateY(38px) scale(.96); filter: blur(18px); }
@@ -875,7 +862,7 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
    the winner depend on source order. */
 a.btn:not(.btn-primary), a.btn-solid:not(.btn-primary), a.btn-outline,
 a.record-action, a.social, a.stat-link, a.card-link,
-a.portal-path, a.world-switch-link,
+a.world-switch-link,
 .footer-nav a, a.skip-link { color: var(--fg); }
 /* NOTE the type qualifier's ABSENCE here, and it is not a slip. These were
    written `a.primary-nav a` and `a.footer-nav a`, on the assumption that
@@ -898,7 +885,7 @@ a.record-action.is-plain { color: var(--fg-2); }
 a.btn:not(.btn-primary):hover, a.btn-solid:not(.btn-primary):hover,
 a.btn-outline:hover,
 a.record-action:hover, a.social:hover, a.stat-link:hover, a.card-link:hover,
-a.portal-path:hover, a.world-switch-link:hover,
+a.world-switch-link:hover,
 .footer-nav a:hover, a.skip-link:hover { color: var(--fg); }
 .primary-nav a:hover { color: var(--fg); }
 .primary-nav a.is-current:hover { color: var(--gold); }
@@ -1326,237 +1313,26 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   box-shadow: 0 0 20px -2px rgba(240, 206, 126, .7);
 }
 
-/* ---------- 8c. THE PORTAL — one gate, two worlds, two doorways ----------
-   The first screen is a GATEWAY, not a split: one dimensional opening in
-   the centre of the stage, two worlds visible through it, and two doorway
-   entries at its feet. There is no divider, no panel and no pill — the
-   gate leans toward the world under the pointer, the worlds brighten
-   through the opening, and the entries are real links to volleyball.html
-   and academic.html.
-
-     .portal             the stage — one gate, two destinations behind it
-     .portal-dest        one world per PHYSICAL side (left/right), BEHIND
-                         the gate, lit by --ath / --aca (published by
-                         assets/js/hero.js)
-     .portal-gate        the dimensional opening: the tunnel + the mouth
-     .hero-character     the figure standing in the gate (phase-2 slot)
-     .portal-path        a doorway ENTRY — a real <a> to its world page
-
-   The intensities arrive as --ath / --aca and the CSS interpolates them
-   on the motion ladder: a var-driven state has no :hover to give the
-   response its own beat, so the response and the return share one 650ms
-   clock, exactly as §8b's rule says. The doorway labels restate their
-   colour in §7, with every other coloured anchor on the site. */
-
-/* the question every portal asks */
-.hero-prompt {
-  font-size: clamp(1.15rem, .95rem + 1.1vw, 1.75rem);
-  font-weight: 600; color: var(--fg);
-  margin-block-end: var(--s-2);
+/* THE WAY IN — one link to the gateway, on its own row under the closing
+   line. It is a plain row: the button's aura, edge and lift all come from
+   the §7 recipe like every other button, and its arrival comes from the
+   entrance ladder in §4b. No rule of its own beyond the spacing. */
+.hero-actions {
+  display: flex; justify-content: center;
+  margin-block-start: var(--s-5);
 }
 
-/* ---------- the stage ---------- */
-.portal {
-  position: relative;
-  width: min(620px, 96%);
-  height: clamp(290px, 40vh, 400px);
-  margin-block: var(--s-1) var(--s-2);
-  z-index: 1;
-  transition: opacity var(--motion-reveal) var(--ease-out),
-              translate var(--motion-reveal) var(--ease-out);
-}
-/* one world per physical side, BEHIND the gate (the gate draws over them).
-   The knob is the same variable the pointer publishes: at rest a quiet
-   whisper of each world, the world under the pointer flares. */
-.portal-dest {
-  position: absolute; inset-block-start: 50%;
-  width: 44%; max-width: 280px;
-  translate: 0 -50%;
-  pointer-events: none;
-  transition: opacity var(--motion-slow) var(--ease);
-}
-.portal-dest--volley { inset-inline-start: 0; }
-.portal-dest--acad   { inset-inline-end: 0; }
-.portal-dest--volley { opacity: calc(.16 + var(--ath, 0) * .85); }
-.portal-dest--acad   { opacity: calc(.16 + var(--aca, 0) * .85); }
-
-/* the light source in each world — a plain disc, blurred into a glow */
-.portal-orb {
-  position: absolute; top: 56%; left: 50%;
-  width: 66px; height: 66px; border-radius: 50%;
-  translate: -50% -50%;
-  filter: blur(9px);
-  animation: orb-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
-}
-.portal-dest--volley .portal-orb { background: var(--gold); }
-.portal-dest--acad   .portal-orb { background: var(--azure); }
-
-/* the volleyball world: three court hairlines and a ball */
-.portal-court {
-  position: absolute; left: 12%; right: 12%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .5), transparent);
-}
-.portal-court--a { top: 16%; }
-.portal-court--b { top: 28%; }
-.portal-court--c { top: 40%; }
-.portal-ball {
-  position: absolute; top: 74%; left: 50%;
-  width: 26px; height: 26px; translate: -50% 0;
-  color: var(--gold); opacity: .8;
-}
-
-/* the academic world: a drawn chart and three quiet stars */
-.portal-chart {
-  position: absolute; top: 58%; inset-inline-start: 12%;
-  width: 48%; color: var(--azure); opacity: .85;
-}
-.portal-chart-axis { stroke: rgba(148, 163, 186, .4); stroke-width: 1.2; }
-.portal-chart-line {
-  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;
-}
-.portal-star {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%;
-  background: var(--azure); color: var(--azure);
-  box-shadow: 0 0 6px 1px currentColor;
-  animation: twinkle var(--twinkle, 26s) var(--ease-soft) infinite,
-             star-drift var(--drift, 92s) var(--ease-soft) infinite alternate;
-}
-.portal-star--a { top: 14%; inset-inline-end: 16%; --twinkle: 24s; --drift: 96s; animation-delay: -5s, -18s; }
-.portal-star--b { top: 36%; inset-inline-end: 44%; --twinkle: 31s; --drift: 112s; animation-delay: -13s, -52s; }
-.portal-star--c { top: 54%; inset-inline-end: 22%; width: 3px; height: 3px; --twinkle: 22s; --drift: 104s; animation-delay: -21s, -76s; }
-
-/* ---------- the gate: a tunnel receding toward a light ---------- */
-.portal-gate {
-  position: absolute; inset-block-start: 0; inset-inline-start: 50%;
-  height: 100%;
-  /* the lean arrives as a pixel shift from hero.js (`--lean-px`); the
-     mouth and the character stay in step because the whole gate moves.
-     It is `translate`, not `transform`, so the entrance rise and the lean
-     can never contest one property. */
-  translate: calc(-50% + var(--lean-px, 0px)) 0;
-  transition: opacity var(--motion-reveal) var(--ease-out),
-              translate var(--motion-slow) var(--ease),
-              filter var(--motion-slow) var(--ease);
-  z-index: 2;
-  filter: drop-shadow(0 0 34px rgba(124, 92, 255, .30));
-}
-/* the tunnel rings: five recessed ellipses wearing the site's spectrum
-   hairline, fading toward the vanishing point. They are open rings, so
-   the light at the end shows through every one of them. */
-.pg-ring { stroke: url(#pg-frame); stroke-width: 1.5; opacity: .5; }
-.pg-ring:nth-of-type(2) { opacity: .4; }
-.pg-ring:nth-of-type(3) { opacity: .3; }
-.pg-ring:nth-of-type(4) { opacity: .22; }
-.pg-ring:nth-of-type(5) { opacity: .15; }
-
-/* the light at the end of the tunnel: a neutral violet heart, and the two
-   world tints laid over it by the pointer — three layers, one opacity
-   knob each. */
-.pg-core {
-  transition: opacity var(--motion-slow) var(--ease);
-}
-.pg-core--violet { fill: #7C5CFF; opacity: .26; }
-.pg-core--warm   { fill: url(#pg-warm); opacity: calc(var(--ath, 0) * .9); }
-.pg-core--cool   { fill: url(#pg-cool);  opacity: calc(var(--aca, 0) * .9); }
-
-.pg-frame { stroke-width: 3; stroke-linecap: round; }
-.pg-lip   { stroke-width: 1.6; }
-.pg-floor { stroke: rgba(167, 139, 250, .32); stroke-width: 2; }
-
-/* the surge — the gate flares as the visitor chooses a doorway. A
-   departure beat, played by hero.js on click and killed under reduce.
-   The chosen world's core brightens through the stance hero.js writes
-   (the same --ath / --aca vars as the pointer) — no second mechanism. */
-.is-opening .portal-gate {
-  filter: drop-shadow(0 0 64px rgba(124, 92, 255, .6));
-}
-.is-opening .portal { animation: portal-surge 420ms var(--ease-out); }
-@keyframes portal-surge {
-  0%   { scale: 1; }
-  55%  { scale: 1.028; }
-  100% { scale: 1; }
-}
-
-/* ---------- the doorway entries ----------
-   These are LINKS, not buttons: each one is the entry to a real world
-   page, so a no-JS visitor still has the same choice, and ui.js owns the
-   departure (its page transition); the surge above is the only addition
-   here. The label colour never moves — state lives in the edge and the
-   glow, exactly like every control on the site, and the colours' home is
-   §7 with every other coloured anchor. */
-.portal-paths {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: clamp(var(--s-4), 4vw, var(--s-8));
-  margin-block-start: var(--s-1);
-  transition: opacity var(--motion-reveal) var(--ease-out);
-}
-.portal-path {
-  display: inline-flex; align-items: center; gap: var(--s-3);
-  padding: var(--s-2) var(--s-4);
-  border: 1px solid rgba(167, 139, 250, .22);
-  border-radius: 14px;
-  text-decoration: none;
-  transition: border-color var(--motion-normal) var(--ease),
-              box-shadow var(--motion-normal) var(--ease),
-              color var(--motion-fast) var(--ease);
-}
-/* each doorway reacts through its EDGE and its GLOW, in its world's colour;
-   the label stays on §7's restatement, never turning gold */
-a.portal-path--volley:hover {
-  border-color: rgba(240, 206, 126, .6);
-  box-shadow: 0 0 26px -10px rgba(240, 206, 126, .6);
-}
-a.portal-path--acad:hover {
-  border-color: rgba(56, 189, 248, .6);
-  box-shadow: 0 0 26px -10px rgba(56, 189, 248, .6);
-}
-a.portal-path:focus-visible {
-  outline: 2px solid var(--violet);
-  outline-offset: 3px;
-}
-.portal-path-ico { width: 26px; height: 26px; flex: none; }
-.portal-path--volley .portal-path-ico { color: var(--gold); }
-.portal-path--acad   .portal-path-ico { color: var(--azure); }
-.portal-path-words { display: flex; flex-direction: column; text-align: start; }
-.portal-path-word { font-size: 1.02rem; font-weight: 600; }
-.portal-path-sub  { font-size: .8rem; color: var(--fg-3); white-space: nowrap; }
-
-/* ---------- the character slot ----------
-   An empty stage INSIDE the gate, built to receive transparent character
-   assets in a later phase. Until then it is an intentional presence — a
-   soft aura where the figure will stand — never a placeholder box. The
-   slot draws ABOVE the gate (z 3); the doorway entries sit below it, in
-   flow. */
-.hero-character {
-  position: absolute; inset-block-start: 24%;
-  inset-inline-start: 50%;
-  width: min(34vw, 250px); height: min(30vh, 250px);
-  translate: -50% 0;
-  z-index: 3; pointer-events: none;
-  background:
-    radial-gradient(52% 46% at 50% 44%, rgba(124, 92, 255, .15), transparent 72%),
-    radial-gradient(36% 44% at 50% 62%, rgba(240, 206, 126, .05), rgba(46, 134, 255, .05) 58%, transparent 76%);
-  transition: opacity var(--motion-cinematic) var(--ease);
-}
-.hero-character::before {
-  content: ""; position: absolute; inset: 18% 26%;
-  border: 1px solid rgba(167, 139, 250, .16);
-  border-radius: 50%;
-  box-shadow: 0 0 70px -22px rgba(111, 195, 255, .28);
-}
-/* the future layers: one <img> per state, crossfaded by hero.js through the
-   slot's data-state attribute */
+/* THE FIGURE LAYERS — the shared plumbing for any slot that will hold
+   transparent character art. The gateway's slot resolves state through it
+   (portal.css), and so do the world pages' .world-character slots below;
+   until an asset exists, each slot's CSS aura is the rendered state and
+   this rule stays the future's wiring, waiting. */
 .hero-character-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: contain; object-position: center;
   opacity: 0;
   transition: opacity var(--motion-cinematic) var(--ease);
-}
-.hero-character[data-state="base"]     .hero-character-img[data-state="base"],
-.hero-character[data-state="athlete"]  .hero-character-img[data-state="athlete"],
-.hero-character[data-state="academic"] .hero-character-img[data-state="academic"] {
-  opacity: 1;
 }
 
 /* the scroll cue */
@@ -1715,9 +1491,9 @@ a.world-switch-link:focus-visible { outline: 2px solid var(--violet); outline-of
   pointer-events: none;
   background: radial-gradient(52% 46% at 50% 44%, rgba(124, 92, 255, .12), transparent 72%);
 }
-.world-character[data-state="base"]     .hero-character-img[data-state="base"],
-.world-character[data-state="athlete"]  .hero-character-img[data-state="athlete"],
-.world-character[data-state="academic"] .hero-character-img[data-state="academic"] {
+.world-character[data-state="base"]      .hero-character-img[data-state="base"],
+.world-character[data-state="volleyball"] .hero-character-img[data-state="volleyball"],
+.world-character[data-state="academic"]  .hero-character-img[data-state="academic"] {
   opacity: 1;
 }
 
@@ -2611,21 +2387,7 @@ html[lang="ar"] .count {
 /* ---------- 17. Responsive ---------- */
 @media (max-width: 900px) {
   .hero-inner { gap: var(--s-6); }
-  /* the portal becomes the whole scene on touch: the stage tightens, and
-     the doorway entries become two large, stacked tap targets — the whole
-     interaction on touch is the doorways, so they get the legroom */
-  .portal { width: min(360px, 100%); height: clamp(230px, 34vh, 300px); }
-  .portal-dest { width: 46%; }
-  .portal-ball { width: 22px; }
-  .portal-paths {
-    flex-direction: column; align-items: stretch;
-    width: min(100%, 320px);
-  }
-  .portal-path { justify-content: center; }
   .hero-lead { max-width: none; }
-  .hero-character {
-    inset-block-start: 22%; width: min(52vw, 200px); height: min(24vh, 200px);
-  }
   .why-grid { grid-template-columns: 1fr; gap: var(--s-6); }
   html { scroll-padding-top: 76px; }
   /* A heading and a link no longer fit on one line beside each other, so
@@ -2753,7 +2515,6 @@ html[lang="ar"] .count {
   .orbit-figure, .of-halo, .of-core, .of-trace, .of-node, .tj-node,
   .of-spin, .of-ring-a .of-spin, .of-ring-b .of-spin, .of-ring-c .of-spin,
   .hero-visual::before, .hero-scroll::after, .star,
-  .portal-orb, .portal-star, .is-opening .portal,
   .band::before, .sec-head::after {
     animation: none;
   }
@@ -2778,7 +2539,7 @@ html[lang="ar"] .count {
 
   .btn, .btn-solid, .btn-outline, .record-action, .to-top,
   .card, .record, .stage, .stat, .social, .empty-state, .search,
-  .portal-path, .portal-dest, .portal-gate, .hero-character-img {
+  .hero-character-img {
     transition-duration: 200ms;
   }
   .btn:hover, .btn-solid:hover, .btn-outline:hover, .to-top:hover,
@@ -2803,26 +2564,20 @@ html[lang="ar"] .count {
   /* the opening sequence becomes a plain fade, in the same order */
   .is-loading .hero-head,
   .is-loading .hero-lead,
-  .is-loading .portal,
-  .is-loading .portal-dest,
-  .is-loading .portal-gate,
-  .is-loading .hero-character,
-  .is-loading .portal-paths,
   .is-loading .hero-quote,
-  .is-loading .hero-prompt,
+  .is-loading .hero-actions,
   .is-loading .hero-visual,
   .is-loading .hero-name,
   .is-loading .site-header {
     opacity: 0; transform: none; translate: none; filter: none;
     transition: opacity 400ms linear !important;
   }
-  /* …and the deprecated surge keeps no animation of its own, so the beat
-     above is the only thing that arrives. The delays on the text are reset
-     too: a 400ms fade is meant to be a fade, and inheriting a 1980ms wait
-     from the motion version would turn "calm" into "slow". */
-  .is-opening .portal, .is-opening .portal-gate { animation: none; }
-  .hero-visual, .hero-head, .hero-lead, .hero-quote, .hero-prompt, .hero-name,
-  .portal, .portal-dest, .portal-gate, .hero-character, .portal-paths {
+  /* …and the delays on the text are reset too: a 400ms fade is meant to
+     be a fade, and inheriting a 1840ms wait from the motion version would
+     turn "calm" into "slow". The gateway's own beats are reset beside
+     their transitions in portal.css, for the same reason. */
+  .hero-visual, .hero-head, .hero-lead, .hero-quote, .hero-actions,
+  .hero-name {
     transition-delay: 0s;
   }
 
@@ -2972,6 +2727,5 @@ html[lang="ar"] .count {
 
 @media print {
   body::before, body::after, .read-progress, .marquee, .hero-scroll,
-  .to-top, .footer-mark, .portal, .portal-paths,
-  .hero-character, .hero-prompt { display: none !important; }
+  .to-top, .footer-mark { display: none !important; }
 }

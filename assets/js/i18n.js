@@ -56,6 +56,7 @@
     'nav.projects': { ar: 'مشاريعي', en: 'Projects', ru: 'Проекты' },
     'nav.learning': { ar: 'التعلم والشهادات', en: 'Learning & certificates', ru: 'Обучение' },
     'nav.contact': { ar: 'التواصل', en: 'Contact', ru: 'Контакты' },
+    'nav.portal': { ar: 'البوابة', en: 'Gateway', ru: 'Портал' },
     'footer.navLabel': {
       ar: 'روابط التذييل',
       en: 'Footer links',
@@ -155,8 +156,18 @@
       en: 'The academic and professional side of Hussein ElBassiouni: what he is learning now, what he has completed, and the path from Business Informatics to astroinformatics with study in Russia.',
       ru: 'Академическая и профессиональная сторона Хусейна Эль-Басьюни: что он осваивает сейчас, что завершил, и путь от бизнес-информатики к астроинформатике с учёбой в России.'
     },
+    'meta.portal.title': {
+      ar: 'البوابة | حسين البسيوني',
+      en: 'Gateway | Hussein ElBassiouni',
+      ru: 'Портал | Хусейн Эль-Басьюни'
+    },
+    'meta.portal.desc': {
+      ar: 'بوابة حسين البسيوني بين عالميه: اختر عالم الكرة الطائرة أو العالم الأكاديمي والمهني، وادخل إليه.',
+      en: 'The gateway between Hussein ElBassiouni\u2019s two worlds: choose the volleyball world or the academic and professional world.',
+      ru: 'Врата между двумя мирами Хусейна Эль-Басьюни: выберите мир волейбола или академический мир.'
+    },
 
-    /* ---------- home: hero — THE PORTAL ---------- */
+    /* ---------- home: the identity hero. Its only way out is ONE link ---------- */
     'hero.eyebrow': { ar: 'من يتطلع إلى عالمين', en: 'One person, two worlds', ru: 'Один человек — два мира' },
     'hero.lead': {
       ar: 'أطمح إلى الجمع بين علوم البيانات وعلم الفلك',
@@ -174,45 +185,65 @@
       en: 'Scroll to explore',
       ru: 'Листайте вниз'
     },
-    /* the portal question — فصحى, in the brief's own wording */
-    'hero.prompt': {
-      ar: 'أي طريق تريد أن تستكشف؟',
-      en: 'Which path would you like to explore?',
-      ru: 'Какой путь вы хотели бы исследовать?'
+    /* the single CTA into portal.html — the homepage's only portal entry */
+    'hero.enterPortal': {
+      ar: 'استكشف عالمي',
+      en: 'Explore my world',
+      ru: 'Исследуйте мой мир'
     },
-    'hero.pathsLabel': {
-      ar: 'اختر الطريق الذي تريد أن تدخل إليه',
-      en: 'Choose the path you want to enter',
-      ru: 'Выберите путь, который хотите пройти'
+
+    /* ---------- portal.html — the gateway's own copy ----------
+       Minimal on purpose: a welcome, a question, two doorways. فصحى in
+       the brief's own wording; Russian written to the same standard. */
+    'portal.eyebrow': {
+      ar: 'بوابة إلى عالمين',
+      en: 'A gateway between two worlds',
+      ru: 'Врата между двумя мирами'
     },
-    /* the two doorway entries — the paths are destinations, not pills */
-    'hero.pathVolley': {
+    'portal.welcome': {
+      ar: 'مرحبًا بك في عالمي',
+      en: 'Welcome to my world',
+      ru: 'Добро пожаловать в мой мир'
+    },
+    'portal.ask': {
+      ar: 'أي عالم تريد أن تستكشف؟',
+      en: 'Which world would you like to explore?',
+      ru: 'Какой мир вы хотели бы исследовать?'
+    },
+    'portal.pathsLabel': {
+      ar: 'اختر العالم الذي تريد أن تدخل إليه',
+      en: 'Choose the world you want to enter',
+      ru: 'Выберите мир, в который хотите войти'
+    },
+    /* the two doorways — destinations, not pills */
+    'portal.pathVolley': {
       ar: 'عالم الكرة الطائرة',
       en: 'Volleyball world',
       ru: 'Мир волейбола'
     },
-    'hero.pathVolleySub': {
+    'portal.pathVolleySub': {
       ar: 'حسين — الرياضي',
       en: 'Hussein — the athlete',
       ru: 'Хусейн — спортсмен'
     },
-    'hero.pathAcad': {
+    'portal.pathAcad': {
       ar: 'العالم الأكاديمي والمهني',
       en: 'Academic & professional world',
       ru: 'Академический мир'
     },
-    'hero.pathAcadSub': {
+    'portal.pathAcadSub': {
       ar: 'حسين — الأكاديمي',
       en: 'Hussein — the academic',
       ru: 'Хусейн — учёба и карьера'
     },
-    /* the doorway links' screen-reader labels */
-    'hero.enterVolley': {
+    /* the doorway links' screen-reader labels — each one CONTAINS its
+       visible text, so the label-in-name rule holds */
+    'portal.enterVolley': {
       ar: 'ادخل عالم الكرة الطائرة',
       en: 'Enter the volleyball world',
       ru: 'Войти в мир волейбола'
     },
-    'hero.enterAcad': {
+    'portal.enterAcad': {
       ar: 'ادخل العالم الأكاديمي والمهني',
       en: 'Enter the academic and professional world',
       ru: 'Войти в академический мир'
@@ -1051,20 +1082,18 @@
       if (av) al[k].setAttribute('aria-label', av);
     }
 
-    /* document head */
+    /* document head — one table, so a new page is one row, not two
+       parallel ternaries that can drift apart */
     var page = document.body ? document.body.getAttribute('data-page') : null;
-    var titleKey = page === 'records' ? 'meta.records.title'
-      : page === 'story' ? 'meta.story.title'
-      : page === 'projects' ? 'meta.projects.title'
-      : page === 'project' ? 'meta.project.title'
-      : page === 'volleyball' ? 'meta.volleyball.title'
-      : page === 'academic' ? 'meta.academic.title' : 'meta.index.title';
-    var descKey = page === 'records' ? 'meta.records.desc'
-      : page === 'story' ? 'meta.story.desc'
-      : page === 'projects' ? 'meta.projects.desc'
-      : page === 'project' ? 'meta.project.desc'
-      : page === 'volleyball' ? 'meta.volleyball.desc'
-      : page === 'academic' ? 'meta.academic.desc' : 'meta.index.desc';
+    var META = {
+      index: 'meta.index', records: 'meta.records', story: 'meta.story',
+      projects: 'meta.projects', project: 'meta.project',
+      volleyball: 'meta.volleyball', academic: 'meta.academic',
+      portal: 'meta.portal'
+    };
+    var metaStem = META[page] || META.index;
+    var titleKey = metaStem + '.title';
+    var descKey = metaStem + '.desc';
     document.title = t(titleKey, lang);
     var md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', t(descKey, lang));

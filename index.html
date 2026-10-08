@@ -75,130 +75,25 @@
       <span class="star s7"></span><span class="star s8"></span>
     </div>
 
-    <!-- THE PORTAL — one gateway at the centre of the stage, with the two
-         worlds visible through it. The whole scene is decorative and
-         aria-hidden: the doorway entries below it are the real controls.
-         The pointer chooses with the lean of the gate, never with a menu. -->
-    <div class="portal" aria-hidden="true">
-
-      <!-- the two destinations, PHYSICAL left (volleyball) and PHYSICAL
-           right (academic) in every language, BEHIND the gate. The pointer
-           intensities --ath / --aca (published by assets/js/hero.js) light
-           the world under the pointer. -->
-      <div class="portal-dest portal-dest--volley">
-        <span class="portal-orb"></span>
-        <span class="portal-court portal-court--a"></span>
-        <span class="portal-court portal-court--b"></span>
-        <span class="portal-court portal-court--c"></span>
-        <svg class="portal-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-          <circle cx="12" cy="12" r="8.4"></circle>
-          <path d="M4.6 9.2C10 7 17.8 9.6 19.4 14.8"></path>
-          <path d="M4.6 14.8C8.6 20 17.4 17.4 19.4 9.2"></path>
-        </svg>
-      </div>
-
-      <div class="portal-dest portal-dest--acad">
-        <span class="portal-orb"></span>
-        <svg class="portal-chart" viewBox="0 0 200 120" fill="none">
-          <path class="portal-chart-axis" d="M16 8V112H192"></path>
-          <path class="portal-chart-line" d="M16 92C40 88 52 62 76 58C98 54 108 34 132 30C154 26 172 20 192 14"></path>
-        </svg>
-        <span class="portal-star portal-star--a"></span>
-        <span class="portal-star portal-star--b"></span>
-        <span class="portal-star portal-star--c"></span>
-      </div>
-
-      <!-- THE GATE — the mouth of the portal. The tunnel rings recede
-           toward a vanishing light; the warm and cool tints flood in from
-           the side under the pointer. -->
-      <svg class="portal-gate" viewBox="0 0 480 560" fill="none">
-        <defs>
-          <linearGradient id="pg-frame" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#7C5CFF"></stop>
-            <stop offset=".5" stop-color="#F6C445"></stop>
-            <stop offset="1" stop-color="#38BDF8"></stop>
-          </linearGradient>
-          <radialGradient id="pg-warm" cx=".5" cy=".5" r=".5">
-            <stop offset="0" stop-color="#F6C445" stop-opacity=".55"></stop>
-            <stop offset="1" stop-color="#F6C445" stop-opacity="0"></stop>
-          </radialGradient>
-          <radialGradient id="pg-cool" cx=".5" cy=".5" r=".5">
-            <stop offset="0" stop-color="#38BDF8" stop-opacity=".55"></stop>
-            <stop offset="1" stop-color="#38BDF8" stop-opacity="0"></stop>
-          </radialGradient>
-        </defs>
-
-        <!-- the light at the end of the tunnel: a neutral heart first, then
-             the two world tints laid over it by the pointer -->
-        <ellipse class="pg-core pg-core--violet" cx="240" cy="330" rx="60" ry="38"></ellipse>
-        <ellipse class="pg-core pg-core--warm" cx="240" cy="330" rx="60" ry="38"></ellipse>
-        <ellipse class="pg-core pg-core--cool" cx="240" cy="330" rx="60" ry="38"></ellipse>
-
-        <!-- the tunnel: five recessed ellipses converging on the light -->
-        <ellipse class="pg-ring" cx="240" cy="330" rx="168" ry="126"></ellipse>
-        <ellipse class="pg-ring" cx="240" cy="330" rx="134" ry="99"></ellipse>
-        <ellipse class="pg-ring" cx="240" cy="330" rx="102" ry="73"></ellipse>
-        <ellipse class="pg-ring" cx="240" cy="330" rx="72" ry="49"></ellipse>
-        <ellipse class="pg-ring" cx="240" cy="330" rx="44" ry="27"></ellipse>
-
-        <!-- the mouth: the outer frame and the inner lip -->
-        <path class="pg-frame" d="M40 560 V250 A200 200 0 0 1 440 250 V560" stroke="url(#pg-frame)"></path>
-        <path class="pg-lip" d="M92 560 V282 A148 148 0 0 1 388 282 V560" stroke="url(#pg-frame)"></path>
-
-        <!-- the floor the figure stands on -->
-        <ellipse class="pg-floor" cx="240" cy="512" rx="176" ry="22"></ellipse>
-      </svg>
-
-      <!-- THE CHARACTER SLOT — stands inside the gate, between the mouth and
-           the vanishing light. Built for a later phase: Phase 1 shows only
-           the aura, an intentional presence where the figure will stand.
-           When the CHARACTER config in assets/js/hero.js gets its three
-           transparent images (hussein-base / -athlete / -academic), the
-           slot renders them here and nothing else about the portal
-           changes. -->
-      <div class="hero-character" data-hero-character aria-hidden="true"></div>
-    </div>
-
+    <!-- THE STAGE holds no portal. The gateway moved out to its own page
+         (portal.html) so the homepage could be a homepage again; all this
+         hero carries is the identity and one way in. -->
     <div class="shell hero-inner">
       <div class="hero-head">
         <p class="eyebrow" data-i18n="hero.eyebrow">الاسم</p>
         <h1 class="hero-name" id="hero-title" data-i18n="brand.nameLines">حسين البسيوني</h1>
       </div>
 
-      <!-- the question every portal asks -->
-      <p class="hero-prompt" data-i18n="hero.prompt">أي طريق تريد أن تستكشف؟</p>
-
-      <!-- THE DOORWAY ENTRIES — real links to the two world pages. A no-JS
-           visitor still has the same choice, and the page transition in
-           ui.js owns the departure — hero.js only plays the surge. -->
-      <div class="portal-paths" role="group" data-i18n-aria="hero.pathsLabel" aria-label="اختر الطريق الذي تريد أن تدخل إليه">
-        <a class="portal-path portal-path--volley" href="volleyball.html" data-portal-path="volley" data-i18n-aria="hero.enterVolley" aria-label="ادخل عالم الكرة الطائرة">
-          <svg class="portal-path-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="12" cy="12" r="8.4"></circle>
-            <path d="M4.6 9.2C10 7 17.8 9.6 19.4 14.8"></path>
-            <path d="M4.6 14.8C8.6 20 17.4 17.4 19.4 9.2"></path>
-          </svg>
-          <span class="portal-path-words">
-            <span class="portal-path-word" data-i18n="hero.pathVolley">عالم الكرة الطائرة</span>
-            <span class="portal-path-sub" data-i18n="hero.pathVolleySub">حسين — الرياضي</span>
-          </span>
-        </a>
-
-        <a class="portal-path portal-path--acad" href="academic.html" data-portal-path="academic" data-i18n-aria="hero.enterAcad" aria-label="ادخل العالم الأكاديمي والمهني">
-          <svg class="portal-path-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M3 8.5L12 4l9 4.5L12 13 3 8.5z"></path>
-            <path d="M7 11.2v4.4c0 1.2 2.2 2.4 5 2.4s5-1.2 5-2.4v-4.4"></path>
-          </svg>
-          <span class="portal-path-words">
-            <span class="portal-path-word" data-i18n="hero.pathAcad">العالم الأكاديمي والمهني</span>
-            <span class="portal-path-sub" data-i18n="hero.pathAcadSub">حسين — الأكاديمي</span>
-          </span>
-        </a>
-      </div>
-
       <div class="hero-copy">
         <p class="hero-lead" data-i18n="hero.lead">أطمح إلى الجمع بين علوم البيانات وعلم الفلك</p>
         <p class="hero-quote" data-i18n="hero.quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
+
+        <!-- THE WAY IN — one link to the gateway page. The portal itself
+             lives at portal.html now: this is the door to that door, and
+             it is the only portal entry the homepage carries. -->
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="portal.html" data-i18n="hero.enterPortal">استكشف عالمي</a>
+        </div>
       </div>
     </div>
 
@@ -519,6 +414,7 @@
         <li><a href="#plan" data-i18n="nav.plan">خطتي</a></li>
         <li><a href="records.html" data-i18n="nav.learning">التعلم والشهادات</a></li>
         <li><a href="#contact" data-i18n="nav.contact">التواصل</a></li>
+        <li><a href="portal.html" data-i18n="nav.portal">البوابة</a></li>
       </ul>
     </nav>
     <p class="footer-copy"><span id="footer-year">2026</span> — <span data-i18n="footer.rights">جميع الحقوق محفوظة لحسين البسيوني</span></p>
@@ -540,7 +436,6 @@
 <script src="assets/js/scroll.js"></script>
 <script src="assets/js/reveal.js"></script>
 <script src="assets/js/ui.js"></script>
-<script src="assets/js/hero.js"></script>
 <script src="assets/js/project-card.js"></script>
 <script src="assets/js/site.js"></script>
 </body>

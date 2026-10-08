@@ -17,7 +17,8 @@ const path = require('path');
 
 const css = [
   'assets/css/site.css',
-  'assets/css/records.css'
+  'assets/css/records.css',
+  'assets/css/portal.css'
 ].map(f => stripComments(fs.readFileSync(path.join(__dirname, '..', f), 'utf8'))).join('\n');
 
 function stripComments(s) { return s.replace(/\/\*[\s\S]*?\*\//g, ''); }
