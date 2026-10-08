@@ -196,7 +196,7 @@
   /* Which page is the visitor on, and which one are they leaving for.
      Used for two things: the exit below, and the data-nav attribute the
      directional transitions in site.css §19 are written against. */
-  var PAGES = ['index.html', 'story.html', 'records.html', 'projects.html', 'project.html'];
+  var PAGES = ['index.html', 'story.html', 'records.html', 'projects.html', 'project.html', 'volleyball.html', 'academic.html'];
   function pageName(url) {
     var path = String(url).split('#')[0].split('?')[0];
     var file = path.substring(path.lastIndexOf('/') + 1);

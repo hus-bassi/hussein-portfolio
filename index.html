@@ -75,76 +75,130 @@
       <span class="star s7"></span><span class="star s8"></span>
     </div>
 
+    <!-- THE PORTAL — one gateway at the centre of the stage, with the two
+         worlds visible through it. The whole scene is decorative and
+         aria-hidden: the doorway entries below it are the real controls.
+         The pointer chooses with the lean of the gate, never with a menu. -->
+    <div class="portal" aria-hidden="true">
+
+      <!-- the two destinations, PHYSICAL left (volleyball) and PHYSICAL
+           right (academic) in every language, BEHIND the gate. The pointer
+           intensities --ath / --aca (published by assets/js/hero.js) light
+           the world under the pointer. -->
+      <div class="portal-dest portal-dest--volley">
+        <span class="portal-orb"></span>
+        <span class="portal-court portal-court--a"></span>
+        <span class="portal-court portal-court--b"></span>
+        <span class="portal-court portal-court--c"></span>
+        <svg class="portal-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="12" cy="12" r="8.4"></circle>
+          <path d="M4.6 9.2C10 7 17.8 9.6 19.4 14.8"></path>
+          <path d="M4.6 14.8C8.6 20 17.4 17.4 19.4 9.2"></path>
+        </svg>
+      </div>
+
+      <div class="portal-dest portal-dest--acad">
+        <span class="portal-orb"></span>
+        <svg class="portal-chart" viewBox="0 0 200 120" fill="none">
+          <path class="portal-chart-axis" d="M16 8V112H192"></path>
+          <path class="portal-chart-line" d="M16 92C40 88 52 62 76 58C98 54 108 34 132 30C154 26 172 20 192 14"></path>
+        </svg>
+        <span class="portal-star portal-star--a"></span>
+        <span class="portal-star portal-star--b"></span>
+        <span class="portal-star portal-star--c"></span>
+      </div>
+
+      <!-- THE GATE — the mouth of the portal. The tunnel rings recede
+           toward a vanishing light; the warm and cool tints flood in from
+           the side under the pointer. -->
+      <svg class="portal-gate" viewBox="0 0 480 560" fill="none">
+        <defs>
+          <linearGradient id="pg-frame" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#7C5CFF"></stop>
+            <stop offset=".5" stop-color="#F6C445"></stop>
+            <stop offset="1" stop-color="#38BDF8"></stop>
+          </linearGradient>
+          <radialGradient id="pg-warm" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#F6C445" stop-opacity=".55"></stop>
+            <stop offset="1" stop-color="#F6C445" stop-opacity="0"></stop>
+          </radialGradient>
+          <radialGradient id="pg-cool" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#38BDF8" stop-opacity=".55"></stop>
+            <stop offset="1" stop-color="#38BDF8" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+
+        <!-- the light at the end of the tunnel: a neutral heart first, then
+             the two world tints laid over it by the pointer -->
+        <ellipse class="pg-core pg-core--violet" cx="240" cy="330" rx="60" ry="38"></ellipse>
+        <ellipse class="pg-core pg-core--warm" cx="240" cy="330" rx="60" ry="38"></ellipse>
+        <ellipse class="pg-core pg-core--cool" cx="240" cy="330" rx="60" ry="38"></ellipse>
+
+        <!-- the tunnel: five recessed ellipses converging on the light -->
+        <ellipse class="pg-ring" cx="240" cy="330" rx="168" ry="126"></ellipse>
+        <ellipse class="pg-ring" cx="240" cy="330" rx="134" ry="99"></ellipse>
+        <ellipse class="pg-ring" cx="240" cy="330" rx="102" ry="73"></ellipse>
+        <ellipse class="pg-ring" cx="240" cy="330" rx="72" ry="49"></ellipse>
+        <ellipse class="pg-ring" cx="240" cy="330" rx="44" ry="27"></ellipse>
+
+        <!-- the mouth: the outer frame and the inner lip -->
+        <path class="pg-frame" d="M40 560 V250 A200 200 0 0 1 440 250 V560" stroke="url(#pg-frame)"></path>
+        <path class="pg-lip" d="M92 560 V282 A148 148 0 0 1 388 282 V560" stroke="url(#pg-frame)"></path>
+
+        <!-- the floor the figure stands on -->
+        <ellipse class="pg-floor" cx="240" cy="512" rx="176" ry="22"></ellipse>
+      </svg>
+
+      <!-- THE CHARACTER SLOT — stands inside the gate, between the mouth and
+           the vanishing light. Built for a later phase: Phase 1 shows only
+           the aura, an intentional presence where the figure will stand.
+           When the CHARACTER config in assets/js/hero.js gets its three
+           transparent images (hussein-base / -athlete / -academic), the
+           slot renders them here and nothing else about the portal
+           changes. -->
+      <div class="hero-character" data-hero-character aria-hidden="true"></div>
+    </div>
+
     <div class="shell hero-inner">
-      <!-- the head spans both columns: the name gets the full shell width -->
       <div class="hero-head">
         <p class="eyebrow" data-i18n="hero.eyebrow">الاسم</p>
         <h1 class="hero-name" id="hero-title" data-i18n="brand.nameLines">حسين البسيوني</h1>
       </div>
 
-      <div class="hero-copy">
-        <p class="hero-lead" data-i18n="hero.lead">أطمح إلى الجمع بين علوم البيانات وعلم الفلك</p>
-        <p class="hero-desc" data-i18n="hero.desc">أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.</p>
+      <!-- the question every portal asks -->
+      <p class="hero-prompt" data-i18n="hero.prompt">أي طريق تريد أن تستكشف؟</p>
 
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="story.html" data-magnetic data-i18n="hero.btnStory">اقرأ قصتي</a>
-          <a class="btn" href="#interests" data-magnetic data-i18n="hero.btnInterests">استكشف اهتماماتي</a>
-          <a class="btn" href="#contact" data-magnetic data-i18n="hero.btnContact">تواصل معي</a>
-        </div>
+      <!-- THE DOORWAY ENTRIES — real links to the two world pages. A no-JS
+           visitor still has the same choice, and the page transition in
+           ui.js owns the departure — hero.js only plays the surge. -->
+      <div class="portal-paths" role="group" data-i18n-aria="hero.pathsLabel" aria-label="اختر الطريق الذي تريد أن تدخل إليه">
+        <a class="portal-path portal-path--volley" href="volleyball.html" data-portal-path="volley" data-i18n-aria="hero.enterVolley" aria-label="ادخل عالم الكرة الطائرة">
+          <svg class="portal-path-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.4"></circle>
+            <path d="M4.6 9.2C10 7 17.8 9.6 19.4 14.8"></path>
+            <path d="M4.6 14.8C8.6 20 17.4 17.4 19.4 9.2"></path>
+          </svg>
+          <span class="portal-path-words">
+            <span class="portal-path-word" data-i18n="hero.pathVolley">عالم الكرة الطائرة</span>
+            <span class="portal-path-sub" data-i18n="hero.pathVolleySub">حسين — الرياضي</span>
+          </span>
+        </a>
 
-        <p class="hero-quote" data-i18n="hero.quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
+        <a class="portal-path portal-path--acad" href="academic.html" data-portal-path="academic" data-i18n-aria="hero.enterAcad" aria-label="ادخل العالم الأكاديمي والمهني">
+          <svg class="portal-path-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 8.5L12 4l9 4.5L12 13 3 8.5z"></path>
+            <path d="M7 11.2v4.4c0 1.2 2.2 2.4 5 2.4s5-1.2 5-2.4v-4.4"></path>
+          </svg>
+          <span class="portal-path-words">
+            <span class="portal-path-word" data-i18n="hero.pathAcad">العالم الأكاديمي والمهني</span>
+            <span class="portal-path-sub" data-i18n="hero.pathAcadSub">حسين — الأكاديمي</span>
+          </span>
+        </a>
       </div>
 
-      <div class="hero-visual" aria-hidden="true">
-        <svg viewBox="0 0 360 360" class="orbit-figure" fill="none">
-          <!-- the body being observed -->
-          <circle class="of-halo" cx="180" cy="180" r="62"></circle>
-          <circle class="of-core" cx="180" cy="180" r="40"></circle>
-          <circle class="of-equator" cx="180" cy="180" r="58"></circle>
-
-          <!-- ring A — a tilted ellipse. The dashes travel the path, which
-               is what makes the motion read as something in orbit rather
-               than a decoration that happens to be spinning. Every node
-               below sits exactly on this ellipse: for rx·cos t, ry·sin t
-               at t = 0° and 120°. The tilt lives on this <g> as an
-               attribute, and the inner .of-spin group carries the turn —
-               a CSS transform would replace the attribute, not add to it. -->
-          <g class="of-ring-a" transform="rotate(-24 180 180)">
-            <g class="of-spin">
-              <ellipse class="of-path" cx="180" cy="180" rx="128" ry="54"></ellipse>
-              <ellipse class="of-trace" cx="180" cy="180" rx="128" ry="54" pathLength="1000"></ellipse>
-              <circle class="of-node" cx="308" cy="180" r="3.6"></circle>
-              <circle class="of-node" cx="116" cy="227" r="2.4"></circle>
-            </g>
-          </g>
-
-          <!-- ring B — the second orbit, tilted the other way and slower -->
-          <g class="of-ring-b" transform="rotate(28 180 180)">
-            <g class="of-spin">
-              <ellipse class="of-path" cx="180" cy="180" rx="92" ry="152"></ellipse>
-              <ellipse class="of-trace of-trace-b" cx="180" cy="180" rx="92" ry="152" pathLength="1000"></ellipse>
-              <circle class="of-node" cx="272" cy="180" r="3"></circle>
-            </g>
-          </g>
-
-          <!-- ring C — a true circle, so the orbit itself can turn and stay
-               itself. This one carries the bright node. -->
-          <g class="of-ring-c">
-            <circle class="of-path" cx="180" cy="180" r="74"></circle>
-            <g class="of-spin">
-              <circle class="of-node of-node-hot" cx="254" cy="180" r="4.4"></circle>
-              <circle class="of-node" cx="180" cy="254" r="2.4"></circle>
-            </g>
-          </g>
-
-          <!-- the instrument ticks that make it read as a chart -->
-          <g class="of-ticks">
-            <line x1="180" y1="18" x2="180" y2="38"></line>
-            <line x1="180" y1="322" x2="180" y2="342"></line>
-            <line x1="18" y1="180" x2="38" y2="180"></line>
-            <line x1="322" y1="180" x2="342" y2="180"></line>
-          </g>
-        </svg>
+      <div class="hero-copy">
+        <p class="hero-lead" data-i18n="hero.lead">أطمح إلى الجمع بين علوم البيانات وعلم الفلك</p>
+        <p class="hero-quote" data-i18n="hero.quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
       </div>
     </div>
 
@@ -486,6 +540,7 @@
 <script src="assets/js/scroll.js"></script>
 <script src="assets/js/reveal.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/hero.js"></script>
 <script src="assets/js/project-card.js"></script>
 <script src="assets/js/site.js"></script>
 </body>

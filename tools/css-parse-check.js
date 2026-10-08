@@ -53,14 +53,20 @@ if (depth !== 0) problems.push({ line: lines.length, msg: `unbalanced braces: de
    also look for a `var(--x)` reference to a token that does not exist,
    which some parsers reject hard */
 const declared = new Set();
-for (const m of stripped.matchAll(/(--[a-z0-9-]+)\s*:/g)) declared.add(m[1]);
+/* a registered property (`@property --enter-blur { … }`) IS a declaration —
+   the block declares the token, only the syntax is new syntax */
+for (const m of stripped.matchAll(/@property\s+(--[a-z0-9-]+)/g)) declared.add(m[1]);
+/* a declaration, not a selector: `.foo--bar:hover` and `.x--y::after` are
+   selectors, not tokens, so the name has to follow `{`, `;` or whitespace —
+   exactly the contexts a real `--x:` declaration can appear in */
+for (const m of stripped.matchAll(/(^|[;{\s])(--[a-z0-9-]+)\s*:/g)) declared.add(m[2]);
 
 /* Tokens this stylesheet consumes but cannot declare: the ones the scripts
    publish on an element at runtime. `var(--i, 0)` is a contract with
    assets/js/reveal.js, not a typo — and every such use carries a fallback,
    so a script that never runs costs nothing. The list is verified against
    the scripts on every run, so a rename on either side is caught. */
-const jsPublished = ['--mag-x', '--mag-y', '--i', '--hero-y', '--scroll-v', '--p', '--lang-x', '--lang-w'];
+const jsPublished = ['--ath', '--aca', '--lean-px', '--mag-x', '--mag-y', '--i', '--hero-y', '--scroll-v', '--p', '--lang-x', '--lang-w'];
 const jsDir = path.join(__dirname, '..', 'assets', 'js');
 let jsText = '';
 for (const f of fs.readdirSync(jsDir)) {

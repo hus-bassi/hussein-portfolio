@@ -5,13 +5,14 @@ node_modules/
 test-results/
 .playwright-mcp/
 .qodo/
-# console captures thrown beside the repo during a verification run.
-# They are evidence of a run, not source: ignored rather than deleted, so a
-# past session's output is still on disk to be read.
-_out_*.txt
-# proof screenshots from the records-page browser run: evidence of a run,
-# not source — same rule as the _out_ captures above.
-_dictation_*.png
+# console captures and proof screenshots thrown beside the repo during a
+# verification run. Underscore-prefixed files are run evidence, not source:
+# ignored rather than deleted, so a past session's output is still on disk.
+_*.txt
+_*.png
+# agent memory — this machine's session notes, never part of the website.
+memory/
+MEMORY.md
 .env
 .env.*
 .DS_Store

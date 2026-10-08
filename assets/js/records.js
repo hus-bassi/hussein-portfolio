@@ -357,8 +357,6 @@
     img.addEventListener('load', function () { img.classList.add('is-loaded'); });
   }
 
-  function isRemote(u) { return /^(https?:)?\/\//i.test(String(u || '')); }
-
   function resolveRecordMedia(rec) {
     var yt = youTubeId(rec.video);
     var order = [

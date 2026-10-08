@@ -135,33 +135,33 @@
       en: 'The full engineering details of the Elmajd Medical Store project: commerce, operations, customer experience, automation, search, security and testing.',
       ru: 'Полные инженерные детали проекта Elmajd Medical Store: торговля, управление, клиентский опыт, автоматизация, поиск, безопасность и тестирование.'
     },
+    'meta.volleyball.title': {
+      ar: 'رحلة الكرة الطائرة | حسين البسيوني',
+      en: 'The Volleyball Journey | Hussein ElBassiouni',
+      ru: 'Путь в волейболе | Хусейн Эль-Басьюни'
+    },
+    'meta.volleyball.desc': {
+      ar: 'جانب الرياضي من حسين البسيوني: لاعب حائط صد بدأ من الملاعب الشعبية، وشارك في بطولتين وديتين حقيقيتين، وقصته تُروى كما حدثت دون مبالغة.',
+      en: 'The athlete side of Hussein ElBassiouni: a middle blocker from grassroots courts with two real friendly tournaments, told as it happened.',
+      ru: 'Спортивная сторона Хусейна Эль-Басьюни: центральный блокирующий с любительских площадок, два реальных товарищеских турнира — история рассказана честно.'
+    },
+    'meta.academic.title': {
+      ar: 'المسار الأكاديمي والمهني | حسين البسيوني',
+      en: 'The Academic & Professional Journey | Hussein ElBassiouni',
+      ru: 'Академический путь | Хусейн Эль-Басьюни'
+    },
+    'meta.academic.desc': {
+      ar: 'الجانب الأكاديمي والمهني من حسين البسيوني: ما يتعلمه الآن، وما أتمه من شهادات، والمسار الذي يبنيه من بيزنس إنفورماتكس إلى علم البيانات الفلكي مع الدراسة في روسيا.',
+      en: 'The academic and professional side of Hussein ElBassiouni: what he is learning now, what he has completed, and the path from Business Informatics to astroinformatics with study in Russia.',
+      ru: 'Академическая и профессиональная сторона Хусейна Эль-Басьюни: что он осваивает сейчас, что завершил, и путь от бизнес-информатики к астроинформатике с учёбой в России.'
+    },
 
-    /* ---------- home: hero ---------- */
-    'hero.eyebrow': { ar: 'الاسم', en: 'Name', ru: 'Имя' },
+    /* ---------- home: hero — THE PORTAL ---------- */
+    'hero.eyebrow': { ar: 'من يتطلع إلى عالمين', en: 'One person, two worlds', ru: 'Один человек — два мира' },
     'hero.lead': {
       ar: 'أطمح إلى الجمع بين علوم البيانات وعلم الفلك',
       en: 'I aim to combine data science and astronomy',
       ru: 'Я стремлюсь соединить науку о данных и астрономию'
-    },
-    'hero.desc': {
-      ar: 'أتعلم وأطوّر مهاراتي في البيانات والبرمجة، وأسعى إلى بناء مسار أكاديمي يربط بين شغفي بالفلك وطموحي للدراسة في روسيا.',
-      en: 'I am learning and developing my skills in data and programming, working toward an academic path that connects my passion for astronomy with my goal of studying in Russia.',
-      ru: 'Я учусь и развиваю навыки в области данных и программирования и строю академический путь, который соединяет мою любовь к астрономии с целью учиться в России.'
-    },
-    'hero.btnStory': {
-      ar: 'اقرأ قصتي',
-      en: 'Read my story',
-      ru: 'Читать мою историю'
-    },
-    'hero.btnInterests': {
-      ar: 'استكشف اهتماماتي',
-      en: 'Explore my interests',
-      ru: 'Мои интересы'
-    },
-    'hero.btnContact': {
-      ar: 'تواصل معي',
-      en: 'Contact me',
-      ru: 'Связаться со мной'
     },
     'hero.quote': {
       ar: 'لم أستسلم، وما زلت أعمل على بناء طريقي.',
@@ -173,6 +173,297 @@
       ar: 'مرّر للأسفل',
       en: 'Scroll to explore',
       ru: 'Листайте вниз'
+    },
+    /* the portal question — فصحى, in the brief's own wording */
+    'hero.prompt': {
+      ar: 'أي طريق تريد أن تستكشف؟',
+      en: 'Which path would you like to explore?',
+      ru: 'Какой путь вы хотели бы исследовать?'
+    },
+    'hero.pathsLabel': {
+      ar: 'اختر الطريق الذي تريد أن تدخل إليه',
+      en: 'Choose the path you want to enter',
+      ru: 'Выберите путь, который хотите пройти'
+    },
+    /* the two doorway entries — the paths are destinations, not pills */
+    'hero.pathVolley': {
+      ar: 'عالم الكرة الطائرة',
+      en: 'Volleyball world',
+      ru: 'Мир волейбола'
+    },
+    'hero.pathVolleySub': {
+      ar: 'حسين — الرياضي',
+      en: 'Hussein — the athlete',
+      ru: 'Хусейн — спортсмен'
+    },
+    'hero.pathAcad': {
+      ar: 'العالم الأكاديمي والمهني',
+      en: 'Academic & professional world',
+      ru: 'Академический мир'
+    },
+    'hero.pathAcadSub': {
+      ar: 'حسين — الأكاديمي',
+      en: 'Hussein — the academic',
+      ru: 'Хусейн — учёба и карьера'
+    },
+    /* the doorway links' screen-reader labels */
+    'hero.enterVolley': {
+      ar: 'ادخل عالم الكرة الطائرة',
+      en: 'Enter the volleyball world',
+      ru: 'Войти в мир волейбола'
+    },
+    'hero.enterAcad': {
+      ar: 'ادخل العالم الأكاديمي والمهني',
+      en: 'Enter the academic and professional world',
+      ru: 'Войти в академический мир'
+    },
+
+    /* ---------- shared world-page furniture ---------- */
+    'world.backPortal': {
+      ar: 'العودة إلى البوابة',
+      en: 'Back to the portal',
+      ru: 'Назад к порталу'
+    },
+    'world.switch': {
+      ar: 'بدّل المسار',
+      en: 'Switch path',
+      ru: 'Сменить путь'
+    },
+    'world.volley': {
+      ar: 'الكرة الطائرة',
+      en: 'Volleyball',
+      ru: 'Волейбол'
+    },
+    'world.academic': {
+      ar: 'الأكاديمي والمهني',
+      en: 'Academic',
+      ru: 'Академический'
+    },
+
+    /* ---------- volleyball page (volleyball.html) ---------- */
+    'vp.eyebrow': {
+      ar: 'العالم الرياضي',
+      en: "The athlete's world",
+      ru: 'Мир спортсмена'
+    },
+    'vp.title': {
+      ar: 'رحلة الكرة الطائرة',
+      en: 'The Volleyball Journey',
+      ru: 'Путь волейболиста'
+    },
+    'vp.lead': {
+      ar: 'لاعب في طور التكوين، بدأ من الملاعب الشعبية، ومكانه الطبيعي قرب الشبكة. رحلة تُروى كما حدثت — دون مبالغة.',
+      en: 'A developing player with a grassroots start, whose place is at the net. A journey told as it happened — without exaggeration.',
+      ru: 'Игрок в процессе становления, начинавший на любительских площадках, чьё место — у сетки. История, рассказанная честно, без преувеличений.'
+    },
+    'vp.profile.title': {
+      ar: 'ملف اللاعب',
+      en: 'Player profile',
+      ru: 'Профиль игрока'
+    },
+    'vp.profile.pos': {
+      ar: 'المركز',
+      en: 'Position',
+      ru: 'Позиция'
+    },
+    'vp.profile.posVal': {
+      ar: 'حائط الصد',
+      en: 'Middle Blocker',
+      ru: 'Центральный блокирующий'
+    },
+    'vp.profile.clubs': {
+      ar: 'النوادي',
+      en: 'Clubs',
+      ru: 'Клубы'
+    },
+    'vp.profile.clubsVal': {
+      ar: 'نادٍ شعبيّان — التعاون والصّفا؛ غير مسجَّلَين في الاتحاد',
+      en: 'Two grassroots clubs — Al-Taawoon and Al-Safa; neither registered with the federation',
+      ru: 'Два любительских клуба — «Ат-Тааун» и «Ас-Сафа»; ни один не зарегистрирован в федерации'
+    },
+    'vp.profile.status': {
+      ar: 'الوضع',
+      en: 'Status',
+      ru: 'Статус'
+    },
+    'vp.profile.statusVal': {
+      ar: 'توقّفتُ عن اللعب التنافسي بعد إصابة في عيني اليسرى؛ الهدف لم يتغيّر',
+      en: 'Stepped back from competitive play after an injury to my left eye; the goal did not change',
+      ru: 'Отошёл от соревновательной игры после травмы левого глаза; цель не изменилась'
+    },
+    'vp.role.note': {
+      ar: 'لم أنضمّ يومًا لفريق رسمي مسجَّل في الاتحاد؛ هذا حلمٌ لم أستطع تحقيقه في مصر، وأنوي تحقيقه في روسيا.',
+      en: 'I have never been on a federation-registered team. That is the dream I could not realise in Egypt — and the one I intend to achieve in Russia.',
+      ru: 'Я никогда не состоял в команде, зарегистрированной в федерации. Это мечта, которую я не смог осуществить в Египте, — и именно её я намерен осуществить в России.'
+    },
+    'vp.timeline.title': {
+      ar: 'الطريق حتى الآن',
+      en: 'The road so far',
+      ru: 'Путь до сих пор'
+    },
+    'vp.tl1': {
+      ar: 'البدايات الشعبية',
+      en: 'Grassroots beginnings',
+      ru: 'Любительские площадки'
+    },
+    'vp.tl1Sub': {
+      ar: 'ملاعب شعبية، ومراكز شباب، وأصدقاء، وفرق غير رسمية — مع حبٍّ حقيقي للكرة الطائرة.',
+      en: 'Local courts, youth centres, friends and informal teams — with a genuine love for volleyball.',
+      ru: 'Локальные площадки, молодёжные центры, друзья и неформальные команды — с настоящей любовью к волейболу.'
+    },
+    'vp.tl2': {
+      ar: 'أول بطولة ودية — رمضان 2023',
+      en: 'First friendly tournament — Ramadan 2023',
+      ru: 'Первый товарищеский турнир — Рамадан 2023'
+    },
+    'vp.tl2Sub': {
+      ar: 'حائط صد مع نادي التعاون بالهرم — المركز الثالث.',
+      en: 'Middle Blocker with Al-Taawoon in Al Haram — third place.',
+      ru: 'Центральный блокирующий в клубе «Ат-Тааун» в Аль-Хараме — 3-е место.'
+    },
+    'vp.tl3': {
+      ar: 'الدورة التنشيطية — أكتوبر 2023',
+      en: 'Activation tournament — October 2023',
+      ru: 'Активационный турнир — октябрь 2023'
+    },
+    'vp.tl3Sub': {
+      ar: 'فوز 3–0 مع فريق مركز شباب الصفا (بنين).',
+      en: 'Won 3–0 with the Al-Safa youth centre boys\' team.',
+      ru: 'Победа 3–0 с командой юношей молодёжного центра «Ас-Сафа».'
+    },
+    'vp.tl4': {
+      ar: 'الإصابة والاعتزال',
+      en: 'The injury and stepping back',
+      ru: 'Травма и пауза'
+    },
+    'vp.tl4Sub': {
+      ar: 'بعد نحو ثلاث سنوات من اللعب، توقّفتُ عن اللعب التنافسي — لكنني لم أترك الحلم.',
+      en: 'After about three years of play I stepped back from competitive play — but I never left the dream.',
+      ru: 'После примерно трёх лет игры я отошёл от соревновательного спорта — но не от мечты.'
+    },
+    'vp.tl5': {
+      ar: 'اليوم',
+      en: 'Today',
+      ru: 'Сегодня'
+    },
+    'vp.tl5Sub': {
+      ar: 'الهدف لم يتغيّر: مواصلة الكرة الطائرة بجدّية ريثما تتاح الفرصة.',
+      en: 'The goal has not changed: to pursue volleyball seriously when the chance comes.',
+      ru: 'Цель не изменилась: серьёзно продолжить волейбол, когда представится возможность.'
+    },
+    'vp.tournaments.title': {
+      ar: 'البطولات التي لعبتها',
+      en: 'Tournaments played',
+      ru: 'Сыгранные турниры'
+    },
+    'vp.numbers.title': {
+      ar: 'في أرقام صادقة',
+      en: 'In real numbers',
+      ru: 'Честные цифры'
+    },
+    'vp.num1': {
+      ar: 'أول بطولة',
+      en: 'first tournament',
+      ru: 'первый турнир'
+    },
+    'vp.num3': {
+      ar: 'المركز الثالث',
+      en: 'third place',
+      ru: '3-е место'
+    },
+    'vp.numYears': {
+      ar: 'سنوات من اللعب',
+      en: 'years of play',
+      ru: 'лет игры'
+    },
+    'vp.next.title': {
+      ar: 'الفصل القادم',
+      en: 'The next chapter',
+      ru: 'Следующая глава'
+    },
+    'vp.next.lead': {
+      ar: 'مواصلة الكرة الطائرة خارج مصر — الرحلة لم تنتهِ، بل اتخذت طريقًا جديدًا.',
+      en: 'Continue volleyball outside Egypt — the journey is not over; it is taking a new route.',
+      ru: 'Продолжить волейбол за пределами Египта — путь не закончен, он просто меняет маршрут.'
+    },
+    'vp.certView': {
+      ar: 'شهادة البطولة',
+      en: 'Tournament certificate',
+      ru: 'Сертификат турнира'
+    },
+
+    /* ---------- academic page (academic.html) ---------- */
+    'ap.eyebrow': {
+      ar: 'العالم الفكري والمهني',
+      en: 'The academic world',
+      ru: 'Академический мир'
+    },
+    'ap.title': {
+      ar: 'المسار الأكاديمي والمهني',
+      en: 'The Academic & Professional Journey',
+      ru: 'Академический и профессиональный путь'
+    },
+    'ap.lead': {
+      ar: 'من أساسٍ متين في البيانات والبرمجة إلى طموحٍ في علم البيانات الفلكي — مع خطة للدراسة في روسيا.',
+      en: 'From a solid foundation in data and programming toward a goal in astroinformatics — with a plan to study in Russia.',
+      ru: 'От прочной основы в данных и программировании — к цели в астроинформатике, с планом учиться в России.'
+    },
+    'ap.path.title': {
+      ar: 'المسار الذي أعمل على بنائه',
+      en: 'The path I am building',
+      ru: 'Путь, который я строю'
+    },
+    'ap.learning.title': {
+      ar: 'ما أتعلّمه الآن',
+      en: 'Currently learning',
+      ru: 'Что я осваиваю сейчас'
+    },
+    'ap.learning.lead': {
+      ar: 'اتجاهات دراسة — ليست مؤهلات، ولا أرقامًا وهمية: أطوّرها خطوة بخطوة.',
+      en: 'Directions of study, not qualifications: developing them step by step.',
+      ru: 'Направления обучения, а не квалификации: развиваю их шаг за шагом.'
+    },
+    'ap.learning.python': { ar: 'بايثون', en: 'Python', ru: 'Python' },
+    'ap.learning.math': { ar: 'الرياضيات', en: 'Mathematics', ru: 'Математика' },
+    'ap.learning.stat': { ar: 'الإحصاء', en: 'Statistics', ru: 'Статистика' },
+    'ap.learning.data': { ar: 'تحليل البيانات', en: 'Data analysis', ru: 'Анализ данных' },
+    'ap.learning.research': { ar: 'البحث الأكاديمي', en: 'Academic research', ru: 'Академические исследования' },
+    'ap.learning.english': { ar: 'الإنجليزية', en: 'English', ru: 'Английский язык' },
+    'ap.learning.russian': { ar: 'الروسية', en: 'Russian', ru: 'Русский язык' },
+    'ap.certs.title': {
+      ar: 'ما أتممته',
+      en: 'What I have completed',
+      ru: 'Что я завершил'
+    },
+    'ap.certs.lead': {
+      ar: 'شهادات ووثائق تعلّم موثّقة بالمصادر المتاحة لكل سجل — السجل الكامل في صفحة مستقلة.',
+      en: 'Verified certificates and records of learning, each with its sources — the full record lives on its own page.',
+      ru: 'Подтверждённые сертификаты и записи об обучении с указанием источников — полный реестр на отдельной странице.'
+    },
+    'ap.certs.open': {
+      ar: 'افتح سجل الشهادات',
+      en: 'Open the records page',
+      ru: 'Открыть страницу записей'
+    },
+    'ap.certOpen': {
+      ar: 'عرض الشهادة',
+      en: 'View certificate',
+      ru: 'Смотреть сертификат'
+    },
+    'ap.projects.title': {
+      ar: 'ما أبنيه',
+      en: 'What I am building',
+      ru: 'Что я создаю'
+    },
+    'ap.future.title': {
+      ar: 'إلى أين أتجه',
+      en: 'Where I am heading',
+      ru: 'Куда я иду'
+    },
+    'ap.future.lead': {
+      ar: 'أطمح إلى بكالوريوس في بيزنس إنفورماتكس، ثم ماجستير في علوم البيانات، ثم دكتوراه في علم البيانات الفلكي — مع الدراسة في روسيا.',
+      en: 'A Bachelor\'s in Business Informatics, then a Master\'s in Data Science, then a PhD in Astroinformatics — with study in Russia.',
+      ru: 'Бакалавриат по бизнес-информатике, затем магистратура по науке о данных, затем докторантура по астроинформатике — с учёбой в России.'
     },
 
     /* The keyword strip under the hero. Words only — each one is already
@@ -765,11 +1056,15 @@
     var titleKey = page === 'records' ? 'meta.records.title'
       : page === 'story' ? 'meta.story.title'
       : page === 'projects' ? 'meta.projects.title'
-      : page === 'project' ? 'meta.project.title' : 'meta.index.title';
+      : page === 'project' ? 'meta.project.title'
+      : page === 'volleyball' ? 'meta.volleyball.title'
+      : page === 'academic' ? 'meta.academic.title' : 'meta.index.title';
     var descKey = page === 'records' ? 'meta.records.desc'
       : page === 'story' ? 'meta.story.desc'
       : page === 'projects' ? 'meta.projects.desc'
-      : page === 'project' ? 'meta.project.desc' : 'meta.index.desc';
+      : page === 'project' ? 'meta.project.desc'
+      : page === 'volleyball' ? 'meta.volleyball.desc'
+      : page === 'academic' ? 'meta.academic.desc' : 'meta.index.desc';
     document.title = t(titleKey, lang);
     var md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', t(descKey, lang));

@@ -627,136 +627,59 @@ html[dir="rtl"] .read-progress { transform-origin: 100% 50%; animation-direction
    delay. */
 .is-loading .hero-head,
 .is-loading .hero-lead,
-.is-loading .hero-desc,
 .is-loading .hero-quote,
+.is-loading .hero-prompt,
+.is-loading .portal,
+.is-loading .portal-dest,
+.is-loading .portal-gate,
+.is-loading .hero-character,
+.is-loading .portal-paths,
 .is-loading .hero-visual {
   opacity: 0;
   transform: translateY(28px);
   filter: blur(12px);
 }
 
-.hero-head, .hero-lead, .hero-desc, .hero-quote, .hero-visual {
+.hero-head, .hero-lead, .hero-quote, .hero-prompt, .hero-visual {
   transition: opacity var(--motion-reveal) var(--ease-out),
               transform var(--motion-reveal) var(--ease-out),
               filter var(--motion-reveal) var(--ease-out);
 }
+/* the portal stage and its people are decorative layers who only need to
+   fade in; the reveal travel belongs to the copy column and the gate's own
+   `translate` (its lean), so opacity is the only property they animate.
+   Their transitions live with their rules in §8c — only the delays are
+   here, in the ladder below, because a transition-delay on a :hover or an
+   animation is the thing the audit exists to catch. */
 /*     0ms  the light field is already there — nothing to announce
-     600ms  the orbit
+     600ms  the instrument (now in the academic world)
      800ms  the eyebrow
     1000ms  the name
-    1200ms  the lead, and the description just behind it
-    1400ms  the first button, and the next two one stagger behind it
-    1600ms  the line that closes the hero                             */
+    1200ms  the question
+    1350ms  the portal blooms: destinations and gate, one beat
+    1420ms  the figure in the gate
+    1580ms  the doorway entries
+    1760ms  the lead
+    1980ms  the line that closes the hero                             */
 .hero-visual { transition-delay: 600ms; }
 .hero-head   { transition-delay: 800ms; }
-.hero-lead   { transition-delay: 1200ms; }
-.hero-desc   { transition-delay: 1280ms; }
-.hero-quote  { transition-delay: 1600ms; }
+.hero-prompt { transition-delay: 1200ms; }
+.portal      { transition-delay: 1350ms; }
+.portal-dest { transition-delay: 1380ms; }
+.portal-gate { transition-delay: 1380ms; }
+.hero-character { transition-delay: 1420ms; }
+.portal-paths   { transition-delay: 1580ms; }
+.hero-lead   { transition-delay: 1760ms; }
+.hero-quote  { transition-delay: 1980ms; }
 
-/* THE HERO CTAs ARRIVE ONE AT A TIME, AND AS BUTTONS.
-   These three used to be the ENTRY STATE of `.hero-actions` itself — the
-   wrapper went `opacity: 0 / blur(12px) / translateY(28px)` and all three
-   rose together 1400ms late as one rigid block. There was no stagger at
-   all, because there was nothing to stagger: the row moved as a single
-   element, so it slid out from under the pointer's feet in one 28px step
-   and the last button in the reading order was the one that read as
-   misplaced. The measured truth before the fix, on the third button:
-   `translateY(28px)` for the whole 1400ms delay, then 800ms of travel,
-   with all three sharing one top edge to the hundredth of a pixel.
-
-   The row is LAYOUT and nothing else: `display: flex`, a gap and a wrap,
-   further down this file, with no transform, no animation and no negative
-   margin on it ever. The travel belongs to the buttons, and each button
-   has its own beat.
-
-   `translate`, not `transform`. These three are `[data-magnetic]`, and the
-   pointer's pull and the hover lift were put together into ONE `transform`
-   on every control (the recipe in §7). That leaves `translate` to the
-   entrance and to nothing else, so the two can never contest one property
-   — the failure that made a card's arrival and its hover fight, and that
-   cost a picture its fade. The resting value is `none`: a button that has
-   arrived sits exactly where the flex line put it, to the pixel, in both
-   writing directions.
-
-   No horizontal component anywhere, so there is nothing for RTL to mirror
-   and no `translateX` whose sign could come out backwards.
-
-   And the arrival state has to be a real declaration of the button's own,
-   not only the keyframe's — the keyframe only back-fills, so this resting
-   rule is what the button is BEFORE its turn comes round.
-
-   IT NO LONGER EXISTS, and that is the point. There were two mechanisms for
-   one arrival: this resting rule and the `cta-in` keyframe, each writing the
-   same three properties, in two places, which is the arrangement that let
-   them disagree. The arrival is now a SINGLE writer — the keyframe below,
-   animating `--enter-y` and `--enter-blur` — whose `backwards` fill covers
-   exactly the gap this rule used to cover, and the resting state is the
-   registered properties' own initial value of 0px. One place to look, one
-   place to change. */
-/* THE STAGGER, and why it is an animation rather than three more delays.
-
-   A `transition-delay` is the delay before ONE transition starts, and it is
-   consumed by it. Put the three beats here, on the arrival, and the first
-   button's entrance would eat its own 1400ms — which is exactly what the
-   live CSSOM showed: `transition-delay` computed to `0s` on all three, the
-   1400ms/1520ms/1640ms written above never applied to anything, and the row
-   came in as one block.
-
-   A transition is also not a thing you can hold off and then play later
-   without holding the element in the pre-arrival state for the whole gap,
-   which is what a delayed arrival looks like from the outside. So the beat
-   is an `animation`, which has a first frame, a delay before it and an end:
-   the button holds its arrival state for its turn, then rises, then STOPS.
-   A transition would have to be re-triggered to do that; an animation plays
-   once and hands the property back.
-
-   The animation is `fill-mode: backwards` on purpose: it back-fills the
-   arrival state through the delay and does NOT hold the final state, so
-   when it ends the button's own resting declarations take over untouched —
-   `--enter-y` and `--enter-blur` return to their registered initial value of
-   0px. Nothing is pinned afterwards, and the interaction half of the button
-   is exactly as it was.
-
-   The keyframe writes NO `transform`, NO `translate` and NO `filter`. It
-   writes two registered lengths and the opacity; §7's one `transform` and
-   one `filter` consume them. That is the whole of the arrangement: the
-   arrival, the pointer and the hover can no longer disagree, because there
-   is only one expression for them to disagree about. */
-@keyframes cta-in {
-  from { opacity: 0; --enter-y: 14px; --enter-blur: 4px; }
-}
-/* THE ARRIVAL IS NOT THE ONLY ANIMATION ON THIS BUTTON, and the shorthand
-   is what lost the other one. `animation` REPLACES the whole list — the
-   same trap as `transition` and the reason for the longhand discipline in
-   §7 — so writing `animation: cta-in …` here deleted `.btn`'s infinite
-   `aura` outright rather than adding to it. Measured on the live site
-   after the fact: `getAnimations()` on the third CTA came back EMPTY at
-   rest, and its computed `box-shadow` was `none`. The hero CTAs were the
-   only controls on the site with no glow at all, which is what made the
-   rise read as detached — a hard-edged rectangle moving with no light on
-   it, landing with none. The box geometry was correct the whole time,
-   which is exactly why the bug survived a geometry probe.
-
-   So `aura` is written back as the FIRST entry, in the family's own
-   order: the always-lit breath, then the arrival. The two own different
-   properties — `aura` owns `box-shadow`, `cta-in` owns `opacity`,
-   `translate` and `filter` — so they cannot contest one channel, and the
-   button is lit from the first frame instead of arriving unlit and
-   picking its glow up afterwards.
-
-   AND THE DELAY IS PER-ENTRY, which is the part that has to be right.
-   `animation-delay` is itself a list, matched positionally to
-   `animation-name`, so the single `1400ms` that used to be the whole
-   rule would have delayed BOTH animations and put the glow 1400ms behind
-   the arrival — reintroducing the unlit entrance through the back door.
-   The breath takes `0s` and the arrival takes the beat. */
-.hero-actions > .btn {
-  animation: aura var(--ambient-pulse) var(--ease-soft) infinite,
-             cta-in var(--motion-reveal) var(--ease-out) backwards;
-  animation-delay: 0s, 1400ms;
-}
-.hero-actions > .btn:nth-child(2) { animation-delay: 0s, calc(1400ms + var(--stagger)); }
-.hero-actions > .btn:nth-child(3) { animation-delay: 0s, calc(1400ms + 2 * var(--stagger)); }
+/* THE HERO CTAs ARE GONE, and that is the point. Their whole arrival
+   mechanism — the per-button stagger, the `cta-in` keyframe, the
+   `animation: aura, cta-in` pairing — described a row that no longer
+   exists: the two paths are now the DOORWAY ENTRIES in §8c, which arrive
+   like links (opacity + the portal fade), not like buttons. The lesson
+   that lived here — an `animation` shorthand replaces the whole list, so
+   `aura` must be written back first — lives on in §7, where the button
+   recipe owns it, with the class names that still exist. */
 
 /* the name arrives last and hardest — it is the subject of the page */
 .is-loading .hero-name { opacity: 0; transform: translateY(38px) scale(.96); filter: blur(18px); }
@@ -952,6 +875,7 @@ html[dir="rtl"] .sec-head::after { animation-direction: reverse; }
    the winner depend on source order. */
 a.btn:not(.btn-primary), a.btn-solid:not(.btn-primary), a.btn-outline,
 a.record-action, a.social, a.stat-link, a.card-link,
+a.portal-path, a.world-switch-link,
 .footer-nav a, a.skip-link { color: var(--fg); }
 /* NOTE the type qualifier's ABSENCE here, and it is not a slip. These were
    written `a.primary-nav a` and `a.footer-nav a`, on the assumption that
@@ -974,6 +898,7 @@ a.record-action.is-plain { color: var(--fg-2); }
 a.btn:not(.btn-primary):hover, a.btn-solid:not(.btn-primary):hover,
 a.btn-outline:hover,
 a.record-action:hover, a.social:hover, a.stat-link:hover, a.card-link:hover,
+a.portal-path:hover, a.world-switch-link:hover,
 .footer-nav a:hover, a.skip-link:hover { color: var(--fg); }
 .primary-nav a:hover { color: var(--fg); }
 .primary-nav a.is-current:hover { color: var(--gold); }
@@ -1312,14 +1237,20 @@ html[dir="rtl"] { --sweep-from: 100%; --sweep-to: -100%; }
 
 /* The head spans BOTH columns: the name gets the full shell width, which is
    what lets it be set at magazine scale. Copy and orbit share the row below. */
+/* THE STAGE — one centred column now. The hero no longer carries a copy
+   column beside a visual: the two worlds are full-bleed layers around a
+   single centred stage, and the orbit (the last survivor of the old two
+   columns) lives inside the academic world. `.hero-inner` is z-index 3,
+   above the character slot (2) and the environments (1). */
 .hero-inner {
-  position: relative; z-index: 1;
-  display: grid; grid-template-columns: 1.15fr .85fr;
-  gap: var(--s-6) var(--s-7); align-items: center;
+  position: relative; z-index: 3;
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--s-5);
+  text-align: center;
 }
-.hero-head { grid-column: 1 / -1; position: relative; }
 .hero-copy {
-  position: relative; z-index: 1;
+  position: relative;
+  max-width: 56ch; margin-inline: auto;
   /* the type is the last thing to move: six pixels and a whisper of
      transparency over a full screen of scroll */
   translate: 0 calc(var(--hero-y, 0) * -6px);
@@ -1378,16 +1309,6 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   max-width: 22ch;
   margin-block-end: var(--s-4);
 }
-.hero-desc { color: var(--fg-3); max-width: 46ch; margin-block-end: var(--s-7); }
-/* LAYOUT AND NOTHING ELSE. The row is not an actor: no transform, no
-   animation, no negative margin, no absolute positioning, and no hard-coded
-   side — `flex-start` resolves to the right in Arabic and to the left in
-   English and Russian, so the reading order reads the same way in all three
-   without a single direction-aware coordinate. `align-items: center` is what
-   keeps a wrapped line from stretching a button to the height of the longest
-   one beside it, which in Russian — the longest of the three labels — is the
-   difference between a tidy second row and three boxes of three sizes. */
-.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-block-end: var(--s-7); }
 
 .hero-quote {
   position: relative;
@@ -1405,10 +1326,243 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   box-shadow: 0 0 20px -2px rgba(240, 206, 126, .7);
 }
 
+/* ---------- 8c. THE PORTAL — one gate, two worlds, two doorways ----------
+   The first screen is a GATEWAY, not a split: one dimensional opening in
+   the centre of the stage, two worlds visible through it, and two doorway
+   entries at its feet. There is no divider, no panel and no pill — the
+   gate leans toward the world under the pointer, the worlds brighten
+   through the opening, and the entries are real links to volleyball.html
+   and academic.html.
+
+     .portal             the stage — one gate, two destinations behind it
+     .portal-dest        one world per PHYSICAL side (left/right), BEHIND
+                         the gate, lit by --ath / --aca (published by
+                         assets/js/hero.js)
+     .portal-gate        the dimensional opening: the tunnel + the mouth
+     .hero-character     the figure standing in the gate (phase-2 slot)
+     .portal-path        a doorway ENTRY — a real <a> to its world page
+
+   The intensities arrive as --ath / --aca and the CSS interpolates them
+   on the motion ladder: a var-driven state has no :hover to give the
+   response its own beat, so the response and the return share one 650ms
+   clock, exactly as §8b's rule says. The doorway labels restate their
+   colour in §7, with every other coloured anchor on the site. */
+
+/* the question every portal asks */
+.hero-prompt {
+  font-size: clamp(1.15rem, .95rem + 1.1vw, 1.75rem);
+  font-weight: 600; color: var(--fg);
+  margin-block-end: var(--s-2);
+}
+
+/* ---------- the stage ---------- */
+.portal {
+  position: relative;
+  width: min(620px, 96%);
+  height: clamp(290px, 40vh, 400px);
+  margin-block: var(--s-1) var(--s-2);
+  z-index: 1;
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-reveal) var(--ease-out);
+}
+/* one world per physical side, BEHIND the gate (the gate draws over them).
+   The knob is the same variable the pointer publishes: at rest a quiet
+   whisper of each world, the world under the pointer flares. */
+.portal-dest {
+  position: absolute; inset-block-start: 50%;
+  width: 44%; max-width: 280px;
+  translate: 0 -50%;
+  pointer-events: none;
+  transition: opacity var(--motion-slow) var(--ease);
+}
+.portal-dest--volley { inset-inline-start: 0; }
+.portal-dest--acad   { inset-inline-end: 0; }
+.portal-dest--volley { opacity: calc(.16 + var(--ath, 0) * .85); }
+.portal-dest--acad   { opacity: calc(.16 + var(--aca, 0) * .85); }
+
+/* the light source in each world — a plain disc, blurred into a glow */
+.portal-orb {
+  position: absolute; top: 56%; left: 50%;
+  width: 66px; height: 66px; border-radius: 50%;
+  translate: -50% -50%;
+  filter: blur(9px);
+  animation: orb-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
+}
+.portal-dest--volley .portal-orb { background: var(--gold); }
+.portal-dest--acad   .portal-orb { background: var(--azure); }
+
+/* the volleyball world: three court hairlines and a ball */
+.portal-court {
+  position: absolute; left: 12%; right: 12%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .5), transparent);
+}
+.portal-court--a { top: 16%; }
+.portal-court--b { top: 28%; }
+.portal-court--c { top: 40%; }
+.portal-ball {
+  position: absolute; top: 74%; left: 50%;
+  width: 26px; height: 26px; translate: -50% 0;
+  color: var(--gold); opacity: .8;
+}
+
+/* the academic world: a drawn chart and three quiet stars */
+.portal-chart {
+  position: absolute; top: 58%; inset-inline-start: 12%;
+  width: 48%; color: var(--azure); opacity: .85;
+}
+.portal-chart-axis { stroke: rgba(148, 163, 186, .4); stroke-width: 1.2; }
+.portal-chart-line {
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;
+}
+.portal-star {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: var(--azure); color: var(--azure);
+  box-shadow: 0 0 6px 1px currentColor;
+  animation: twinkle var(--twinkle, 26s) var(--ease-soft) infinite,
+             star-drift var(--drift, 92s) var(--ease-soft) infinite alternate;
+}
+.portal-star--a { top: 14%; inset-inline-end: 16%; --twinkle: 24s; --drift: 96s; animation-delay: -5s, -18s; }
+.portal-star--b { top: 36%; inset-inline-end: 44%; --twinkle: 31s; --drift: 112s; animation-delay: -13s, -52s; }
+.portal-star--c { top: 54%; inset-inline-end: 22%; width: 3px; height: 3px; --twinkle: 22s; --drift: 104s; animation-delay: -21s, -76s; }
+
+/* ---------- the gate: a tunnel receding toward a light ---------- */
+.portal-gate {
+  position: absolute; inset-block-start: 0; inset-inline-start: 50%;
+  height: 100%;
+  /* the lean arrives as a pixel shift from hero.js (`--lean-px`); the
+     mouth and the character stay in step because the whole gate moves.
+     It is `translate`, not `transform`, so the entrance rise and the lean
+     can never contest one property. */
+  translate: calc(-50% + var(--lean-px, 0px)) 0;
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-slow) var(--ease),
+              filter var(--motion-slow) var(--ease);
+  z-index: 2;
+  filter: drop-shadow(0 0 34px rgba(124, 92, 255, .30));
+}
+/* the tunnel rings: five recessed ellipses wearing the site's spectrum
+   hairline, fading toward the vanishing point. They are open rings, so
+   the light at the end shows through every one of them. */
+.pg-ring { stroke: url(#pg-frame); stroke-width: 1.5; opacity: .5; }
+.pg-ring:nth-of-type(2) { opacity: .4; }
+.pg-ring:nth-of-type(3) { opacity: .3; }
+.pg-ring:nth-of-type(4) { opacity: .22; }
+.pg-ring:nth-of-type(5) { opacity: .15; }
+
+/* the light at the end of the tunnel: a neutral violet heart, and the two
+   world tints laid over it by the pointer — three layers, one opacity
+   knob each. */
+.pg-core {
+  transition: opacity var(--motion-slow) var(--ease);
+}
+.pg-core--violet { fill: #7C5CFF; opacity: .26; }
+.pg-core--warm   { fill: url(#pg-warm); opacity: calc(var(--ath, 0) * .9); }
+.pg-core--cool   { fill: url(#pg-cool);  opacity: calc(var(--aca, 0) * .9); }
+
+.pg-frame { stroke-width: 3; stroke-linecap: round; }
+.pg-lip   { stroke-width: 1.6; }
+.pg-floor { stroke: rgba(167, 139, 250, .32); stroke-width: 2; }
+
+/* the surge — the gate flares as the visitor chooses a doorway. A
+   departure beat, played by hero.js on click and killed under reduce.
+   The chosen world's core brightens through the stance hero.js writes
+   (the same --ath / --aca vars as the pointer) — no second mechanism. */
+.is-opening .portal-gate {
+  filter: drop-shadow(0 0 64px rgba(124, 92, 255, .6));
+}
+.is-opening .portal { animation: portal-surge 420ms var(--ease-out); }
+@keyframes portal-surge {
+  0%   { scale: 1; }
+  55%  { scale: 1.028; }
+  100% { scale: 1; }
+}
+
+/* ---------- the doorway entries ----------
+   These are LINKS, not buttons: each one is the entry to a real world
+   page, so a no-JS visitor still has the same choice, and ui.js owns the
+   departure (its page transition); the surge above is the only addition
+   here. The label colour never moves — state lives in the edge and the
+   glow, exactly like every control on the site, and the colours' home is
+   §7 with every other coloured anchor. */
+.portal-paths {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: clamp(var(--s-4), 4vw, var(--s-8));
+  margin-block-start: var(--s-1);
+  transition: opacity var(--motion-reveal) var(--ease-out);
+}
+.portal-path {
+  display: inline-flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid rgba(167, 139, 250, .22);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: border-color var(--motion-normal) var(--ease),
+              box-shadow var(--motion-normal) var(--ease),
+              color var(--motion-fast) var(--ease);
+}
+/* each doorway reacts through its EDGE and its GLOW, in its world's colour;
+   the label stays on §7's restatement, never turning gold */
+a.portal-path--volley:hover {
+  border-color: rgba(240, 206, 126, .6);
+  box-shadow: 0 0 26px -10px rgba(240, 206, 126, .6);
+}
+a.portal-path--acad:hover {
+  border-color: rgba(56, 189, 248, .6);
+  box-shadow: 0 0 26px -10px rgba(56, 189, 248, .6);
+}
+a.portal-path:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+}
+.portal-path-ico { width: 26px; height: 26px; flex: none; }
+.portal-path--volley .portal-path-ico { color: var(--gold); }
+.portal-path--acad   .portal-path-ico { color: var(--azure); }
+.portal-path-words { display: flex; flex-direction: column; text-align: start; }
+.portal-path-word { font-size: 1.02rem; font-weight: 600; }
+.portal-path-sub  { font-size: .8rem; color: var(--fg-3); white-space: nowrap; }
+
+/* ---------- the character slot ----------
+   An empty stage INSIDE the gate, built to receive transparent character
+   assets in a later phase. Until then it is an intentional presence — a
+   soft aura where the figure will stand — never a placeholder box. The
+   slot draws ABOVE the gate (z 3); the doorway entries sit below it, in
+   flow. */
+.hero-character {
+  position: absolute; inset-block-start: 24%;
+  inset-inline-start: 50%;
+  width: min(34vw, 250px); height: min(30vh, 250px);
+  translate: -50% 0;
+  z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(52% 46% at 50% 44%, rgba(124, 92, 255, .15), transparent 72%),
+    radial-gradient(36% 44% at 50% 62%, rgba(240, 206, 126, .05), rgba(46, 134, 255, .05) 58%, transparent 76%);
+  transition: opacity var(--motion-cinematic) var(--ease);
+}
+.hero-character::before {
+  content: ""; position: absolute; inset: 18% 26%;
+  border: 1px solid rgba(167, 139, 250, .16);
+  border-radius: 50%;
+  box-shadow: 0 0 70px -22px rgba(111, 195, 255, .28);
+}
+/* the future layers: one <img> per state, crossfaded by hero.js through the
+   slot's data-state attribute */
+.hero-character-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
+  opacity: 0;
+  transition: opacity var(--motion-cinematic) var(--ease);
+}
+.hero-character[data-state="base"]     .hero-character-img[data-state="base"],
+.hero-character[data-state="athlete"]  .hero-character-img[data-state="athlete"],
+.hero-character[data-state="academic"] .hero-character-img[data-state="academic"] {
+  opacity: 1;
+}
+
 /* the scroll cue */
 .hero-scroll {
   position: absolute; inset-block-end: 26px; inset-inline: 0;
-  z-index: 1; margin: 0; text-align: center;
+  z-index: 3; margin: 0; text-align: center;
   font-size: .74rem; font-weight: 500;
   color: var(--fg-4);
   pointer-events: none;
@@ -1523,6 +1677,222 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
   50%      { opacity: 1;   transform: scale(1.15); }
 }
 .of-ticks line { stroke: rgba(167, 139, 250, .5); stroke-width: 1; }
+
+/* ---------- 8d. THE WORLD PAGES — volleyball & academic ----------
+   Two dedicated experiences, entered through the portal. One skin each —
+   warm court-orange for the athlete, cool azure for the academic — built
+   from the same bones as the rest of the site: .page-head, .band,
+   .sec-head, .timeline, .stat-row and .btn, plus a character slot ready
+   for the phase-2 art, and a world-switcher so a visitor is never
+   trapped on a world page. */
+
+/* the shared furniture of both worlds */
+.world-switch {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin-block-end: var(--s-6);
+  font-size: .92rem;
+}
+.world-switch-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--glass-2); }
+.world-switch-link {
+  padding: 2px 0;
+  border-block-end: 1px solid transparent;
+  text-decoration: none;
+  transition: border-color var(--motion-normal) var(--ease),
+              color var(--motion-fast) var(--ease);
+}
+/* the switcher reacts through its underline, never through its label */
+a.world-switch-link:hover { border-block-end-color: currentColor; }
+a.world-switch-link:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
+
+/* the character slot on a world page — the same contract as the hero's:
+   empty until phase 2 supplies transparent art, then one <img> per state
+   with the data-state crossfade below */
+.world-character {
+  position: relative;
+  width: min(240px, 62vw); height: 240px;
+  margin: var(--s-5) auto 0;
+  pointer-events: none;
+  background: radial-gradient(52% 46% at 50% 44%, rgba(124, 92, 255, .12), transparent 72%);
+}
+.world-character[data-state="base"]     .hero-character-img[data-state="base"],
+.world-character[data-state="athlete"]  .hero-character-img[data-state="athlete"],
+.world-character[data-state="academic"] .hero-character-img[data-state="academic"] {
+  opacity: 1;
+}
+
+/* ---------- volleyball.html — the warm, orange-black athlete world ---------- */
+.page-volley .page-head {
+  background:
+    radial-gradient(70% 60% at 20% 16%, rgba(240, 206, 126, .14), transparent 70%),
+    radial-gradient(52% 50% at 90% 86%, rgba(236, 110, 47, .12), transparent 72%),
+    linear-gradient(180deg, #0B0605 0%, #120A07 50%, #170C08 100%);
+}
+.page-volley .page-head::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .5) 32%, rgba(236, 110, 47, .5) 68%, transparent);
+  opacity: .55;
+}
+/* a court reads as three hairlines receding: the same lines the portal
+   shows through its gate, and the home of this world's glow */
+.world-court {
+  position: relative;
+  width: min(420px, 78vw); height: 150px;
+  margin: var(--s-6) auto 0;
+  pointer-events: none;
+}
+.world-court::before {
+  content: ""; position: absolute;
+  inset: 50% 0 auto; height: 1px;
+  filter: blur(6px);
+  background: radial-gradient(closest-side, rgba(236, 110, 47, .35), transparent 72%);
+}
+.world-court span {
+  position: absolute; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .55), transparent);
+}
+.world-court span:nth-of-type(1) { top: 26%; }
+.world-court span:nth-of-type(2) { top: 50%; }
+.world-court span:nth-of-type(3) { top: 74%; }
+.world-court span:nth-of-type(1),
+.world-court span:nth-of-type(3) { opacity: .45; }
+
+/* the volleyball world's facts are numbered in gold; the academic's in
+   azure — one recipe, two world colours */
+.wp-facts {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s-5);
+  margin-block-start: var(--s-6);
+  list-style: none;
+}
+.wp-fact {
+  border-inline-start: 1px solid var(--glass-2);
+  padding-inline-start: var(--s-4);
+}
+.wp-fact dt {
+  font-family: var(--font-mono);
+  font-size: .78rem; letter-spacing: .12em;
+  color: var(--gold);
+  margin-block-end: var(--s-2);
+}
+html[lang="ar"] .wp-fact dt { font-family: var(--font-ar); letter-spacing: 0; }
+html[lang="ru"] .wp-fact dt { font-family: var(--font-ltr); }
+.wp-fact dd { color: var(--fg-2); line-height: 1.9; margin: 0; }
+
+/* the tournaments band: one honest card per real tournament */
+.v-list {
+  list-style: none; display: grid; gap: var(--s-6);
+  margin-block-start: var(--s-6);
+}
+.v-card {
+  display: grid; grid-template-columns: minmax(160px, 280px) 1fr;
+  gap: var(--s-5);
+  padding: var(--s-5);
+  border: 1px solid var(--glass-2);
+  border-radius: 16px;
+  background: var(--night-2);
+}
+.v-cover { margin: 0; }
+.v-cover img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 12px; border: 1px solid var(--glass);
+  display: block;
+}
+.v-card-body { align-self: center; }
+.v-card-title { font-size: 1.3rem; margin-block-end: var(--s-3); }
+.v-card-meta {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4);
+  font-size: .92rem; color: var(--fg-3);
+  margin-block-end: var(--s-3);
+}
+.v-card-text { color: var(--fg-2); line-height: 1.9; }
+/* the photo gallery: real tournament photos, as plain figures */
+.v-gallery {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--s-4);
+  margin-block-start: var(--s-6);
+}
+.v-gallery figure { margin: 0; }
+.v-gallery img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 12px; border: 1px solid var(--glass);
+  display: block;
+}
+.v-gallery figcaption {
+  font-size: .82rem; color: var(--fg-3);
+  margin-block-start: var(--s-2);
+}
+/* the gallery is a third child of the two-column card, so it must be told
+   to span both columns instead of occupying the first cell of a new row */
+.v-card .v-gallery { grid-column: 1 / -1; }
+
+/* ---------- academic.html — the cool chart-and-stars world ---------- */
+.page-acad .page-head {
+  background:
+    radial-gradient(70% 60% at 80% 16%, rgba(56, 189, 248, .14), transparent 70%),
+    radial-gradient(52% 50% at 10% 86%, rgba(124, 92, 255, .14), transparent 72%),
+    linear-gradient(180deg, #05060C 0%, #070A13 50%, #0A0E18 100%);
+}
+.page-acad .page-head::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, .5) 32%, rgba(124, 92, 255, .5) 68%, transparent);
+  opacity: .55;
+}
+.page-acad .eyebrow { color: var(--azure); }
+/* the instrument travels with its world: the orbit figure that used to
+   share the hero's copy column now stands at the head of the academic
+   page — placement only, because §8b already owns the figure's look and
+   its slow clocks, which this page keeps */
+.world-instrument {
+  position: relative;
+  width: min(340px, 74vw);
+  margin: var(--s-5) auto 0;
+  pointer-events: none;
+}
+
+/* the academic world's own chips and certificates */
+.ap-chips {
+  display: flex; flex-wrap: wrap; gap: var(--s-3);
+  margin-block-start: var(--s-6);
+  list-style: none;
+}
+.ap-chip {
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid rgba(56, 189, 248, .3);
+  border-radius: 999px;
+  color: var(--fg-2); font-size: .95rem;
+}
+.ap-certs {
+  list-style: none; display: grid; gap: var(--s-2);
+  margin-block-start: var(--s-6);
+}
+.ap-cert {
+  /* wrap, don't stretch: a certificate title · provider · date · view
+     action is one line at desktop width, but its min-content sum runs
+     past a 484px viewport — so the row breaks to two lines instead of
+     holding the page 150px wider than it is */
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-3);
+  border-block-end: 1px solid var(--glass-2);
+  padding-block: var(--s-3);
+  color: var(--fg-2);
+}
+.ap-cert em {
+  font-style: normal; color: var(--fg); margin-inline-end: auto;
+  min-width: 0; overflow-wrap: break-word;
+}
+.ap-cert time { color: var(--fg-3); font-size: .88rem; font-variant-numeric: tabular-nums; }
+/* the certificate thumbnail and its view action: the row keeps the
+   baseline recipe, only the image centres itself against it */
+.ap-cert-thumb {
+  width: 64px; height: 46px; object-fit: cover;
+  border-radius: 8px; border: 1px solid var(--glass);
+  align-self: center;
+}
+.ap-cert .record-action { align-self: center; }
+
+/* the world pages share the homepage's stats row recipe, sized for a
+   page band rather than the hero */
+.world-stats .stat-row { margin-block-start: var(--s-5); }
 
 /* ---------- 9. Marquee ----------
    One group of keywords is 500–900px wide depending on the language, and
@@ -2240,12 +2610,22 @@ html[lang="ar"] .count {
 
 /* ---------- 17. Responsive ---------- */
 @media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; gap: var(--s-7); }
-  /* stacked order: name first, then the orbit, then the copy */
-  .hero-head { order: -2; }
-  .hero-visual { order: -1; }
-  .orbit-figure { max-width: 260px; }
+  .hero-inner { gap: var(--s-6); }
+  /* the portal becomes the whole scene on touch: the stage tightens, and
+     the doorway entries become two large, stacked tap targets — the whole
+     interaction on touch is the doorways, so they get the legroom */
+  .portal { width: min(360px, 100%); height: clamp(230px, 34vh, 300px); }
+  .portal-dest { width: 46%; }
+  .portal-ball { width: 22px; }
+  .portal-paths {
+    flex-direction: column; align-items: stretch;
+    width: min(100%, 320px);
+  }
+  .portal-path { justify-content: center; }
   .hero-lead { max-width: none; }
+  .hero-character {
+    inset-block-start: 22%; width: min(52vw, 200px); height: min(24vh, 200px);
+  }
   .why-grid { grid-template-columns: 1fr; gap: var(--s-6); }
   html { scroll-padding-top: 76px; }
   /* A heading and a link no longer fit on one line beside each other, so
@@ -2298,6 +2678,10 @@ html[lang="ar"] .count {
   .hero { padding-block: 120px 104px; }
   .record { grid-template-columns: minmax(0, 1fr); }
   .record-action { grid-row: auto; grid-column: 1; justify-self: start; }
+  /* the tournament card stacks the same way: two columns need ~440px of
+     content box once the body's longest line is counted, which a 390px
+     phone does not have */
+  .v-card { grid-template-columns: minmax(0, 1fr); }
   .stage-num { font-size: 1.7rem; }
   /* The numeral steps down with the viewport rather than pushing the
      heading: on a 360px screen a 104px marker would be a third of the
@@ -2369,6 +2753,7 @@ html[lang="ar"] .count {
   .orbit-figure, .of-halo, .of-core, .of-trace, .of-node, .tj-node,
   .of-spin, .of-ring-a .of-spin, .of-ring-b .of-spin, .of-ring-c .of-spin,
   .hero-visual::before, .hero-scroll::after, .star,
+  .portal-orb, .portal-star, .is-opening .portal,
   .band::before, .sec-head::after {
     animation: none;
   }
@@ -2392,7 +2777,8 @@ html[lang="ar"] .count {
   .reveal { opacity: 1; translate: none; filter: none; transition-duration: 0s; }
 
   .btn, .btn-solid, .btn-outline, .record-action, .to-top,
-  .card, .record, .stage, .stat, .social, .empty-state, .search {
+  .card, .record, .stage, .stat, .social, .empty-state, .search,
+  .portal-path, .portal-dest, .portal-gate, .hero-character-img {
     transition-duration: 200ms;
   }
   .btn:hover, .btn-solid:hover, .btn-outline:hover, .to-top:hover,
@@ -2417,22 +2803,28 @@ html[lang="ar"] .count {
   /* the opening sequence becomes a plain fade, in the same order */
   .is-loading .hero-head,
   .is-loading .hero-lead,
-  .is-loading .hero-desc,
-  .is-loading .hero-actions > .btn,
+  .is-loading .portal,
+  .is-loading .portal-dest,
+  .is-loading .portal-gate,
+  .is-loading .hero-character,
+  .is-loading .portal-paths,
   .is-loading .hero-quote,
+  .is-loading .hero-prompt,
   .is-loading .hero-visual,
   .is-loading .hero-name,
   .is-loading .site-header {
     opacity: 0; transform: none; translate: none; filter: none;
     transition: opacity 400ms linear !important;
   }
-  /* …and the three CTAs keep no animation of their own, so the beat above is
-     the only thing that arrives. The delays on the text are reset too: a
-     400ms fade is meant to be a fade, and inheriting a 1600ms wait from the
-     motion version would turn "calm" into "slow". */
-  .hero-actions > .btn { animation: none; }
-  .hero-visual, .hero-head, .hero-lead, .hero-desc, .hero-quote,
-  .hero-name { transition-delay: 0s; }
+  /* …and the deprecated surge keeps no animation of its own, so the beat
+     above is the only thing that arrives. The delays on the text are reset
+     too: a 400ms fade is meant to be a fade, and inheriting a 1980ms wait
+     from the motion version would turn "calm" into "slow". */
+  .is-opening .portal, .is-opening .portal-gate { animation: none; }
+  .hero-visual, .hero-head, .hero-lead, .hero-quote, .hero-prompt, .hero-name,
+  .portal, .portal-dest, .portal-gate, .hero-character, .portal-paths {
+    transition-delay: 0s;
+  }
 
   /* reveals resolve immediately, with no travel and no blur, and the
      trajectory is simply already drawn */
@@ -2580,5 +2972,6 @@ html[lang="ar"] .count {
 
 @media print {
   body::before, body::after, .read-progress, .marquee, .hero-scroll,
-  .to-top, .footer-mark { display: none !important; }
+  .to-top, .footer-mark, .portal, .portal-paths,
+  .hero-character, .hero-prompt { display: none !important; }
 }

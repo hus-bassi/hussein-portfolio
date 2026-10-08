@@ -23,7 +23,13 @@ const css = cssFiles.map(f => stripComments(fs.readFileSync(path.join(root, f), 
 
 /* ---- 1. unused custom properties ---- */
 const declared = new Set();
-for (const m of css.matchAll(/(--[a-z0-9-]+)\s*:/g)) declared.add(m[1]);
+/* a declaration, not a selector: `.foo--bar:hover` and `.x--y::after` must
+   not read as tokens, so the name has to follow `{`, `;` or whitespace —
+   exactly the contexts a real `--x:` declaration can appear in */
+for (const m of css.matchAll(/(^|[;{\s])(--[a-z0-9-]+)\s*:/g)) declared.add(m[2]);
+/* `@property --name {}` declares a token too; without it the registered
+   --enter-blur would read as undeclared */
+for (const m of css.matchAll(/@property\s+(--[a-z0-9-]+)/g)) declared.add(m[1]);
 const unusedTokens = [];
 for (const v of declared) {
   const uses = (css.match(new RegExp('var\\(' + v + '[,\\) ]', 'g')) || []).length;
@@ -256,7 +262,7 @@ for (const m of css.matchAll(/transition(-duration)?\s*:\s*([^;}]+)/g)) {
    So: a type-qualified ANCESTOR link rule is only honest if the class it
    names is on an element in the markup that is not itself an anchor. */
 const classOwners = new Map();
-for (const f of ['index.html', 'story.html', 'records.html']) {
+for (const f of ['index.html', 'story.html', 'records.html', 'volleyball.html', 'academic.html', 'projects.html', 'project.html']) {
   const file = path.join(root, f);
   if (!fs.existsSync(file)) continue;   /* a partial tree is still worth auditing */
   const html = fs.readFileSync(file, 'utf8');
@@ -572,7 +578,7 @@ for (const m of css.matchAll(/([^{}]*\.is-loading[^{}]*)\{([^{}]*)\}/g)) {
    whole file exists to prevent. Being over-eager here costs a report line;
    being under-eager costs a silent half-dead animation. And it refuses to
    pass quietly on a selector it could not resolve. */
-/* The three pages, as a tree. Not a general parser — a tag scanner over
+/* The pages, as a tree. Not a general parser — a tag scanner over
    the attributes this site's markup actually uses.
 
    `is-loading` is seeded onto <html> by hand for the one reason that matters
@@ -583,7 +589,7 @@ for (const m of css.matchAll(/([^{}]*\.is-loading[^{}]*)\{([^{}]*)\}/g)) {
    exists to police, and a blind spot shaped like the bug it was written for
    is worse than no check at all. */
 const elements = [];
-for (const f of ['index.html', 'story.html', 'records.html']) {
+for (const f of ['index.html', 'story.html', 'records.html', 'volleyball.html', 'academic.html', 'projects.html', 'project.html']) {
   const file = path.join(root, f);
   if (!fs.existsSync(file)) continue;
   const html = fs.readFileSync(file, 'utf8');
