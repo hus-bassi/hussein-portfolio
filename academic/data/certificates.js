@@ -374,6 +374,118 @@ const certificatesData = [
   },
   {
     /* ============================================================
+       A THIRD DATACAMP STATEMENT — the Intermediate Google Sheets
+       course. Same issuer (DataCamp), same credential type, read off
+       the certificate image before anything was written:
+         · "STATEMENT OF ACCOMPLISHMENT"
+         · "#50,277,774"
+         · "HAS BEEN AWARDED TO Hussein Mohamed Mostafa Ahmed
+            ElBassiouni"
+         · "FOR SUCCESSFULLY COMPLETING Intermediate Google Sheets"
+         · "LENGTH 4 HRS"
+         · "COMPLETED ON OCT 08, 2026"
+       ------------------------------------------------------------
+       NOT A CERTIFICATION, exactly like its two siblings: this is a
+       course completion and claims nothing beyond the words printed
+       on the document. The XP figure (4,150 XP) comes from the
+       DataCamp learner account, not from the document — so, following
+       the Data Analysis record's precedent, it is recorded in the CV
+       ledger with its provenance and deliberately NOT shown on the
+       card or in the details view.
+       ------------------------------------------------------------
+       The course title is the document's exact English string and is
+       not translated, for the reason given above; "DataCamp" stays in
+       Latin in all three languages as a brand, like LinkedIn and
+       GitHub.
+       ------------------------------------------------------------
+       The two files sit at the project root exactly as Hussein placed
+       them — nothing renamed, copied or moved — so their paths start
+       with `../` like their siblings' — see the path note at the top
+       of this file. The PDF is the official document that "view
+       certificate" opens, so no credentialUrl was invented. */
+    title: 'Intermediate Google Sheets',
+    provider: 'DataCamp',
+    date: {
+      en: '8 Oct 2026',
+      ar: '8 أكتوبر 2026',
+      ru: '8 октября 2026',
+    },
+    /* the credential TYPE, printed exactly as the document prints it */
+    category: {
+      en: 'Statement of Accomplishment',
+      ar: 'بيان إتمام',
+      ru: 'Подтверждение о прохождении курса',
+    },
+    duration: {
+      en: '4 hrs',
+      ar: 'أربع ساعات',
+      ru: '4 часа',
+    },
+    /* printed verbatim, commas and all, exactly as the document shows it */
+    credentialId: '#50,277,774',
+    image: '../Intermediate Google Sheets_page-0001.jpg',
+    pdf: '../Intermediate Google Sheets.pdf',
+    description: {
+      en: 'A four-hour DataCamp course on intermediate spreadsheets: advanced data types and manipulation, numeric and logical data, missing data and errors, summary statistics on real-world datasets, positional matching, sorting and filtering, and simple imputation.',
+      ar: 'دورة من أربع ساعات على منصة DataCamp في المستوى المتوسط للجداول الإلكترونية: أنواع البيانات المتقدمة ومعالجة البيانات، والبيانات الرقمية والمنطقية، والبيانات المفقودة والأخطاء، والإحصاءات الوصفية على بيانات من الواقع، والمطابقة الموضعية، والترتيب والتصفية، وتعبئة القيم المفقودة بطرق بسيطة.',
+      ru: 'Четырёхчасовой курс DataCamp по таблицам продвинутого уровня: продвинутые типы данных и работа с ними, числовые и логические данные, пропущенные данные и ошибки, описательная статистика на реальных наборах данных, позиционное сопоставление, сортировка и фильтрация, а также простое восстановление пропущенных значений.',
+    },
+    /* the sentence a screen reader is given instead of a filename */
+    alt: {
+      en: "Hussein ElBassiouni's DataCamp Statement of Accomplishment for completing Intermediate Google Sheets",
+      ar: 'بيان إتمام من DataCamp لحسين البسيوني عن إتمام دورة الجداول الإلكترونية المستوى المتوسط',
+      ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании курса Intermediate Google Sheets',
+    },
+    isDemo: false,
+    /* THE DETAIL VIEW, mirroring the two sibling Statements. All of it
+       came from the brief Hussein supplied for this course, in the
+       course's own English terminology, kept English for the same
+       reason the siblings give: these are the provider's words, not
+       the project's. */
+    details: {
+      /* the brief's "covers" list — what the course teaches, folded
+         into `topics` exactly as the Data Analysis record folds its
+         skill list: a completed course is not a claim of mastery */
+      topics: {
+        en: [
+          'Advanced data types and manipulation',
+          'Numeric and logical data',
+          'Missing data and errors',
+          'Summary statistics',
+          'Real-world datasets',
+          'Positional matching',
+          'Sorting and filtering',
+          'Simple imputation',
+        ],
+      },
+      /* chapter titles only — no chapter description was supplied, so
+         each chapter renders as a title only, like the siblings' */
+      chapters: {
+        en: [
+          { title: "What's in a cell?" },
+          { title: 'Working with numbers' },
+          { title: 'Logic & Errors' },
+          { title: 'Positional Matching' },
+        ],
+      },
+      /* the one person named by DataCamp for this course — its
+         instructor/contributor, labelled no more strongly than the
+         siblings label their collaborators */
+      collaborators: {
+        en: ['Richie Cotton'],
+      },
+    },
+    /* Concept tags — ONE slug, exactly like its two spreadsheet
+       siblings: the concept this course teaches is data analysis,
+       which the existing `data` slug already covers. No near-duplicate
+       was created for "Sheets", "Spreadsheets" or "DataCamp", and no
+       new translation was invented. See "The Tagging Rule" in AGENTS.md.
+       Current vocabulary: ai · first-aid · data · python · excel ·
+       language · volunteering */
+    tags: ['data'],
+  },
+  {
+    /* ============================================================
        A SECOND DATACAMP STATEMENT — same issuer, same credential
        type as the record above, a different course. Everything here
        was read off the certificate image itself before anything was
