@@ -36,6 +36,7 @@ const F = {
   records: path.join(root, 'assets', 'js', 'records.js'),
   css: path.join(root, 'assets', 'css', 'site.css'),
   index: path.join(root, 'index.html'),
+  academic: path.join(root, 'academic.html'),
 };
 const AUDIT = path.join(__dirname, 'reveal-audit.js');
 
@@ -273,12 +274,12 @@ with_('records', /Reveal\.resolve\(target\);/, '',
   () => check('caught: a re-rendered list no longer resolved',
     caught('13. every page that renders content afterwards', audit())));
 
-with_('index', / id="volley-list" data-reveal="stagger"/, ' id="volley-list"',
+with_('academic', / id="volley-list" data-reveal="stagger"/, ' id="volley-list"',
   () => check('caught: the volunteering list taken out of the reveal vocabulary',
     caught('16. the content groups that JS renders', audit()),
     'it and the projects list were the only card groups on the home page with no reveal'));
 
-with_('index', / id="projects-list" data-reveal="stagger"/, ' id="projects-list"',
+with_('academic', / id="projects-list" data-reveal="stagger"/, ' id="projects-list"',
   () => check('caught: the projects list taken out of the reveal vocabulary',
     caught('16. the content groups that JS renders', audit())));
 
@@ -287,7 +288,7 @@ with_('site', /(  initReveal\(document\);)/,
   () => check('caught: a page script performing a reveal of its own',
     caught('14. no page script performs a reveal', audit())));
 
-with_('index', /data-reveal="stagger"/, 'data-reveal="launch"',
+with_('academic', /data-reveal="stagger"/, 'data-reveal="launch"',
   () => check('caught: the markup asks for a behaviour no rule exists for',
     caught('15. every data-reveal in the markup has a rule behind it', audit())));
 

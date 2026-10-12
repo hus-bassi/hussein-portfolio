@@ -430,6 +430,7 @@ function auditAgainst(cssText, markup) {
   /* portal.css is on the audit's read list now; the sandbox keeps it
      empty, exactly like records.css — the CSS under test is site.css */
   fs.writeFileSync(path.join(dir, 'assets', 'css', 'portal.css'), '');
+  fs.writeFileSync(path.join(dir, 'assets', 'css', 'volleyball.css'), '');
   fs.writeFileSync(path.join(dir, 'index.html'), markup || MARKUP);
   /* the audit reads all three pages for its link-selector rule, so the
      sandbox has to look like the real site rather than like one page */

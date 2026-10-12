@@ -79,6 +79,11 @@ const certificatesData = [
       ar: 'أتممت برنامج «عناصر الذكاء الاصطناعي للأعمال» لمدة أربعة أسابيع، واكتسبت فهمًا عمليًا لأساسيات الذكاء الاصطناعي وتطبيقاته، مع التدريب على استخدام مجموعة متنوعة من أدوات الذكاء الاصطناعي في التعلّم والإنتاجية وصناعة المحتوى والمهام المرتبطة بالأعمال.',
       ru: 'Завершил четырёхнедельную программу Elements of AI for Business, получив практическое понимание искусственного интеллекта и изучив применение современных AI-инструментов для обучения, продуктивности, создания контента и решения бизнес-задач.',
     },
+    alt: {
+      en: "Hussein ElBassiouni's certificate for completing Elements of AI for Business, MinnaLearn and University of Helsinki",
+      ar: 'شهادة إتمام برنامج عناصر الذكاء الاصطناعي للأعمال لحسين البسيوني، ميناليرن وجامعة هلسنكي',
+      ru: 'Сертификат Хусейна Эльбасьюни об окончании программы Основы искусственного интеллекта для бизнеса, MinnaLearn и Хельсинкский университет',
+    },
     isDemo: false,
     /* Concept tags — the controlled vocabulary used by the filter buttons
        on the site. Reuse an existing slug when the concept already exists;
@@ -127,6 +132,11 @@ const certificatesData = [
       en: 'Successfully completed the First Aid course on Edraak, covering essential emergency response skills including CPR, wound care, choking relief, and basic life support techniques.',
       ar: 'أتممت بنجاح دورة الإسعافات الأولية على منصة إدراك، وتغطي مهارات الاستجابة للطوارئ الأساسية بما في ذلك الإنعاش القلبي الرئوي، ورعاية الجروح، وتخفيف الاختناق، وتقنيات الدعم الأساسي للحياة.',
       ru: 'Успешно завершил курс Первой помощи на Edraak, охватывающий основные навыки экстренной реагирования, включая КЛР, уход за ранами, помощь при удушье и базовые методы поддержания жизни.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's certificate for completing the First Aid course on Edraak",
+      ar: 'شهادة إتمام دورة الإسعافات الأولية لحسين البسيوني من منصة إدراك',
+      ru: 'Сертификат Хусейна Эльбасьюни об окончании курса Первой помощи на платформе Edraak',
     },
     isDemo: false,
     /* Concept tags — the controlled vocabulary used by the filter buttons
@@ -307,6 +317,11 @@ const certificatesData = [
       en: 'A two-hour DataCamp course on spreadsheet fundamentals: entering and formatting data, writing formulas and calculations, using comparison operators, and referencing cells correctly.',
       ar: 'دورة من ساعتين على منصة DataCamp تتناول أساسيات الجداول: إدخال البيانات وتنسيقها، وكتابة الصيغ والحسابات، واستخدام معاملات المقارنة، والإشارة إلى الخلايا بشكل صحيح.',
       ru: 'Двухчасовой курс DataCamp по основам работы с таблицами: ввод и форматирование данных, написание формул и вычислений, использование операторов сравнения и корректные ссылки на ячейки.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's DataCamp Statement of Accomplishment for completing Introduction to Google Sheets",
+      ar: 'بيان إتمام من DataCamp لحسين البسيوني عن إتمام دورة أساسيات الجداول الإلكترونية',
+      ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании курса основ работы с Google Sheets',
     },
     isDemo: false,
     /* THE DETAIL VIEW, and the ONLY record on the site that has one.

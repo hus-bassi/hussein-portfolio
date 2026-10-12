@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hus-bassi.github.io/hussein-portfolio/sitemap.xml

@@ -1395,72 +1395,11 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
 }
 @keyframes orb-breathe { from { transform: scale(.9); opacity: .7; } to { transform: scale(1.1); opacity: 1; } }
 
-.orbit-figure {
-  width: 100%; max-width: 380px; height: auto;
-  filter: drop-shadow(0 0 30px rgba(124, 92, 255, .35));
-  animation: float 24s var(--ease-soft) infinite alternate;
-}
-@keyframes float { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
 
-/* every turn happens about the centre of the 360×360 viewBox, which
-   `transform-box: view-box` is what makes expressible in CSS */
-.of-spin, .of-halo, .of-core {
-  transform-box: view-box;
-  transform-origin: 180px 180px;
-}
-.of-spin { animation: orbit-spin var(--ambient-long) linear infinite; }
-.of-ring-a .of-spin { animation-duration: var(--ambient-slow); }
-.of-ring-b .of-spin { animation-duration: var(--ambient-long); animation-direction: reverse; }
-.of-ring-c .of-spin { animation-duration: var(--ambient-cinematic); }
-@keyframes orbit-spin { to { transform: rotate(360deg); } }
-
-/* the body being observed, and the line of its equator */
-.of-halo {
-  fill: rgba(124, 92, 255, .07);
-  animation: orb-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
-}
-.of-core {
-  fill: rgba(124, 92, 255, .16); stroke: var(--violet); stroke-width: 1.2;
-  animation: core-breathe var(--ambient-pulse) var(--ease-soft) infinite alternate;
-}
-@keyframes core-breathe { from { transform: scale(.985); } to { transform: scale(1.015); } }
-.of-equator { fill: none; stroke: rgba(240, 206, 126, .30); stroke-width: 1; }
-/* the path each ring rides: still. Only the dashes and the nodes travel. */
-.of-path { fill: none; stroke: rgba(148, 163, 186, .20); stroke-width: 1; }
-.of-trace {
-  fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round;
-  /* pathLength="1000" in the markup, so a 90-unit dash and a 910-unit gap
-     are one tenth of the circuit — and shifting the offset by exactly 1000
-     over the loop is one whole period, which is why the trace never jumps */
-  stroke-dasharray: 90 910;
-  animation: trace-run var(--ambient-slow) linear infinite;
-}
-.of-trace-b { stroke: var(--azure); stroke-dasharray: 60 940; }
-@keyframes trace-run { to { stroke-dashoffset: -1000; } }
-/* the nodes riding the rings. Each one swells on its own phase, so the
-   figure is never lit symmetrically. 8s, not the 6s the other glows use:
-   a node is a body in orbit, and a body breathes more slowly than a halo —
-   8s is also the slowest end of the range a beacon should sit in. */
-.of-node {
-  fill: var(--azure);
-  transform-box: fill-box; transform-origin: center;
-  animation: node-breathe 8s var(--ease-soft) infinite;
-}
-.of-node-hot { fill: var(--gold); animation-delay: -3.4s; }
-.of-ring-a .of-node:last-child { animation-delay: -2.1s; }
-@keyframes node-breathe {
-  0%, 100% { opacity: .55; transform: scale(.9); }
-  50%      { opacity: 1;   transform: scale(1.15); }
-}
-.of-ticks line { stroke: rgba(167, 139, 250, .5); stroke-width: 1; }
-
-/* ---------- 8d. THE WORLD PAGES — volleyball & academic ----------
-   Two dedicated experiences, entered through the portal. One skin each —
-   warm court-orange for the athlete, cool azure for the academic — built
-   from the same bones as the rest of the site: .page-head, .band,
-   .sec-head, .timeline, .stat-row and .btn, plus a character slot ready
-   for the phase-2 art, and a world-switcher so a visitor is never
-   trapped on a world page. */
+/* ---------- 8d. THE WORLD PAGES — the shared furniture ----------
+   Each world is entered through the portal. The world-switcher
+   allows instant travel between the Academic portfolio, the Volleyball
+   universe, and the central Gateway. */
 
 /* the shared furniture of both worlds */
 .world-switch {
@@ -1481,194 +1420,6 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
 a.world-switch-link:hover { border-block-end-color: currentColor; }
 a.world-switch-link:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
 
-/* the character slot on a world page — the same contract as the hero's:
-   empty until phase 2 supplies transparent art, then one <img> per state
-   with the data-state crossfade below */
-.world-character {
-  position: relative;
-  width: min(240px, 62vw); height: 240px;
-  margin: var(--s-5) auto 0;
-  pointer-events: none;
-  background: radial-gradient(52% 46% at 50% 44%, rgba(124, 92, 255, .12), transparent 72%);
-}
-.world-character[data-state="base"]      .hero-character-img[data-state="base"],
-.world-character[data-state="volleyball"] .hero-character-img[data-state="volleyball"],
-.world-character[data-state="academic"]  .hero-character-img[data-state="academic"] {
-  opacity: 1;
-}
-
-/* ---------- volleyball.html — the warm, orange-black athlete world ---------- */
-.page-volley .page-head {
-  background:
-    radial-gradient(70% 60% at 20% 16%, rgba(240, 206, 126, .14), transparent 70%),
-    radial-gradient(52% 50% at 90% 86%, rgba(236, 110, 47, .12), transparent 72%),
-    linear-gradient(180deg, #0B0605 0%, #120A07 50%, #170C08 100%);
-}
-.page-volley .page-head::after {
-  content: ""; position: absolute; inset: auto 0 0 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .5) 32%, rgba(236, 110, 47, .5) 68%, transparent);
-  opacity: .55;
-}
-/* a court reads as three hairlines receding: the same lines the portal
-   shows through its gate, and the home of this world's glow */
-.world-court {
-  position: relative;
-  width: min(420px, 78vw); height: 150px;
-  margin: var(--s-6) auto 0;
-  pointer-events: none;
-}
-.world-court::before {
-  content: ""; position: absolute;
-  inset: 50% 0 auto; height: 1px;
-  filter: blur(6px);
-  background: radial-gradient(closest-side, rgba(236, 110, 47, .35), transparent 72%);
-}
-.world-court span {
-  position: absolute; left: 8%; right: 8%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(240, 206, 126, .55), transparent);
-}
-.world-court span:nth-of-type(1) { top: 26%; }
-.world-court span:nth-of-type(2) { top: 50%; }
-.world-court span:nth-of-type(3) { top: 74%; }
-.world-court span:nth-of-type(1),
-.world-court span:nth-of-type(3) { opacity: .45; }
-
-/* the volleyball world's facts are numbered in gold; the academic's in
-   azure — one recipe, two world colours */
-.wp-facts {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--s-5);
-  margin-block-start: var(--s-6);
-  list-style: none;
-}
-.wp-fact {
-  border-inline-start: 1px solid var(--glass-2);
-  padding-inline-start: var(--s-4);
-}
-.wp-fact dt {
-  font-family: var(--font-mono);
-  font-size: .78rem; letter-spacing: .12em;
-  color: var(--gold);
-  margin-block-end: var(--s-2);
-}
-html[lang="ar"] .wp-fact dt { font-family: var(--font-ar); letter-spacing: 0; }
-html[lang="ru"] .wp-fact dt { font-family: var(--font-ltr); }
-.wp-fact dd { color: var(--fg-2); line-height: 1.9; margin: 0; }
-
-/* the tournaments band: one honest card per real tournament */
-.v-list {
-  list-style: none; display: grid; gap: var(--s-6);
-  margin-block-start: var(--s-6);
-}
-.v-card {
-  display: grid; grid-template-columns: minmax(160px, 280px) 1fr;
-  gap: var(--s-5);
-  padding: var(--s-5);
-  border: 1px solid var(--glass-2);
-  border-radius: 16px;
-  background: var(--night-2);
-}
-.v-cover { margin: 0; }
-.v-cover img {
-  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
-  border-radius: 12px; border: 1px solid var(--glass);
-  display: block;
-}
-.v-card-body { align-self: center; }
-.v-card-title { font-size: 1.3rem; margin-block-end: var(--s-3); }
-.v-card-meta {
-  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4);
-  font-size: .92rem; color: var(--fg-3);
-  margin-block-end: var(--s-3);
-}
-.v-card-text { color: var(--fg-2); line-height: 1.9; }
-/* the photo gallery: real tournament photos, as plain figures */
-.v-gallery {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: var(--s-4);
-  margin-block-start: var(--s-6);
-}
-.v-gallery figure { margin: 0; }
-.v-gallery img {
-  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
-  border-radius: 12px; border: 1px solid var(--glass);
-  display: block;
-}
-.v-gallery figcaption {
-  font-size: .82rem; color: var(--fg-3);
-  margin-block-start: var(--s-2);
-}
-/* the gallery is a third child of the two-column card, so it must be told
-   to span both columns instead of occupying the first cell of a new row */
-.v-card .v-gallery { grid-column: 1 / -1; }
-
-/* ---------- academic.html — the cool chart-and-stars world ---------- */
-.page-acad .page-head {
-  background:
-    radial-gradient(70% 60% at 80% 16%, rgba(56, 189, 248, .14), transparent 70%),
-    radial-gradient(52% 50% at 10% 86%, rgba(124, 92, 255, .14), transparent 72%),
-    linear-gradient(180deg, #05060C 0%, #070A13 50%, #0A0E18 100%);
-}
-.page-acad .page-head::after {
-  content: ""; position: absolute; inset: auto 0 0 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, .5) 32%, rgba(124, 92, 255, .5) 68%, transparent);
-  opacity: .55;
-}
-.page-acad .eyebrow { color: var(--azure); }
-/* the instrument travels with its world: the orbit figure that used to
-   share the hero's copy column now stands at the head of the academic
-   page — placement only, because §8b already owns the figure's look and
-   its slow clocks, which this page keeps */
-.world-instrument {
-  position: relative;
-  width: min(340px, 74vw);
-  margin: var(--s-5) auto 0;
-  pointer-events: none;
-}
-
-/* the academic world's own chips and certificates */
-.ap-chips {
-  display: flex; flex-wrap: wrap; gap: var(--s-3);
-  margin-block-start: var(--s-6);
-  list-style: none;
-}
-.ap-chip {
-  padding: var(--s-2) var(--s-4);
-  border: 1px solid rgba(56, 189, 248, .3);
-  border-radius: 999px;
-  color: var(--fg-2); font-size: .95rem;
-}
-.ap-certs {
-  list-style: none; display: grid; gap: var(--s-2);
-  margin-block-start: var(--s-6);
-}
-.ap-cert {
-  /* wrap, don't stretch: a certificate title · provider · date · view
-     action is one line at desktop width, but its min-content sum runs
-     past a 484px viewport — so the row breaks to two lines instead of
-     holding the page 150px wider than it is */
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-3);
-  border-block-end: 1px solid var(--glass-2);
-  padding-block: var(--s-3);
-  color: var(--fg-2);
-}
-.ap-cert em {
-  font-style: normal; color: var(--fg); margin-inline-end: auto;
-  min-width: 0; overflow-wrap: break-word;
-}
-.ap-cert time { color: var(--fg-3); font-size: .88rem; font-variant-numeric: tabular-nums; }
-/* the certificate thumbnail and its view action: the row keeps the
-   baseline recipe, only the image centres itself against it */
-.ap-cert-thumb {
-  width: 64px; height: 46px; object-fit: cover;
-  border-radius: 8px; border: 1px solid var(--glass);
-  align-self: center;
-}
-.ap-cert .record-action { align-self: center; }
-
-/* the world pages share the homepage's stats row recipe, sized for a
-   page band rather than the hero */
-.world-stats .stat-row { margin-block-start: var(--s-5); }
 
 /* ---------- 9. Marquee ----------
    One group of keywords is 500–900px wide depending on the language, and
@@ -1820,10 +1571,6 @@ a.card-link:focus-visible {
   .card.is-wide .card-ico { width: 30px; height: 30px; }
   .card.is-wide .card-title { font-size: 1.28rem; }
   .card.is-wide .card-text { max-width: 46ch; }
-
-  .stages-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .stages-bento .stage:nth-child(1), .stages-bento .stage:nth-child(2) { grid-column: span 3; }
-  .stages-bento .stage:nth-child(n + 3) { grid-column: span 2; }
   .why-grid { grid-template-columns: 1.25fr .95fr; gap: var(--s-8); }
 }
 
@@ -1873,36 +1620,6 @@ a.card-link:focus-visible {
 .stage-title { font-size: 1.1rem; color: var(--fg); margin-block-end: var(--s-2); }
 .stage-text { color: var(--fg-2); font-size: .98rem; line-height: 1.8; }
 
-/* ---------- 10a. The roadmap trajectory ----------
-   Five stations on one curve, drawn once and then left alone. It is the
-   section's own argument — a plan that goes somewhere — so it is the only
-   decorative thing in the plan section, and it is aria-hidden.
-
-   The line is DRAWN BY THE SCROLL, not by a keyframe. #plan is a
-   [data-track] section, so --p is its own progress through the viewport:
-   the trajectory is finished exactly when the section has been read, it
-   cannot lag behind the hand, and it cannot replay. The `var(--p, 1)`
-   fallback is what draws the whole line when there is no script at all —
-   a decorative figure that can only ever be invisible is a broken figure.
-   1.6s is the slowest arrival in the site, and it is only the fallback's
-   to spend if the section is reached without scrolling. */
-.trajectory { margin: 0 0 var(--s-7); }
-.tj-svg { width: 100%; height: auto; overflow: visible; }
-.tj-rail { fill: none; stroke: var(--glass-2); stroke-width: 1.5; }
-.tj-draw {
-  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round;
-  stroke-dasharray: 1000;
-  stroke-dashoffset: calc(1000px * (1 - clamp(0, var(--p, 1), 1)));
-}
-.tj-node {
-  fill: var(--void); stroke: var(--violet); stroke-width: 2;
-  transform-box: fill-box; transform-origin: center;
-  animation: node-breathe var(--ambient-pulse) var(--ease-soft) infinite;
-}
-.tj-node:nth-of-type(2) { animation-delay: -1.2s; }
-.tj-node:nth-of-type(3) { animation-delay: -2.4s; }
-.tj-node:nth-of-type(4) { animation-delay: -3.6s; }
-.tj-node:nth-of-type(5) { animation-delay: -4.8s; }
 
 /* empty state â€” honest, not hidden */
 .empty-state {
@@ -2440,10 +2157,6 @@ html[lang="ar"] .count {
   .hero { padding-block: 120px 104px; }
   .record { grid-template-columns: minmax(0, 1fr); }
   .record-action { grid-row: auto; grid-column: 1; justify-self: start; }
-  /* the tournament card stacks the same way: two columns need ~440px of
-     content box once the body's longest line is counted, which a 390px
-     phone does not have */
-  .v-card { grid-template-columns: minmax(0, 1fr); }
   .stage-num { font-size: 1.7rem; }
   /* The numeral steps down with the viewport rather than pushing the
      heading: on a 360px screen a 104px marker would be a third of the
@@ -2505,15 +2218,8 @@ html[lang="ar"] .count {
      a card has no animation of its own, only a hover transition, which is
      the interaction half of this block.
 
-     The orbital rings are named twice on purpose. `.of-ring-a .of-spin`
-     outranks a bare `.of-spin`, so listing only the bare selector would
-     leave that ring's duration standing at 20s. It would not move — the
-     name is what runs an animation — but a stylesheet that claims 20s in
-     still mode is a lie the next reader will take literally. */
   body::before, body::after,
   .read-progress, .hero-name, .page-title, .marquee-track,
-  .orbit-figure, .of-halo, .of-core, .of-trace, .of-node, .tj-node,
-  .of-spin, .of-ring-a .of-spin, .of-ring-b .of-spin, .of-ring-c .of-spin,
   .hero-visual::before, .hero-scroll::after, .star,
   .band::before, .sec-head::after {
     animation: none;
@@ -2581,9 +2287,6 @@ html[lang="ar"] .count {
     transition-delay: 0s;
   }
 
-  /* reveals resolve immediately, with no travel and no blur, and the
-     trajectory is simply already drawn */
-  .tj-draw { stroke-dashoffset: 0; }
 
   /* the parallax is switched off by the same hand that publishes it: the
      numbers are still there, but every layer that would consume them is

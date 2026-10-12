@@ -1,25 +1,34 @@
 /* ============================================================
-   VOLLEY-PAGE — builds volleyball.html's tournament cards.
-   ------------------------------------------------------------
-   The page owns no facts: every visible string comes from
-   academic/data/volleyball.js (the same source the sports page
+   VOLLEY-PAGE — the volleyball page: the tournament cards, the
+   honest count, and the figure slot.
+
+   The page owns no facts. Every visible string comes from
+   academic/data/volleyball.js (the same source the sports grid
    reads) or the i18n dictionary in the CURRENT language, and the
-   whole band re-renders on `site-lang-change`, exactly like the
-   certificates and volunteering lists. The card recipe (.v-card
-   etc.) lives in site.css §8d.
+   whole list re-renders on `site-lang-change` — exactly like the
+   certificates and the volunteering records. The card recipe
+   (.vw-tcard and friends) lives in assets/css/volleyball.css, the
+   page's own layer; site.css knows nothing about this page.
 
    Media paths in the data are written relative to the academic/
-   folder, so a root-level page like this one resolves them the
-   same way records.js does: an academic/ prefix is added, a `
-   leading `../` is stripped (the file sits at the project root),
-   and absolute / https: paths are handed through untouched.
+   folder, so a root-level page resolves them the way records.js
+   does: an academic/ prefix is added, a leading `../` is stripped
+   (this file sits at the project root), and absolute / https:
+   paths are handed through untouched.
    ============================================================ */
 (function () {
   'use strict';
 
-  var list = document.getElementById('v-list');
+  var list = document.getElementById('vw-tlist');
+  var count = document.getElementById('vw-tcount');
+  var slot = document.querySelector('[data-volleyball-character]');
   var data = (typeof window !== 'undefined') && window.volleyballData;
-  if (!list || !data || !data.length) return;
+
+  /* The transparent cut-out of the athlete. It has not been drawn yet, and
+     this page never invents a portrait: while this is empty the slot shows
+     its aura and its frame, and the moment a real file exists its path is
+     dropped in here (or passed to VolleyWorld.setCharacter at runtime). */
+  var ASSETS = { character: '' };
 
   function lang() {
     return (window.I18N && window.I18N.getLang()) || 'ar';
@@ -51,35 +60,91 @@
     i.src = src;
     i.alt = alt || '';
     i.loading = 'lazy';
+    i.decoding = 'async';
     return i;
   }
 
   function render() {
+    /* the count is the real number of tournaments in the data — never a
+       number typed twice */
+    if (count && data && data.length != null) count.textContent = String(data.length);
+    if (!list || !data || !data.length) return;
+
     list.textContent = '';
+
     data.forEach(function (r) {
-      var li = el('li', 'v-card');
+      var li = el('li', 'vw-tcard');
 
       if (r.image) {
-        var fig = el('figure', 'v-cover');
+        var fig = el('figure', 'vw-tcover');
         fig.appendChild(img(mediaPath(r.image), tv(r.title)));
         li.appendChild(fig);
       }
 
-      var body = el('div', 'v-card-body');
+      var body = el('div', 'vw-tbody');
 
-      body.appendChild(el('h3', 'v-card-title', tv(r.title)));
+      /* Club / Center badge if present in data */
+      if (r.badge) {
+        body.appendChild(el('span', 'vw-tbadge', tv(r.badge)));
+      }
 
-      var meta = el('p', 'v-card-meta');
-      [tv(r.date), tv(r.location), tv(r.result), tv(r.role)].forEach(function (m) {
+      body.appendChild(el('h3', 'vw-ttitle', tv(r.title)));
+
+      /* meta line: date, location (no result here — it gets its own visual) */
+      var meta = el('p', 'vw-tmeta');
+      [tv(r.date), tv(r.location)].forEach(function (m) {
         if (m) meta.appendChild(el('span', null, m));
       });
-      body.appendChild(meta);
+      if (meta.childNodes.length) body.appendChild(meta);
 
-      if (r.description) body.appendChild(el('p', 'v-card-text', tv(r.description)));
-      if (r.whatIDid) body.appendChild(el('p', 'v-card-text', tv(r.whatIDid)));
+      /* Scoreboard vs Podium badge:
+         If result contains a score pattern like "3–0" / "3–صفر", render
+         a dedicated match scoreboard with fixture line.
+         Otherwise render a sports podium badge (e.g. 3rd Place).
+         Only verified data is used. */
+      var resultText = tv(r.result);
+      var scoreMatch = resultText.match(/(\d+)\s*[–\-—]\s*(\d+|صفر)/);
+      if (scoreMatch) {
+        var won = scoreMatch[1];
+        var lost = scoreMatch[2] === 'صفر' ? '0' : scoreMatch[2];
+        var board = el('div', 'vw-scoreboard');
+
+        /* Fixture line if team and opponent exist in documented data */
+        if (r.team && r.opponent) {
+          var fix = el('div', 'vw-fixture-line');
+          fix.appendChild(el('span', 'vw-team-name', tv(r.team)));
+          fix.appendChild(el('span', 'vw-fixture-vs', 'VS'));
+          fix.appendChild(el('span', 'vw-team-name is-opp', tv(r.opponent)));
+          board.appendChild(fix);
+        }
+
+        var scoreLine = el('div', 'vw-score-line');
+        scoreLine.appendChild(el('span', 'vw-score-num', won));
+        scoreLine.appendChild(el('span', 'vw-score-sep', '—'));
+        scoreLine.appendChild(el('span', 'vw-score-num is-lost', lost));
+        scoreLine.appendChild(el('span', 'vw-score-tag', resultText));
+        board.appendChild(scoreLine);
+
+        body.appendChild(board);
+      } else if (resultText) {
+        var podium = el('div', 'vw-podium-badge');
+        podium.appendChild(el('span', 'vw-podium-icon', '🥉'));
+        podium.appendChild(el('span', 'vw-podium-text', resultText));
+        body.appendChild(podium);
+      }
+
+      if (r.description) body.appendChild(el('p', 'vw-ttext', tv(r.description)));
+
+      /* Athlete development takeaway from verified data */
+      if (r.whatILearned) {
+        var take = el('div', 'vw-takeaway');
+        take.appendChild(el('span', 'vw-takeaway-lbl', t('rec.d.takeaway')));
+        take.appendChild(el('p', 'vw-takeaway-txt', tv(r.whatILearned)));
+        body.appendChild(take);
+      }
 
       /* a real tournament certificate is a document, not a claim: when the
-         data has one, it opens here in a new tab, rel="noopener" */
+         data has one it opens in a new tab, rel="noopener" */
       if (r.certificate) {
         var cert = el('a', 'record-action', t('vp.certView'));
         cert.href = mediaPath(r.certificate);
@@ -90,7 +155,7 @@
       li.appendChild(body);
 
       if (r.images && r.images.length) {
-        var gal = el('div', 'v-gallery');
+        var gal = el('div', 'vw-tgal');
         r.images.forEach(function (g) {
           var f = el('figure');
           f.appendChild(img(mediaPath(g.src), tv(g.caption)));
@@ -103,14 +168,31 @@
       list.appendChild(li);
     });
 
-    /* the rebuilt list goes back through the reveal engine: page.js's mount
-       scan armed this <ul> while it was still EMPTY (this script runs after
-       it), so scan() would skip the group. resolve() re-deals with it
-       whatever its armed state — the NEW children get armed, the ones on
-       screen settle, the ones below the fold are watched. A swap, not an
-       arrival. */
+    /* The rebuilt list goes back through the reveal engine: page.js armed
+       this <ul> while it was still EMPTY (this script runs after it), so a
+       fresh scan would skip the group. resolve() re-deals with it whatever
+       its armed state — the new children get armed, the ones on screen
+       settle, the ones below the fold are watched. A swap, not an arrival. */
     if (window.Reveal) Reveal.resolve(list);
   }
+
+  /* Drop a transparent cut-out into [data-volleyball-character]. The aura,
+     the frame and the layout are already there; this only adds the figure. */
+  function setCharacter(src) {
+    if (!slot || !src) return;
+    slot.textContent = '';
+    var i = document.createElement('img');
+    i.className = 'vw-char-img';
+    i.alt = '';
+    i.decoding = 'async';
+    i.addEventListener('load', function () { i.classList.add('is-set'); });
+    i.src = src;
+    slot.appendChild(i);
+  }
+
+  window.VolleyWorld = { setCharacter: setCharacter };
+
+  if (ASSETS.character) setCharacter(ASSETS.character);
 
   render();
   document.addEventListener('site-lang-change', render);

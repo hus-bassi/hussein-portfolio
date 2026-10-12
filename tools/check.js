@@ -36,7 +36,8 @@ const root = path.join(__dirname, '..');
 const WATCH = [
   'assets/css/site.css', 'assets/css/records.css',
   'assets/js/reveal.js', 'assets/js/records.js',
-  'assets/js/page.js', 'assets/js/site.js', 'index.html'
+  'assets/js/page.js', 'assets/js/site.js', 'index.html',
+  'academic.html', 'portal.html'
 ].filter(function (rel) { return fs.existsSync(path.join(root, rel)); });
 
 const LOCK = path.join(os.tmpdir(), 'hussein-portfolio-check.lock');
@@ -106,7 +107,7 @@ process.on('SIGTERM', function () { release(); process.exit(143); });
 const checks = [
   /* the sheets together, not one row each: :root lives in site.css and the
      other two consume it, so the dangling-var check needs all of them */
-  ['css-parse-check', ['assets/css/site.css', 'assets/css/records.css', 'assets/css/portal.css'], 'CSS parses, braces balance, no dangling var()'],
+  ['css-parse-check', ['assets/css/site.css', 'assets/css/records.css', 'assets/css/portal.css', 'assets/css/volleyball.css'], 'CSS parses, braces balance, no dangling var()'],
   ['css-audit', [], 'no unused tokens, dead classes or keyframes'],
   ['motion-audit-selftest', [], 'the motion rules above can still fail'],
   ['hover-colour-audit', [], 'no link loses its label colour on hover'],
@@ -117,7 +118,8 @@ const checks = [
   ['details-scroll-audit', [], 'details is header · one scroller · footer'],
   ['details-scroll-selftest', [], 'the details-scroll rules above can still fail'],
   ['reveal-audit', [], 'one reveal engine, and nothing is ever held back'],
-  ['reveal-selftest', [], 'the reveal rules above can still fail']
+  ['reveal-selftest', [], 'the reveal rules above can still fail'],
+  ['certificates-audit', [], 'all certificates match CV, assets exist on disk, trilingual alt']
 ];
 
 let failed = 0;

@@ -59,7 +59,7 @@ const code = (revealJs + '\n' + pageJs)
 /* every stylesheet body, with comments removed, for the rule checks */
 const css = siteCssRaw.replace(/\/\*[\s\S]*?\*\//g, '');
 
-const html = ['index.html', 'story.html', 'records.html'].map(read).join('\n');
+const html = ['academic.html', 'index.html', 'story.html', 'records.html'].map(read).join('\n');
 
 /* the head's ENTRY state only — the declaration group inside the
    no-preference query that hides the head. Found by what it DOES (opacity 0

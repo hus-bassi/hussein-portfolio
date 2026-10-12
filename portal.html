@@ -6,7 +6,7 @@
 <title>البوابة | حسين البسيوني</title>
 <meta name="description" content="بوابة حسين البسيوني بين عالميه: اختر عالم الكرة الطائرة أو العالم الأكاديمي والمهني، وادخل إليه.">
 <meta name="author" content="حسين البسيوني">
-<meta name="theme-color" content="#0A1628">
+<meta name="theme-color" content="#050505">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:title" content="البوابة | حسين البسيوني">
@@ -27,8 +27,7 @@
 <body data-page="portal">
 <a class="skip-link" href="#main" data-i18n="skip">تخطّي إلى المحتوى الرئيسي</a>
 
-<!-- The gateway's header is the brand and the language system, nothing
-     else: no section nav, no page chrome. The brand is the way home. -->
+<!-- Header: Brand, Sound Toggle, Language Switcher -->
 <header class="site-header is-stuck" id="site-header">
   <div class="shell header-inner">
     <a class="brand" href="index.html" data-i18n-aria="brand.name" aria-label="حسين البسيوني">
@@ -41,26 +40,47 @@
       <span class="brand-name" data-i18n="brand.name">حسين البسيوني</span>
     </a>
 
-    <div class="lang-switch" role="group" data-i18n-aria="lang.label" aria-label="اللغة">
-      <button class="lang-btn" type="button" data-lang="ar" data-i18n-aria="lang.name.ar" aria-label="العربية" aria-pressed="true">ع</button>
-      <button class="lang-btn" type="button" data-lang="en" data-i18n-aria="lang.name.en" aria-label="English" aria-pressed="false">EN</button>
-      <button class="lang-btn" type="button" data-lang="ru" data-i18n-aria="lang.name.ru" aria-label="Русский" aria-pressed="false">RU</button>
+    <div style="display: flex; align-items: center; gap: var(--s-3);">
+      <!-- Subtle Optional Sound Toggle -->
+      <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false" data-i18n-aria="portal.soundToggle" aria-label="المؤثرات الصوتية">
+        <svg class="sound-off-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+        <svg class="sound-on-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      </button>
+
+      <!-- Language Switcher -->
+      <div class="lang-switch" role="group" data-i18n-aria="lang.label" aria-label="اللغة">
+        <button class="lang-btn" type="button" data-lang="ar" data-i18n-aria="lang.name.ar" aria-label="العربية" aria-pressed="true">ع</button>
+        <button class="lang-btn" type="button" data-lang="en" data-i18n-aria="lang.name.en" aria-label="English" aria-pressed="false">EN</button>
+        <button class="lang-btn" type="button" data-lang="ru" data-i18n-aria="lang.name.ru" aria-label="Русский" aria-pressed="false">RU</button>
+      </div>
     </div>
   </div>
 </header>
 
 <main id="main">
 
-  <!-- ═══ البوابة — the gateway ═══
-       One question, one gate, two doorways. The doors are REAL LINKS to
-       the two world pages: a no-JS visitor still gets the same choice,
-       ui.js owns the departure, and portal.js only leans the gate and
-       lights the world under the pointer. -->
+  <!-- ═══ البوابة — The Gateway ═══ -->
   <section class="gateway" id="gateway" aria-labelledby="gateway-title">
-    <div class="hero-sky" aria-hidden="true">
-      <span class="star s1"></span><span class="star s2"></span><span class="star s3"></span>
-      <span class="star s4"></span><span class="star s5"></span><span class="star s6"></span>
-      <span class="star s7"></span><span class="star s8"></span>
+    <div class="gateway-sky" aria-hidden="true">
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
+      <span class="portal-star-field"></span>
     </div>
 
     <div class="shell gateway-inner">
@@ -70,13 +90,12 @@
       </div>
 
       <p class="gateway-prompt" data-i18n="portal.ask">أي عالم تريد أن تستكشف؟</p>
+      <p class="gateway-hint" data-i18n="portal.hint">حرّك المؤشر لاستكشاف العالمين، أو اختر وجهتك</p>
 
-      <!-- door | gate | door. `direction: ltr` (portal.css) keeps the
-           volleyball door PHYSICALLY left and the academic door PHYSICALLY
-           right in all three languages — the pointer axis is physical. -->
+      <!-- door | gate | door -->
       <div class="gateway-stage" role="group" data-i18n-aria="portal.pathsLabel" aria-label="اختر العالم الذي تريد أن تدخل إليه">
 
-        <!-- THE LEFT DOOR — the volleyball world -->
+        <!-- THE LEFT DOOR — Volleyball World -->
         <a class="portal-door portal-door--volley" href="volleyball.html" data-portal-path="volley" data-i18n-aria="portal.enterVolley" aria-label="ادخل عالم الكرة الطائرة">
           <span class="door-world" aria-hidden="true">
             <span class="portal-orb"></span>
@@ -97,53 +116,52 @@
           </span>
         </a>
 
-        <!-- THE GATE — the tunnel toward the light, with the figure's
-             slot standing inside it. The slot is a contract: portal.js
-             drops one transparent layer per state in when the art
-             exists; until then its CSS aura is the rendered state. -->
+        <!-- THE CENTER GATEWAY -->
         <div class="portal">
           <svg class="portal-gate" viewBox="0 0 480 560" fill="none" aria-hidden="true" focusable="false">
             <defs>
               <linearGradient id="pg-frame" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#7C5CFF"></stop>
-                <stop offset=".5" stop-color="#F6C445"></stop>
-                <stop offset="1" stop-color="#38BDF8"></stop>
+                <stop offset="0" stop-color="#FF8A3D"></stop>
+                <stop offset=".5" stop-color="#FFFFFF"></stop>
+                <stop offset="1" stop-color="#A78BFA"></stop>
               </linearGradient>
               <radialGradient id="pg-warm" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="#F6C445" stop-opacity=".55"></stop>
-                <stop offset="1" stop-color="#F6C445" stop-opacity="0"></stop>
+                <stop offset="0" stop-color="#FF8A3D" stop-opacity=".75"></stop>
+                <stop offset=".6" stop-color="#E4551B" stop-opacity=".4"></stop>
+                <stop offset="1" stop-color="#E4551B" stop-opacity="0"></stop>
               </radialGradient>
               <radialGradient id="pg-cool" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="#38BDF8" stop-opacity=".55"></stop>
-                <stop offset="1" stop-color="#38BDF8" stop-opacity="0"></stop>
+                <stop offset="0" stop-color="#F0CE7E" stop-opacity=".7"></stop>
+                <stop offset=".5" stop-color="#7C5CFF" stop-opacity=".45"></stop>
+                <stop offset="1" stop-color="#7C5CFF" stop-opacity="0"></stop>
               </radialGradient>
             </defs>
 
-            <!-- the light at the end of the tunnel: a neutral violet heart,
-                 the two world tints laid over it by the pointer -->
-            <ellipse class="pg-core pg-core--violet" cx="240" cy="330" rx="60" ry="38"></ellipse>
+            <!-- Light at the end of the tunnel -->
+            <ellipse class="pg-core pg-core--neutral" cx="240" cy="330" rx="60" ry="38"></ellipse>
             <ellipse class="pg-core pg-core--warm" cx="240" cy="330" rx="60" ry="38"></ellipse>
             <ellipse class="pg-core pg-core--cool" cx="240" cy="330" rx="60" ry="38"></ellipse>
 
-            <!-- the tunnel: five recessed ellipses converging on the light -->
+            <!-- Tunnel rings -->
             <ellipse class="pg-ring" cx="240" cy="330" rx="168" ry="126"></ellipse>
             <ellipse class="pg-ring" cx="240" cy="330" rx="134" ry="99"></ellipse>
             <ellipse class="pg-ring" cx="240" cy="330" rx="102" ry="73"></ellipse>
             <ellipse class="pg-ring" cx="240" cy="330" rx="72" ry="49"></ellipse>
             <ellipse class="pg-ring" cx="240" cy="330" rx="44" ry="27"></ellipse>
 
-            <!-- the mouth: the outer frame and the inner lip -->
-            <path class="pg-frame" d="M40 560 V250 A200 200 0 0 1 440 250 V560" stroke="url(#pg-frame)"></path>
-            <path class="pg-lip" d="M92 560 V282 A148 148 0 0 1 388 282 V560" stroke="url(#pg-frame)"></path>
+            <!-- Mouth & Lip -->
+            <path class="pg-frame" d="M40 560 V250 A200 200 0 0 1 440 250 V560"></path>
+            <path class="pg-lip" d="M92 560 V282 A148 148 0 0 1 388 282 V560"></path>
 
-            <!-- the floor the figure stands on -->
+            <!-- Floor -->
             <ellipse class="pg-floor" cx="240" cy="512" rx="176" ry="22"></ellipse>
           </svg>
 
+          <!-- Character Architecture Slot -->
           <div class="gateway-character" data-portal-character data-state="base" aria-hidden="true"></div>
         </div>
 
-        <!-- THE RIGHT DOOR — the academic and professional world -->
+        <!-- THE RIGHT DOOR — Academic & Professional World -->
         <a class="portal-door portal-door--acad" href="academic.html" data-portal-path="academic" data-i18n-aria="portal.enterAcad" aria-label="ادخل العالم الأكاديمي والمهني">
           <span class="door-world" aria-hidden="true">
             <span class="portal-orb"></span>

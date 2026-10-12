@@ -1,0 +1,990 @@
+/* ============================================================
+   VOLLEYBALL — Hussein's Personal Volleyball World.
+   ============================================================
+   VISUAL CONCEPT: Cinematic athlete profile + volleyball campaign.
+   PALETTE:
+     Base:   #050505 / #0A0A0A / #111111
+     Primary: #FF8A3D (ember)
+     Deep:    #E4551B (ember-d)
+     Text:    #F5F5F5 / #C4D0E0 / #94A3BA
+     Gold:    inherited from site
+   No purple. No astronomy. No space. No orbit.
+   ============================================================ */
+
+/* ---------------------------------------------------------------
+   1. The palette — the site's spectrum re-cut to warm ember.
+   --------------------------------------------------------------- */
+body[data-page="volleyball"] {
+  --ember:   #FF8A3D;
+  --ember-d: #E4551B;
+
+  --spectrum: linear-gradient(112deg,
+    var(--ember-d) 0%, var(--gold-d) 46%, #C93F12 74%, var(--ember-d) 100%);
+  --spectrum-lit: linear-gradient(112deg,
+    var(--ember) 0%, var(--gold) 48%, #FFB070 100%);
+
+  --violet:   #FF9448;
+  --violet-d: #E4551B;
+
+  --night-1: rgba(16, 11, 8, .80);
+  --night-2: rgba(11, 8, 6, .86);
+  --night-3: #171009;
+  --night-4: #201510;
+
+  --glass:   rgba(233, 213, 190, .10);
+  --glass-2: rgba(233, 213, 190, .17);
+
+  --void: #0A0605;
+}
+
+/* ---------------------------------------------------------------
+   2. Shared furniture overrides — warm tint.
+   --------------------------------------------------------------- */
+body[data-page="volleyball"]::before {
+  background:
+    radial-gradient(46% 36% at 78% 6%,  rgba(255, 138, 61, .16), transparent 70%),
+    radial-gradient(40% 32% at 10% 44%, rgba(240, 206, 126, .10), transparent 72%),
+    radial-gradient(50% 40% at 64% 94%, rgba(255, 138, 61, .13), transparent 72%);
+}
+
+body[data-page="volleyball"] .cursor-light {
+  background: radial-gradient(closest-side,
+    rgba(255, 138, 61, .09), rgba(255, 138, 61, .03) 45%, transparent 72%);
+}
+body[data-page="volleyball"] .cursor-light.is-bright {
+  background: radial-gradient(closest-side,
+    rgba(240, 206, 126, .11), rgba(255, 138, 61, .04) 45%, transparent 72%);
+}
+
+body[data-page="volleyball"] .brand-mark {
+  color: var(--gold);
+  filter: drop-shadow(0 0 8px rgba(240, 206, 126, .7));
+}
+body[data-page="volleyball"] .primary-nav a:hover { background: rgba(255, 138, 61, .12); }
+
+body[data-page="volleyball"] .site-header { background: rgba(11, 7, 5, .62); }
+body[data-page="volleyball"] .site-header.is-stuck {
+  background: rgba(11, 7, 5, .93);
+  background-image: linear-gradient(rgba(11, 7, 5, .93), rgba(11, 7, 5, .93)),
+                    var(--spectrum);
+  background-clip: padding-box, border-box;
+  background-size: 100% 100%, 200% 100%;
+}
+body[data-page="volleyball"] .lang-switch { background: rgba(233, 213, 190, .06); }
+@media (max-width: 1140px) {
+  body[data-page="volleyball"] .primary-nav {
+    background: rgba(11, 7, 5, .97);
+    background-image: linear-gradient(rgba(11, 7, 5, .97), rgba(11, 7, 5, .97)),
+                      var(--spectrum);
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 200% 100%;
+  }
+}
+
+body[data-page="volleyball"] .to-top:hover {
+  --lift: -2px;
+  background-position: var(--edge-hi);
+  filter: blur(var(--enter-blur)) drop-shadow(0 8px 20px rgba(255, 138, 61, .45));
+}
+body[data-page="volleyball"] .btn:hover,
+body[data-page="volleyball"] .btn-solid:hover,
+body[data-page="volleyball"] .btn-outline:hover {
+  filter: blur(var(--enter-blur)) drop-shadow(0 10px 24px rgba(255, 138, 61, .45));
+}
+body[data-page="volleyball"] .record-action:hover {
+  --lift: -1px;
+  filter: blur(var(--enter-blur)) drop-shadow(0 6px 16px rgba(255, 138, 61, .4));
+}
+
+body[data-page="volleyball"] .btn::before,
+body[data-page="volleyball"] .record-action::before {
+  background: linear-gradient(100deg,
+    transparent 30%,
+    rgba(255, 138, 61, var(--sweep-a)) 42%,
+    rgba(240, 206, 126, calc(var(--sweep-a) * 1.2)) 50%,
+    rgba(255, 167, 94, var(--sweep-a)) 58%,
+    transparent 70%);
+}
+
+body[data-page="volleyball"] .btn,
+body[data-page="volleyball"] .btn-solid,
+body[data-page="volleyball"] .btn-outline,
+body[data-page="volleyball"] .record-action,
+body[data-page="volleyball"] .to-top { animation-name: vw-aura; }
+@keyframes vw-aura {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(255, 138, 61, .24), 0 16px 40px -22px rgba(228, 85, 27, .75); }
+  50%      { box-shadow: 0 0 0 1px rgba(240, 206, 126, .36), 0 22px 52px -20px rgba(255, 138, 61, .85); }
+}
+
+body[data-page="volleyball"] .stat:hover {
+  box-shadow: 0 0 0 1px rgba(255, 138, 61, .32),
+              0 22px 40px -26px rgba(228, 85, 27, .55);
+}
+body[data-page="volleyball"] .stat-num {
+  filter: drop-shadow(0 0 16px rgba(255, 138, 61, .5));
+}
+
+/* ---------------------------------------------------------------
+   3. HERO — the arena, the court, the identity.
+   A full-viewport cinematic opening that communicates
+   VOLLEYBALL ATHLETE before anything else.
+   --------------------------------------------------------------- */
+#vw-journey { scroll-margin-block-start: 112px; }
+
+.vw-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: clamp(640px, 96vh, 980px);
+  padding-block: 148px 96px;
+  background: #080504;
+}
+
+/* === Stadium atmosphere: layered arena lights === */
+.vw-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    /* upper arena spots — warm orange pools */
+    radial-gradient(ellipse 38% 28% at 22% 8%,  rgba(255, 138, 61, .22), transparent 72%),
+    radial-gradient(ellipse 32% 22% at 78% 6%,  rgba(255, 138, 61, .18), transparent 68%),
+    radial-gradient(ellipse 28% 20% at 50% 3%,  rgba(228, 85, 27, .14), transparent 60%),
+    /* mid-stadium ambient */
+    radial-gradient(ellipse 60% 40% at 50% 30%, rgba(255, 138, 61, .06), transparent 80%),
+    /* floor reflection */
+    radial-gradient(ellipse 90% 30% at 50% 98%, rgba(255, 138, 61, .08), transparent 70%);
+  animation: vw-arena-breathe var(--ambient-pulse) var(--ease-soft) infinite;
+}
+@keyframes vw-arena-breathe {
+  0%, 100% { opacity: .85; }
+  50%      { opacity: 1; }
+}
+
+/* the floor line closing the hero band */
+.vw-hero::after {
+  content: ""; position: absolute; inset-block-end: 0; inset-inline: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold) 38%, var(--ember) 62%, transparent);
+  opacity: .5;
+}
+/* RTL glow orientation */
+html[dir="rtl"] .vw-hero {
+  /* same construction — gradient focal points mirrored for the figure side */
+}
+
+/* === The court: perspective lines, floor, center line === */
+.vw-court {
+  position: absolute;
+  inset: auto 0 0;
+  height: 48%;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity var(--motion-cinematic) var(--ease-out);
+  transition-delay: 700ms;
+}
+.is-loading .vw-court { opacity: 0; }
+
+/* the court floor — a warm gradient suggesting the wooden surface */
+.vw-floor {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  height: 100%;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255, 138, 61, .03) 40%,
+    rgba(255, 138, 61, .06) 70%,
+    rgba(228, 85, 27, .04) 100%);
+}
+
+/* attack line — the bright horizontal court marking */
+.vw-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 138, 61, .55), transparent);
+  box-shadow: 0 0 12px 1px rgba(255, 138, 61, .18);
+}
+.vw-line-a {
+  inset-block-end: 36%;
+  inset-inline: 8%;
+  animation: vw-line-pulse var(--ambient-pulse) var(--ease-soft) infinite;
+}
+.vw-line-b {
+  inset-block-end: 56%;
+  inset-inline: 5%;
+  opacity: .45;
+}
+
+@keyframes vw-line-pulse {
+  0%, 100% { opacity: .5; }
+  50%      { opacity: .9; }
+}
+
+/* center line — vertical divider */
+.vw-court::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 50%;
+  width: 1px;
+  height: 65%;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 138, 61, .2) 40%, rgba(255, 138, 61, .08) 100%);
+}
+
+/* === The NET — runs horizontally through the environment behind typography === */
+.vw-net {
+  position: absolute;
+  inset-block-end: 22%;
+  inset-inline: 0;
+  height: clamp(140px, 24vh, 220px);
+  z-index: 1;
+  pointer-events: none;
+  /* top white/amber tape band of the net */
+  border-block-start: 3px solid rgba(255, 138, 61, .85);
+  box-shadow: 0 -3px 20px -2px rgba(255, 138, 61, .4);
+  /* square volleyball net mesh */
+  background-image:
+    repeating-linear-gradient(0deg,   rgba(240, 206, 126, .14) 0 1px, transparent 1px 14px),
+    repeating-linear-gradient(90deg,  rgba(240, 206, 126, .14) 0 1px, transparent 1px 14px);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, .85) 0%, rgba(0, 0, 0, .5) 65%, transparent 100%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, .85) 0%, rgba(0, 0, 0, .5) 65%, transparent 100%);
+  opacity: .75;
+  transition: opacity var(--motion-cinematic) var(--ease-out);
+  transition-delay: 900ms;
+}
+.is-loading .vw-net { opacity: 0; }
+
+/* === Hero inner grid: copy + character === */
+.vw-hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  width: 100%;
+}
+.vw-hero-copy { min-width: 0; }
+
+/* === Hero typography — MASSIVE athlete branding === */
+.vw-eyebrow {
+  transition: opacity var(--motion-reveal) var(--ease-out);
+  transition-delay: 640ms;
+}
+.is-loading .vw-eyebrow { opacity: 0; }
+
+.vw-name {
+  font-size: clamp(2.8rem, 1rem + 7vw, 5.8rem);
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  background: var(--spectrum-lit);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 8px 38px rgba(255, 138, 61, .36));
+  transition: opacity var(--motion-cinematic) var(--ease-out),
+              translate var(--motion-cinematic) var(--ease-out),
+              filter var(--motion-cinematic) var(--ease-out);
+  transition-delay: 780ms;
+}
+.is-loading .vw-name {
+  opacity: 0; translate: 0 26px;
+  filter: drop-shadow(0 8px 38px rgba(255, 138, 61, 0)) blur(8px);
+}
+
+/* Position title — like a sports jersey label */
+.vw-role {
+  margin-block-start: var(--s-3);
+  font-size: clamp(1.2rem, 1rem + 1.6vw, 1.8rem);
+  font-weight: 700;
+  color: var(--ember);
+  text-shadow: 0 0 30px rgba(255, 138, 61, .35);
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-reveal) var(--ease-out);
+  transition-delay: 960ms;
+}
+.is-loading .vw-role { opacity: 0; translate: 0 20px; }
+html[lang="en"] .vw-role,
+html[lang="ru"] .vw-role {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: clamp(1rem, .9rem + 1.1vw, 1.4rem);
+}
+
+/* Hero statement */
+.vw-state {
+  margin-block-start: var(--s-4);
+  max-width: 30rem;
+  font-size: clamp(1.05rem, 1rem + .3vw, 1.22rem);
+  color: var(--fg-2);
+  line-height: 1.9;
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-reveal) var(--ease-out);
+  transition-delay: 1100ms;
+}
+.is-loading .vw-state { opacity: 0; translate: 0 20px; }
+
+/* CTA actions */
+.vw-hero-actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4);
+  margin-block-start: var(--s-6);
+  transition: opacity var(--motion-reveal) var(--ease-out),
+              translate var(--motion-reveal) var(--ease-out);
+  transition-delay: 1260ms;
+}
+.is-loading .vw-hero-actions { opacity: 0; translate: 0 20px; }
+
+/* Scroll cue — capsule with drop pulse */
+.vw-cue {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 24px; height: 42px;
+  margin-block-start: var(--s-7);
+  border: 1px solid rgba(240, 206, 126, .38);
+  border-radius: 13px;
+  transition: opacity var(--motion-reveal) var(--ease-out);
+  transition-delay: 1420ms;
+}
+.vw-cue::after {
+  content: ""; position: absolute; left: 50%; top: 8px;
+  width: 3px; height: 8px; margin-left: -1.5px;
+  border-radius: 2px; background: var(--ember);
+  animation: vw-cue-drop var(--ambient-pulse) var(--ease-soft) infinite;
+}
+.is-loading .vw-cue { opacity: 0; }
+@keyframes vw-cue-drop {
+  0%   { opacity: 0; translate: 0 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; translate: 0 14px; }
+}
+
+/* === Character slot — large poster-style placement === */
+.vw-character {
+  position: relative;
+  justify-self: center;
+  align-self: end;
+  width: clamp(260px, 32vw, 420px);
+  aspect-ratio: 3 / 4;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity var(--motion-cinematic) var(--ease-out),
+              translate var(--motion-cinematic) var(--ease-out);
+  transition-delay: 900ms;
+}
+.is-loading .vw-character { opacity: 0; translate: 0 30px; }
+
+/* Aura glow behind character */
+.vw-character::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(52% 46% at 50% 54%, rgba(255, 138, 61, .22), transparent 72%);
+  animation: vw-breathe var(--ambient-pulse) var(--ease-soft) infinite;
+  pointer-events: none;
+}
+@keyframes vw-breathe { 0%, 100% { opacity: .68; } 50% { opacity: 1; } }
+
+/* Angular frame around character — sports poster style */
+.vw-character::after {
+  content: ""; position: absolute; inset: 5% 3%;
+  border: 1px solid rgba(240, 206, 126, .16);
+  border-block-start: 2px solid rgba(255, 138, 61, .55);
+  pointer-events: none;
+}
+
+.vw-char-img {
+  position: absolute; inset: 0; margin: auto;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: bottom center;
+  opacity: 0;
+  transition: opacity var(--motion-reveal) var(--ease-out);
+}
+.vw-char-img.is-set { opacity: 1; }
+
+/* ---------------------------------------------------------------
+   4. PLAYER IDENTITY — sports broadcast HUD overlay.
+   Angular, compact, not a card grid.
+   --------------------------------------------------------------- */
+.vw-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s-5);
+  margin: 0;
+  margin-block-start: var(--s-6);
+}
+.vw-fact {
+  position: relative;
+  padding: var(--s-5);
+  border: 1px solid var(--glass-2);
+  border-radius: 2px;
+  background: var(--night-2);
+}
+/* angular accent mark — top-left bracket */
+.vw-fact::before {
+  content: ""; position: absolute;
+  inset-block-start: 0; inset-inline-start: 0;
+  width: 48px; height: 2px; background: var(--ember);
+}
+
+/* Featured athlete role: Middle Blocker broadcast header */
+.vw-fact:first-child {
+  grid-column: 1 / -1;
+  background: linear-gradient(112deg, rgba(255, 138, 61, .09) 0%, var(--night-2) 65%);
+  border-color: rgba(255, 138, 61, .38);
+  padding: var(--s-6);
+}
+.vw-fact:first-child dd {
+  font-size: clamp(1.6rem, 1.3rem + 1.6vw, 2.4rem);
+  font-weight: 800;
+  color: var(--ember);
+  text-shadow: 0 0 24px rgba(255, 138, 61, .38);
+  letter-spacing: -.01em;
+}
+
+/* label: small, uppercase, ember-colored */
+.vw-fact dt {
+  font-family: var(--font-mono);
+  font-size: .76rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ember);
+  margin-block-end: var(--s-2);
+}
+html[lang="ar"] .vw-fact dt { font-family: var(--font-ar); font-size: .86rem; letter-spacing: 0; text-transform: none; }
+html[lang="ru"] .vw-fact dt { font-family: var(--font-ltr); letter-spacing: .08em; }
+
+/* value: readable body text */
+.vw-fact dd { margin: 0; color: var(--fg-2); line-height: 1.9; }
+
+/* Core pillars — discipline, growth, competition, ambition */
+.vw-words {
+  display: flex; flex-wrap: wrap; gap: var(--s-3);
+  list-style: none; margin: 0; padding: 0;
+  margin-block-start: var(--s-6);
+}
+.vw-word {
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid rgba(255, 138, 61, .45);
+  border-radius: 2px;
+  background: rgba(255, 138, 61, .07);
+  color: var(--fg);
+  font-size: .95rem; font-weight: 600;
+}
+html[lang="en"] .vw-word,
+html[lang="ru"] .vw-word {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .82rem;
+}
+
+/* ---------------------------------------------------------------
+   5. JOURNEY TIMELINE — a milestone rail lit by scroll progress.
+   Desktop: horizontal with orange-lit line reading --p.
+   Mobile (≤900px): vertical with side dots.
+   --------------------------------------------------------------- */
+.vw-tl {
+  position: relative;
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* baseline rail */
+.vw-tl::before {
+  content: ""; position: absolute; top: 24px; height: 1px;
+  inset-inline-start: 0; inset-inline-end: 0;
+  background: linear-gradient(90deg, transparent, var(--glass-2) 6%, var(--glass-2) 94%, transparent);
+}
+
+/* lit progress rail — reads --p from scroll.js */
+.vw-tl::after {
+  content: ""; position: absolute; top: 23px; inset-inline-start: 0;
+  width: min(100%, calc(var(--p, 1) * 100%)); height: 3px;
+  background: linear-gradient(90deg, var(--ember-d), var(--gold) 50%, var(--ember-d));
+  box-shadow: 0 0 14px -2px rgba(255, 138, 61, .75);
+}
+
+.vw-tl-item { position: relative; padding: 44px 10px 0; }
+
+/* connecting stem */
+.vw-tl-item::before {
+  content: ""; position: absolute; top: 28px;
+  inset-inline-start: calc(50% - 1px);
+  width: 2px; height: 14px;
+  background: linear-gradient(180deg, rgba(255, 138, 61, .7), transparent);
+}
+
+/* dot marker */
+.vw-tl-dot {
+  position: absolute; top: 18px;
+  inset-inline-start: calc(50% - 7px);
+  z-index: 1;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--void);
+  border: 2px solid var(--ember);
+  box-shadow: 0 0 14px -3px rgba(255, 138, 61, .9);
+  transition: box-shadow var(--motion-cinematic) var(--ease),
+              scale var(--motion-cinematic) var(--ease-out);
+}
+.vw-tl-item.is-in .vw-tl-dot { scale: 1.15; box-shadow: 0 0 22px 0 rgba(255, 138, 61, .9); }
+.vw-tl-item.is-now .vw-tl-dot { background: var(--ember); box-shadow: 0 0 22px 0 rgba(255, 138, 61, .9); }
+.vw-tl-item.is-now .vw-tl-stage { color: var(--ember); }
+
+.vw-tl-index {
+  display: block; text-align: center;
+  font-family: var(--font-mono);
+  font-size: .76rem; letter-spacing: .16em;
+  color: var(--gold);
+  margin-block-end: var(--s-2);
+}
+.vw-tl-stage {
+  font-size: 1.02rem; font-weight: 700; color: var(--fg);
+  text-align: center; line-height: 1.4;
+  margin-block-end: var(--s-2);
+}
+.vw-tl-text { font-size: .92rem; color: var(--fg-2); line-height: 1.85; text-align: center; }
+
+/* ---------------------------------------------------------------
+   6. NOW & GOALS — two adjacent panels, not generic cards.
+   --------------------------------------------------------------- */
+.vw-duo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: var(--s-5);
+}
+.vw-panel {
+  position: relative;
+  padding: var(--s-6);
+  border: 1px solid var(--glass-2);
+  border-radius: 2px;
+  background: var(--night-2);
+  box-shadow: 0 26px 50px -34px rgba(0, 0, 0, .95);
+}
+/* angular top accent — ember spectrum line */
+.vw-panel::before {
+  content: ""; position: absolute; inset-block-start: 0; inset-inline: 0; height: 2px;
+  background: var(--spectrum);
+  background-size: 220% 100%;
+  opacity: .85;
+}
+.vw-kicker {
+  font-family: var(--font-mono);
+  font-size: .74rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ember);
+  margin-block-end: var(--s-3);
+}
+html[lang="ar"] .vw-kicker { font-family: var(--font-ar); font-size: .86rem; letter-spacing: 0; text-transform: none; }
+html[lang="ru"] .vw-kicker { font-family: var(--font-ltr); letter-spacing: .12em; }
+.vw-title {
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  color: var(--fg);
+  letter-spacing: -.01em;
+  margin-block-end: var(--s-4);
+}
+.vw-phase {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 138, 61, .5);
+  border-radius: 2px;
+  background: rgba(255, 138, 61, .08);
+  color: var(--ember);
+  font-weight: 700; font-size: .95rem;
+  margin-block-end: var(--s-4);
+}
+.vw-panel-text { color: var(--fg-2); line-height: 1.9; }
+
+.vw-goals {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--s-4);
+}
+.vw-goal {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-3);
+}
+.vw-goal-index {
+  font-family: var(--font-mono);
+  font-size: .8rem; letter-spacing: .1em;
+  color: var(--gold);
+  padding-block-start: 3px;
+}
+.vw-goal-title { font-size: 1.04rem; color: var(--fg); margin-block-end: var(--s-1); }
+.vw-goal-text { font-size: .95rem; color: var(--fg-2); line-height: 1.85; }
+
+/* ---------------------------------------------------------------
+   7. TOURNAMENTS — cinematic story blocks, not generic cards.
+   Each tournament is a full-width story with its own narrative.
+   --------------------------------------------------------------- */
+.vw-tlist {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--s-6);
+  margin-block-start: var(--s-6);
+}
+
+/* Tournament card — angular pane with edge glow */
+.vw-tcard {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
+  gap: var(--s-5);
+  padding: var(--s-5);
+  border: 1px solid transparent;
+  background-image: var(--edge), var(--spectrum);
+  background-size: var(--edge-size);
+  background-position: var(--edge-rest);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 2px;
+  box-shadow: 0 26px 50px -34px rgba(0, 0, 0, .95);
+  transition: opacity var(--motion-slow) var(--ease),
+              translate var(--motion-slow) var(--ease-out),
+              filter var(--motion-slow) var(--ease),
+              background-position var(--motion-slow) var(--ease),
+              box-shadow var(--motion-slow) var(--ease);
+}
+.vw-tcard:hover {
+  translate: 0 -3px;
+  background-position: var(--edge-hi);
+  box-shadow: 0 0 0 1px rgba(255, 138, 61, .30),
+              0 22px 40px -26px rgba(228, 85, 27, .55);
+  transition-duration: var(--motion-normal);
+  transition-timing-function: var(--ease-out);
+}
+/* angular bracket mark */
+.vw-tcard::after {
+  content: ""; position: absolute;
+  inset-block-start: 10px; inset-inline-end: 10px;
+  width: 18px; height: 18px;
+  border-block-start: 2px solid var(--ember);
+  border-inline-end: 2px solid var(--ember);
+  opacity: .85; pointer-events: none;
+}
+
+.vw-tcover {
+  margin: 0; overflow: hidden; border-radius: 2px;
+  border: 1px solid var(--glass);
+  align-self: start;
+}
+.vw-tcover img {
+  display: block; width: 100%; aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: scale var(--motion-slow) var(--ease);
+}
+.vw-tcard:hover .vw-tcover img {
+  scale: 1.04;
+  transition-duration: var(--motion-normal);
+  transition-timing-function: var(--ease-out);
+}
+
+.vw-tbody { min-width: 0; align-self: center; }
+.vw-ttitle {
+  font-size: clamp(1.2rem, 1.05rem + .6vw, 1.5rem);
+  color: var(--fg);
+  margin-block-end: var(--s-3);
+}
+.vw-tmeta {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4);
+  font-size: .9rem; color: var(--fg-3);
+  margin-block-end: var(--s-3);
+}
+/* separator between meta items */
+.vw-tmeta span + span::before {
+  content: "·";
+  margin-inline-end: var(--s-4);
+  color: var(--ember);
+  opacity: .5;
+}
+.vw-ttext { color: var(--fg-2); line-height: 1.9; margin-block-end: var(--s-3); }
+.vw-tbody .record-action { margin-block-start: var(--s-2); }
+
+/* Tournament gallery */
+.vw-tgal {
+  grid-column: 1 / -1;
+  display: grid; gap: var(--s-4);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin-block-start: var(--s-2);
+}
+.vw-tgal figure { margin: 0; }
+.vw-tgal img {
+  display: block; width: 100%; aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 2px; border: 1px solid var(--glass);
+}
+.vw-tgal figcaption { font-size: .84rem; color: var(--fg-3); margin-block-start: var(--s-2); }
+
+/* Tournament club/center badge */
+.vw-tbadge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(240, 206, 126, .08);
+  border: 1px solid rgba(240, 206, 126, .3);
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-block-end: var(--s-2);
+}
+html[lang="ar"] .vw-tbadge {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: .84rem;
+}
+
+/* === SCOREBOARD — premium match result display === */
+.vw-scoreboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  margin-block: var(--s-4);
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid rgba(255, 138, 61, .35);
+  border-radius: 2px;
+  background: rgba(255, 138, 61, .05);
+  box-shadow: inset 0 0 24px rgba(255, 138, 61, .04);
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.vw-fixture-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: .88rem;
+  color: var(--fg-2);
+  border-block-end: 1px solid rgba(255, 138, 61, .15);
+  padding-block-end: var(--s-2);
+}
+.vw-team-name {
+  font-weight: 600;
+  color: var(--fg);
+}
+.vw-team-name.is-opp {
+  color: var(--fg-3);
+}
+.vw-fixture-vs {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  color: var(--ember);
+}
+.vw-score-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 20px);
+}
+.vw-score-num {
+  font-size: clamp(2.2rem, 2rem + 1.8vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ember);
+  text-shadow: 0 0 28px rgba(255, 138, 61, .45);
+}
+.vw-score-num.is-lost {
+  color: var(--fg-3);
+  text-shadow: none;
+}
+.vw-score-sep {
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+  font-weight: 300;
+  color: var(--fg-3);
+  opacity: .5;
+}
+.vw-score-tag {
+  font-weight: 700;
+  font-size: .82rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ember);
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 138, 61, .45);
+  border-radius: 2px;
+  background: rgba(255, 138, 61, .1);
+}
+html[lang="ar"] .vw-score-tag {
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: var(--font-ar);
+  font-size: .92rem;
+}
+
+/* Sports podium badge for 3rd Place / placement results */
+.vw-podium-badge {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  gap: var(--s-3);
+  margin-block: var(--s-4);
+  padding: var(--s-3) var(--s-5);
+  border: 1px solid rgba(240, 206, 126, .45);
+  border-radius: 2px;
+  background: linear-gradient(112deg, rgba(240, 206, 126, .1) 0%, rgba(228, 85, 27, .06) 100%);
+  box-shadow: 0 0 20px -4px rgba(240, 206, 126, .2);
+}
+.vw-podium-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.vw-podium-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: .02em;
+}
+
+/* Athlete development takeaway block */
+.vw-takeaway {
+  margin-block-start: var(--s-4);
+  padding: var(--s-4);
+  border-inline-start: 2px solid var(--ember);
+  background: rgba(255, 138, 61, .03);
+  border-radius: 0 2px 2px 0;
+}
+html[dir="rtl"] .vw-takeaway {
+  border-radius: 2px 0 0 2px;
+}
+.vw-takeaway-lbl {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-block-end: var(--s-2);
+}
+html[lang="ar"] .vw-takeaway-lbl {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  font-size: .84rem;
+}
+.vw-takeaway-txt {
+  font-size: .92rem;
+  color: var(--fg-2);
+  line-height: 1.85;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------
+   8. The closing — portal link and world switch.
+   --------------------------------------------------------------- */
+.vw-close-actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-5);
+  margin-block-start: var(--s-6);
+}
+.vw-close-actions .world-switch { margin-block-end: 0; }
+
+/* ---------------------------------------------------------------
+   9. RESPONSIVE — recompose, not just shrink.
+   --------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .vw-hero-inner { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  .vw-character {
+    width: clamp(220px, 44vw, 340px);
+    margin-block-start: var(--s-7);
+  }
+  .vw-floor { /* still visible */ }
+  .vw-net { inset-block-end: 18%; height: clamp(120px, 20vh, 180px); }
+}
+
+@media (max-width: 900px) {
+  /* Timeline: horizontal → vertical */
+  .vw-tl { grid-template-columns: minmax(0, 1fr); }
+  .vw-tl::before {
+    top: 0; inset-block-end: 0; height: auto; width: 1px;
+    inset-inline-start: 20px; inset-inline-end: auto;
+  }
+  .vw-tl::after {
+    top: 0; width: 3px;
+    inset-inline-start: 20px;
+    height: min(100%, calc(var(--p, 1) * 100%));
+  }
+  .vw-tl-item {
+    padding-block-start: 0;
+    padding-inline-start: 56px;
+    padding-inline-end: 0;
+    padding-block-end: var(--s-7);
+  }
+  .vw-tl-item:last-child { padding-block-end: 0; }
+  .vw-tl-item::before {
+    top: 9px; inset-inline-start: 27px;
+    width: 20px; height: 2px;
+    background: rgba(255, 138, 61, .7);
+  }
+  .vw-tl-dot { top: 3px; inset-inline-start: 13px; }
+  .vw-tl-index, .vw-tl-stage, .vw-tl-text { text-align: start; }
+}
+
+@media (max-width: 768px) {
+  .vw-hero {
+    min-height: clamp(560px, 88vh, 800px);
+    padding-block: 128px 72px;
+  }
+  .vw-name {
+    font-size: clamp(2.2rem, 1rem + 8vw, 3.8rem);
+  }
+  .vw-character {
+    width: clamp(200px, 50vw, 300px);
+  }
+}
+
+@media (max-width: 640px) {
+  .vw-tcard { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .vw-hero { padding-block: 120px 56px; }
+  .vw-cue { display: none; }
+  .vw-court { height: 36%; }
+  .vw-net { height: clamp(100px, 18vh, 140px); }
+  .vw-facts { grid-template-columns: minmax(0, 1fr); }
+  .vw-panel { padding: var(--s-5); }
+  .vw-scoreboard { padding: var(--s-3) var(--s-4); }
+}
+
+@media (max-width: 390px) {
+  .vw-name {
+    font-size: clamp(2rem, 1rem + 9vw, 3rem);
+  }
+  .vw-character {
+    width: clamp(170px, 55vw, 240px);
+  }
+}
+
+/* ---------------------------------------------------------------
+   10. Reduced motion — less movement, never less life.
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .vw-line-a,
+  .vw-cue::after,
+  .vw-character::before,
+  .vw-hero::before { animation: none; }
+
+  .vw-eyebrow, .vw-name, .vw-role, .vw-state, .vw-hero-actions,
+  .vw-cue, .vw-character, .vw-court, .vw-net {
+    transition-delay: 0s;
+    transition-duration: 200ms;
+  }
+
+  .is-loading .vw-eyebrow, .is-loading .vw-name, .is-loading .vw-role,
+  .is-loading .vw-state, .is-loading .vw-hero-actions, .is-loading .vw-cue,
+  .is-loading .vw-character, .is-loading .vw-court,
+  .is-loading .vw-net {
+    opacity: 0; translate: none; filter: none;
+    transition: opacity 200ms linear !important;
+  }
+
+  body[data-page="volleyball"] .btn,
+  body[data-page="volleyball"] .btn-solid,
+  body[data-page="volleyball"] .btn-outline,
+  body[data-page="volleyball"] .record-action,
+  body[data-page="volleyball"] .to-top {
+    box-shadow: 0 0 0 1px rgba(255, 138, 61, .26), 0 16px 40px -22px rgba(228, 85, 27, .6);
+  }
+}

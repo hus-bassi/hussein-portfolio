@@ -23,7 +23,12 @@
     'brand.name': {
       ar: 'حسين البسيوني',
       en: 'Hussein ElBassiouni',
-      ru: 'Хусейн Эль-Басьюни'
+      ru: 'Хуссейн Эльбассиуни'
+    },
+    'brand.fullName': {
+      ar: 'حسين محمد مصطفى أحمد البسيوني',
+      en: 'Hussein Mohamed Mostafa Ahmed ElBassiouni',
+      ru: 'Хуссейн Мохамед Мостафа Ахмед Эльбассиуни'
     },
     /* Hero name only. Russian is long enough that it wraps on its own
        and the break lands badly — so the line break is deliberate:
@@ -32,7 +37,7 @@
     'brand.nameLines': {
       ar: 'حسين البسيوني',
       en: 'Hussein ElBassiouni',
-      ru: 'Хусейн\nЭль-Басьюни'
+      ru: 'Хуссейн\nЭльбассиуни'
     },
     'nav.label': {
       ar: 'التنقل الرئيسي',
@@ -65,7 +70,7 @@
     'footer.rights': {
       ar: 'جميع الحقوق محفوظة لحسين البسيوني',
       en: 'All rights reserved to Hussein ElBassiouni',
-      ru: 'Все права защищены — Хусейн Эль-Басьюни'
+      ru: 'Все права защищены — Хуссейн Эльбассиуни'
     },
     'toTop': {
       ar: 'العودة إلى أعلى الصفحة',
@@ -210,6 +215,16 @@
       en: 'Which world would you like to explore?',
       ru: 'Какой мир вы хотели бы исследовать?'
     },
+    'portal.hint': {
+      ar: 'حرّك المؤشر لاستكشاف العالمين، أو اختر وجهتك',
+      en: 'Move cursor to explore both worlds, or choose your destination',
+      ru: 'Перемещайте курсор для исследования миров или выберите путь'
+    },
+    'portal.soundToggle': {
+      ar: 'المؤثرات الصوتية',
+      en: 'Sound effects',
+      ru: 'Звуковые эффекты'
+    },
     'portal.pathsLabel': {
       ar: 'اختر العالم الذي تريد أن تدخل إليه',
       en: 'Choose the world you want to enter',
@@ -277,10 +292,40 @@
       en: "The athlete's world",
       ru: 'Мир спортсмена'
     },
-    'vp.title': {
-      ar: 'رحلة الكرة الطائرة',
-      en: 'The Volleyball Journey',
-      ru: 'Путь волейболиста'
+    'vp.role': {
+      ar: 'لاعب كرة طائرة',
+      en: 'Volleyball player',
+      ru: 'Волейболист'
+    },
+    'vp.statement': {
+      ar: 'من أول خطوة في المِلعب إلى الحلم الأكبر.',
+      en: 'From the first step on the court to the biggest dream.',
+      ru: 'От первого шага на площадке к главной мечте.'
+    },
+    'vp.cta': {
+      ar: 'استكشف رحلتي',
+      en: 'Explore my journey',
+      ru: 'Исследуйте мой путь'
+    },
+    'vp.w1': {
+      ar: 'الانضباط',
+      en: 'Discipline',
+      ru: 'Дисциплина'
+    },
+    'vp.w2': {
+      ar: 'التطور',
+      en: 'Growth',
+      ru: 'Развитие'
+    },
+    'vp.w3': {
+      ar: 'المنافسة',
+      en: 'Competition',
+      ru: 'Соревнование'
+    },
+    'vp.w4': {
+      ar: 'الطموح',
+      en: 'Ambition',
+      ru: 'Амбиции'
     },
     'vp.lead': {
       ar: 'لاعب في طور التكوين، بدأ من الملاعب الشعبية، ومكانه الطبيعي قرب الشبكة. رحلة تُروى كما حدثت — دون مبالغة.',
@@ -327,6 +372,61 @@
       en: 'I have never been on a federation-registered team. That is the dream I could not realise in Egypt — and the one I intend to achieve in Russia.',
       ru: 'Я никогда не состоял в команде, зарегистрированной в федерации. Это мечта, которую я не смог осуществить в Египте, — и именно её я намерен осуществить в России.'
     },
+    'vp.now.title': {
+      ar: 'أين أنا الآن؟',
+      en: 'Where am I now?',
+      ru: 'Где я сейчас?'
+    },
+    'vp.now.kicker': {
+      ar: 'المرحلة الحالية',
+      en: 'Current phase',
+      ru: 'Текущая фаза'
+    },
+    'vp.now.phase': {
+      ar: 'التطوّر الرياضي',
+      en: 'Athletic development',
+      ru: 'Спортивное развитие'
+    },
+    'vp.now.text': {
+      ar: 'ما زلت لاعبًا في طور التكوين، أبني نفسي خطوة بخطوة، والهدف لم يتغيّر: العودة إلى الملعب متى أتيحت الفرصة.',
+      en: 'Still a developing player, building myself step by step — and the goal has not changed: to return to the court whenever the chance comes.',
+      ru: 'Всё ещё игрок в процессе становления, строю себя шаг за шагом, и цель не изменилась: вернуться на площадку, когда представится возможность.'
+    },
+    'vp.goals.title': {
+      ar: 'إلى أين أتجه؟',
+      en: 'Where am I heading?',
+      ru: 'Куда я иду?'
+    },
+    'vp.goals.kicker': {
+      ar: 'الأهداف',
+      en: 'Goals',
+      ru: 'Цели'
+    },
+    'vp.g1t': {
+      ar: 'فريق مسجَّل في الاتحاد',
+      en: 'A federation-registered team',
+      ru: 'Команда, зарегистрированная в федерации'
+    },
+    'vp.g2t': {
+      ar: 'فريق جامعي',
+      en: 'A university team',
+      ru: 'Университетская команда'
+    },
+    'vp.g2x': {
+      ar: 'أحلم بيوم أعود فيه إلى ممارسة الكرة الطائرة ضمن فريق جامعي.',
+      en: 'I dream of one day returning to volleyball with a university team.',
+      ru: 'Я мечтаю однажды вернуться в волейбол в составе университетской команды.'
+    },
+    'vp.g3t': {
+      ar: 'العودة إلى أجواء الفرق',
+      en: 'Back to a team environment',
+      ru: 'Возвращение в командную среду'
+    },
+    'vp.g3x': {
+      ar: 'ما زلت أطمح إلى العودة إلى أجواء الفرق الرياضية إذا أتيحت لي الفرصة، بما يتناسب مع ظروفي.',
+      en: 'I still hope to return to a team environment if the opportunity arises, as my circumstances allow.',
+      ru: 'Я всё ещё надеюсь вернуться в командную среду, если появится возможность и позволят обстоятельства.'
+    },
     'vp.timeline.title': {
       ar: 'الطريق حتى الآن',
       en: 'The road so far',
@@ -363,7 +463,7 @@
       ru: 'Победа 3–0 с командой юношей молодёжного центра «Ас-Сафа».'
     },
     'vp.tl4': {
-      ar: 'الإصابة والاعتزال',
+      ar: 'الإصابة والتوقّف',
       en: 'The injury and stepping back',
       ru: 'Травма и пауза'
     },
@@ -392,10 +492,10 @@
       en: 'In real numbers',
       ru: 'Честные цифры'
     },
-    'vp.num1': {
-      ar: 'أول بطولة',
-      en: 'first tournament',
-      ru: 'первый турнир'
+    'vp.numTours': {
+      ar: 'بطولات ودية لُعبت فعليًا',
+      en: 'friendly tournaments played',
+      ru: 'товарищеские турниры'
     },
     'vp.num3': {
       ar: 'المركز الثالث',

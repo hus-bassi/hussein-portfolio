@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const cssFiles = ['assets/css/site.css', 'assets/css/records.css', 'assets/css/portal.css'];
+const cssFiles = ['assets/css/site.css', 'assets/css/records.css', 'assets/css/portal.css', 'assets/css/volleyball.css'];
 /* Comments are prose, not selectors: a class named in a comment ("e.g.
    .empty-state") or a filename inside one must never be reported. The
    comment is BLANKED rather than deleted, and keeps its newlines, so every
