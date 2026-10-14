@@ -1318,7 +1318,8 @@ html[lang="ar"] .hero-name { letter-spacing: 0; line-height: 1.2; }
    the §7 recipe like every other button, and its arrival comes from the
    entrance ladder in §4b. No rule of its own beyond the spacing. */
 .hero-actions {
-  display: flex; justify-content: center;
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+  gap: var(--s-4);
   margin-block-start: var(--s-5);
 }
 
@@ -1788,7 +1789,7 @@ a.card-link:focus-visible {
   line-height: 1.55; font-weight: 600; color: var(--fg);
   max-width: none;
 }
-.story-end-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-block-start: var(--s-6); }
+.story-end-actions { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-block-start: var(--s-6); }
 
 /* ---------- 12. Vision, contact, socials ---------- */
 .band-vision {
