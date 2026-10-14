@@ -17,6 +17,7 @@
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/portal.css">
+<link rel="stylesheet" href="assets/css/cinematic.css">
 <script src="assets/js/motion.js"></script>
 <script src="assets/js/tick.js"></script>
 <script src="assets/js/field.js"></script>
@@ -68,7 +69,7 @@
 <main id="main">
 
   <!-- ═══ البوابة — The Gateway ═══ -->
-  <section class="gateway" id="gateway" aria-labelledby="gateway-title">
+  <section class="gateway style-particles" id="gateway" aria-labelledby="gateway-title">
     <div class="gateway-sky" aria-hidden="true">
       <span class="portal-star-field"></span>
       <span class="portal-star-field"></span>
@@ -81,6 +82,13 @@
       <span class="portal-star-field"></span>
       <span class="portal-star-field"></span>
       <span class="portal-star-field"></span>
+      <div class="particle-cluster">
+        <span class="particle-spark"></span>
+        <span class="particle-spark"></span>
+        <span class="particle-spark"></span>
+        <span class="particle-spark"></span>
+        <span class="particle-spark"></span>
+      </div>
     </div>
 
     <div class="shell gateway-inner">
@@ -96,9 +104,9 @@
       <div class="gateway-stage" role="group" data-i18n-aria="portal.pathsLabel" aria-label="اختر العالم الذي تريد أن تدخل إليه">
 
         <!-- THE LEFT DOOR — Volleyball World -->
-        <a class="portal-door portal-door--volley" href="volleyball.html" data-portal-path="volley" data-i18n-aria="portal.enterVolley" aria-label="ادخل عالم الكرة الطائرة">
+        <a class="portal-door portal-door--volley style-holographic" href="volleyball.html" data-portal-path="volley" data-i18n-aria="portal.enterVolley" aria-label="ادخل عالم الكرة الطائرة">
           <span class="door-world" aria-hidden="true">
-            <span class="portal-orb"></span>
+            <span class="portal-orb style-liquid-morph"></span>
             <span class="portal-court portal-court--a"></span>
             <span class="portal-court portal-court--b"></span>
             <span class="portal-court portal-court--c"></span>
@@ -162,9 +170,9 @@
         </div>
 
         <!-- THE RIGHT DOOR — Academic & Professional World -->
-        <a class="portal-door portal-door--acad" href="academic.html" data-portal-path="academic" data-i18n-aria="portal.enterAcad" aria-label="ادخل العالم الأكاديمي والمهني">
+        <a class="portal-door portal-door--acad style-holographic" href="academic.html" data-portal-path="academic" data-i18n-aria="portal.enterAcad" aria-label="ادخل العالم الأكاديمي والمهني">
           <span class="door-world" aria-hidden="true">
-            <span class="portal-orb"></span>
+            <span class="portal-orb style-liquid-morph"></span>
             <svg class="portal-chart" viewBox="0 0 200 120" fill="none" focusable="false">
               <path class="portal-chart-axis" d="M16 8V112H192"></path>
               <path class="portal-chart-line" d="M16 92C40 88 52 62 76 58C98 54 108 34 132 30C154 26 172 20 192 14"></path>
@@ -190,5 +198,6 @@
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/page.js"></script>
 <script src="assets/js/portal.js"></script>
+<script src="assets/js/cinematic.js"></script>
 </body>
 </html>

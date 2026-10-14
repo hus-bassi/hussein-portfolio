@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/cinematic.css">
 <script src="assets/js/motion.js"></script>
 <script src="assets/js/tick.js"></script>
 <script src="assets/js/field.js"></script>
@@ -71,10 +72,15 @@
 
   <!-- ═══ 1. الرئيسية — العالم الأكاديمي ═══ -->
   <section class="hero" id="home" aria-labelledby="hero-title">
-    <div class="hero-sky" aria-hidden="true">
+    <div class="hero-sky style-particles" aria-hidden="true">
       <span class="star s1"></span><span class="star s2"></span><span class="star s3"></span>
       <span class="star s4"></span><span class="star s5"></span><span class="star s6"></span>
       <span class="star s7"></span><span class="star s8"></span>
+      <div class="particle-cluster">
+        <span class="particle-spark"></span>
+        <span class="particle-spark"></span>
+        <span class="particle-spark"></span>
+      </div>
     </div>
 
     <div class="shell hero-inner">
@@ -144,7 +150,7 @@
         <h2 id="plan-title" data-i18n="plan.title">خطتي</h2>
       </header>
 
-      <ol class="stages" data-reveal="stagger">
+      <ol class="stages style-blueprint" data-reveal="stagger">
         <li class="stage">
           <p class="stage-num" aria-hidden="true">01</p>
           <h3 class="stage-title" data-i18n="plan.s1t">بيزنس إنفورماتكس</h3>
@@ -207,7 +213,7 @@
             </span>
             <span class="chain-name" data-i18n="why.code">البرمجة</span>
           </li>
-          <li>
+          <li class="style-wireframe-3d">
             <span class="chain-num" aria-hidden="true">03</span>
             <span class="chain-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -359,7 +365,7 @@
   </section>
 
   <!-- ═══ 10. رؤيتي للمستقبل ═══ -->
-  <section class="band band-vision" id="vision" aria-labelledby="vision-title">
+  <section class="band band-vision style-gradient-mesh" id="vision" aria-labelledby="vision-title">
     <div class="shell">
       <header class="sec-head" data-reveal="line">
         <h2 id="vision-title" data-i18n="vision.title">رؤيتي للمستقبل</h2>
@@ -422,5 +428,6 @@
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/project-card.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/cinematic.js"></script>
 </body>
 </html>
