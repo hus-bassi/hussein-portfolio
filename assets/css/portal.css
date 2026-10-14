@@ -536,47 +536,7 @@ a.portal-door:focus-visible {
 .portal-star--b { top: 36%; inset-inline-end: 44%; animation-delay: -3s; }
 .portal-star--c { top: 54%; inset-inline-end: 22%; width: 3px; height: 3px; animation-delay: -4.5s; }
 
-/* ---------- 7. Optional Sound Design Toggle in Header ---------- */
-.sound-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--glass);
-  background: var(--night-2);
-  color: var(--fg-3);
-  cursor: pointer;
-  padding: 0;
-  transition: color var(--motion-fast) var(--ease),
-              border-color var(--motion-fast) var(--ease),
-              background var(--motion-fast) var(--ease);
-}
-.sound-toggle:hover {
-  color: var(--fg);
-  border-color: var(--glass-2);
-  background: var(--night-3);
-}
-.sound-toggle:focus-visible {
-  outline: 2px solid var(--violet);
-  outline-offset: 3px;
-}
-.sound-toggle[aria-pressed="true"] {
-  color: var(--gold);
-  border-color: rgba(240, 206, 126, .5);
-  box-shadow: 0 0 16px -4px rgba(240, 206, 126, .35);
-}
-.sound-toggle svg {
-  width: 18px;
-  height: 18px;
-}
-.sound-toggle .sound-on-ico  { display: none; }
-.sound-toggle .sound-off-ico { display: block; }
-.sound-toggle[aria-pressed="true"] .sound-on-ico  { display: block; }
-.sound-toggle[aria-pressed="true"] .sound-off-ico { display: none; }
-
-/* ---------- 8. Responsive Adaptations ---------- */
+/* ---------- 7. Responsive Adaptations ---------- */
 @media (max-width: 900px) {
   .gateway {
     padding-block: 112px 56px;
@@ -690,7 +650,6 @@ a.portal-door:focus-visible {
   .portal,
   .gateway-character,
   .door-world,
-  .sound-toggle,
   .portal-door::before,
   .portal-door::after {
     display: none !important;

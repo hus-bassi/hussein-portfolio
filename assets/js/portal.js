@@ -95,11 +95,12 @@
   }
 
   /* ----------------------------------------------------------
-     SOUND DESIGN — SUBTLE, GENTLE & OPTIONAL (OFF BY DEFAULT)
+     SOUND DESIGN — SUBTLE, GENTLE & ALWAYS ACTIVE
      Synthesises pleasant harmonic chimes via Web Audio API.
+     Always enabled by default — zero manual button toggling.
      ---------------------------------------------------------- */
   var audioCtx = null;
-  var soundEnabled = false;
+  var soundEnabled = true;
 
   function initAudio() {
     if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
@@ -114,6 +115,16 @@
       audioCtx.resume().catch(function () {});
     }
   }
+
+  function unlockAudio() {
+    initAudio();
+    window.removeEventListener('pointerdown', unlockAudio);
+    window.removeEventListener('keydown', unlockAudio);
+    window.removeEventListener('touchstart', unlockAudio);
+  }
+  window.addEventListener('pointerdown', unlockAudio, { passive: true });
+  window.addEventListener('keydown', unlockAudio, { passive: true });
+  window.addEventListener('touchstart', unlockAudio, { passive: true });
 
   function playChime(freq, type) {
     if (!soundEnabled) return;
@@ -138,29 +149,6 @@
     } catch (e) {
       /* Audio failures fail silently */
     }
-  }
-
-  var soundToggle = document.getElementById('sound-toggle');
-  if (soundToggle) {
-    try {
-      soundEnabled = sessionStorage.getItem('portal-sound') === 'true';
-    } catch (e) {
-      soundEnabled = false;
-    }
-    soundToggle.setAttribute('aria-pressed', soundEnabled ? 'true' : 'false');
-
-    soundToggle.addEventListener('click', function () {
-      soundEnabled = !soundEnabled;
-      soundToggle.setAttribute('aria-pressed', soundEnabled ? 'true' : 'false');
-      try {
-        sessionStorage.setItem('portal-sound', soundEnabled ? 'true' : 'false');
-      } catch (e) {}
-
-      if (soundEnabled) {
-        initAudio();
-        playChime(523.25, 'sine'); /* C5 welcoming note */
-      }
-    });
   }
 
   /* ----------------------------------------------------------
