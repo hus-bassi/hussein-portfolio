@@ -108,6 +108,7 @@
         var won = scoreMatch[1];
         var lost = scoreMatch[2] === 'صفر' ? '0' : scoreMatch[2];
         var board = el('div', 'vw-scoreboard style-comic-action style-split-flap');
+        board.appendChild(el('div', 'comic-rays'));
 
         /* Fixture line if team and opponent exist in documented data */
         if (r.team && r.opponent) {
