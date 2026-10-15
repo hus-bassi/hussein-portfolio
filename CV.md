@@ -252,6 +252,25 @@ never as an accomplishment.
 - **RU:** 50-минутный курс LinkedIn Learning от эксперта по аналитике Кита Маккормика (в рамках сертификационной программы KNIME), посвящённый ключевым нетехническим компетенциям в науке о данных: соотнесение аналитики с бизнес-целями, убеждение стейкхолдеров, организационная дипломатия и внедрение моделей для трансформации бизнеса.
 - **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
 
+### 14. Statistics Foundations 1: The Basics
+- **Provider:** LinkedIn Learning · Wolfram Research · NASBA
+- **Credential type:** Continuing Professional Education (CPE) / تعليم مهني مستمر / Непрерывное профессиональное образование (CPE)
+- **Date:** December 22, 2025 (22 Dec 2025 · 22 ديسمبر 2025 · 22 декабря 2025)
+- **Length:** 36 minutes · 1.80 NASBA CPE Credits
+- **Category:** Statistics & Data Analysis · الإحصاء وتحليل البيانات · Статистика и анализ данных
+- **Credential ID:** c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b
+- **Credential URL:** https://www.linkedin.com/learning/certificates/c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b
+- **Standard Completion ID:** `b3483377f8cfcc055edd7ad040510331a862cd6eb52924289554f104b6bead7d` (https://www.linkedin.com/learning/certificates/b3483377f8cfcc055edd7ad040510331a862cd6eb52924289554f104b6bead7d)
+- **Files:** Primary accredited document: `academic/assets/certificates/statistics-foundations-1-the-basics.jpg` and `academic/assets/certificates/statistics-foundations-1-the-basics.pdf`. Standard completion document on file: `statistics-foundations-1-the-basics-completion.jpg` and `statistics-foundations-1-the-basics-completion.pdf`.
+- **Instructor / Author:** Eddie Davila
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Accreditation:** National Association of State Boards of Accountancy (NASBA) · Registry ID #140940 · Field of Study: Statistics · 1.80 CPE Credits (QAS Self Study)
+- **Topics:** Data classification · nominal and ordinal scales · graphical data representation · measures of central tendency (mean, median, mode) · variability · variance · standard deviation · outlier detection
+- **EN:** An accredited continuing professional education course on foundational statistics by Eddie Davila (part of the Wolfram Research Statistics Foundations curriculum), accredited by NASBA for 1.80 CPE credits. Covers data types, graphical representations, measures of central tendency (mean, median, mode), and measures of dispersion and variability (variance, standard deviation, and outliers).
+- **AR:** دورة تعليم مهني مستمر معتمدة في مبادئ علم الإحصاء يقدمها المحاضر إيدي دافيلا، معتمدة من الجمعية الوطنية لمجالس المحاسبة بالولايات المتحدة بواقع 1.80 وحدة تعليم مهني مستمر. تتناول تصنيف البيانات، والتمثيل البياني، ومقاييس النزعة المركزية، ومقاييس التشتت والتباين والانحراف المعياري ورصد القيم الشاذة.
+- **RU:** Аккредитованный курс непрерывного профессионального образования по основам статистики от Эдди Давилы (в рамках программы Wolfram Research), сертифицированный NASBA с присуждением 1.80 баллов CPE. Охватывает классификацию данных, графические методы, меры центральной тенденции (среднее, медиана, мода) и меры вариации (дисперсия, стандартное отклонение, выбросы).
+- **⚠ Claiming note:** this is an accredited Continuing Professional Education (CPE) course certificate, NOT a university degree. The official course title is recorded in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -379,5 +398,6 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-15 | Nano Tips for Closing the Soft Skills Gap with Gen Z (LinkedIn Learning) added | Certificate #11, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d`, completed Dec 2 2025, 12 minutes, signed Shea Hanson, author Watchen Nyanue (I Choose The Ladder). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Nano Tips for Building Soft Skills with Elayne Fluker (LinkedIn Learning) added | Certificate #12, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f`, completed Dec 9 2025, 9 minutes, signed Shea Hanson, author Elayne Fluker. Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | The Non-Technical Skills of Effective Data Scientists (LinkedIn Learning / KNIME) added | Certificate #13, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023`, completed Dec 13 2025, 50 minutes, signed Shea Hanson, author Keith McCormick, part of the KNIME curriculum (NASBA 1.6 CPE credits). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `data` and `career` tags. |
+| 2026-10-15 | Statistics Foundations 1: The Basics (LinkedIn Learning / NASBA CPE) added | Certificate #14, from the LinkedIn Learning completion documents and course brief Hussein supplied. Verified against both documents: Primary accredited document carries Certificate ID `c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b`, completed Dec 22 2025, accredited by NASBA (Registry ID #140940) for 1.80 CPE Credits in Statistics, signed Shea Hanson, author Eddie Davila (Wolfram Research curriculum). Standard completion document (`b3483377f8cfcc055edd7ad040510331a862cd6eb52924289554f104b6bead7d`, 36 minutes) also retained in file archive. Live verification URLs confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `data` tag. |
 
 

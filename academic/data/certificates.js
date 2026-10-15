@@ -1147,6 +1147,90 @@ const certificatesData = [
     },
     tags: ['data', 'career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING & NASBA — Statistics Foundations 1:
+       The Basics with Eddie Davila (Wolfram Research)
+       Completed Dec 22, 2025. Author: Eddie Davila.
+       Accreditation: NASBA Registry ID #140940 · 1.80 CPE Credits
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "Statistics Foundations 1: The Basics"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 22, 2025 at 10:04PM UTC"
+         · "Top skills covered: Statistics"
+         · "Field of Study: Statistics"
+         · "Program: National Association of State Boards of Accountancy (NASBA)"
+         · "Registry ID: #140940"
+         · "Continuing Professional Education Credit (CPE): 1.80"
+         · "Certificate ID: c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       Standard completion document also retained:
+         · Certificate ID: b3483377f8cfcc055edd7ad040510331a862cd6eb52924289554f104b6bead7d
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand names like LinkedIn Learning and NASBA).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'Statistics Foundations 1: The Basics',
+      ar: 'أساسيات الإحصاء 1: المبادئ الأساسية مع إيدي دافيلا',
+      ru: 'Основы статистики 1: базовые принципы с Эдди Давилой',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '22 Dec 2025',
+      ar: '22 ديسمبر 2025',
+      ru: '22 декабря 2025',
+    },
+    category: {
+      en: 'Continuing Professional Education (CPE)',
+      ar: 'تعليم مهني مستمر (CPE)',
+      ru: 'Непрерывное профессиональное образование (CPE)',
+    },
+    duration: {
+      en: '36 min · 1.8 CPE',
+      ar: '36 دقيقة · 1.8 ساعة معتمدة',
+      ru: '36 мин · 1.8 CPE',
+    },
+    credentialId: 'c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b',
+    image: 'assets/certificates/statistics-foundations-1-the-basics.jpg',
+    pdf: 'assets/certificates/statistics-foundations-1-the-basics.pdf',
+    description: {
+      en: 'An accredited continuing professional education course on foundational statistics by Eddie Davila (part of the Wolfram Research Statistics Foundations curriculum), certified by NASBA for 1.80 CPE credits. Covers data classification, graphical representations, measures of central tendency (mean, median, mode), and dispersion analysis (variance, standard deviation, and outliers).',
+      ar: 'دورة تعليم مهني مستمر معتمدة في مبادئ علم الإحصاء يقدمها المحاضر إيدي دافيلا، معتمدة من الجمعية الوطنية لمجالس المحاسبة بالولايات المتحدة بواقع 1.80 وحدة تعليم مهني مستمر. تتناول تصنيف البيانات، والتمثيل البياني، ومقاييس النزعة المركزية، ومقاييس التشتت والتباين والانحراف المعياري ورصد القيم الشاذة.',
+      ru: 'Аккредитованный курс непрерывного профессионального образования по основам статистики от Эдди Давилы (в рамках программы Wolfram Research), сертифицированный NASBA с присуждением 1.80 баллов CPE. Охватывает классификацию данных, графические методы, меры центральной тенденции (среднее, медиана, мода) и меры вариации (дисперсия, стандартное отклонение, выбросы).',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning and NASBA Accredited Certificate for Statistics Foundations 1: The Basics",
+      ar: 'شهادة إتمام معتمدة من LinkedIn Learning وNASBA لحسين البسيوني في أساسيات الإحصاء 1: المبادئ الأساسية',
+      ru: 'Сертификат LinkedIn Learning и NASBA Хусейна Эльбасьюни об окончании курса Statistics Foundations 1: The Basics',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Data types and classification (nominal, ordinal, interval, ratio)',
+          'Graphical representations and chart interpretation',
+          'Measures of central tendency (mean, median, mode)',
+          'Measures of variability and spread',
+          'Standard deviation and variance calculation',
+          'Identifying and handling outliers',
+        ],
+      },
+      collaborators: {
+        en: [
+          'Eddie Davila (Arizona State University)',
+          'Wolfram Research',
+          'National Association of State Boards of Accountancy (NASBA)',
+        ],
+      },
+    },
+    tags: ['data'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).
