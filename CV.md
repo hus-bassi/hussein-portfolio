@@ -200,6 +200,23 @@ never as an accomplishment.
 - **RU:** 15-минутный курс LinkedIn Learning от эксперта по лидерству Кимберли Браун и Пита Мокайтиса о планировании успешного карьерного перехода: оценка сильных сторон, развитие востребованных навыков и стратегическое видение карьеры.
 - **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
 
+### 11. Nano Tips for Closing the Soft Skills Gap with Gen Z with Watchen Nyanue
+- **Provider:** LinkedIn Learning · I Choose The Ladder (Watchen Nyanue)
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 2, 2025 (2 Dec 2025 · 2 ديسمبر 2025 · 2 декабря 2025)
+- **Length:** 12 minutes
+- **Category:** Professional Development · التطوير المهني · Профессиональное развитие
+- **Credential ID:** 35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d
+- **Credential URL:** https://www.linkedin.com/learning/certificates/35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d
+- **Files:** `academic/assets/certificates/nano-tips-closing-soft-skills-gap-gen-z.jpg` and `academic/assets/certificates/nano-tips-closing-soft-skills-gap-gen-z.pdf`
+- **Instructor / Author:** Watchen Nyanue
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Topics:** Interpersonal skills · professional communication · critical thinking · managing up · workplace etiquette · navigating ambiguity · conflict resolution · stress management
+- **EN:** A 12-minute LinkedIn Learning Nano Tips course by career strategist Watchen Nyanue focusing on core interpersonal and professional competencies: effective communication, critical thinking, managing workplace ambiguity, handling conflict constructively, and stress resilience.
+- **AR:** دورة مكثفة من 12 دقيقة على منصة LinkedIn Learning تقدمها خبيرة التطوير المهني واتشن نيانو، تركز على المهارات الشخصية والتواصلية الأساسية في بيئة العمل: التواصل المهني، والتفكير النقدي، والتعامل مع الغموض، وحل النزاعات بأسلوب بنّاء، وإدارة ضغوط العمل.
+- **RU:** 12-минутный экспресс-курс LinkedIn Learning от эксперта по карьере Уотчен Ньянуэ, посвящённый ключевым межличностным навыкам: деловое общение, критическое мышление, работа в условиях неопределённости, конструктивное разрешение конфликтов и стрессоустойчивость.
+- **⚠ Claiming note:** this is a concise course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -324,4 +341,5 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-15 | Job Skills: Learning the Basics (LinkedIn Learning / PMI) added | Certificate #8, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f`, completed Dec 1 2025, 19 minutes, signed Shea Hanson, PMI Authorized Training Partner (Provider #4101, Activity 4101B70OGE, 0.25 PDUs). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Building Your Career (LinkedIn Learning) added | Certificate #9, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57`, completed Dec 1 2025, 18 minutes, signed Shea Hanson, authors Patrick Kilner & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Making Your Next Career Move Your Best Move (LinkedIn Learning) added | Certificate #10, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3`, completed Dec 2 2025, 15 minutes, signed Shea Hanson, authors Kimberly Brown & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
+| 2026-10-15 | Nano Tips for Closing the Soft Skills Gap with Gen Z (LinkedIn Learning) added | Certificate #11, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d`, completed Dec 2 2025, 12 minutes, signed Shea Hanson, author Watchen Nyanue (I Choose The Ladder). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 

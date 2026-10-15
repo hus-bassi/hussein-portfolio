@@ -925,6 +925,79 @@ const certificatesData = [
     },
     tags: ['career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — Nano Tips for Closing the Soft Skills Gap
+       with Gen Z with Watchen Nyanue
+       Completed Dec 2, 2025. Author: Watchen Nyanue (I Choose The Ladder).
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "Nano Tips for Closing the Soft Skills Gap with Gen Z with Watchen Nyanue"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 02, 2025 at 05:58PM UTC · 12 minutes"
+         · "Top skills covered: Interpersonal Skills, Soft Skills"
+         · "Certificate ID: 35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand LinkedIn Learning).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'Nano Tips for Closing the Soft Skills Gap with Gen Z with Watchen Nyanue',
+      ar: 'نصائح سريعة: سد فجوة المهارات الشخصية للجيل Z مع واتشن نيانو',
+      ru: 'Краткие советы: развитие гибких навыков для поколения Z с Уотчен Ньянуэ',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '2 Dec 2025',
+      ar: '2 ديسمبر 2025',
+      ru: '2 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '12 min',
+      ar: '12 دقيقة',
+      ru: '12 мин',
+    },
+    credentialId: '35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d',
+    image: 'assets/certificates/nano-tips-closing-soft-skills-gap-gen-z.jpg',
+    pdf: 'assets/certificates/nano-tips-closing-soft-skills-gap-gen-z.pdf',
+    description: {
+      en: 'A 12-minute LinkedIn Learning Nano Tips course by career strategist Watchen Nyanue focusing on core interpersonal and professional competencies: effective communication, critical thinking, managing workplace ambiguity, handling conflict constructively, and stress resilience.',
+      ar: 'دورة مكثفة من 12 دقيقة على منصة LinkedIn Learning تقدمها خبيرة التطوير المهني واتشن نيانو، تركز على المهارات الشخصية والتواصلية الأساسية في بيئة العمل: التواصل المهني، والتفكير النقدي، والتعامل مع الغموض، وحل النزاعات بأسلوب بنّاء، وإدارة ضغوط العمل.',
+      ru: '12-минутный экспресс-курс LinkedIn Learning от эксперта по карьере Уотчен Ньянуэ, посвящённый ключевым межличностным навыкам: деловое общение, критическое мышление, работа в условиях неопределённости, конструктивное разрешение конфликтов и стрессоустойчивость.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for Nano Tips for Closing the Soft Skills Gap with Gen Z with Watchen Nyanue",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة نصائح سريعة لسد فجوة المهارات الشخصية مع واتشن نيانو',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса Nano Tips for Closing the Soft Skills Gap with Gen Z with Watchen Nyanue',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Professional communication',
+          'Critical thinking and independent analysis',
+          'Managing up and workplace etiquette',
+          'Navigating ambiguity',
+          'Constructive conflict resolution',
+          'Workplace stress management and active listening',
+        ],
+      },
+      collaborators: {
+        en: ['Watchen Nyanue (I Choose The Ladder)'],
+      },
+    },
+    tags: ['career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).
