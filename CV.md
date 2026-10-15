@@ -12,7 +12,7 @@
 > files and the final CV/PDF are both generated from this ledger, so they
 > can never drift apart.
 >
-> Last updated: 2026-10-12
+> Last updated: 2026-10-15
 >
 > **Candidate identity:**
 > - **Arabic:** حسين محمد مصطفى أحمد البسيوني
@@ -131,6 +131,23 @@ never as an accomplishment.
 - **AR:** دورة من أربع ساعات على منصة DataCamp في المستوى المتوسط للجداول الإلكترونية: أنواع البيانات المتقدمة ومعالجة البيانات، والبيانات الرقمية والمنطقية، والبيانات المفقودة والأخطاء، والإحصاءات الوصفية على بيانات من الواقع، والمطابقة الموضعية، والترتيب والتصفية، وتعبئة القيم المفقودة بطرق بسيطة.
 - **RU:** Четырёхчасовой курс DataCamp по таблицам продвинутого уровня: продвинутые типы данных и работа с ними, числовые и логические данные, пропущенные данные и ошибки, описательная статистика на реальных наборах данных, позиционное сопоставление, сортировка и фильтрация, а также простое восстановление пропущенных значений.
 - **⚠ Claiming note:** same as entries 3 and 5 — a completed course, not a "DataCamp certification", not a Google certification, and not proof of expertise. The official course title stays in English in all three languages because that is the exact string printed on the document.
+
+### 7. You Need a Career Development Plan
+- **Provider:** LinkedIn Learning · Macmillan Publishers (Modern Mentor)
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 1, 2025 (1 Dec 2025 · 1 ديسمبر 2025 · 1 декабря 2025)
+- **Length:** 8 minutes
+- **Category:** Professional Development · التطوير المهني · Профессиональное развитие
+- **Credential ID:** 5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329
+- **Credential URL:** https://www.linkedin.com/learning/certificates/5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329
+- **Files:** `academic/assets/certificates/you-need-a-career-development-plan.jpg` and `academic/assets/certificates/you-need-a-career-development-plan.pdf`
+- **Instructor / Author:** Rachel Cooke (Modern Mentor) · Macmillan Publishers
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Topics:** Career path planning · goal setting · professional mentorship · skill cultivation · career adaptability
+- **EN:** Completed the course "You Need a Career Development Plan" on LinkedIn Learning, covering strategic professional roadmapping, actionable goal setting, mentorship cultivation, and sustainable career adaptability.
+- **AR:** أتممت دورة «خطة التطوير المهني» على منصة LinkedIn Learning، وتتناول وضع خارطة طريق للتطوير المهني، وتحديد الأهداف العملية، والبحث عن التوجيه والإرشاد، وبناء المهارات المستدامة للمسار الوظيفي.
+- **RU:** Завершил курс «You Need a Career Development Plan» на платформе LinkedIn Learning, охватывающий стратегическое карьерное планирование, постановку целей, поиск наставников и развитие профессиональных навыков.
+- **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official title is recorded in English as printed on the document.
 
 ---
 
@@ -252,4 +269,5 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-06 | Data Analysis in Google Sheets (DataCamp) added | Certificate #5, read from the Statement of Accomplishment image Hussein supplied: credential #50,161,411, "COMPLETED ON OCT 06, 2026", "LENGTH 3 HRS", signed by Jonathan Cornelissen. Section 5 above is written in all three languages; the card on `records.html` reuses the existing `data` tag, the existing media resolver and the existing details view, and the file sits at the project root exactly where it was placed — referenced, not moved, copied or renamed. **No verification URL and no PDF exist for this document, so none was invented.** **Open question:** the DataCamp payload mentions 2,800 XP but the document prints none — deliberately not recorded until Hussein confirms. Published to the live site in commit `b17b927`, which also shipped the International Dictation record that had been sitting uncommitted, and fixed `mediaPath()` to strip the leading `../`: GitHub Pages serves the repo under `/hussein-portfolio/`, so the old form escaped the site and 404'd for **every** root-level image on the live page, including the older DataCamp certificate's. Verified on the live URL: `#certs-count` = 5, the new card renders exactly once with its image (`src` stripped, asset 200 `image/jpeg` 1,331,937 bytes), all four root media files answer 200, `node tools/check.js` green. **Later follow-up:** the course payload's chapters (Exploring Data · Cleaning and Preparing Data · Analyzing Data), six practice files and two collaborators (Amy Peterson · James Chapman) were added to the record's existing details view, and the course's skill list folded into `Topics` — the same four blocks the sibling DataCamp record carries, so the two Statements read alike; 2,800 XP recorded in section 5 with its provenance (account, not document) but kept off the card, since no XP field exists and none was invented. |
 | 2026-10-08 | Intermediate Google Sheets (DataCamp) added | Certificate #6, from the brief Hussein supplied (Statement of Accomplishment, credential #50,277,774, LENGTH 4 HRS, completed October 8 2026). Section 6 above is written in all three languages; the card on `records.html` reuses the existing `data` tag, the existing media resolver and the existing details view; the files sit at the project root exactly where they were placed — referenced, not moved, copied or renamed. **No verification URL was invented** — the PDF is the official document. **4,150 XP recorded in section 6 with its provenance (learner account, not document) and deliberately kept off the site card**, following the entry-5 precedent: no XP field exists in the details view and none was invented. The course's contributor shown by DataCamp (Richie Cotton, Data Evangelist) is filed under the existing collaborators block. Also this day: the Two Paths portal rework began (homepage portal + `volleyball.html` + `academic.html`) — separate from this certificate record. |
 | 2026-10-12 | Certificate discrepancy diagnosis & automated regression test added | Audited live GitHub Pages site against local files and CV ledger. Resolved discrepancy: verified that local project and live site both contain exactly 6 certificates and 2 volunteering activities (8 total records). Added automated regression audit `tools/certificates-audit.js` to `tools/check.js` ensuring CV.md and certificates.js stay in sync, verifying all assets exist on disk, and enforcing trilingual alt attributes for accessibility. Established sitemap.xml, robots.txt, and canonical trilingual name spellings. |
+| 2026-10-15 | You Need a Career Development Plan (LinkedIn Learning) added | Certificate #7, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329`, completed Dec 1 2025, 8 minutes, signed Shea Hanson, publisher Macmillan Publishers & Modern Mentor (Rachel Cooke). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with image preview and full PDF document. Controlled vocabulary extended with `career` tag (ar: 'التطوير المهني', en: 'Career development', ru: 'Развитие карьеры'). Details view populated with topics and collaborators. |
 

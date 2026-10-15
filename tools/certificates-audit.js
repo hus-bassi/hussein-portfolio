@@ -18,7 +18,7 @@ const root = path.join(__dirname, '..');
 const certsFile = path.join(root, 'academic', 'data', 'certificates.js');
 const cvFile = path.join(root, 'CV.md');
 
-const VALID_TAGS = ['ai', 'first-aid', 'data', 'python', 'excel', 'language', 'volunteering'];
+const VALID_TAGS = ['ai', 'first-aid', 'data', 'python', 'excel', 'language', 'volunteering', 'career'];
 
 function resolveMediaPath(p) {
   if (!p) return null;
@@ -112,8 +112,8 @@ function audit(isSelftest = false) {
     }
 
     // Verify credential ID format if present
-    if (c.credentialId && !/^#[\d,]+$/.test(c.credentialId)) {
-      errors.push(`${label}: credentialId "${c.credentialId}" does not match standard pattern #XX,XXX,XXX`);
+    if (c.credentialId && !/^(#[\d,]+|[a-f0-9]{32,64})$/i.test(c.credentialId)) {
+      errors.push(`${label}: credentialId "${c.credentialId}" does not match standard pattern (#XX,XXX,XXX or hex string)`);
     }
   });
 

@@ -79,7 +79,8 @@
     python:       { ar: 'بايثون',            en: 'Python',           ru: 'Python' },
     excel:        { ar: 'إكسل',              en: 'Excel',            ru: 'Excel' },
     language:     { ar: 'اللغات',            en: 'Languages',        ru: 'Языки' },
-    volunteering: { ar: 'التطوّع',           en: 'Volunteering',     ru: 'Волонтёрство' }
+    volunteering: { ar: 'التطوّع',           en: 'Volunteering',     ru: 'Волонтёрство' },
+    career:       { ar: 'التطوير المهني',   en: 'Career development', ru: 'Развитие карьеры' }
   };
   function tagLabel(slug) {
     var e = TAGS[slug];

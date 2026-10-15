@@ -636,6 +636,79 @@ const certificatesData = [
         language · volunteering */
     tags: ['data'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — You Need a Career Development Plan
+       Completed Dec 1, 2025. Created by Macmillan Publishers and
+       Modern Mentor (Rachel Cooke).
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "You Need a Career Development Plan"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 01, 2025 at 01:28PM UTC · 8 minutes"
+         · "Top skills covered: Career Path Planning"
+         · "Certificate ID: 5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) for the Arabic strings with
+       zero Latin characters (except brand LinkedIn Learning).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'You Need a Career Development Plan',
+      ar: 'خطة التطوير المهني',
+      ru: 'План карьерного развития',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '1 Dec 2025',
+      ar: '1 ديسمبر 2025',
+      ru: '1 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '8 min',
+      ar: '8 دقائق',
+      ru: '8 мин',
+    },
+    credentialId: '5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329',
+    image: 'assets/certificates/you-need-a-career-development-plan.jpg',
+    pdf: 'assets/certificates/you-need-a-career-development-plan.pdf',
+    description: {
+      en: 'A LinkedIn Learning course by Macmillan Publishers and Modern Mentor on strategic career roadmapping: establishing actionable professional milestones, seeking mentorship, building foundational skills, and maintaining flexibility.',
+      ar: 'دورة على منصة LinkedIn Learning بالتعاون مع ماكميلان للنشر وبودكاست مودرن مينتور، تتناول وضع خطة استراتيجية للتطوير المهني: تحديد الأهداف المرحلية، والاستفادة من التوجيه والإرشاد، واكتساب المهارات الأساسية، وبناء المرونة المهنية.',
+      ru: 'Курс LinkedIn Learning от Macmillan Publishers и Modern Mentor по стратегическому карьерному планированию: постановка целей, поиск наставников, развитие ключевых навыков и гибкость в профессии.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for You Need a Career Development Plan",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة خطة التطوير المهني',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса You Need a Career Development Plan',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Career path planning',
+          'Professional development roadmapping',
+          'Goal setting and milestones',
+          'Finding and engaging mentors',
+          'Skill cultivation and self-investment',
+          'Accountability and career flexibility',
+        ],
+      },
+      collaborators: {
+        en: ['Rachel Cooke (Modern Mentor)', 'Macmillan Publishers'],
+      },
+    },
+    tags: ['career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).
