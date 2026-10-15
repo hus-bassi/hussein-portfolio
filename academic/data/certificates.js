@@ -709,6 +709,80 @@ const certificatesData = [
     },
     tags: ['career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — Job Skills: Learning the Basics
+       Completed Dec 1, 2025. Partner: Project Management Institute (PMI).
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "Job Skills: Learning the Basics"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 01, 2025 at 06:05PM UTC"
+         · "Top skills covered: Soft Skills"
+         · "PMI Authorized Training Partner"
+         · "Program: PMI® Registered Education Provider | Provider ID: #4101 | Activity #: 4101B70OGE | PDUs: 0.25"
+         · "Certificate ID: 6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand LinkedIn Learning).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'Job Skills: Learning the Basics',
+      ar: 'مهارات العمل: تعلم الأساسيات',
+      ru: 'Профессиональные навыки: базовый курс',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '1 Dec 2025',
+      ar: '1 ديسمبر 2025',
+      ru: '1 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '19 min',
+      ar: '19 دقيقة',
+      ru: '19 мин',
+    },
+    credentialId: '6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f',
+    image: 'assets/certificates/job-skills-learning-the-basics.jpg',
+    pdf: 'assets/certificates/job-skills-learning-the-basics.pdf',
+    description: {
+      en: 'A 19-minute LinkedIn Learning course approved by the Project Management Institute (PMI) covering 12 essential workplace soft skills: effective communication, decision-making, task prioritization, time management, and constructive conflict resolution.',
+      ar: 'دورة من 19 دقيقة على منصة LinkedIn Learning معتمدة من معهد إدارة المشاريع (PMI)، تتناول أهم 12 مهارة شخصية ومهنية للنجاح في بيئة العمل: التواصل الفعّال، واتخاذ القرار، وترتيب أولويات المهام، وإدارة الوقت، والتعامل مع النزاعات وحل المشكلات.',
+      ru: '19-минутный курс LinkedIn Learning, одобренный Project Management Institute (PMI), охватывающий 12 ключевых гибких навыков (soft skills) для работы: эффективные коммуникации, принятие решений, расстановка приоритетов, тайм-менеджмент и разрешение конфликтов.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for Job Skills: Learning the Basics",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة مهارات العمل: تعلم الأساسيات',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса Job Skills: Learning the Basics',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Workplace soft skills',
+          'Effective communication in customer service',
+          'Decision-making fundamentals',
+          'Task prioritization and focus',
+          'Time management',
+          'Constructive conflict resolution',
+        ],
+      },
+      collaborators: {
+        en: ['LinkedIn Learning Staff', 'Project Management Institute (PMI)'],
+      },
+    },
+    tags: ['career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).

@@ -149,6 +149,23 @@ never as an accomplishment.
 - **RU:** Завершил курс «You Need a Career Development Plan» на платформе LinkedIn Learning, охватывающий стратегическое карьерное планирование, постановку целей, поиск наставников и развитие профессиональных навыков.
 - **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official title is recorded in English as printed on the document.
 
+### 8. Job Skills: Learning the Basics
+- **Provider:** LinkedIn Learning · Project Management Institute (PMI)
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 1, 2025 (1 Dec 2025 · 1 ديسمبر 2025 · 1 декабря 2025)
+- **Length:** 19 minutes
+- **Category:** Professional Development · التطوير المهني · Профессиональное развитие
+- **Credential ID:** 6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f
+- **Credential URL:** https://www.linkedin.com/learning/certificates/6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f
+- **Files:** `academic/assets/certificates/job-skills-learning-the-basics.jpg` and `academic/assets/certificates/job-skills-learning-the-basics.pdf`
+- **Partner / Seal:** PMI Authorized Training Partner (Provider ID: #4101 · Activity #: 4101B70OGE · 0.25 PDUs)
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Topics:** Workplace soft skills · effective communication · customer service · decision-making · time management · conflict resolution
+- **EN:** A 19-minute LinkedIn Learning course approved by the Project Management Institute (PMI) covering 12 essential workplace soft skills: effective communication, decision-making, task prioritization, time management, and constructive conflict resolution.
+- **AR:** دورة من 19 دقيقة على منصة LinkedIn Learning معتمدة من معهد إدارة المشاريع (PMI)، تتناول أهم 12 مهارة شخصية ومهنية للنجاح في بيئة العمل: التواصل الفعّال، واتخاذ القرار، وترتيب أولويات المهام، وإدارة الوقت، والتعامل مع النزاعات وحل المشكلات.
+- **RU:** 19-минутный курс LinkedIn Learning, одобренный Project Management Institute (PMI), охватывающий 12 ключевых гибких навыков (soft skills) для работы: эффективные коммуникации, принятие решений, расстановка приоритетов, тайм-менеджмент и разрешение конфликтов.
+- **⚠ Claiming note:** this is a foundational course completion certificate, NOT a Project Management Professional (PMP) credential or university degree. The official course title is kept in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -270,4 +287,5 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-08 | Intermediate Google Sheets (DataCamp) added | Certificate #6, from the brief Hussein supplied (Statement of Accomplishment, credential #50,277,774, LENGTH 4 HRS, completed October 8 2026). Section 6 above is written in all three languages; the card on `records.html` reuses the existing `data` tag, the existing media resolver and the existing details view; the files sit at the project root exactly where they were placed — referenced, not moved, copied or renamed. **No verification URL was invented** — the PDF is the official document. **4,150 XP recorded in section 6 with its provenance (learner account, not document) and deliberately kept off the site card**, following the entry-5 precedent: no XP field exists in the details view and none was invented. The course's contributor shown by DataCamp (Richie Cotton, Data Evangelist) is filed under the existing collaborators block. Also this day: the Two Paths portal rework began (homepage portal + `volleyball.html` + `academic.html`) — separate from this certificate record. |
 | 2026-10-12 | Certificate discrepancy diagnosis & automated regression test added | Audited live GitHub Pages site against local files and CV ledger. Resolved discrepancy: verified that local project and live site both contain exactly 6 certificates and 2 volunteering activities (8 total records). Added automated regression audit `tools/certificates-audit.js` to `tools/check.js` ensuring CV.md and certificates.js stay in sync, verifying all assets exist on disk, and enforcing trilingual alt attributes for accessibility. Established sitemap.xml, robots.txt, and canonical trilingual name spellings. |
 | 2026-10-15 | You Need a Career Development Plan (LinkedIn Learning) added | Certificate #7, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329`, completed Dec 1 2025, 8 minutes, signed Shea Hanson, publisher Macmillan Publishers & Modern Mentor (Rachel Cooke). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with image preview and full PDF document. Controlled vocabulary extended with `career` tag (ar: 'التطوير المهني', en: 'Career development', ru: 'Развитие карьеры'). Details view populated with topics and collaborators. |
+| 2026-10-15 | Job Skills: Learning the Basics (LinkedIn Learning / PMI) added | Certificate #8, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f`, completed Dec 1 2025, 19 minutes, signed Shea Hanson, PMI Authorized Training Partner (Provider #4101, Activity 4101B70OGE, 0.25 PDUs). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 
