@@ -217,6 +217,23 @@ never as an accomplishment.
 - **RU:** 12-минутный экспресс-курс LinkedIn Learning от эксперта по карьере Уотчен Ньянуэ, посвящённый ключевым межличностным навыкам: деловое общение, критическое мышление, работа в условиях неопределённости, конструктивное разрешение конфликтов и стрессоустойчивость.
 - **⚠ Claiming note:** this is a concise course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
 
+### 12. Nano Tips for Building Soft Skills with Elayne Fluker
+- **Provider:** LinkedIn Learning · Elayne Fluker
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 9, 2025 (9 Dec 2025 · 9 ديسمبر 2025 · 9 декабря 2025)
+- **Length:** 9 minutes
+- **Category:** Professional Development · التطوير المهني · Профессиональное развитие
+- **Credential ID:** a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f
+- **Credential URL:** https://www.linkedin.com/learning/certificates/a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f
+- **Files:** `academic/assets/certificates/nano-tips-building-soft-skills-elayne-fluker.jpg` and `academic/assets/certificates/nano-tips-building-soft-skills-elayne-fluker.pdf`
+- **Instructor / Author:** Elayne Fluker
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Topics:** Soft skills fundamentals · verbal communication · critical thinking · leadership style · teamwork and collaboration · emotional intelligence · growth mindset · creativity
+- **EN:** A 9-minute LinkedIn Learning Nano Tips course by executive coach Elayne Fluker covering vital durable soft skills: verbal communication, critical thinking, executive presence, teamwork and collaboration, emotional intelligence, and cultivating a growth mindset.
+- **AR:** دورة مكثفة من 9 دقائق على منصة LinkedIn Learning تقدمها المدربة التنفيذية إيلين فلوكر، تتناول المهارات الشخصية المستدامة الأساسية: التواصل الشفهي الفعّال، والتفكير النقدي، والسمات القيادية، والعمل الجماعي والتعاون، والذكاء العاطفي، وتنمية عقلية النمو والابتكار.
+- **RU:** 9-минутный экспресс-курс LinkedIn Learning от коуча для руководителей Элейн Флюкер, охватывающий ключевые устойчивые гибкие навыки: устное общение, критическое мышление, лидерские качества, командная работа, эмоциональный интеллект и мышление роста.
+- **⚠ Claiming note:** this is a concise course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -342,4 +359,6 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-15 | Building Your Career (LinkedIn Learning) added | Certificate #9, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57`, completed Dec 1 2025, 18 minutes, signed Shea Hanson, authors Patrick Kilner & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Making Your Next Career Move Your Best Move (LinkedIn Learning) added | Certificate #10, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3`, completed Dec 2 2025, 15 minutes, signed Shea Hanson, authors Kimberly Brown & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Nano Tips for Closing the Soft Skills Gap with Gen Z (LinkedIn Learning) added | Certificate #11, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d`, completed Dec 2 2025, 12 minutes, signed Shea Hanson, author Watchen Nyanue (I Choose The Ladder). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
+| 2026-10-15 | Nano Tips for Building Soft Skills with Elayne Fluker (LinkedIn Learning) added | Certificate #12, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f`, completed Dec 9 2025, 9 minutes, signed Shea Hanson, author Elayne Fluker. Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
+
 

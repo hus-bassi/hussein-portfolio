@@ -998,6 +998,81 @@ const certificatesData = [
     },
     tags: ['career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — Nano Tips for Building Soft Skills
+       with Elayne Fluker
+       Completed Dec 9, 2025. Author: Elayne Fluker.
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "Nano Tips for Building Soft Skills with Elayne Fluker"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 09, 2025 at 07:56PM UTC · 9 minutes"
+         · "Top skills covered: Soft Skills"
+         · "Certificate ID: a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand LinkedIn Learning).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'Nano Tips for Building Soft Skills with Elayne Fluker',
+      ar: 'نصائح سريعة: بناء المهارات الشخصية مع إيلين فلوكر',
+      ru: 'Краткие советы: развитие гибких навыков с Элейн Флюкер',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '9 Dec 2025',
+      ar: '9 ديسمبر 2025',
+      ru: '9 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '9 min',
+      ar: '9 دقائق',
+      ru: '9 мин',
+    },
+    credentialId: 'a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f',
+    image: 'assets/certificates/nano-tips-building-soft-skills-elayne-fluker.jpg',
+    pdf: 'assets/certificates/nano-tips-building-soft-skills-elayne-fluker.pdf',
+    description: {
+      en: 'A 9-minute LinkedIn Learning Nano Tips course by executive coach Elayne Fluker covering vital durable soft skills: verbal communication, critical thinking, executive presence, teamwork and collaboration, emotional intelligence, and cultivating a growth mindset.',
+      ar: 'دورة مكثفة من 9 دقائق على منصة LinkedIn Learning تقدمها المدربة التنفيذية إيلين فلوكر، تتناول المهارات الشخصية المستدامة الأساسية: التواصل الشفهي الفعّال، والتفكير النقدي، والسمات القيادية، والعمل الجماعي والتعاون، والذكاء العاطفي، وتنمية عقلية النمو والابتكار.',
+      ru: '9-минутный экспресс-курс LinkedIn Learning от коуча для руководителей Элейн Флюкер, охватывающий ключевые устойчивые гибкие навыки: устное общение, критическое мышление, лидерские качества, командная работа, эмоциональный интеллект и мышление роста.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for Nano Tips for Building Soft Skills with Elayne Fluker",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة نصائح سريعة لبناء المهارات الشخصية مع إيلين فلوكر',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса Nano Tips for Building Soft Skills with Elayne Fluker',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Durable soft skills fundamentals',
+          'Verbal communication and presentation skills',
+          'Critical thinking and evidence-based inquiry',
+          'Leadership style and executive presence',
+          'Inclusive teamwork and collaboration',
+          'Emotional intelligence (EQ) in the workplace',
+          'Growth mindset and resilience',
+          'Creativity and innovative problem solving',
+        ],
+      },
+      collaborators: {
+        en: ['Elayne Fluker'],
+      },
+    },
+    tags: ['career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).
