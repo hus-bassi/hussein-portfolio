@@ -1073,6 +1073,80 @@ const certificatesData = [
     },
     tags: ['career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — The Non-Technical Skills of Effective
+       Data Scientists with Keith McCormick (KNIME)
+       Completed Dec 13, 2025. Author: Keith McCormick.
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "The Non-Technical Skills of Effective Data Scientists"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 13, 2025 at 02:54PM UTC · 50 minutes"
+         · "Top skills covered: Data Science, Soft Skills"
+         · "Certificate ID: a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023"
+         · signed Shea Hanson, Head of Learning Content Strategy
+         · NASBA CPE 1.6 Credits (Sponsor ID #140940)
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand names like LinkedIn Learning and KNIME).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'The Non-Technical Skills of Effective Data Scientists',
+      ar: 'المهارات غير التقنية لعلماء البيانات الفعّالين مع كيث ماكورميك',
+      ru: 'Нетехнические навыки эффективных специалистов по науке о данных с Китом Маккормиком',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '13 Dec 2025',
+      ar: '13 ديسمبر 2025',
+      ru: '13 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '50 min',
+      ar: '50 دقيقة',
+      ru: '50 мин',
+    },
+    credentialId: 'a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023',
+    image: 'assets/certificates/non-technical-skills-effective-data-scientists.jpg',
+    pdf: 'assets/certificates/non-technical-skills-effective-data-scientists.pdf',
+    description: {
+      en: 'A 50-minute LinkedIn Learning course by veteran analytics consultant Keith McCormick (part of the KNIME Data Science curriculum) focusing on essential non-technical skills for data professionals: bridging analytics with business objectives, stakeholder persuasion, organizational diplomacy, defending predictive models, and driving business transformation.',
+      ar: 'دورة من 50 دقيقة على منصة LinkedIn Learning يقدمها خبير استشارات تحليل البيانات كيث ماكورميك (ضمن مسار علوم البيانات المعتمد من KNIME)، تركز على المهارات غير التقنية الأساسية للمتخصصين في البيانات: الربط بين النماذج التحليلية وأهداف الأعمال، والتواصل الدبلوماسي مع الإدارة، والإقناع، وقيادة التحول المؤسسي المبني على البيانات.',
+      ru: '50-минутный курс LinkedIn Learning от эксперта по аналитике Кита Маккормика (в рамках сертификационной программы KNIME), посвящённый ключевым нетехническим компетенциям в науке о данных: соотнесение аналитики с бизнес-целями, убеждение стейкхолдеров, организационная дипломатия и внедрение моделей для трансформации бизнеса.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for The Non-Technical Skills of Effective Data Scientists",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة المهارات غير التقنية لعلماء البيانات الفعّالين',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса The Non-Technical Skills of Effective Data Scientists',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Bridging data science models with business transformation',
+          'Translating analytics to executive and business terminology',
+          'Stakeholder empathy, persuasion, and influence',
+          'Organizational diplomacy and defending analytical methodology',
+          'Continuous curiosity and dedication to the analytical craft',
+          'Overcoming institutional resistance to predictive solutions',
+        ],
+      },
+      collaborators: {
+        en: ['Keith McCormick', 'KNIME'],
+      },
+    },
+    tags: ['data', 'career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).

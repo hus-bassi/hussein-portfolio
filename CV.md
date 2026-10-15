@@ -234,6 +234,24 @@ never as an accomplishment.
 - **RU:** 9-минутный экспресс-курс LinkedIn Learning от коуча для руководителей Элейн Флюкер, охватывающий ключевые устойчивые гибкие навыки: устное общение, критическое мышление, лидерские качества, командная работа, эмоциональный интеллект и мышление роста.
 - **⚠ Claiming note:** this is a concise course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
 
+### 13. The Non-Technical Skills of Effective Data Scientists
+- **Provider:** LinkedIn Learning · Keith McCormick · KNIME
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 13, 2025 (13 Dec 2025 · 13 ديسمبر 2025 · 13 декабря 2025)
+- **Length:** 50 minutes
+- **Category:** Data Science & Professional Development · علوم البيانات والتطوير المهني · Наука о данных и профессиональное развитие
+- **Credential ID:** a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023
+- **Credential URL:** https://www.linkedin.com/learning/certificates/a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023
+- **Files:** `academic/assets/certificates/non-technical-skills-effective-data-scientists.jpg` and `academic/assets/certificates/non-technical-skills-effective-data-scientists.pdf`
+- **Instructor / Author:** Keith McCormick
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Continuing Education:** NASBA CPE 1.6 Credits (Sponsor ID #140940)
+- **Topics:** Non-technical skills in data science · business transformation · translating analytics to business language · stakeholder empathy and persuasion · organizational diplomacy · defending predictive models
+- **EN:** A 50-minute LinkedIn Learning course by veteran analytics consultant Keith McCormick (part of the KNIME Data Science curriculum) focusing on essential non-technical skills for data professionals: bridging analytics with business objectives, stakeholder persuasion, organizational diplomacy, defending predictive models, and driving business transformation.
+- **AR:** دورة من 50 دقيقة على منصة LinkedIn Learning يقدمها خبير استشارات تحليل البيانات كيث ماكورميك (ضمن مسار علوم البيانات المعتمد من KNIME)، تركز على المهارات غير التقنية الأساسية للمتخصصين في البيانات: الربط بين النماذج التحليلية وأهداف الأعمال، والتواصل الدبلوماسي مع الإدارة، والإقناع، وقيادة التحول المؤسسي المبني على البيانات.
+- **RU:** 50-минутный курс LinkedIn Learning от эксперта по аналитике Кита Маккормика (в рамках сертификационной программы KNIME), посвящённый ключевым нетехническим компетенциям в науке о данных: соотнесение аналитики с бизнес-целями, убеждение стейкхолдеров, организационная дипломатия и внедрение моделей для трансформации бизнеса.
+- **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -360,5 +378,6 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-15 | Making Your Next Career Move Your Best Move (LinkedIn Learning) added | Certificate #10, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3`, completed Dec 2 2025, 15 minutes, signed Shea Hanson, authors Kimberly Brown & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Nano Tips for Closing the Soft Skills Gap with Gen Z (LinkedIn Learning) added | Certificate #11, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `35d9ca0110946dae3a8657175b805e6d36510ca6fbce6f86f4e23ac80cfbac0d`, completed Dec 2 2025, 12 minutes, signed Shea Hanson, author Watchen Nyanue (I Choose The Ladder). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Nano Tips for Building Soft Skills with Elayne Fluker (LinkedIn Learning) added | Certificate #12, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `a5673704798d9b374b2db85f580f0017808fb95ba9cc4faeb35f84c76a0e3f8f`, completed Dec 9 2025, 9 minutes, signed Shea Hanson, author Elayne Fluker. Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
+| 2026-10-15 | The Non-Technical Skills of Effective Data Scientists (LinkedIn Learning / KNIME) added | Certificate #13, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023`, completed Dec 13 2025, 50 minutes, signed Shea Hanson, author Keith McCormick, part of the KNIME curriculum (NASBA 1.6 CPE credits). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `data` and `career` tags. |
 
 
