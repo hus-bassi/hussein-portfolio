@@ -56,6 +56,7 @@
     },
     'nav.home': { ar: 'الرئيسية', en: 'Home', ru: 'Главная' },
     'nav.story': { ar: 'قصتي', en: 'My story', ru: 'Моя история' },
+    'nav.volleyball': { ar: 'الكرة الطائرة', en: 'Volleyball', ru: 'Волейбол' },
     'nav.plan': { ar: 'خطتي', en: 'My plan', ru: 'Мой план' },
     'nav.interests': { ar: 'اهتماماتي', en: 'Interests', ru: 'Интересы' },
     'nav.projects': { ar: 'مشاريعي', en: 'Projects', ru: 'Проекты' },
@@ -92,14 +93,14 @@
 
     /* ---------- meta (per page) ---------- */
     'meta.index.title': {
-      ar: 'حسين البسيوني | علوم البيانات والفلك',
-      en: 'Hussein ElBassiouni | Data Science & Astronomy',
-      ru: 'Хусейн Эль-Басьюни | Наука о данных и астрономия'
+      ar: 'حسين البسيوني | علوم البيانات والكرة الطائرة',
+      en: 'Hussein ElBassiouni | Data Science & Volleyball',
+      ru: 'Хуссейн Эльбассиуни | Наука о данных и волейбол'
     },
     'meta.index.desc': {
-      ar: 'الموقع الشخصي لحسين البسيوني: اهتمامات بعلوم البيانات والبرمجة وعلم الفلك، وقصته الشخصية، وخطته الدراسية نحو علوم البيانات الفلكي والدراسة في روسيا.',
-      en: 'Personal website of Hussein ElBassiouni: interests in data science, programming and astronomy, his personal story, and his study plan toward astronomical data science and studying in Russia.',
-      ru: 'Личный сайт Хусейна Эль-Басьюни: интересы в науке о данных, программировании и астрономии, личная история и учебный план — анализ астрономических данных и учёба в России.'
+      ar: 'الموقع الرسمي لحسين البسيوني: لاعب كرة طائرة في مركز حائط الصد، وطامح في علوم البيانات والبرمجة وعلم الفلك، يروي مسيرته الرياضية والأكاديمية وخطته الدراسية نحو روسيا.',
+      en: 'Official personal portfolio of Hussein ElBassiouni: volleyball middle blocker and aspiring data scientist in astronomy, sharing his athletic and academic journey.',
+      ru: 'Официальный сайт Хуссейна Эльбассиуни: волейболист и исследователь данных в астрономии, его спортивный и академический путь.'
     },
     'meta.records.title': {
       ar: 'التعلم والشهادات | حسين البسيوني',
@@ -189,6 +190,21 @@
       ar: 'مرّر للأسفل',
       en: 'Scroll to explore',
       ru: 'Листайте вниз'
+    },
+    'hero.enterVolley': {
+      ar: 'مسيرتي الرياضية',
+      en: 'Volleyball journey',
+      ru: 'Спортивный путь'
+    },
+    'hero.enterPlan': {
+      ar: 'خطتي الأكاديمية',
+      en: 'Academic roadmap',
+      ru: 'Учебный план'
+    },
+    'hero.enterRecords': {
+      ar: 'السجل والشهادات',
+      en: 'Verified credentials',
+      ru: 'Сертификаты и опыт'
     },
     /* the single CTA into portal.html — the homepage's only portal entry */
     'hero.enterPortal': {
@@ -601,9 +617,9 @@
        an interest or a field he really studies; `|` separates items and
        JS duplicates the row to make the loop seamless. */
     'marquee.items': {
-      ar: 'تحليل البيانات|بايثون|إكسل|الذكاء الاصطناعي|علم الفلك|الكواكب|التعلم المستمر',
-      en: 'Data analysis|Python|Excel|Artificial intelligence|Astronomy|Planets|Continuous learning',
-      ru: 'Анализ данных|Python|Искусственный интеллект|Астрономия|Планеты|Непрерывное обучение'
+      ar: 'علوم البيانات|الكرة الطائرة|بايثون|علم الفلك|الكواكب|حائط الصد|التعلم المستمر|روسيا',
+      en: 'Data science|Volleyball|Python|Astronomy|Planets|Middle Blocker|Continuous learning|Russia',
+      ru: 'Наука о данных|Волейбол|Python|Астрономия|Планеты|Блокирование|Обучение|Россия'
     },
 
     /* ---------- home: about ---------- */

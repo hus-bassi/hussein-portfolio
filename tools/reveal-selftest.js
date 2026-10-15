@@ -275,13 +275,15 @@ with_('records', /Reveal\.resolve\(target\);/, '',
     caught('13. every page that renders content afterwards', audit())));
 
 with_('academic', / id="volley-list" data-reveal="stagger"/, ' id="volley-list"',
-  () => check('caught: the volunteering list taken out of the reveal vocabulary',
-    caught('16. the content groups that JS renders', audit()),
-    'it and the projects list were the only card groups on the home page with no reveal'));
+  () => with_('index', / id="volley-list" data-reveal="stagger"/, ' id="volley-list"',
+    () => check('caught: the volunteering list taken out of the reveal vocabulary',
+      caught('16. the content groups that JS renders', audit()),
+      'it and the projects list were the only card groups on the home page with no reveal')));
 
 with_('academic', / id="projects-list" data-reveal="stagger"/, ' id="projects-list"',
-  () => check('caught: the projects list taken out of the reveal vocabulary',
-    caught('16. the content groups that JS renders', audit())));
+  () => with_('index', / id="projects-list" data-reveal="stagger"/, ' id="projects-list"',
+    () => check('caught: the projects list taken out of the reveal vocabulary',
+      caught('16. the content groups that JS renders', audit()))));
 
 with_('site', /(  initReveal\(document\);)/,
   "$1\n  document.querySelectorAll('.card').forEach(function (c) { c.classList.add('reveal', 'is-in'); });",

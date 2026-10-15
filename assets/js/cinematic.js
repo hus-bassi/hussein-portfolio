@@ -1,53 +1,13 @@
 /* ============================================================
-   The 20 Cinematic Animation Styles & Sound Engine
-   assets/js/cinematic.js
-
-   Drives native dynamic behaviors for the 20 animation styles
-   and synthesises subtle, gentle, always-on interactive sound
+   assets/js/cinematic.js — Interactive Sound Engine
+   Synthesises subtle, gentle, always-on interactive sound
    design natively across the entire site via Web Audio API.
    Zero floating modals, zero intrusive toggle buttons.
-   Supports full accessibility and reduced motion.
+   Supports full accessibility and honours prefers-reduced-motion.
    ============================================================ */
 (function () {
   'use strict';
 
-  // 1. Retro VHS Timecode Generator
-  function updateVHSTimecode() {
-    var vhsElements = document.querySelectorAll('.style-retro-vhs [data-vhs-time]');
-    if (!vhsElements.length) return;
-    var now = new Date();
-    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-    var timeStr = 'REC ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
-    vhsElements.forEach(function (el) {
-      el.textContent = timeStr;
-    });
-  }
-
-  // 2. Split-Flap Interactive Flip on Hover
-  function setupSplitFlapHover() {
-    var digits = document.querySelectorAll('.split-flap-digit');
-    digits.forEach(function (d) {
-      d.addEventListener('mouseenter', function () {
-        d.style.transform = 'rotateX(20deg)';
-        setTimeout(function () { d.style.transform = ''; }, 250);
-      });
-    });
-  }
-
-  // 3. Subtle Parallax for Celestial Wireframe
-  function setupWireframeParallax() {
-    var cages = document.querySelectorAll('.wireframe-cage');
-    if (!cages.length) return;
-    window.addEventListener('pointermove', function (e) {
-      var cx = (e.clientX / window.innerWidth - 0.5) * 15;
-      var cy = (e.clientY / window.innerHeight - 0.5) * 15;
-      cages.forEach(function (c) {
-        c.style.transform = 'translate(' + cx.toFixed(1) + 'px, ' + cy.toFixed(1) + 'px)';
-      });
-    }, { passive: true });
-  }
-
-  // 4. Subtle Cinematic Sound Engine (Always Active by Default)
   var audioCtx = null;
   function getAudioContext() {
     if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
@@ -101,7 +61,7 @@
     var lastSoundTime = 0;
     document.addEventListener('pointerover', function (e) {
       if (!e.target || typeof e.target.closest !== 'function') return;
-      var target = e.target.closest('.btn, .world-switch-link, .primary-nav a, .lang-btn, .tag, .split-flap-digit, .card, .vw-panel');
+      var target = e.target.closest('.btn, .world-switch-link, .primary-nav a, .lang-btn, .tag, .card, .record, .stat');
       if (!target) return;
       var now = Date.now();
       if (now - lastSoundTime < 80) return;
@@ -109,8 +69,6 @@
 
       if (target.classList.contains('lang-btn')) {
         playMicroTone(659.25, 'sine', 0.08, 0.012);
-      } else if (target.classList.contains('split-flap-digit')) {
-        playMicroTone(440, 'triangle', 0.06, 0.015);
       } else if (target.classList.contains('tag')) {
         playMicroTone(587.33, 'sine', 0.08, 0.012);
       } else {
@@ -126,22 +84,9 @@
     }, { passive: true });
   }
 
-  // Lifecycle Initialization
-  function initInPageStyles() {
-    setupSplitFlapHover();
-    setupWireframeParallax();
-    setupSoundInteractions();
-    updateVHSTimecode();
-    setInterval(updateVHSTimecode, 1000);
-  }
-
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initInPageStyles);
+    document.addEventListener('DOMContentLoaded', setupSoundInteractions);
   } else {
-    initInPageStyles();
+    setupSoundInteractions();
   }
-
-  window.addEventListener('site-lang-change', function () {
-    setTimeout(setupSplitFlapHover, 100);
-  });
 })();

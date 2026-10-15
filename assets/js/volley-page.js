@@ -107,8 +107,7 @@
       if (scoreMatch) {
         var won = scoreMatch[1];
         var lost = scoreMatch[2] === 'صفر' ? '0' : scoreMatch[2];
-        var board = el('div', 'vw-scoreboard style-comic-action style-split-flap');
-        board.appendChild(el('div', 'comic-rays'));
+        var board = el('div', 'vw-scoreboard');
 
         /* Fixture line if team and opponent exist in documented data */
         if (r.team && r.opponent) {
@@ -120,9 +119,9 @@
         }
 
         var scoreLine = el('div', 'vw-score-line');
-        scoreLine.appendChild(el('span', 'vw-score-num split-flap-digit', won));
+        scoreLine.appendChild(el('span', 'vw-score-num', won));
         scoreLine.appendChild(el('span', 'vw-score-sep', '—'));
-        scoreLine.appendChild(el('span', 'vw-score-num is-lost split-flap-digit', lost));
+        scoreLine.appendChild(el('span', 'vw-score-num is-lost', lost));
         scoreLine.appendChild(el('span', 'vw-score-tag', resultText));
         board.appendChild(scoreLine);
 
