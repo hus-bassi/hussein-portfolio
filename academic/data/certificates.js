@@ -783,6 +783,77 @@ const certificatesData = [
     },
     tags: ['career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — Building Your Career
+       Completed Dec 1, 2025. Authors: Patrick Kilner & Pete Mockaitis.
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "Building Your Career"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 01, 2025 at 02:11PM UTC · 18 minutes"
+         · "Top skills covered: Professional Networking, Career Development"
+         · "Certificate ID: 1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand LinkedIn Learning).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'Building Your Career',
+      ar: 'بناء مسارك المهني',
+      ru: 'Построение карьеры',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '1 Dec 2025',
+      ar: '1 ديسمبر 2025',
+      ru: '1 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '18 min',
+      ar: '18 دقيقة',
+      ru: '18 мин',
+    },
+    credentialId: '1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57',
+    image: 'assets/certificates/building-your-career.jpg',
+    pdf: 'assets/certificates/building-your-career.pdf',
+    description: {
+      en: 'An 18-minute LinkedIn Learning course by Patrick Kilner and Pete Mockaitis focusing on strategic relationship-building: cultivating influential mentors, replacing loose networking with high-impact connections, and preparing meaningful professional conversations.',
+      ar: 'دورة من 18 دقيقة على منصة LinkedIn Learning يقدمها باتريك كيلنر وبيت موكايتيس، تركز على بناء العلاقات المهنية الاستراتيجية: اختيار الموجهين والمرشدين المؤثرين، واستبدال شبكات المعارف التقليدية بروابط مهنية وثيقة ذات أثر مباشر في النمو والتطور.',
+      ru: '18-минутный курс LinkedIn Learning от Патрика Килнера и Пита Мокайтиса, посвящённый стратегическому нетворкингу: выстраиванию отношений с ключевыми наставниками и созданию устойчивых профессиональных связей для карьерного роста.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for Building Your Career",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة بناء مسارك المهني',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса Building Your Career',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Professional networking',
+          'Strategic relationship building',
+          'Finding great mentors',
+          'Preparing high-value meetings',
+          'Asking key career questions',
+        ],
+      },
+      collaborators: {
+        en: ['Patrick Kilner', 'Pete Mockaitis (How to Be Awesome at Your Job)'],
+      },
+    },
+    tags: ['career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).

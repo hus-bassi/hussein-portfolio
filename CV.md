@@ -166,6 +166,23 @@ never as an accomplishment.
 - **RU:** 19-минутный курс LinkedIn Learning, одобренный Project Management Institute (PMI), охватывающий 12 ключевых гибких навыков (soft skills) для работы: эффективные коммуникации, принятие решений, расстановка приоритетов, тайм-менеджмент и разрешение конфликтов.
 - **⚠ Claiming note:** this is a foundational course completion certificate, NOT a Project Management Professional (PMP) credential or university degree. The official course title is kept in English as printed on the document.
 
+### 9. Building Your Career
+- **Provider:** LinkedIn Learning · Pete Mockaitis (How to Be Awesome at Your Job)
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 1, 2025 (1 Dec 2025 · 1 ديسمبر 2025 · 1 декабря 2025)
+- **Length:** 18 minutes
+- **Category:** Professional Development · التطوير المهني · Профессиональное развитие
+- **Credential ID:** 1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57
+- **Credential URL:** https://www.linkedin.com/learning/certificates/1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57
+- **Files:** `academic/assets/certificates/building-your-career.jpg` and `academic/assets/certificates/building-your-career.pdf`
+- **Instructor / Author:** Patrick Kilner · Pete Mockaitis
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Topics:** Professional networking · strategic relationship building · career mentorship · high-impact connections · purposeful career meetings
+- **EN:** An 18-minute LinkedIn Learning course by Patrick Kilner and Pete Mockaitis (How to Be Awesome at Your Job) focusing on strategic relationship-building: cultivating influential mentors, replacing loose networking with high-impact connections, and preparing meaningful professional conversations.
+- **AR:** دورة من 18 دقيقة على منصة LinkedIn Learning يقدمها باتريك كيلنر وبيت موكايتيس، تركز على بناء العلاقات المهنية الاستراتيجية: اختيار الموجهين والمرشدين المؤثرين، واستبدال شبكات المعارف التقليدية بروابط مهنية وثيقة ذات أثر مباشر في النمو والتطور.
+- **RU:** 18-минутный курс LinkedIn Learning от Патрика Килнера и Пита Мокайтиса, посвящённый стратегическому нетворкингу: выстраиванию отношений с ключевыми наставниками и созданию устойчивых профессиональных связей для карьерного роста.
+- **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -288,4 +305,5 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-12 | Certificate discrepancy diagnosis & automated regression test added | Audited live GitHub Pages site against local files and CV ledger. Resolved discrepancy: verified that local project and live site both contain exactly 6 certificates and 2 volunteering activities (8 total records). Added automated regression audit `tools/certificates-audit.js` to `tools/check.js` ensuring CV.md and certificates.js stay in sync, verifying all assets exist on disk, and enforcing trilingual alt attributes for accessibility. Established sitemap.xml, robots.txt, and canonical trilingual name spellings. |
 | 2026-10-15 | You Need a Career Development Plan (LinkedIn Learning) added | Certificate #7, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329`, completed Dec 1 2025, 8 minutes, signed Shea Hanson, publisher Macmillan Publishers & Modern Mentor (Rachel Cooke). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with image preview and full PDF document. Controlled vocabulary extended with `career` tag (ar: 'التطوير المهني', en: 'Career development', ru: 'Развитие карьеры'). Details view populated with topics and collaborators. |
 | 2026-10-15 | Job Skills: Learning the Basics (LinkedIn Learning / PMI) added | Certificate #8, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f`, completed Dec 1 2025, 19 minutes, signed Shea Hanson, PMI Authorized Training Partner (Provider #4101, Activity 4101B70OGE, 0.25 PDUs). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
+| 2026-10-15 | Building Your Career (LinkedIn Learning) added | Certificate #9, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57`, completed Dec 1 2025, 18 minutes, signed Shea Hanson, authors Patrick Kilner & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 
