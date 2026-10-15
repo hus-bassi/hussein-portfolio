@@ -854,6 +854,77 @@ const certificatesData = [
     },
     tags: ['career'],
   },
+  {
+    /* ============================================================
+       LINKEDIN LEARNING — Making Your Next Career Move Your Best Move
+       Completed Dec 2, 2025. Authors: Kimberly Brown & Pete Mockaitis.
+       Everything here was read off the certificate image and PDF:
+         · "LinkedIn Learning"
+         · "Making Your Next Career Move Your Best Move"
+         · "Course completed by Hussein ElBassiouni"
+         · "Dec 02, 2025 at 03:07PM UTC · 15 minutes"
+         · "Top skills covered: Career Management"
+         · "Certificate ID: e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3"
+         · signed Shea Hanson, Head of Learning Content Strategy
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand LinkedIn Learning).
+       Files live cleanly in academic/assets/certificates/ (no ../).
+       Official verification link verified (HTTP 200).
+       ============================================================ */
+    title: {
+      en: 'Making Your Next Career Move Your Best Move',
+      ar: 'الخطوة المهنية القادمة: خيارك الأفضل',
+      ru: 'Следующий карьерный шаг: лучший выбор',
+    },
+    provider: 'LinkedIn Learning',
+    date: {
+      en: '2 Dec 2025',
+      ar: '2 ديسمبر 2025',
+      ru: '2 декабря 2025',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    duration: {
+      en: '15 min',
+      ar: '15 دقيقة',
+      ru: '15 мин',
+    },
+    credentialId: 'e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3',
+    credentialUrl:
+      'https://www.linkedin.com/learning/certificates/e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3',
+    image: 'assets/certificates/making-your-next-career-move-your-best-move.jpg',
+    pdf: 'assets/certificates/making-your-next-career-move-your-best-move.pdf',
+    description: {
+      en: 'A 15-minute LinkedIn Learning course by leadership expert Kimberly Brown and Pete Mockaitis focusing on strategic career transitions: evaluating core strengths, cultivating in-demand capabilities, planning professional progression, and unlocking new opportunities.',
+      ar: 'دورة من 15 دقيقة على منصة LinkedIn Learning تقدمها خبيرة القيادة كيمبرلي براون وبيت موكايتيس، تتناول التخطيط للانتقال المهني الناجح: تقييم نقاط القوة الذاتية، وتطوير المهارات المطلوبة، ورسم الرؤية المستقبلية للمسار الوظيفي، واقتناص الفرص النوعية.',
+      ru: '15-минутный курс LinkedIn Learning от эксперта по лидерству Кимберли Браун и Пита Мокайтиса о планировании успешного карьерного перехода: оценка сильных сторон, развитие востребованных навыков и стратегическое видение карьеры.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's LinkedIn Learning Certificate of Completion for Making Your Next Career Move Your Best Move",
+      ar: 'شهادة إتمام من LinkedIn Learning لحسين البسيوني عن دورة الخطوة المهنية القادمة: خيارك الأفضل',
+      ru: 'Сертификат LinkedIn Learning Хусейна Эльбасьюни об окончании курса Making Your Next Career Move Your Best Move',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Career management',
+          'Assessing strengths and growth areas',
+          'Transition planning',
+          'Future vision mapping',
+          'Connecting with opportunity drivers',
+        ],
+      },
+      collaborators: {
+        en: ['Kimberly Brown', 'Pete Mockaitis (How to Be Awesome at Your Job)'],
+      },
+    },
+    tags: ['career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).

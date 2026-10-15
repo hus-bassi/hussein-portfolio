@@ -183,6 +183,23 @@ never as an accomplishment.
 - **RU:** 18-минутный курс LinkedIn Learning от Патрика Килнера и Пита Мокайтиса, посвящённый стратегическому нетворкингу: выстраиванию отношений с ключевыми наставниками и созданию устойчивых профессиональных связей для карьерного роста.
 - **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
 
+### 10. Making Your Next Career Move Your Best Move
+- **Provider:** LinkedIn Learning · Pete Mockaitis (How to Be Awesome at Your Job)
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** December 2, 2025 (2 Dec 2025 · 2 ديسمبر 2025 · 2 декабря 2025)
+- **Length:** 15 minutes
+- **Category:** Professional Development · التطوير المهني · Профессиональное развитие
+- **Credential ID:** e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3
+- **Credential URL:** https://www.linkedin.com/learning/certificates/e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3
+- **Files:** `academic/assets/certificates/making-your-next-career-move-your-best-move.jpg` and `academic/assets/certificates/making-your-next-career-move-your-best-move.pdf`
+- **Instructor / Author:** Kimberly Brown · Pete Mockaitis
+- **Signer:** Shea Hanson, Head of Learning Content Strategy
+- **Topics:** Career management · transition planning · strengths evaluation · capability growth · professional vision
+- **EN:** A 15-minute LinkedIn Learning course by leadership expert Kimberly Brown and Pete Mockaitis focusing on strategic career transitions: evaluating core strengths, cultivating in-demand capabilities, planning professional progression, and unlocking new opportunities.
+- **AR:** دورة من 15 دقيقة على منصة LinkedIn Learning تقدمها خبيرة القيادة كيمبرلي براون وبيت موكايتيس، تتناول التخطيط للانتقال المهني الناجح: تقييم نقاط القوة الذاتية، وتطوير المهارات المطلوبة، ورسم الرؤية المستقبلية للمسار الوظيفي، واقتناص الفرص النوعية.
+- **RU:** 15-минутный курс LinkedIn Learning от эксперта по лидерству Кимберли Браун и Пита Мокайтиса о планировании успешного карьерного перехода: оценка сильных сторон, развитие востребованных навыков и стратегическое видение карьеры.
+- **⚠ Claiming note:** this is a course completion certificate, NOT an executive credential or university qualification. The official course title is recorded in English as printed on the document.
+
 ---
 
 ## Volunteering
@@ -306,4 +323,5 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-15 | You Need a Career Development Plan (LinkedIn Learning) added | Certificate #7, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `5d3ca142f5d6b9413e77fc9ebc7e7b9414d016e546694e1c2b5a593d7a050329`, completed Dec 1 2025, 8 minutes, signed Shea Hanson, publisher Macmillan Publishers & Modern Mentor (Rachel Cooke). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with image preview and full PDF document. Controlled vocabulary extended with `career` tag (ar: 'التطوير المهني', en: 'Career development', ru: 'Развитие карьеры'). Details view populated with topics and collaborators. |
 | 2026-10-15 | Job Skills: Learning the Basics (LinkedIn Learning / PMI) added | Certificate #8, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `6d0f10881ba0ae205f7aac12f1942b62113b4933a80710986e7cc7f61949400f`, completed Dec 1 2025, 19 minutes, signed Shea Hanson, PMI Authorized Training Partner (Provider #4101, Activity 4101B70OGE, 0.25 PDUs). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 | 2026-10-15 | Building Your Career (LinkedIn Learning) added | Certificate #9, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `1fc215c5e96c73e9da3cb8027902c0800223f9e6cb837062fe6f260dd048fe57`, completed Dec 1 2025, 18 minutes, signed Shea Hanson, authors Patrick Kilner & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
+| 2026-10-15 | Making Your Next Career Move Your Best Move (LinkedIn Learning) added | Certificate #10, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `e70c27c273a173f02ea7a95ecf221ae6534686f8fdc8d83422702fc92a0e92a3`, completed Dec 2 2025, 15 minutes, signed Shea Hanson, authors Kimberly Brown & Pete Mockaitis (How to Be Awesome at Your Job). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `career` tag. |
 
