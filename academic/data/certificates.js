@@ -1224,6 +1224,7 @@ const certificatesData = [
       collaborators: {
         en: [
           'Eddie Davila (Arizona State University)',
+          'Anaconda',
           'Wolfram Research',
           'National Association of State Boards of Accountancy (NASBA)',
         ],
