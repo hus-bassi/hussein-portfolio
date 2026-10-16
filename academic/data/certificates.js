@@ -1542,6 +1542,82 @@ const certificatesData = [
     },
     tags: ['data'],
   },
+  {
+    /* ============================================================
+       ASEAN FOUNDATION & LINKEDIN — AI Career Readiness Training
+       Completed Oct 16, 2026.
+       Platform: ASEAN Digital Academy (ada.aseanfoundation.org).
+       Program: ASEAN AHEAD.
+       Signed by: Dr. Piti Srisangnam, Executive Director, ASEAN Foundation.
+       Organised by ASEAN Foundation, supported by LinkedIn.
+       Pure Modern Standard Arabic (فصحى) with 0 Latin characters
+       (except brand name LinkedIn).
+       ============================================================ */
+    title: {
+      en: 'AI Career Readiness Training',
+      ar: 'التدريب على الجاهزية المهنية بالذكاء الاصطناعي',
+      ru: 'AI Career Readiness Training',
+    },
+    provider: {
+      en: 'ASEAN Foundation · LinkedIn',
+      ar: 'مؤسسة الآسيان · LinkedIn',
+      ru: 'Фонд АСЕАН · LinkedIn',
+    },
+    date: {
+      en: '16 Oct 2026',
+      ar: '16 أكتوبر 2026',
+      ru: '16 октября 2026',
+    },
+    category: {
+      en: 'Certificate of Completion',
+      ar: 'شهادة إتمام',
+      ru: 'Сертификат об окончании',
+    },
+    image: 'assets/certificates/ai-career-readiness.jpg',
+    description: {
+      en: 'A comprehensive 5-module training program organized by the ASEAN Foundation and supported by LinkedIn via the ASEAN Digital Academy. Covers AI-powered career clarity, personal branding, LinkedIn profile optimization, smart job search, and AI-assisted CV and interview preparation.',
+      ar: 'برنامج تدريبي متكامل من 5 وحدات نظمته مؤسسة الآسيان بدعم من LinkedIn عبر الأكاديمية الرقمية للآسيان، يركز على استغلال أدوات الذكاء الاصطناعي في تحديد المسار المهني، وتطوير العلامة الشخصية والملف على LinkedIn، والبحث الذكي عن الوظائف، وإعداد السيرة الذاتية والمقابلات.',
+      ru: 'Комплексная 5-модульная программа обучения, организованная Фондом АСЕАН при поддержке LinkedIn на платформе Цифровой академии АСЕАН. Охватывает определение карьерного пути с помощью ИИ, развитие личного бренда, оптимизацию профиля в LinkedIn, умный поиск работы и подготовку к собеседованиям.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's Certificate of Completion for AI Career Readiness Training from ASEAN Foundation and LinkedIn",
+      ar: 'شهادة إتمام لحسين البسيوني في التدريب على الجاهزية المهنية بالذكاء الاصطناعي من مؤسسة الآسيان و LinkedIn',
+      ru: 'Сертификат об окончании Хусейна Эльбасьюни по программе AI Career Readiness Training от Фонда АСЕАН и LinkedIn',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'AI for Career Clarity & Professional Pathway',
+          'AI-Powered Personal Branding & LinkedIn Optimization',
+          'AI for Smart Job Search, Networking & Opportunity',
+          'AI for CV, Cover Letter & Portfolio Applications',
+          'AI for Interview Preparation & Confidence Building',
+        ],
+      },
+      chapters: {
+        en: [
+          { title: 'Module 01: AI for Career Clarity & Professional Pathway', note: 'Parts 01 – 03' },
+          { title: 'Module 02: AI-Powered Personal Branding & LinkedIn Optimization', note: 'Parts 01 – 03' },
+          { title: 'Module 03: AI for Job Search, Networking & Opportunity', note: 'Parts 01 – 03' },
+          { title: 'Module 04: AI for CV, Portfolio & Strong Applications', note: 'Parts 01 – 03' },
+          { title: 'Module 05: AI for Interview Preparation & Confidence Building', note: 'Parts 01 – 03' },
+        ],
+      },
+      collaborators: {
+        en: [
+          'Dr. Piti Srisangnam (Executive Director, ASEAN Foundation)',
+          'Belinda Rahmadara',
+          'Irvandias Sanjaya',
+          'Haekal Adha Al Ghiffari',
+          'Noppon Chhim',
+          'Jolly Nguyen',
+          'KTM Solutions',
+        ],
+      },
+    },
+    tags: ['ai', 'career'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).

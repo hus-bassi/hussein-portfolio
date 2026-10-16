@@ -311,6 +311,23 @@ never as an accomplishment.
 - **RU:** Комплексный 15-часовой трек навыков Google Sheets Fundamentals на платформе DataCamp, объединяющий 5 специализированных курсов: базовые формулы, разведочный анализ и очистка данных, продвинутые логические операции, сводные таблицы (Pivot Tables) и построение интерактивных аналитических дашбордов.
 - **⚠ Claiming note:** this is a completed Skill Track (Statement of Accomplishment), NOT an official Google certification or professional license. The official track title is kept in English in all three languages as printed on the document.
 
+### 17. AI Career Readiness Training
+- **Provider:** ASEAN Foundation (Supported by LinkedIn) · مؤسسة الآسيان (بدعم من LinkedIn) · Фонд АСЕАН (при поддержке LinkedIn)
+- **Credential type:** Certificate of Completion / شهادة إتمام / Сертификат об окончании
+- **Date:** October 16, 2026 (16 Oct 2026 · 16 أكتوبر 2026 · 16 октября 2026)
+- **Platform:** ASEAN Digital Academy (`ada.aseanfoundation.org`)
+- **Organised by:** ASEAN Foundation
+- **Supported by:** LinkedIn
+- **Program:** ASEAN AHEAD (asean ahead)
+- **Signed by:** Dr. Piti Srisangnam, Executive Director, ASEAN Foundation
+- **Verification:** none published — the certificate document below is the credential. No verification URL has been invented for it.
+- **Files:** `academic/assets/certificates/ai-career-readiness.jpg` and `academic/assets/certificates/ai-career-readiness.png`.
+- **Instructors / Contributors:** Dr. Piti Srisangnam (Executive Director, ASEAN Foundation) · Belinda Rahmadara · Irvandias Sanjaya · Haekal Adha Al Ghiffari · Noppon Chhim · Jolly Nguyen · KTM Solutions
+- **Topics:** AI for career clarity & professional pathway · AI-powered personal branding & LinkedIn optimization · AI for smart job search, networking & opportunities · AI for high-impact CV, cover letter & portfolio applications · AI for interview preparation & confidence building
+- **EN:** Completed the intensive 5-module AI Career Readiness Training organized by the ASEAN Foundation and supported by LinkedIn via the ASEAN Digital Academy. Gained practical capabilities in utilizing modern artificial intelligence tools for professional career planning, personal branding and LinkedIn profile optimization, targeted job search strategies, AI-enhanced CV and portfolio creation, and confidence-building interview preparation.
+- **AR:** أتممت التدريب العملي المتخصص في الجاهزية المهنية بالذكاء الاصطناعي والمكون من 5 وحدات تدريبية، المنظم من قِبل مؤسسة الآسيان (ASEAN Foundation) والمدعوم من منصة LinkedIn عبر الأكاديمية الرقمية للآسيان. شمل التدريب تطبيق أدوات الذكاء الاصطناعي في التخطيط المهني وتحديد المسار الوظيفي، وبناء العلامة المهنية الشخصية وتحسين الملف الشخصي على LinkedIn، واستراتيجيات البحث الذكي عن فرص العمل، وتصميم السيرة الذاتية ومعرض الأعمال، والتحضير الاحترافي للمقابلات الوظيفية.
+- **RU:** Завершил интенсивный 5-модульный тренинг по карьерной готовности с использованием искусственного интеллекта (AI Career Readiness Training), организованный Фондом АСЕАН (ASEAN Foundation) при поддержке LinkedIn на платформе Цифровой академии АСЕАН. Освоил практическое применение современных инструментов ИИ для стратегического карьерного планирования, развития личного бренда и оптимизации профиля в LinkedIn, умного поиска вакансий и нетворкинга, создания конкурентоспособного резюме и портфолио, а также уверенной подготовки к собеседованиям.
+
 ---
 
 ## Volunteering
@@ -459,6 +476,7 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-16 | Data Visualization in Google Sheets (DataCamp) added | Certificate #15, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #50,345,577, completed Oct 16, 2026, 4 hrs, signed Jonathan Cornelissen. 4,700 XP recorded in ledger. Media placed in `academic/assets/certificates/data-visualization-in-google-sheets.{pdf,jpg}`. Filed under existing `data` tag. Full trilingual entry recorded. |
 | 2026-10-16 | Google Sheets Fundamentals (DataCamp 15-Hour Skill Track) added | Certificate #16, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #967,410, completed Oct 16, 2026, 15 hrs, signed Jonathan Cornelissen. Unifies all 5 foundational courses (Introduction, Data Analysis, Intermediate, Pivot Tables, Data Visualization). Media placed in `academic/assets/certificates/google-sheets-fundamentals.{pdf,jpg}`. Filed under existing `data` tag. Full trilingual entry recorded. |
 | 2026-10-17 | Google Sheets Fundamentals verification URL confirmed | Added official DataCamp Statement of Accomplishment URL (`https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46`) to Certificate #16 in CV ledger and `academic/data/certificates.js`. |
+| 2026-10-17 | AI Career Readiness Training (ASEAN Foundation & LinkedIn) added | Certificate #17, from the Certificate of Completion image Hussein supplied. Completed Oct 16, 2026, signed by Dr. Piti Srisangnam, Executive Director, ASEAN Foundation. Program: ASEAN AHEAD via ASEAN Digital Academy (ada.aseanfoundation.org). Covers 5 modules: career clarity, personal branding, LinkedIn optimization, smart job search, and AI-assisted CV/interview preparation. Media placed in `academic/assets/certificates/ai-career-readiness.{jpg,png}`. Filed under `ai` and `career` tags. Full trilingual entry recorded. |
 
 
 
