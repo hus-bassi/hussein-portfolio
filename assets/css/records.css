@@ -822,6 +822,244 @@ html[lang="ar"] .detail-h { font-family: var(--font-ar); letter-spacing: 0; }
 .detail-caption { margin: var(--s-2) 0 0; font-size: .84rem; color: var(--fg-3); }
 
 /* ============================================================
+   CURRICULUM BRANCHING TREE (FOR INTEGRATED TRACK CERTIFICATES)
+   A master stem and sleek, staggered branch cards presenting
+   each constituent certificate in sequential order.
+   ============================================================ */
+:root {
+  --branch-idx: 0;
+}
+
+.track-lead {
+  margin-block-end: var(--s-3);
+  font-size: .94rem;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+.detail-track-tree {
+  position: relative;
+  margin-block: var(--s-3) var(--s-2);
+  padding-inline-start: 28px;
+}
+
+.track-stem {
+  position: absolute;
+  inset-block: 16px 24px;
+  inset-inline-start: 11px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--violet) 0%, var(--gold) 50%, var(--azure) 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(124, 92, 255, .35);
+}
+
+.track-branches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.track-branch-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: branch-slide-in var(--motion-slow) var(--ease-out) both;
+  animation-delay: calc(var(--branch-idx, 0) * var(--stagger));
+}
+
+@keyframes branch-slide-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.track-node-dot {
+  position: absolute;
+  inset-inline-start: -23px;
+  inset-block-start: 18px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--void);
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 10px rgba(240, 206, 126, .45);
+  z-index: 2;
+}
+
+.track-branch-connector {
+  position: absolute;
+  inset-inline-start: -11px;
+  inset-block-start: 23px;
+  width: 15px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), rgba(229, 168, 64, .2));
+  border-radius: 999px;
+}
+html[dir="rtl"] .track-branch-connector {
+  background: linear-gradient(270deg, var(--gold), rgba(229, 168, 64, .2));
+}
+
+.track-branch-card {
+  position: relative;
+  background: rgba(10, 14, 24, .72);
+  border: 1px solid var(--glass-2);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  transition: border-color var(--motion-normal) var(--ease),
+              box-shadow var(--motion-normal) var(--ease),
+              translate var(--motion-normal) var(--ease);
+}
+.track-branch-card:hover {
+  border-color: rgba(124, 92, 255, .5);
+  box-shadow: 0 0 0 1px rgba(124, 92, 255, .3), 0 8px 24px -8px rgba(0, 0, 0, .6);
+  translate: 0 -2px;
+}
+
+.track-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.track-card-step {
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--gold);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(229, 168, 64, .12);
+  border: 1px solid rgba(229, 168, 64, .24);
+}
+html[lang="ar"] .track-card-step {
+  font-family: var(--font-ar);
+}
+
+.track-card-title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--fg);
+  flex: 1 1 auto;
+}
+
+.track-card-duration {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--fg-3);
+  background: rgba(255, 255, 255, .05);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--glass);
+}
+html[lang="ar"] .track-card-duration {
+  font-family: var(--font-ar);
+}
+
+.track-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  font-size: .86rem;
+  color: var(--fg-2);
+}
+
+.track-card-instructor {
+  color: var(--fg-2);
+}
+
+.track-card-cred {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: var(--azure);
+  background: rgba(92, 179, 255, .08);
+  padding: 1px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(92, 179, 255, .2);
+}
+
+.track-card-badge {
+  font-size: .78rem;
+  color: var(--violet);
+  background: rgba(124, 92, 255, .1);
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 92, 255, .25);
+}
+
+.track-card-preview {
+  margin-block-start: var(--s-2);
+}
+
+.track-card-thumb-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  padding: 0;
+  border: 1px solid var(--glass-2);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--void);
+  transition: border-color var(--motion-fast) var(--ease),
+              box-shadow var(--motion-fast) var(--ease);
+}
+.track-card-thumb-btn:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 16px -4px rgba(240, 206, 126, .35);
+}
+.track-card-thumb-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.track-card-thumb-btn img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 140px;
+  object-fit: cover;
+  transition: scale var(--motion-normal) var(--ease);
+}
+.track-card-thumb-btn:hover img {
+  scale: 1.03;
+}
+
+.track-card-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  background: rgba(3, 4, 8, .62);
+  color: var(--fg);
+  font-size: .82rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease);
+}
+.track-card-thumb-btn:hover .track-card-thumb-overlay {
+  opacity: 1;
+}
+.track-card-thumb-overlay svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gold);
+}
+
+/* ============================================================
    THE PRIMARY MEDIA IN THE DETAILS.
 
    One region, centred, holding the record's own media at a size you can
@@ -978,10 +1216,25 @@ html[lang="ar"] .detail-h { font-family: var(--font-ar); letter-spacing: 0; }
      the desktop value would shrink a landscape to a strip at 360px */
   .cert-frame:has(.cert-image) { max-height: calc(92svh - 150px); }
   .cert-head { padding: var(--s-3) var(--s-4); padding-inline-end: 56px; }
+  .detail-track-tree { padding-inline-start: 22px; }
+  .track-stem { inset-inline-start: 8px; }
+  .track-node-dot { inset-inline-start: -18px; width: 10px; height: 10px; }
+  .track-branch-connector { inset-inline-start: -9px; width: 11px; }
+  .track-card-thumb-btn { max-width: 100%; }
 }
 
 @media (max-width: 560px) {
   .page-head { padding-block: 124px var(--s-7); }
   .band-search { padding-block: var(--s-5); }
   .search-input { min-height: 52px; font-size: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track-branch-item {
+    animation: none;
+  }
+  .track-branch-card,
+  .track-card-thumb-btn img {
+    transition: none;
+  }
 }

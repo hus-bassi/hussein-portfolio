@@ -12,7 +12,7 @@
 > files and the final CV/PDF are both generated from this ledger, so they
 > can never drift apart.
 >
-> Last updated: 2026-10-15
+> Last updated: 2026-10-16
 >
 > **Candidate identity:**
 > - **Arabic:** حسين محمد مصطفى أحمد البسيوني
@@ -271,6 +271,46 @@ never as an accomplishment.
 - **RU:** Аккредитованный курс непрерывного профессионального образования по основам статистики от Эдди Давилы (в рамках программы Wolfram Research), сертифицированный NASBA с присуждением 1.80 баллов CPE. Охватывает классификацию данных, графические методы, меры центральной тенденции (среднее, медиана, мода) и меры вариации (дисперсия, стандартное отклонение, выбросы).
 - **⚠ Claiming note:** this is an accredited Continuing Professional Education (CPE) course certificate, NOT a university degree. The official course title is recorded in English as printed on the document.
 
+### 15. Data Visualization in Google Sheets
+- **Provider:** DataCamp
+- **Credential type:** Statement of Accomplishment / بيان إتمام / Подтверждение о прохождении курса
+- **Date:** October 16, 2026 (16 Oct 2026 · 16 أكتوبر 2026 · 16 октября 2026)
+- **Length:** 4 hrs
+- **Credential number:** #50,345,577
+- **Signed by:** Jonathan Cornelissen, CEO, DataCamp
+- **Verification:** none published — the PDF document below is the credential. No verification URL has been invented for it.
+- **Files:** `academic/assets/certificates/data-visualization-in-google-sheets.pdf` (document) and `academic/assets/certificates/data-visualization-in-google-sheets.jpg` (preview).
+- **Topics:** Chart creation techniques · bar charts · histograms · scatter charts · sparklines · candlestick charts · data preparation · data validation · VLOOKUP formulas · conditional formatting · dashboard design · real-world datasets (Olympics, Shark Attacks, ASX Marine Tech)
+- **Chapters:** Chart Creation Techniques · Data Management and Analysis · Dashboard Creation and Real-world Applications
+- **XP:** 4,700 XP — from the DataCamp learner account; the document prints no XP figure, so this is recorded here in the ledger and deliberately not shown on the site card (the details view has no XP field, and no field is invented for one record)
+- **EN:** A four-hour DataCamp course on data visualization in Google Sheets: mastering chart creation techniques (bar, histograms, scatter, sparklines, candlestick), data management with validation and VLOOKUP, conditional formatting, and building comprehensive real-world dashboards.
+- **AR:** دورة من أربع ساعات على منصة DataCamp في تمثيل البيانات وتصورها في الجداول الإلكترونية: إتقان أساليب إنشاء المخططات البيانية (الأعمدة، والمدرجات، والتشتت، والمخططات المصغرة، والشموع اليابانية)، وإدارة البيانات بالتحقق وصيغ البحث، والتنسيق الشرطي، وبناء لوحات بيانات تفاعلية لمشاريع واقعية.
+- **RU:** Четырёхчасовой курс DataCamp по визуализации данных в Google Sheets: создание различных типов диаграмм (столбчатые, гистограммы, точечные, спарклайны, свечные графики), управление данными с проверкой и VLOOKUP, условное форматирование и построение аналитических даشбордов.
+- **⚠ Claiming note:** this is a completed course (Statement of Accomplishment), NOT a "DataCamp certification" and NOT a Google certification. The official course title is kept in English in all three languages because that is the exact string printed on the document.
+
+### 16. Google Sheets Fundamentals (15-Hour Skill Track)
+- **Provider:** DataCamp
+- **Credential type:** Skill Track Statement of Accomplishment / بيان إتمام مسار مهني متكامل / Подтверждение о прохождении трека навыков
+- **Date:** October 16, 2026 (16 Oct 2026 · 16 أكتوبر 2026 · 16 октября 2026)
+- **Length:** 15 hrs
+- **Credential number:** #967,410
+- **Signed by:** Jonathan Cornelissen, CEO, DataCamp
+- **Credential URL:** https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46
+- **Verification:** official DataCamp verification URL confirmed: https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46 (Statement of Accomplishment hash: 3cee210eb30f190f056caaf9324a87e9185cdc46).
+- **Files:** `academic/assets/certificates/google-sheets-fundamentals.pdf` (document) and `academic/assets/certificates/google-sheets-fundamentals.jpg` (preview).
+- **Track Structure & Completed Courses (5 courses · 15 hours total):**
+  1. **Introduction to Google Sheets** (2 hrs · James Chapman) — Certificate #3 (#47,542,476)
+  2. **Data Analysis in Google Sheets** (3 hrs · James Chapman) — Certificate #5 (#50,161,411)
+  3. **Intermediate Google Sheets** (4 hrs · Richie Cotton) — Certificate #6 (#50,277,774)
+  4. **Pivot Tables in Google Sheets** (2 hrs · Frank Sumanski)
+  5. **Data Visualization in Google Sheets** (4 hrs · Raina Hawley) — Certificate #15 (#50,345,577)
+- **Instructors:** James Chapman (AI Curriculum Team Lead, DataCamp) · Richie Cotton (Data Evangelist, DataCamp) · Frank Sumanski (Founder, SpreadsheetAllstars.com) · Raina Hawley (Owner/Instructor, OzGrid Business Applications)
+- **Topics:** Spreadsheet fundamentals · cell referencing · mathematical & logical formulas · comparison operators · data cleaning & preparation · VLOOKUP & cross-table lookups · conditional filtering · summary statistics · numeric & logical handling · positional matching · missing data imputation · pivot tables · data summarization · multidimensional reporting · chart creation (bar, histogram, scatter, sparkline, candlestick) · data validation · conditional formatting · dashboard architecture · real-world datasets (Olympics, Shark Attacks, ASX Marine Tech)
+- **EN:** The comprehensive 15-hour Google Sheets Fundamentals Skill Track on DataCamp, unifying 5 specialized courses covering end-to-end spreadsheet proficiency: foundational formulas, exploratory data analysis, data cleaning, advanced logic and errors, pivot tables, and interactive dashboards.
+- **AR:** مسار المهارات المهني المتكامل في أساسيات الجداول الإلكترونية على منصة DataCamp بواقع 15 ساعة تدريبية، ويجمع 5 دورات متخصصة تغطي الكفاءة الشاملة في جداول البيانات: الصيغ الأساسية، والتحليل الاستكشافي للبيانات، وتنظيف البيانات، والعمليات المنطقية المتقدمة، والجداول المحورية (Pivot Tables)، وتصميم لوحات البيانات التفاعلية (Dashboards).
+- **RU:** Комплексный 15-часовой трек навыков Google Sheets Fundamentals на платформе DataCamp, объединяющий 5 специализированных курсов: базовые формулы, разведочный анализ и очистка данных, продвинутые логические операции, сводные таблицы (Pivot Tables) и построение интерактивных аналитических дашбордов.
+- **⚠ Claiming note:** this is a completed Skill Track (Statement of Accomplishment), NOT an official Google certification or professional license. The official track title is kept in English in all three languages as printed on the document.
+
 ---
 
 ## Volunteering
@@ -416,6 +456,9 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-15 | The Non-Technical Skills of Effective Data Scientists (LinkedIn Learning / KNIME) added | Certificate #13, from the LinkedIn Learning completion document and course brief Hussein supplied. Verified against the document itself: Certificate ID `a15152c0317cc1de77bbfaa0352b47c4c740e7a08e942f69e6911e5fbb9a5023`, completed Dec 13 2025, 50 minutes, signed Shea Hanson, author Keith McCormick, part of the KNIME curriculum (NASBA 1.6 CPE credits). Live verification URL confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `data` and `career` tags. |
 | 2026-10-15 | Statistics Foundations 1: The Basics (LinkedIn Learning / NASBA CPE) added | Certificate #14, from the LinkedIn Learning completion documents and course brief Hussein supplied. Verified against both documents: Primary accredited document carries Certificate ID `c56817a44b6b01f38c57ed99268b7514495e7ece1dd0fac425804406213ff33b`, completed Dec 22 2025, accredited by NASBA (Registry ID #140940) for 1.80 CPE Credits in Statistics, signed Shea Hanson, author Eddie Davila (Wolfram Research curriculum). Standard completion document (`b3483377f8cfcc055edd7ad040510331a862cd6eb52924289554f104b6bead7d`, 36 minutes) also retained in file archive. Live verification URLs confirmed (HTTP 200). Media placed cleanly in `academic/assets/certificates/` with preview image and full PDF. Filed under existing `data` tag. |
 | 2026-10-15 | Souq Elmajde Medical (سوق المجد الطبي) production full-stack platform added | Added Project #1 to CV ledger: comprehensive technical documentation of the production medical e-commerce platform and ERP system Hussein architected and engineered end-to-end (`https://elmajde.com`). Documented across all 10 core engineering domains: Next.js 15 monorepo, 25+ model PostgreSQL/Prisma database, Egyptian logistics engine (27 governorates), operations ERP, server-side Meta CAPI tracking, AES-256-GCM cryptography, native Android app, and atomic zero-downtime DevOps pipelines. Full trilingual entry recorded. |
+| 2026-10-16 | Data Visualization in Google Sheets (DataCamp) added | Certificate #15, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #50,345,577, completed Oct 16, 2026, 4 hrs, signed Jonathan Cornelissen. 4,700 XP recorded in ledger. Media placed in `academic/assets/certificates/data-visualization-in-google-sheets.{pdf,jpg}`. Filed under existing `data` tag. Full trilingual entry recorded. |
+| 2026-10-16 | Google Sheets Fundamentals (DataCamp 15-Hour Skill Track) added | Certificate #16, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #967,410, completed Oct 16, 2026, 15 hrs, signed Jonathan Cornelissen. Unifies all 5 foundational courses (Introduction, Data Analysis, Intermediate, Pivot Tables, Data Visualization). Media placed in `academic/assets/certificates/google-sheets-fundamentals.{pdf,jpg}`. Filed under existing `data` tag. Full trilingual entry recorded. |
+| 2026-10-17 | Google Sheets Fundamentals verification URL confirmed | Added official DataCamp Statement of Accomplishment URL (`https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46`) to Certificate #16 in CV ledger and `academic/data/certificates.js`. |
 
 
 

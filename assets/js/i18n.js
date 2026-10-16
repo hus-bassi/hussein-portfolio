@@ -624,10 +624,55 @@
 
     /* ---------- home: about ---------- */
     'about.title': { ar: 'نبذة عني', en: 'About me', ru: 'Обо мне' },
+    'about.photoAlt': {
+      ar: 'صورة شخصية لحسين البسيوني',
+      en: 'Portrait of Hussein ElBassiouni',
+      ru: 'Портрет Хусейна Эль-Басьюни'
+    },
+    'about.status': {
+      ar: 'طالب وباحث مستقل',
+      en: 'Independent Student & Researcher',
+      ru: 'Студент и независимый исследователь'
+    },
+    'about.caption': {
+      ar: 'طامح في علوم البيانات وبيزنس إنفورماتكس وعلم الفلك',
+      en: 'Aspiring in Data Science, Business Informatics & Astronomy',
+      ru: 'Стремление к науке о данных, бизнес-информатике и астрономии'
+    },
     'about.text': {
       ar: 'أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.',
       en: 'I am Hussein ElBassiouni. I am interested in data science, programming and astronomy, and I enjoy exploring how data can help us understand planets and astronomical phenomena. I am developing my skills and preparing for a course of study that brings me closer to this goal.',
       ru: 'Меня зовут Хусейн Эль-Басьюни. Меня интересуют наука о данных, программирование и астрономия, мне нравится изучать, как данные помогают понять планеты и астрономические явления. Я развиваю свои навыки и готовлюсь к учёбе, которая приблизит меня к этой цели.'
+    },
+    'about.hlDataTitle': {
+      ar: 'بيزنس إنفورماتكس والبيانات',
+      en: 'Business Informatics & Data',
+      ru: 'Бизнес-информатика и данные'
+    },
+    'about.hlDataDesc': {
+      ar: 'كود 38.03.05 • تحليل الأعمال والأنظمة وبايثون',
+      en: 'Code 38.03.05 • Business analytics, systems & Python',
+      ru: 'Код 38.03.05 • Бизнес-аналитика, системы и Python'
+    },
+    'about.hlAstroTitle': {
+      ar: 'علم الفلك والكواكب',
+      en: 'Astronomy & Planets',
+      ru: 'Астрономия и планеты'
+    },
+    'about.hlAstroDesc': {
+      ar: 'شغف الكون وتطبيق خوارزميات البيانات في الأرصاد',
+      en: 'Passion for the cosmos & data-driven astronomy',
+      ru: 'Страсть к космосу и применение данных в астрономии'
+    },
+    'about.hlVolleyTitle': {
+      ar: 'الكرة الطائرة والانضباط',
+      en: 'Volleyball & Athleticism',
+      ru: 'Волейбол и спортивная дисциплина'
+    },
+    'about.hlVolleyDesc': {
+      ar: 'ثلاث سنوات في مركز حائط الصد ومسيرة إصرار',
+      en: 'Three years as a middle blocker & determination',
+      ru: 'Три года в амплуа блокирующего и настойчивость'
     },
 
     /* ---------- home: story summary ---------- */
@@ -636,6 +681,21 @@
       ar: 'اقرأ القصة كاملة',
       en: 'Read the full story',
       ru: 'Читать историю полностью'
+    },
+    'story.photoAlt': {
+      ar: 'تكريم في البيت الروسي بالقاهرة',
+      en: 'Recognition at the Russian House in Cairo',
+      ru: 'Награждение в Русском доме в Каире'
+    },
+    'story.captionTag': {
+      ar: 'محطة فارقة',
+      en: 'Key Milestone',
+      ru: 'Важный рубеж'
+    },
+    'story.photoCaption': {
+      ar: 'تكريم في البيت الروسي بالقاهرة • خطوة نحو المنحة الروسية',
+      en: 'Recognition at the Russian House in Cairo • Step toward study in Russia',
+      ru: 'Награждение в Русском доме в Каире • Шаг к учёбе в России'
     },
     'story.p1': {
       ar: 'بدأتُ في الثانوية العامة وأهملتُ الدراسة، فكانت النتيجة 63% — وهي لا تعبّر عن قدراتي بقدر ما تعبّر عن إهمالي. بعدها مررتُ بفترة صعبة، وشاهدتُ أنمي “هايكيو” لأحبّ الكرة الطائرة، فمارستها ثلاث سنوات حتى اقتربتُ من أول انضمام رسمي لي إلى فريق. ثم تعرّضتُ لإصابة في عيني اليسرى أثناء مباراة ودية في مركز شباب السلام، ففقدتُ البصر فيها واعتزلتُ الكرة.',
@@ -1052,6 +1112,26 @@
     'rec.d.resources': { ar: 'الموارد', en: 'Resources', ru: 'Материалы' },
     'rec.d.collaborators': { ar: 'المتعاونون', en: 'Collaborators', ru: 'Соавторы' },
     'rec.d.gallery': { ar: 'الصور', en: 'Gallery', ru: 'Галерея' },
+    'rec.d.trackBranches': {
+      ar: 'المسار المنهجي والشهادات المتفرعة',
+      en: 'Curriculum & Branched Certificates',
+      ru: 'Учебный трек и сертификаты'
+    },
+    'rec.d.trackLead': {
+      ar: '5 دورات تخصصية متفرعة بالترتيب المنهجي المعتمد (15 ساعة تدريبية)',
+      en: '5 specialized courses branching in certified curriculum sequence (15 hours)',
+      ru: '5 специализированных курсов по учебной программе трека (15 часов)'
+    },
+    'rec.d.viewSubCert': {
+      ar: 'عرض وثيقة الشهادة',
+      en: 'View certificate scan',
+      ru: 'Посмотреть сертификат'
+    },
+    'rec.d.trackModule': {
+      ar: 'وحدة تدريبية ضمن المسار المتكامل',
+      en: 'Integrated track module',
+      ru: 'Учебный модуль трека'
+    },
     'rec.viewVolCert': {
       ar: 'شهادة التطوّع',
       en: 'Volunteering certificate',
@@ -1115,6 +1195,31 @@
       ar: 'أعمل الآن على تطوير نفسي، وأدرس وأجمع الشهادات لأثبت قدراتي وأزيد فرص قبولي في جامعة روسية. هدفي، بإذن الله، أن أدرس في روسيا بتفوق، وأن أنجز مشاريع في علم البيانات الفلكي.',
       en: 'I am now working on developing myself, studying and collecting certificates to prove my abilities and improve my chances of admission to a Russian university. My goal, God willing, is to study in Russia with excellence and to complete projects in astronomical data science.',
       ru: 'Сейчас я работаю над собой, учусь и собираю сертификаты, чтобы доказать свои способности и повысить шансы на поступление в российский университет. Моя цель, если Бог даст, — учиться в России с отличием и выполнить проекты в области анализа астрономических данных.'
+    },
+    'storyPage.authorRole': {
+      ar: 'سيرة ذاتية توثيقية حقيقية • خمس محطات من التحدي وبناء الذات',
+      en: 'Authentic biographical journey • Five milestones of resilience',
+      ru: 'Подлинная биографическая летопись • Пять вех преодоления и роста'
+    },
+    'storyPage.s2PhotoAlt': {
+      ar: 'مباراة ودية في الكرة الطائرة',
+      en: 'Friendly volleyball tournament match',
+      ru: 'Товарищеский волейбольный матч'
+    },
+    'storyPage.s2Caption': {
+      ar: 'مباريات وبطولات ودية في القاهرة — مركز حائط الصد (2023)',
+      en: 'Friendly matches and tournaments in Cairo — Middle Blocker (2023)',
+      ru: 'Товарищеские матчи и турниры в Каире — блокирующий (2023)'
+    },
+    'storyPage.s5PhotoAlt': {
+      ar: 'استلام شهادة التكريم بالمركز الثقافي الروسي',
+      en: 'Receiving certificate of honor at the Russian Cultural Center',
+      ru: 'Вручение почётного диплома в Российском культурном центре'
+    },
+    'storyPage.s5Caption': {
+      ar: 'استلام ديبلوم التميز والتكريم بالمركز الثقافي الروسي بالقاهرة',
+      en: 'Receiving the Diploma of Honor at the Russian House in Cairo',
+      ru: 'Вручение почётного диплома в Русском доме в Каире'
     },
     'storyPage.endSr': {
       ar: 'خلاصة القصة',
@@ -1196,6 +1301,12 @@
       var ak = al[k].getAttribute('data-i18n-aria');
       var av = t(ak, lang);
       if (av) al[k].setAttribute('aria-label', av);
+    }
+    var alts = document.querySelectorAll('[data-i18n-alt]');
+    for (var m = 0; m < alts.length; m++) {
+      var altKey = alts[m].getAttribute('data-i18n-alt');
+      var altVal = t(altKey, lang);
+      if (altVal) alts[m].setAttribute('alt', altVal);
     }
 
     /* document head — one table, so a new page is one row, not two

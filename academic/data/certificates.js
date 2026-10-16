@@ -292,6 +292,7 @@ const certificatesData = [
     // There is deliberately NO credentialUrl: the PDF is the official
     // document and no verification URL was invented for it.
     title: 'Introduction to Google Sheets',
+    parentTrack: 'google-sheets-fundamentals',
     provider: 'DataCamp',
     date: {
       en: '27 Sep 2026',
@@ -419,6 +420,7 @@ const certificatesData = [
        of this file. The PDF is the official document that "view
        certificate" opens, so no credentialUrl was invented. */
     title: 'Intermediate Google Sheets',
+    parentTrack: 'google-sheets-fundamentals',
     provider: 'DataCamp',
     date: {
       en: '8 Oct 2026',
@@ -534,6 +536,7 @@ const certificatesData = [
        starts with `../` like its sibling's — see the path note at
        the top of this file. */
     title: 'Data Analysis in Google Sheets',
+    parentTrack: 'google-sheets-fundamentals',
     provider: 'DataCamp',
     date: {
       en: '6 Oct 2026',
@@ -1227,6 +1230,313 @@ const certificatesData = [
           'Anaconda',
           'Wolfram Research',
           'National Association of State Boards of Accountancy (NASBA)',
+        ],
+      },
+    },
+    tags: ['data'],
+  },
+  {
+    /* ============================================================
+       DATACAMP — Data Visualization in Google Sheets
+       Completed Oct 16, 2026.
+       Everything here was read off the Statement of Accomplishment
+       PDF and image provided by Hussein:
+         · "STATEMENT OF ACCOMPLISHMENT"
+         · "#50,345,577"
+         · "HAS BEEN AWARDED TO Hussein Mohamed Mostafa Ahmed ElBassiouni"
+         · "FOR SUCCESSFULLY COMPLETING Data Visualization in Google Sheets"
+         · "LENGTH 4 HRS"
+         · "COMPLETED ON OCT 16, 2026"
+         · signed Jonathan Cornelissen, CEO, DataCamp
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand name DataCamp).
+       Official credential PDF and JPEG preview reside in
+       academic/assets/certificates/data-visualization-in-google-sheets.{pdf,jpg}.
+       XP (4,700 XP) recorded in CV ledger and kept off the card per
+       the established precedent.
+       ============================================================ */
+    title: {
+      en: 'Data Visualization in Google Sheets',
+      ar: 'تمثيل البيانات في الجداول الإلكترونية',
+      ru: 'Визуализация данных в Google Sheets',
+    },
+    parentTrack: 'google-sheets-fundamentals',
+    provider: 'DataCamp',
+    date: {
+      en: '16 Oct 2026',
+      ar: '16 أكتوبر 2026',
+      ru: '16 октября 2026',
+    },
+    category: {
+      en: 'Statement of Accomplishment',
+      ar: 'بيان إتمام',
+      ru: 'Подтверждение о прохождении курса',
+    },
+    duration: {
+      en: '4 hrs',
+      ar: 'أربع ساعات',
+      ru: '4 часа',
+    },
+    credentialId: '#50,345,577',
+    image: 'assets/certificates/data-visualization-in-google-sheets.jpg',
+    pdf: 'assets/certificates/data-visualization-in-google-sheets.pdf',
+    description: {
+      en: 'A four-hour DataCamp course on data visualization in Google Sheets: mastering chart creation techniques (bar charts, histograms, scatter plots, sparkline and candlestick charts), data management with validation and VLOOKUP, conditional formatting, and building comprehensive real-world dashboards.',
+      ar: 'دورة من أربع ساعات على منصة DataCamp في تمثيل البيانات وتصورها في الجداول الإلكترونية: إتقان أساليب إنشاء المخططات البيانية (الأعمدة، والمدرجات، والتشتت، والمخططات المصغرة، والشموع اليابانية)، وإدارة البيانات بالتحقق وصيغ البحث، والتنسيق الشرطي، وبناء لوحات بيانات تفاعلية لمشاريع واقعية.',
+      ru: 'Четырёхчасовой курс DataCamp по визуализации данных в Google Sheets: создание различных типов диаграмм (столбчатые, гистограммы, точечные, спарклайны, свечные графики), управление данными с проверкой и VLOOKUP, условное форматирование и построение аналитических дашбордов.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's DataCamp Statement of Accomplishment for completing Data Visualization in Google Sheets",
+      ar: 'بيان إتمام من DataCamp لحسين البسيوني عن إتمام دورة تمثيل البيانات في الجداول الإلكترونية',
+      ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании курса Data Visualization in Google Sheets',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Chart creation techniques',
+          'Bar charts and histograms',
+          'Scatter plots',
+          'Sparkline and candlestick charts',
+          'Data management and analysis',
+          'Data preparation',
+          'Data validation',
+          'VLOOKUP formulas',
+          'Conditional formatting',
+          'Dashboard creation and architecture',
+          'Real-world business applications',
+        ],
+      },
+      chapters: {
+        en: [
+          { title: 'Chart Creation Techniques' },
+          { title: 'Data Management and Analysis' },
+          { title: 'Dashboard Creation and Real-world Applications' },
+        ],
+      },
+      resources: {
+        en: [
+          { label: 'Olympics Dataset' },
+          { label: 'Shark Attack Records' },
+          { label: 'ASX Marine Technology Data' },
+        ],
+      },
+    },
+    tags: ['data'],
+  },
+  {
+    /* ============================================================
+       DATACAMP — Google Sheets Fundamentals (15-Hour Skill Track)
+       Completed Oct 16, 2026.
+       Comprehensive track combining 5 foundational courses (15 hours).
+       Everything here was read off the Statement of Accomplishment
+       PDF and image provided by Hussein:
+         · "STATEMENT OF ACCOMPLISHMENT"
+         · "#967,410"
+         · "HAS BEEN AWARDED TO Hussein Mohamed Mostafa Ahmed ElBassiouni"
+         · "FOR SUCCESSFULLY COMPLETING Google Sheets Fundamentals"
+         · "LENGTH 15 HR"
+         · "COMPLETED ON OCT 16, 2026"
+         · signed Jonathan Cornelissen, CEO, DataCamp
+       ------------------------------------------------------------
+       Pure Modern Standard Arabic (فصحى) with zero Latin characters
+       (except brand name DataCamp).
+       Official credential PDF and JPEG preview reside in
+       academic/assets/certificates/google-sheets-fundamentals.{pdf,jpg}.
+       ============================================================ */
+    title: {
+      en: 'Google Sheets Fundamentals',
+      ar: 'أساسيات الجداول الإلكترونية — مسار متكامل',
+      ru: 'Google Sheets Fundamentals — комплексный трек',
+    },
+    provider: 'DataCamp',
+    date: {
+      en: '16 Oct 2026',
+      ar: '16 أكتوبر 2026',
+      ru: '16 октября 2026',
+    },
+    category: {
+      en: 'Skill Track Statement of Accomplishment',
+      ar: 'بيان إتمام مسار مهني متكامل',
+      ru: 'Подтверждение о прохождении трека навыков',
+    },
+    duration: {
+      en: '15 hrs',
+      ar: '15 ساعة',
+      ru: '15 часов',
+    },
+    credentialId: '#967,410',
+    credentialUrl:
+      'https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46',
+    image: 'assets/certificates/google-sheets-fundamentals.jpg',
+    pdf: 'assets/certificates/google-sheets-fundamentals.pdf',
+    description: {
+      en: 'A comprehensive 15-hour DataCamp Skill Track unifying 5 foundational courses: Introduction to Google Sheets, Data Analysis in Google Sheets, Intermediate Google Sheets, Pivot Tables in Google Sheets, and Data Visualization in Google Sheets.',
+      ar: 'مسار مهارات متكامل من 15 ساعة على منصة DataCamp يجمع 5 دورات متخصصة: مقدمة في الجداول الإلكترونية، وتحليل البيانات، والمستوى المتوسط، والجداول المحورية، وتمثيل البيانات وتصورها.',
+      ru: 'Комплексный 15-часовой трек навыков на платформе DataCamp, объединяющий 5 специализированных курсов: введение в Google Sheets, анализ данных, промежуточный уровень, сводные таблицы и визуализация данных.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's DataCamp Statement of Accomplishment for completing the Google Sheets Fundamentals Skill Track",
+      ar: 'بيان إتمام من DataCamp لحسين البسيوني عن إتمام مسار أساسيات الجداول الإلكترونية المتكامل',
+      ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании трека навыков Google Sheets Fundamentals',
+    },
+    isDemo: false,
+    details: {
+      trackCourses: [
+        {
+          order: 1,
+          title: {
+            en: 'Introduction to Google Sheets',
+            ar: 'مقدمة في الجداول الإلكترونية',
+            ru: 'Введение в Google Sheets',
+          },
+          duration: {
+            en: '2 hrs',
+            ar: 'ساعتان',
+            ru: '2 ч',
+          },
+          instructor: {
+            en: 'James Chapman (AI Curriculum Team Lead, DataCamp)',
+            ar: 'جيمس تشابمان (رئيس فريق مناهج الذكاء الاصطناعي في DataCamp)',
+            ru: 'Джеймс Чепмен (руководитель направления ИИ, DataCamp)',
+          },
+          credentialId: '#47,542,476',
+          image: 'assets/certificates/introduction-to-google-sheets.jpg',
+          alt: {
+            en: 'Statement of Accomplishment for Introduction to Google Sheets',
+            ar: 'بيان إتمام دورة مقدمة في الجداول الإلكترونية',
+            ru: 'Сертификат об окончании курса введения в Google Sheets',
+          },
+        },
+        {
+          order: 2,
+          title: {
+            en: 'Data Analysis in Google Sheets',
+            ar: 'تحليل البيانات في الجداول الإلكترونية',
+            ru: 'Анализ данных в Google Sheets',
+          },
+          duration: {
+            en: '3 hrs',
+            ar: '3 ساعات',
+            ru: '3 ч',
+          },
+          instructor: {
+            en: 'James Chapman (AI Curriculum Team Lead, DataCamp)',
+            ar: 'جيمس تشابمان (رئيس فريق مناهج الذكاء الاصطناعي في DataCamp)',
+            ru: 'Джеймс Чепмен (руководитель направления ИИ, DataCamp)',
+          },
+          credentialId: '#50,161,411',
+          image: 'assets/certificates/data-analysis-in-google-sheets.jpg',
+          alt: {
+            en: 'Statement of Accomplishment for Data Analysis in Google Sheets',
+            ar: 'بيان إتمام دورة تحليل البيانات في الجداول الإلكترونية',
+            ru: 'Сертификат об окончании курса анализа данных в Google Sheets',
+          },
+        },
+        {
+          order: 3,
+          title: {
+            en: 'Intermediate Google Sheets',
+            ar: 'المستوى المتوسط للجداول الإلكترونية',
+            ru: 'Продвинутый уровень Google Sheets',
+          },
+          duration: {
+            en: '4 hrs',
+            ar: '4 ساعات',
+            ru: '4 ч',
+          },
+          instructor: {
+            en: 'Richie Cotton (Data Evangelist, DataCamp)',
+            ar: 'ريتشي كوتون (خبير نشر ثقافة البيانات في DataCamp)',
+            ru: 'Ричи Коттон (евангелист данных, DataCamp)',
+          },
+          credentialId: '#50,277,774',
+          image: 'assets/certificates/intermediate-google-sheets.jpg',
+          alt: {
+            en: 'Statement of Accomplishment for Intermediate Google Sheets',
+            ar: 'بيان إتمام دورة المستوى المتوسط للجداول الإلكترونية',
+            ru: 'Сертификат об окончании курса промежуточного уровня Google Sheets',
+          },
+        },
+        {
+          order: 4,
+          title: {
+            en: 'Pivot Tables in Google Sheets',
+            ar: 'الجداول المحورية في الجداول الإلكترونية',
+            ru: 'Сводные таблицы в Google Sheets',
+          },
+          duration: {
+            en: '2 hrs',
+            ar: 'ساعتان',
+            ru: '2 ч',
+          },
+          instructor: {
+            en: 'Frank Sumanski (Founder, SpreadsheetAllstars.com)',
+            ar: 'فرانك سومانفسكي (مؤسس SpreadsheetAllstars.com)',
+            ru: 'Фрэнк Сумански (основатель SpreadsheetAllstars.com)',
+          },
+          badge: {
+            en: 'Integrated Track Course',
+            ar: 'دورة معتمدة ضمن المسار',
+            ru: 'Интегрированный курс трека',
+          },
+        },
+        {
+          order: 5,
+          title: {
+            en: 'Data Visualization in Google Sheets',
+            ar: 'تمثيل البيانات وتصورها في الجداول الإلكترونية',
+            ru: 'Визуализация данных в Google Sheets',
+          },
+          duration: {
+            en: '4 hrs',
+            ar: '4 ساعات',
+            ru: '4 ч',
+          },
+          instructor: {
+            en: 'Raina Hawley (Owner/Instructor, OzGrid Business Applications)',
+            ar: 'رينا هاولي (مالكة ومدربة OzGrid Business Applications)',
+            ru: 'Райна Хоули (руководитель и инструктор, OzGrid)',
+          },
+          credentialId: '#50,345,577',
+          image: 'assets/certificates/data-visualization-in-google-sheets.jpg',
+          alt: {
+            en: 'Statement of Accomplishment for Data Visualization in Google Sheets',
+            ar: 'بيان إتمام دورة تمثيل البيانات وتصورها في الجداول الإلكترونية',
+            ru: 'Сертификат об окончании курса визуализации данных в Google Sheets',
+          },
+        },
+      ],
+      topics: {
+        en: [
+          'Spreadsheet fundamentals & cell formulas',
+          'Data cleaning, transformation & validation',
+          'Exploratory data analysis & summary statistics',
+          'VLOOKUP & cross-table data lookups',
+          'Logical functions & error handling',
+          'Positional matching & simple imputation',
+          'Pivot tables & multi-dimensional aggregation',
+          'Chart design: bar, histogram, scatter, sparkline, candlestick',
+          'Conditional formatting & dashboard architecture',
+          'Real-world business and operational workflows',
+        ],
+      },
+      chapters: {
+        en: [
+          { title: 'Introduction to Google Sheets', note: '2 hrs · James Chapman' },
+          { title: 'Data Analysis in Google Sheets', note: '3 hrs · James Chapman' },
+          { title: 'Intermediate Google Sheets', note: '4 hrs · Richie Cotton' },
+          { title: 'Pivot Tables in Google Sheets', note: '2 hrs · Frank Sumanski' },
+          { title: 'Data Visualization in Google Sheets', note: '4 hrs · Raina Hawley' },
+        ],
+      },
+      collaborators: {
+        en: [
+          'James Chapman (AI Curriculum Team Lead, DataCamp)',
+          'Richie Cotton (Data Evangelist, DataCamp)',
+          'Frank Sumanski (Founder, SpreadsheetAllstars.com)',
+          'Raina Hawley (Owner/Instructor, OzGrid Business Applications)',
         ],
       },
     },

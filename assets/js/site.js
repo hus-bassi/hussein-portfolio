@@ -202,6 +202,19 @@
     volleyList.innerHTML = '';
     volley.forEach(function (v) {
       var li = el('li', 'record');
+      var cover = v.image || (v.images && v.images[0] && v.images[0].src);
+      if (cover) {
+        var media = el('div', 'record-media');
+        var img = document.createElement('img');
+        img.className = 'record-img';
+        img.src = 'academic/' + cover.replace(/^academic\//, '');
+        img.alt = tv(v.title);
+        img.loading = 'lazy';
+        img.width = 640;
+        img.height = 360;
+        media.appendChild(img);
+        li.appendChild(media);
+      }
       li.appendChild(el('h3', 'record-title', tv(v.title)));
       var meta = el('p', 'record-meta');
       [tv(v.organization), tv(v.position), tv(v.date), tv(v.result)]
@@ -209,7 +222,6 @@
         .forEach(function (x) { meta.appendChild(el('span', null, x)); });
       li.appendChild(meta);
       if (tv(v.description)) li.appendChild(el('p', 'record-text', tv(v.description)));
-      var cover = v.image || (v.images && v.images[0] && v.images[0].src);
       if (cover) {
         var a = el('a', 'record-action is-plain', t('volley.viewImage'));
         a.href = 'academic/' + cover.replace(/^academic\//, '');

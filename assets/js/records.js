@@ -180,6 +180,18 @@
         return { label: tv(r && r.label ? r.label : r), url: (r && r.url) || '' };
       }).filter(function (r) { return r.label; }),
       collaborators: listOf(d.collaborators),
+      trackCourses: listOf(d.trackCourses).map(function (tc) {
+        return {
+          order: tc.order,
+          title: tv(tc.title),
+          duration: tv(tc.duration),
+          instructor: tv(tc.instructor),
+          credentialId: tc.credentialId || '',
+          image: tc.image ? mediaPath(tv(tc.image)) : '',
+          alt: tv(tc.alt) || tv(tc.title),
+          badge: tv(tc.badge)
+        };
+      }),
       /* the volunteering gallery is real data in events.js and was never
          shown anywhere; the details view is where it belongs */
       gallery: (c.images || []).map(function (g) {
@@ -189,7 +201,9 @@
   }
 
   function buildCerts() {
-    return (window.certificatesData || []).map(function (c) {
+    return (window.certificatesData || [])
+      .filter(function (c) { return !c.parentTrack; })
+      .map(function (c) {
       var tags = Array.isArray(c.tags) ? c.tags : [];
       var l = lang();
       return index({
@@ -1088,6 +1102,91 @@
     s = section(t('rec.d.takeaway'), function (h) { return addText(h, d.takeaway); });
     if (s) { frame.appendChild(s); sections++; }
 
+    s = section(t('rec.d.trackBranches'), function (h) {
+      if (!d.trackCourses || !d.trackCourses.length) return 0;
+      var lead = el('p', 'track-lead', t('rec.d.trackLead'));
+      h.appendChild(lead);
+
+      var tree = el('div', 'detail-track-tree');
+      var stem = el('div', 'track-stem');
+      stem.setAttribute('aria-hidden', 'true');
+      tree.appendChild(stem);
+
+      var branchList = el('div', 'track-branches');
+
+      d.trackCourses.forEach(function (tc, idx) {
+        var item = el('div', 'track-branch-item');
+        item.style.setProperty('--branch-idx', String(idx));
+
+        var dot = el('div', 'track-node-dot');
+        dot.setAttribute('aria-hidden', 'true');
+        item.appendChild(dot);
+
+        var conn = el('div', 'track-branch-connector');
+        conn.setAttribute('aria-hidden', 'true');
+        item.appendChild(conn);
+
+        var card = el('div', 'track-branch-card');
+
+        var head = el('div', 'track-card-head');
+        var stepNum = String(tc.order || (idx + 1)).padStart(2, '0');
+        head.appendChild(el('span', 'track-card-step', stepNum));
+        head.appendChild(el('h4', 'track-card-title', tc.title));
+        if (tc.duration) head.appendChild(el('span', 'track-card-duration', tc.duration));
+        card.appendChild(head);
+
+        var metaRow = el('div', 'track-card-meta');
+        if (tc.instructor) {
+          metaRow.appendChild(el('span', 'track-card-instructor', tc.instructor));
+        }
+        if (tc.credentialId) {
+          var cred = el('span', 'track-card-cred');
+          var bdi = document.createElement('bdi');
+          bdi.textContent = tc.credentialId;
+          cred.appendChild(bdi);
+          metaRow.appendChild(cred);
+        }
+        if (tc.badge) {
+          metaRow.appendChild(el('span', 'track-card-badge', tc.badge));
+        }
+        card.appendChild(metaRow);
+
+        if (tc.image) {
+          var preview = el('div', 'track-card-preview');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'track-card-thumb-btn';
+          btn.setAttribute('aria-label', (tc.alt || tc.title) + ' — ' + t('rec.d.viewSubCert'));
+
+          var thumb = document.createElement('img');
+          thumb.src = tc.image;
+          thumb.alt = tc.alt || tc.title;
+          thumb.loading = 'lazy';
+          btn.appendChild(thumb);
+
+          var overlay = el('span', 'track-card-thumb-overlay');
+          overlay.setAttribute('aria-hidden', 'true');
+          overlay.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21M8 11h6M11 8v6"></path></svg><span>' + t('rec.d.viewSubCert') + '</span>';
+          btn.appendChild(overlay);
+
+          btn.addEventListener('click', function () {
+            openMedia(rec, { kind: 'image', src: tc.image, alt: tc.alt || tc.title });
+          });
+
+          preview.appendChild(btn);
+          card.appendChild(preview);
+        }
+
+        item.appendChild(card);
+        branchList.appendChild(item);
+      });
+
+      tree.appendChild(branchList);
+      h.appendChild(tree);
+      return 1;
+    });
+    if (s) { frame.appendChild(s); sections++; }
+
     /* NEUTRAL wording: this is what the course covered, never "what I
        learned", unless he wrote it himself — which is the field above. */
     s = section(t('rec.d.topics'), function (h) { return addList(h, d.topics.map(tv)); });
@@ -1097,6 +1196,7 @@
     if (s) { frame.appendChild(s); sections++; }
 
     s = section(t('rec.d.chapters'), function (h) {
+      if (d.trackCourses && d.trackCourses.length) return 0;
       if (!d.chapters.length) return 0;
       var ol = el('ol', 'detail-chapters');
       d.chapters.forEach(function (ch, i) {

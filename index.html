@@ -110,7 +110,65 @@
       <header class="sec-head" data-reveal="line">
         <h2 id="about-title" data-i18n="about.title">نبذة عني</h2>
       </header>
-      <p class="lead-para" data-reveal="blur" data-i18n="about.text">أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.</p>
+
+      <div class="profile-bento" data-reveal="stagger">
+        <!-- Portrait card -->
+        <article class="card profile-card">
+          <div class="profile-media">
+            <img class="profile-img" src="academic/assets/images/profile.jpg" alt="صورة شخصية لحسين البسيوني" data-i18n-alt="about.photoAlt" width="640" height="640" loading="lazy">
+            <div class="profile-badge">
+              <span class="profile-status-dot" aria-hidden="true"></span>
+              <span class="profile-status-text" data-i18n="about.status">طالب وباحث مستقل</span>
+            </div>
+          </div>
+          <div class="profile-info">
+            <h3 class="profile-name" data-i18n="brand.name">حسين البسيوني</h3>
+            <p class="profile-caption" data-i18n="about.caption">طامح في علوم البيانات وبيزنس إنفورماتكس وعلم الفلك</p>
+          </div>
+        </article>
+
+        <!-- Story & Pillars card -->
+        <div class="profile-narrative">
+          <div class="card profile-lead-card">
+            <p class="lead-para" data-i18n="about.text">أنا حسين البسيوني. أهتم بعلوم البيانات والبرمجة وعلم الفلك، وأحب استكشاف طرق استخدام البيانات لفهم الكواكب والظواهر الفلكية. أعمل على تطوير مهاراتي والاستعداد لمسار دراسي يقرّبني من هذا الهدف.</p>
+          </div>
+
+          <!-- 3 Highlight cards -->
+          <ul class="profile-highlights">
+            <li class="card highlight-card">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4 19V9M9.3 19V5M14.7 19v-8M20 19V7"></path>
+                </svg>
+              </span>
+              <h4 class="highlight-title" data-i18n="about.hlDataTitle">بيزنس إنفورماتكس والبيانات</h4>
+              <p class="highlight-desc" data-i18n="about.hlDataDesc">كود 38.03.05 • تحليل الأعمال والأنظمة وبايثون</p>
+            </li>
+
+            <li class="card highlight-card">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="3.2"></circle>
+                  <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(-30 12 12)"></ellipse>
+                </svg>
+              </span>
+              <h4 class="highlight-title" data-i18n="about.hlAstroTitle">علم الفلك والكواكب</h4>
+              <p class="highlight-desc" data-i18n="about.hlAstroDesc">شغف الكون وتطبيق خوارزميات البيانات في الأرصاد</p>
+            </li>
+
+            <li class="card highlight-card">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="8.2"></circle>
+                  <path d="M3.8 12h16.4M12 3.8c4.6 5 4.6 11.4 0 16.4M12 3.8c-4.6 5-4.6 11.4 0 16.4"></path>
+                </svg>
+              </span>
+              <h4 class="highlight-title" data-i18n="about.hlVolleyTitle">الكرة الطائرة والانضباط</h4>
+              <p class="highlight-desc" data-i18n="about.hlVolleyDesc">ثلاث سنوات في مركز حائط الصد ومسيرة إصرار</p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -122,14 +180,28 @@
         <a class="sec-more" href="story.html" data-i18n="story.more">اقرأ القصة كاملة</a>
       </header>
 
-      <div class="story-summary">
-        <p class="lead-para" data-reveal="mask" data-i18n="story.summary">بدأت رحلتي بشغف مبكر بالفلك والكواكب، ثم اكتشفت عالم البرمجة والبيانات. واجهت تحديات شخصية وصحية — من بينها إصابة عيني اليسرى — لكنها لم توقفني، بل زادتني إصرارًا على التعلم وبناء مستقبلي خطوة بخطوة.</p>
-        <p class="story-more-p">
-          <a class="btn btn-outline" href="story.html" data-i18n="story.more">اقرأ القصة كاملة</a>
-        </p>
-      </div>
+      <article class="card story-showcase" data-reveal="stagger">
+        <div class="story-showcase-media">
+          <img class="story-showcase-img" src="academic/assets/volunteering/russian-house/receiving-certificate.jpg" alt="تكريم في البيت الروسي بالقاهرة" data-i18n-alt="story.photoAlt" width="960" height="1280" loading="lazy">
+          <div class="story-showcase-caption">
+            <span class="story-caption-tag" data-i18n="story.captionTag">محطة فارقة</span>
+            <span class="story-caption-text" data-i18n="story.photoCaption">تكريم في البيت الروسي بالقاهرة • خطوة نحو المنحة الروسية</span>
+          </div>
+        </div>
+
+        <div class="story-showcase-body">
+          <p class="lead-para" data-i18n="story.summary">بدأت رحلتي بشغف مبكر بالفلك والكواكب، ثم اكتشفت عالم البرمجة والبيانات. واجهت تحديات شخصية وصحية — من بينها إصابة عيني اليسرى — لكنها لم توقفني، بل زادتني إصرارًا على التعلم وبناء مستقبلي خطوة بخطوة.</p>
+          <div class="story-quote-card">
+            <p class="hero-quote" data-i18n="hero.quote">لم أستسلم، وما زلت أعمل على بناء طريقي.</p>
+          </div>
+          <p class="story-more-p">
+            <a class="btn btn-solid" href="story.html" data-i18n="story.more">اقرأ القصة كاملة</a>
+          </p>
+        </div>
+      </article>
     </div>
   </section>
+
 
   <!-- ═══ 4. مسيرتي في الكرة الطائرة ═══ -->
   <section class="band" id="volleyball" aria-labelledby="volleyball-title">
