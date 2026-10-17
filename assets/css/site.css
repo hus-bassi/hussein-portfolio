@@ -163,6 +163,11 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+::selection {
+  background: rgba(124, 92, 255, .35);
+  color: #FFFFFF;
+}
+
 body {
   margin: 0;
   font-family: var(--font-ar);

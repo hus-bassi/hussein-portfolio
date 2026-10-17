@@ -42,6 +42,31 @@ body[data-page="volleyball"] {
 }
 
 /* ---------------------------------------------------------------
+   1.5 Selection & Scrollbar — warm ember atmosphere, zero blue.
+   --------------------------------------------------------------- */
+body[data-page="volleyball"] ::selection {
+  background: rgba(255, 138, 61, .42);
+  color: #FFFFFF;
+}
+
+html:has(body[data-page="volleyball"]),
+body[data-page="volleyball"] {
+  --scroll-track: rgba(16, 11, 8, .85);
+  --scroll-thumb: rgba(255, 138, 61, .45);
+  --scroll-thumb-hi: var(--ember);
+  scrollbar-color: rgba(255, 138, 61, .45) rgba(16, 11, 8, .85);
+}
+html:has(body[data-page="volleyball"])::-webkit-scrollbar-thumb {
+  background: rgba(255, 138, 61, .45);
+}
+html:has(body[data-page="volleyball"])::-webkit-scrollbar-thumb:hover {
+  background: var(--ember);
+}
+html:has(body[data-page="volleyball"])::-webkit-scrollbar-track {
+  background: rgba(16, 11, 8, .85);
+}
+
+/* ---------------------------------------------------------------
    2. Shared furniture overrides — warm tint.
    --------------------------------------------------------------- */
 body[data-page="volleyball"]::before {
@@ -275,6 +300,7 @@ html[dir="rtl"] .vw-hero {
 
 /* === Hero typography — MASSIVE athlete branding === */
 .vw-eyebrow {
+  margin-block-end: var(--s-3);
   transition: opacity var(--motion-reveal) var(--ease-out);
   transition-delay: 640ms;
 }
@@ -282,7 +308,7 @@ html[dir="rtl"] .vw-hero {
 
 .vw-name {
   font-size: clamp(2.8rem, 1rem + 7vw, 5.8rem);
-  line-height: 1.02;
+  line-height: 1.15;
   letter-spacing: -.025em;
   background: var(--spectrum-lit);
   background-size: 220% 100%;
@@ -391,8 +417,8 @@ html[lang="ru"] .vw-role {
 }
 @keyframes vw-breathe { 0%, 100% { opacity: .68; } 50% { opacity: 1; } }
 
-/* Angular frame around character — sports poster style */
-.vw-character::after {
+/* Angular frame around character — sports poster style (only active when character portrait is present) */
+.vw-character:not(:empty)::after {
   content: ""; position: absolute; inset: 5% 3%;
   border: 1px solid rgba(240, 206, 126, .16);
   border-block-start: 2px solid rgba(255, 138, 61, .55);
