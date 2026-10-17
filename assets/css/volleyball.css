@@ -308,17 +308,25 @@ html[dir="rtl"] .vw-hero {
 
 .vw-name {
   font-size: clamp(2.8rem, 1rem + 7vw, 5.8rem);
-  line-height: 1.15;
+  line-height: 1.2;
   letter-spacing: -.025em;
   background: var(--spectrum-lit);
   background-size: 220% 100%;
   -webkit-background-clip: text; background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 8px 38px rgba(255, 138, 61, .36));
+  padding-inline: 0.2em;
+  margin-inline: -0.2em;
+  padding-block: 0.08em;
+  margin-block: -0.08em;
   transition: opacity var(--motion-cinematic) var(--ease-out),
               translate var(--motion-cinematic) var(--ease-out),
               filter var(--motion-cinematic) var(--ease-out);
   transition-delay: 780ms;
+}
+html[lang="ar"] .vw-name {
+  letter-spacing: 0;
+  line-height: 1.25;
 }
 .is-loading .vw-name {
   opacity: 0; translate: 0 26px;
