@@ -136,6 +136,7 @@
     placeLangIndicator();
     UI.transitions();
     UI.chrome();
+    UI.prefetch();
     document.addEventListener('site-lang-change', placeLangIndicator);
     window.addEventListener('resize', placeLangIndicator, { passive: true });
   };
@@ -218,7 +219,12 @@
     if (!to) return;
     var from = read('site-nav-from');
     try { sessionStorage.removeItem('site-nav-from'); } catch (e) { /* ignore */ }
-    if (from && from !== to) root.setAttribute('data-nav', from + '>' + to);
+    if (from && from !== to) {
+      root.setAttribute('data-nav', from + '>' + to);
+      if (window.Cinematic && typeof Cinematic.playArrival === 'function') {
+        Cinematic.playArrival();
+      }
+    }
   }
 
   /* One listener that finds the page link, for BOTH mechanisms. The
@@ -284,6 +290,35 @@
     if (winner) winner.setAttribute('aria-current', 'page');
   };
 
+  /* ---------- 7. speculative instant prefetching ----------
+     Caches next page HTML in memory on hover/focus so clicking loads in 0ms */
+  var prefetched = {};
+  function prefetchLink(url) {
+    if (!url || prefetched[url]) return;
+    prefetched[url] = true;
+    try {
+      var link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = url;
+      link.as = 'document';
+      document.head.appendChild(link);
+    } catch (e) {}
+  }
+  UI.prefetch = function () {
+    document.addEventListener('pointerover', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a || a.origin !== location.origin) return;
+      var to = pageName(a.href);
+      if (to && to !== here()) prefetchLink(a.href);
+    }, { passive: true });
+    document.addEventListener('focusin', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a || a.origin !== location.origin) return;
+      var to = pageName(a.href);
+      if (to && to !== here()) prefetchLink(a.href);
+    }, { passive: true });
+  };
+
   UI.transitions = function () {
     direction();
     /* `typeof … === 'function'`, not `in`: a browser can expose the name and
@@ -296,6 +331,9 @@
       var link = pageLink(e);
       if (!link) return;
       store('site-nav-from', here());
+      if (window.Cinematic && typeof Cinematic.playTransition === 'function') {
+        Cinematic.playTransition();
+      }
       if (native || calm) return;      /* the browser, or the visitor, is in charge */
 
       /* the fallback: the old page dims and drifts, and the browser is
