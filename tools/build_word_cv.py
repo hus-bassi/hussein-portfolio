@@ -21,8 +21,8 @@ def set_cell_margins(cell, top=0, bottom=0, left=0, right=0):
 
 def add_section_header(doc, title_text):
     p = doc.add_paragraph()
-    p.paragraph_format.space_before = Pt(5)
-    p.paragraph_format.space_after = Pt(2)
+    p.paragraph_format.space_before = Pt(4)
+    p.paragraph_format.space_after = Pt(1.5)
     p.paragraph_format.line_spacing = 1.0
     
     # Border bottom in XML for clean ATS divider
@@ -34,20 +34,20 @@ def add_section_header(doc, title_text):
     
     run = p.add_run(title_text)
     run.font.name = 'Calibri'
-    run.font.size = Pt(10.5)
+    run.font.size = Pt(10.0)
     run.font.bold = True
     run.font.color.rgb = RGBColor(0x1E, 0x29, 0x3B) # Slate dark navy
 
 def add_entry_heading(doc, title_left, subtitle_left="", date_right=""):
     p = doc.add_paragraph()
-    p.paragraph_format.space_before = Pt(3)
-    p.paragraph_format.space_after = Pt(1)
-    p.paragraph_format.line_spacing = 1.05
+    p.paragraph_format.space_before = Pt(2.2)
+    p.paragraph_format.space_after = Pt(0.8)
+    p.paragraph_format.line_spacing = 1.02
 
     # Right align tab stop at 7.5 inches (printable width)
     pPr = p._p.get_or_add_pPr()
     tabs = parse_xml(r'<w:tabs xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
-                    r'<w:tab w:val="right" w:pos="10800"/>'
+                    r'<w:tab w:val="right" w:pos="10900"/>'
                     r'</w:tabs>')
     pPr.append(tabs)
 
@@ -77,8 +77,8 @@ def add_bullet(doc, text, bold_prefix=""):
     p.paragraph_format.left_indent = Inches(0.18)
     p.paragraph_format.first_line_indent = Inches(-0.14)
     p.paragraph_format.space_before = Pt(0)
-    p.paragraph_format.space_after = Pt(1.5)
-    p.paragraph_format.line_spacing = 1.05
+    p.paragraph_format.space_after = Pt(1.0)
+    p.paragraph_format.line_spacing = 1.02
 
     # Bullet symbol
     r_b = p.add_run("•  ")
@@ -101,12 +101,12 @@ def add_bullet(doc, text, bold_prefix=""):
 def build_cv(output_path):
     doc = docx.Document()
 
-    # Set page size to A4 / Letter with compact 0.45 in margins for perfect 1-page fit
+    # Set page size to A4 / Letter with compact 0.38 in margins for perfect 1-page fit
     for section in doc.sections:
-        section.top_margin = Inches(0.42)
-        section.bottom_margin = Inches(0.42)
-        section.left_margin = Inches(0.50)
-        section.right_margin = Inches(0.50)
+        section.top_margin = Inches(0.38)
+        section.bottom_margin = Inches(0.38)
+        section.left_margin = Inches(0.45)
+        section.right_margin = Inches(0.45)
         section.page_width = Inches(8.5)
         section.page_height = Inches(11.0)
 
@@ -120,14 +120,14 @@ def build_cv(output_path):
     
     r_name = p_name.add_run("HUSSEIN MOHAMED MOSTAFA AHMED ELBASSIOUNI")
     r_name.font.name = 'Calibri'
-    r_name.font.size = Pt(16.5)
+    r_name.font.size = Pt(16.0)
     r_name.font.bold = True
     r_name.font.color.rgb = RGBColor(0x0F, 0x17, 0x2A) # Deep navy/slate
 
     p_sub = doc.add_paragraph()
     p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_sub.paragraph_format.space_before = Pt(0)
-    p_sub.paragraph_format.space_after = Pt(2)
+    p_sub.paragraph_format.space_after = Pt(1.5)
     
     r_sub = p_sub.add_run("Aspiring Business Informatics & Data Science Specialist | Full-Stack Systems Engineer")
     r_sub.font.name = 'Calibri'
@@ -139,7 +139,7 @@ def build_cv(output_path):
     p_contact = doc.add_paragraph()
     p_contact.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_contact.paragraph_format.space_before = Pt(0)
-    p_contact.paragraph_format.space_after = Pt(4)
+    p_contact.paragraph_format.space_after = Pt(3)
     
     contact_items = [
         "Cairo, Egypt",
@@ -183,8 +183,9 @@ def build_cv(output_path):
     # ----------------------------------------------------
     add_section_header(doc, "PROFESSIONAL CERTIFICATIONS & CREDENTIALS")
     
-    add_entry_heading(doc, "Google Sheets Fundamentals (15-Hour Skill Track)", "DataCamp (Credential #967,410)", "Oct 2026")
-    add_bullet(doc, "Comprehensive 15-hour curriculum unifying 5 accredited courses: Introduction to Google Sheets, Data Analysis, Intermediate Spreadsheets, Pivot Tables, and Data Visualization. Mastered complex VLOOKUPs, data cleaning, logical error handling, and interactive executive dashboard architecture.")
+    add_entry_heading(doc, "DataCamp Certified Tracks & Coursework", "DataCamp (Credentials #967,410 & #47,542,030)", "Oct 2026")
+    add_bullet(doc, "Google Sheets Fundamentals (15-Hour Skill Track): Comprehensive 5-course track (Intro, Data Analysis, Intermediate, Pivot Tables, Visualization). Mastered complex VLOOKUPs, data modeling, logical error handling, and executive dashboard architecture.")
+    add_bullet(doc, "Introduction to Python (4-Hour Course): Practical foundational programming for data analysis; covered variables, list manipulation & slicing, custom functions, package management, and 2D numerical analysis & statistics via NumPy.")
 
     add_entry_heading(doc, "Statistics Foundations 1: The Basics", "LinkedIn Learning & NASBA (1.80 CPE Credits, Registry #140940)", "Dec 2025")
     add_bullet(doc, "Completed accredited professional coursework covering descriptive statistics, data distributions, sample variance, standard deviation, and foundational probability models for data science.")
@@ -216,13 +217,32 @@ def build_cv(output_path):
     # ----------------------------------------------------
     add_section_header(doc, "CORE SKILLS & TECHNICAL COMPETENCIES")
     
-    add_bullet(doc, "Next.js 15, React 19, TypeScript, JavaScript (ES6+), Node.js, Tailwind CSS, HTML5/CSS3, Python (Foundations).", "Programming & Frameworks:")
+    add_bullet(doc, "Next.js 15, React 19, TypeScript, JavaScript (ES6+), Node.js, Tailwind CSS, HTML5/CSS3, Python (NumPy, DataCamp Certified).", "Programming & Frameworks:")
     add_bullet(doc, "PostgreSQL 16, Prisma ORM, Advanced Google Sheets & MS Excel (VLOOKUP, Pivot Tables, Statistical Functions, Dashboards).", "Databases & Data Analytics:")
     add_bullet(doc, "Monorepo Architecture (NPM Workspaces), REST APIs, Meta Conversions API (CAPI), Git/GitHub, Linux Cloud Hosting, AES-256-GCM.", "Systems & DevOps:")
     add_bullet(doc, "Arabic (Native), English (Professional Working), Russian (Academic Target / Elementary A2-B1 in progress).", "Languages & Communication:")
 
     doc.save(output_path)
     print("CV successfully saved to target docx path.")
+
+    # Auto-export to PDF via Word COM and verify 1-page constraint
+    try:
+        import win32com.client
+        pdf_path = os.path.splitext(output_path)[0] + ".pdf"
+        word = win32com.client.Dispatch("Word.Application")
+        word.Visible = False
+        doc_com = word.Documents.Open(os.path.abspath(output_path))
+        pages = doc_com.ComputeStatistics(2)
+        print(f"WORD RENDERED PAGES: {pages}")
+        doc_com.SaveAs(os.path.abspath(pdf_path), FileFormat=17)
+        doc_com.Close(False)
+        word.Quit()
+        print("PDF successfully exported to target path.")
+        if pages != 1:
+            raise RuntimeError(f"Strict 1-page ATS violation! Word rendered {pages} pages.")
+    except Exception as e:
+        print(f"PDF Export / Validation Status: {type(e).__name__}: {e}")
+        raise e
 
 if __name__ == '__main__':
     target = os.path.join(r"d:\hussein-portfolio\مشروع", "Hussein_Mohamed_ElBassiouni_CV.docx")

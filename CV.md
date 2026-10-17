@@ -328,6 +328,28 @@ never as an accomplishment.
 - **AR:** أتممت التدريب العملي المتخصص في الجاهزية المهنية بالذكاء الاصطناعي والمكون من 5 وحدات تدريبية، المنظم من قِبل مؤسسة الآسيان (ASEAN Foundation) والمدعوم من منصة LinkedIn عبر الأكاديمية الرقمية للآسيان. شمل التدريب تطبيق أدوات الذكاء الاصطناعي في التخطيط المهني وتحديد المسار الوظيفي، وبناء العلامة المهنية الشخصية وتحسين الملف الشخصي على LinkedIn، واستراتيجيات البحث الذكي عن فرص العمل، وتصميم السيرة الذاتية ومعرض الأعمال، والتحضير الاحترافي للمقابلات الوظيفية.
 - **RU:** Завершил интенсивный 5-модульный тренинг по карьерной готовности с использованием искусственного интеллекта (AI Career Readiness Training), организованный Фондом АСЕАН (ASEAN Foundation) при поддержке LinkedIn на платформе Цифровой академии АСЕАН. Освоил практическое применение современных инструментов ИИ для стратегического карьерного планирования, развития личного бренда и оптимизации профиля в LinkedIn, умного поиска вакансий и нетворкинга, создания конкурентоспособного резюме и портфолио, а также уверенной подготовки к собеседованиям.
 
+### 18. Introduction to Python
+- **Provider:** DataCamp
+- **Credential type:** Statement of Accomplishment / بيان إتمام / Подтверждение о прохождении курса
+- **Date:** October 17, 2026 (17 Oct 2026 · 17 أكتوبر 2026 · 17 октября 2026)
+- **Length:** 4 hrs
+- **Credential number:** #47,542,030
+- **Signed by:** Jonathan Cornelissen, CEO, DataCamp
+- **Credential URL:** https://www.datacamp.com/statement-of-accomplishment/course/ccd0142ba432ca8dfefadd4ed58f88aefd0f530c
+- **Verification:** official DataCamp verification URL confirmed: https://www.datacamp.com/statement-of-accomplishment/course/ccd0142ba432ca8dfefadd4ed58f88aefd0f530c (hash: ccd0142ba432ca8dfefadd4ed58f88aefd0f530c).
+- **Files:** `academic/assets/certificates/introduction-to-python.pdf` (document) and `academic/assets/certificates/introduction-to-python.jpg` (preview).
+- **XP:** 3,900 XP
+- **Chapters (4 chapters):**
+  1. **Python Basics** — Variables, types, and basic calculations.
+  2. **Python Lists** — List creation, sub-setting, slicing, and manipulation.
+  3. **Functions and Packages** — Built-in functions, methods, and package imports.
+  4. **NumPy** — NumPy arrays, 2D matrices, vector arithmetic, and statistical analysis (mean, median, std, corrcoef).
+- **Topics:** Python syntax · variables & data types (float, int, str, bool) · list creation & indexing · list slicing & manipulation · built-in functions (print, type, sorted, round) · methods (upper, count, index, append, reverse) · package management & imports (math, scipy) · NumPy array architecture · 2D arrays (matrices) · element-wise vector arithmetic · statistical analysis (mean, median, standard deviation, Pearson correlation coefficient)
+- **EN:** A 4-hour foundational course on Python for data science and analysis on DataCamp: covering basic data types and variables, list creation and slicing, built-in functions and methods, package imports, and practical data manipulation and basic statistics using NumPy and 2D arrays.
+- **AR:** دورة تأسيسية من 4 ساعات في لغة بايثون لعلوم وتحليل البيانات على منصة DataCamp: تغطي أنواع البيانات الأساسية والمتغيرات، وإنشاء القوائم وتقطيعها والتعديل عليها، والدوال والمناهج البرمجية المدمجة، واستيراد الحزم والمكتبات، والتعامل العملي مع المصفوفات والعمليات الإحصائية الأساسية (المتوسط والوسيط والانحراف المعياري ومعامل الارتباط) عبر مكتبة نيمباي (NumPy) والمصفوفات ثنائية الأبعاد.
+- **RU:** 4-часовой базовый курс по Python для науки о данных на платформе DataCamp: изучение базовых типов данных и переменных, создание списков и срезов, встроенные функции и методы, импорт пакетов, а также манипуляции с данными и базовый статистический анализ (среднее, медиана, стандартное отклонение, корреляция) с использованием массивов NumPy и 2D-матриц.
+- **⚠ Claiming note:** this is a completed course (Statement of Accomplishment), NOT a professional software engineering license. The official course title is kept in English in all three languages as printed on the document.
+
 ---
 
 ## Volunteering
@@ -477,6 +499,7 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-16 | Google Sheets Fundamentals (DataCamp 15-Hour Skill Track) added | Certificate #16, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #967,410, completed Oct 16, 2026, 15 hrs, signed Jonathan Cornelissen. Unifies all 5 foundational courses (Introduction, Data Analysis, Intermediate, Pivot Tables, Data Visualization). Media placed in `academic/assets/certificates/google-sheets-fundamentals.{pdf,jpg}`. Filed under existing `data` tag. Full trilingual entry recorded. |
 | 2026-10-17 | Google Sheets Fundamentals verification URL confirmed | Added official DataCamp Statement of Accomplishment URL (`https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46`) to Certificate #16 in CV ledger and `academic/data/certificates.js`. |
 | 2026-10-17 | AI Career Readiness Training (ASEAN Foundation & LinkedIn) added | Certificate #17, from the Certificate of Completion image Hussein supplied. Completed Oct 16, 2026, signed by Dr. Piti Srisangnam, Executive Director, ASEAN Foundation. Program: ASEAN AHEAD via ASEAN Digital Academy (ada.aseanfoundation.org). Covers 5 modules: career clarity, personal branding, LinkedIn optimization, smart job search, and AI-assisted CV/interview preparation. Media placed in `academic/assets/certificates/ai-career-readiness.{jpg,png}`. Filed under `ai` and `career` tags. Full trilingual entry recorded. |
+| 2026-10-17 | Introduction to Python (DataCamp) added | Certificate #18, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #47,542,030, completed Oct 17, 2026, 4 hrs, signed Jonathan Cornelissen. 3,900 XP recorded in ledger. Official verification link confirmed. Covers Python basics, lists, functions/packages, and NumPy 2D array statistics. Media placed in `academic/assets/certificates/introduction-to-python.{pdf,jpg}`. Filed under `python` and `data` tags. Full trilingual entry recorded. |
 
 
 

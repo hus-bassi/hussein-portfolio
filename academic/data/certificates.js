@@ -1618,6 +1618,84 @@ const certificatesData = [
     },
     tags: ['ai', 'career'],
   },
+  {
+    /* ============================================================
+       DATACAMP — Introduction to Python
+       Completed Oct 17, 2026.
+       Credential #47,542,030.
+       Official verification link confirmed (HTTP 200).
+       Pure Modern Standard Arabic (فصحى) with 0 Latin characters
+       (except brand DataCamp).
+       ============================================================ */
+    title: {
+      en: 'Introduction to Python',
+      ar: 'مقدمة في لغة بايثون',
+      ru: 'Введение в Python',
+    },
+    provider: 'DataCamp',
+    date: {
+      en: '17 Oct 2026',
+      ar: '17 أكتوبر 2026',
+      ru: '17 октября 2026',
+    },
+    category: {
+      en: 'Statement of Accomplishment',
+      ar: 'بيان إتمام',
+      ru: 'Подтверждение о прохождении курса',
+    },
+    duration: {
+      en: '4 hrs',
+      ar: '4 ساعات',
+      ru: '4 ч',
+    },
+    credentialId: '#47,542,030',
+    credentialUrl:
+      'https://www.datacamp.com/statement-of-accomplishment/course/ccd0142ba432ca8dfefadd4ed58f88aefd0f530c',
+    image: 'assets/certificates/introduction-to-python.jpg',
+    pdf: 'assets/certificates/introduction-to-python.pdf',
+    description: {
+      en: 'A 4-hour foundational DataCamp course on Python for data analysis: covers variables, data types, list operations and slicing, built-in functions, methods, packages, and 2D array analysis with NumPy.',
+      ar: 'دورة تأسيسية من 4 ساعات على منصة DataCamp في لغة بايثون لتحليل البيانات: تغطي المتغيرات، وأنواع البيانات، والعمليات على القوائم وتقطيعها، والدوال والمناهج البرمجية المدمجة، واستيراد الحزم، والتعامل مع المصفوفات ثنائية الأبعاد عبر مكتبة نيمباي.',
+      ru: '4-часовой базовый курс на платформе DataCamp по Python для анализа данных: изучение переменных, типов данных, операций со списками и срезами, встроенных функций, методов, пакетов и анализа двумерных массивов с помощью NumPy.',
+    },
+    alt: {
+      en: "Hussein ElBassiouni's DataCamp Statement of Accomplishment for completing Introduction to Python",
+      ar: 'بيان إتمام من DataCamp لحسين البسيوني عن إتمام دورة مقدمة في لغة بايثون',
+      ru: 'Подтверждение DataCamp Хусейна Эльбасьюни об окончании курса введения в Python',
+    },
+    isDemo: false,
+    details: {
+      topics: {
+        en: [
+          'Python syntax, variables & primitive types',
+          'List creation, sub-setting & slicing',
+          'Manipulating lists & copying behavior',
+          'Built-in functions (print, type, sorted, round)',
+          'String and list methods (upper, count, index, append)',
+          'Package management & imports (math, scipy)',
+          'NumPy array creation & vector arithmetic',
+          '2D NumPy arrays & matrix slicing',
+          'Basic statistics (mean, median, standard deviation)',
+          'Data correlation analysis (Pearson correlation coefficient)',
+        ],
+      },
+      chapters: {
+        en: [
+          { title: 'Python Basics', note: 'Variables, types & operations' },
+          { title: 'Python Lists', note: 'Lists, indexing & slicing' },
+          { title: 'Functions and Packages', note: 'Functions, methods & packages' },
+          { title: 'NumPy', note: 'NumPy arrays, 2D arrays & statistics' },
+        ],
+      },
+      collaborators: {
+        en: [
+          'Jonathan Cornelissen (CEO, DataCamp)',
+          'Hugo Bowne-Anderson (DataCamp Curriculum)',
+        ],
+      },
+    },
+    tags: ['python', 'data'],
+  },
 ];
 
 // Expose for the site renderer (assets/js/site.js).
