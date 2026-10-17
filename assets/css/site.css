@@ -1269,8 +1269,8 @@ html[lang="en"] .eyebrow, html[lang="ru"] .eyebrow { letter-spacing: .14em; }
   -webkit-background-clip: text; background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 8px 38px rgba(124, 92, 255, .38));
-  padding-inline: 0.15em;
-  margin-inline: -0.15em;
+  padding-inline-end: 0.2em;
+  margin-inline-end: -0.2em;
   padding-block: 0.05em;
   margin-block-end: var(--s-4);
   white-space: pre-line;              /* keeps the Russian line break */
