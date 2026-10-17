@@ -143,6 +143,16 @@
         body.appendChild(take);
       }
 
+      /* View Album Button — opens full tournament photo gallery */
+      if (r.images && r.images.length) {
+        var albumBtn = el('button', 'btn btn-outline vw-album-btn');
+        albumBtn.type = 'button';
+        albumBtn.setAttribute('aria-haspopup', 'dialog');
+        albumBtn.appendChild(el('span', null, '📷 ' + t('vp.viewGallery') + ' (' + r.images.length + ' ' + t('vp.photos') + ')'));
+        albumBtn.addEventListener('click', function () { openGallery(r); });
+        body.appendChild(albumBtn);
+      }
+
       /* a real tournament certificate is a document, not a claim: when the
          data has one it opens in a new tab, rel="noopener" */
       if (r.certificate) {
@@ -154,9 +164,13 @@
       }
       li.appendChild(body);
 
+      /* Preview of tournament photos — clicking opens the full album modal */
       if (r.images && r.images.length) {
         var gal = el('div', 'vw-tgal');
-        r.images.forEach(function (g) {
+        gal.style.cursor = 'pointer';
+        gal.setAttribute('title', t('vp.viewGallery'));
+        gal.addEventListener('click', function () { openGallery(r); });
+        r.images.slice(0, 4).forEach(function (g) {
           var f = el('figure');
           f.appendChild(img(mediaPath(g.src), tv(g.caption)));
           f.appendChild(el('figcaption', null, tv(g.caption)));
@@ -174,6 +188,143 @@
        its armed state — the new children get armed, the ones on screen
        settle, the ones below the fold are watched. A swap, not an arrival. */
     if (window.Reveal) Reveal.resolve(list);
+  }
+
+  /* -------------------------------------------------------------
+     Tournament Photo Lightbox & Album Modal
+     ------------------------------------------------------------- */
+  var viewer = null;
+  var currentGalleryItems = [];
+  var currentGalleryIndex = 0;
+
+  function ensureViewer() {
+    if (viewer) return viewer;
+    viewer = document.createElement('dialog');
+    viewer.className = 'vw-gallery-dialog';
+    viewer.setAttribute('aria-modal', 'true');
+    viewer.innerHTML =
+      '<div class="vw-dialog-panel">' +
+        '<header class="vw-dialog-head">' +
+          '<div class="vw-dialog-title-wrap">' +
+            '<p class="vw-dialog-kicker"></p>' +
+            '<h3 class="vw-dialog-title"></h3>' +
+          '</div>' +
+          '<button type="button" class="vw-dialog-close" aria-label="إغلاق">&times;</button>' +
+        '</header>' +
+        '<div class="vw-dialog-body">' +
+          '<div class="vw-lightbox-frame">' +
+            '<div class="vw-lightbox-img-wrap">' +
+              '<img class="vw-lightbox-img" alt="" />' +
+            '</div>' +
+            '<div class="vw-lightbox-bar">' +
+              '<p class="vw-lightbox-caption"></p>' +
+              '<div class="vw-lightbox-controls">' +
+                '<button type="button" class="vw-lightbox-btn is-prev" aria-label="السابق">&#8592;</button>' +
+                '<span class="vw-lightbox-count">1 / 1</span>' +
+                '<button type="button" class="vw-lightbox-btn is-next" aria-label="التالي">&#8594;</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="vw-gallery-strip"></div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(viewer);
+
+    var closeBtn = viewer.querySelector('.vw-dialog-close');
+    closeBtn.addEventListener('click', function () { viewer.close(); });
+    viewer.addEventListener('click', function (e) {
+      if (e.target === viewer) viewer.close();
+    });
+
+    var prevBtn = viewer.querySelector('.is-prev');
+    var nextBtn = viewer.querySelector('.is-next');
+    prevBtn.addEventListener('click', function () {
+      showPhoto(currentGalleryIndex - 1);
+    });
+    nextBtn.addEventListener('click', function () {
+      showPhoto(currentGalleryIndex + 1);
+    });
+
+    viewer.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') showPhoto(currentGalleryIndex - 1);
+      if (e.key === 'ArrowRight') showPhoto(currentGalleryIndex + 1);
+      if (e.key === 'Escape') viewer.close();
+    });
+
+    return viewer;
+  }
+
+  function showPhoto(idx) {
+    if (!currentGalleryItems.length) return;
+    if (idx < 0) idx = currentGalleryItems.length - 1;
+    if (idx >= currentGalleryItems.length) idx = 0;
+    currentGalleryIndex = idx;
+
+    var item = currentGalleryItems[idx];
+    var v = ensureViewer();
+    var imgEl = v.querySelector('.vw-lightbox-img');
+    var capEl = v.querySelector('.vw-lightbox-caption');
+    var countEl = v.querySelector('.vw-lightbox-count');
+    var thumbs = v.querySelectorAll('.vw-strip-thumb');
+
+    imgEl.src = item.src;
+    imgEl.alt = item.caption || '';
+    capEl.textContent = item.caption || '';
+    countEl.textContent = (idx + 1) + ' / ' + currentGalleryItems.length;
+
+    thumbs.forEach(function (btn, i) {
+      btn.classList.toggle('is-active', i === idx);
+    });
+  }
+
+  function openGallery(r) {
+    var v = ensureViewer();
+    var kicker = v.querySelector('.vw-dialog-kicker');
+    var title = v.querySelector('.vw-dialog-title');
+    var strip = v.querySelector('.vw-gallery-strip');
+
+    kicker.textContent = t('vp.galleryTitle') + (r.badge ? ' • ' + tv(r.badge) : '');
+    title.textContent = tv(r.title);
+
+    currentGalleryItems = [];
+    if (r.image) {
+      currentGalleryItems.push({
+        src: mediaPath(r.image),
+        caption: tv(r.title) + ' — ' + (lang() === 'ar' ? 'غلاف البطولة' : lang() === 'ru' ? 'Обложка турнира' : 'Tournament Cover')
+      });
+    }
+    if (r.images && r.images.length) {
+      r.images.forEach(function (g) {
+        currentGalleryItems.push({
+          src: mediaPath(g.src),
+          caption: tv(g.caption) || tv(r.title)
+        });
+      });
+    }
+    if (r.certificate) {
+      currentGalleryItems.push({
+        src: mediaPath(r.certificate),
+        caption: t('vp.certView')
+      });
+    }
+
+    strip.innerHTML = '';
+    currentGalleryItems.forEach(function (item, i) {
+      var btn = el('button', 'vw-strip-thumb');
+      btn.type = 'button';
+      btn.setAttribute('aria-label', item.caption || ('Photo ' + (i + 1)));
+      var thumbImg = img(item.src, item.caption);
+      btn.appendChild(thumbImg);
+      btn.addEventListener('click', function () { showPhoto(i); });
+      strip.appendChild(btn);
+    });
+
+    showPhoto(0);
+    if (typeof v.showModal === 'function') {
+      v.showModal();
+    } else {
+      v.setAttribute('open', '');
+    }
   }
 
   /* Drop a transparent cut-out into [data-volleyball-character]. The aura,

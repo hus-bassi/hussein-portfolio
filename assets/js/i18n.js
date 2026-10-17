@@ -538,6 +538,36 @@
       en: 'Tournament certificate',
       ru: 'Сертификат турнира'
     },
+    'vp.viewGallery': {
+      ar: 'مشاهدة ألبوم صور البطولة',
+      en: 'View tournament photo album',
+      ru: 'Смотреть фотоальбом турнира'
+    },
+    'vp.photos': {
+      ar: 'صور',
+      en: 'photos',
+      ru: 'фото'
+    },
+    'vp.galleryTitle': {
+      ar: 'ألبوم صور البطولة',
+      en: 'Tournament Photo Album',
+      ru: 'Фотоальбом турнира'
+    },
+    'vp.series.title': {
+      ar: 'سلسلة قادمة: من الصفر إلى الاحتراف',
+      en: 'Upcoming Series: From Zero to Pro',
+      ru: 'Предстоящая серия: От нуля до профи'
+    },
+    'vp.series.desc': {
+      ar: 'سلسلة فيديوهات تعليمية وتدريبية في الكرة الطائرة، توثق المهارات وحائط الصد والتكتيكات خطوة بخطوة من البدايات حتى الاحتراف.',
+      en: 'Educational and training video series in volleyball, covering skills, blocking techniques, and match tactics step by step from basics to pro level.',
+      ru: 'Обучающая серия видеоуроков по волейболу, охватывающая навыки, блокирование и тактику шаг за шагом от основ до профессионального уровня.'
+    },
+    'vp.series.badge': {
+      ar: 'فيديوهات قادمة',
+      en: 'Upcoming videos',
+      ru: 'Скоро видео'
+    },
 
     /* ---------- academic page (academic.html) ---------- */
     'ap.eyebrow': {
@@ -948,6 +978,11 @@
       ar: 'عرض الصورة',
       en: 'View image',
       ru: 'Смотреть фото'
+    },
+    'volley.viewPage': {
+      ar: 'استكشف صفحة وإنجازات الكرة الطائرة بالكامل',
+      en: 'Explore full volleyball journey & achievements',
+      ru: 'Исследовать полный волейбольный путь и достижения'
     },
 
     /* ---------- home: vision ---------- */

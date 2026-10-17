@@ -219,12 +219,7 @@
     if (!to) return;
     var from = read('site-nav-from');
     try { sessionStorage.removeItem('site-nav-from'); } catch (e) { /* ignore */ }
-    if (from && from !== to) {
-      root.setAttribute('data-nav', from + '>' + to);
-      if (window.Cinematic && typeof Cinematic.playArrival === 'function') {
-        Cinematic.playArrival();
-      }
-    }
+    if (from && from !== to) root.setAttribute('data-nav', from + '>' + to);
   }
 
   /* One listener that finds the page link, for BOTH mechanisms. The
@@ -331,9 +326,6 @@
       var link = pageLink(e);
       if (!link) return;
       store('site-nav-from', here());
-      if (window.Cinematic && typeof Cinematic.playTransition === 'function') {
-        Cinematic.playTransition();
-      }
       if (native || calm) return;      /* the browser, or the visitor, is in charge */
 
       /* the fallback: the old page dims and drifts, and the browser is

@@ -148,7 +148,7 @@
     [
       { n: certs.length, kind: 'certs', href: 'records.html' },
       { n: events.length, kind: 'vol', href: 'records.html#volunteering' },
-      { n: volley.length, kind: 'tourney', href: '#volleyball' }
+      { n: volley.length, kind: 'tourney', href: 'volleyball.html' }
     ].forEach(function (s) {
       var li = el('li', 'stat');
       li.appendChild(el('span', 'stat-num', String(s.n)));
@@ -222,7 +222,11 @@
         .forEach(function (x) { meta.appendChild(el('span', null, x)); });
       li.appendChild(meta);
       if (tv(v.description)) li.appendChild(el('p', 'record-text', tv(v.description)));
-      if (cover) {
+      if (v.images && v.images.length) {
+        var a = el('a', 'record-action', t('vp.viewGallery') + ' (' + v.images.length + ')');
+        a.href = 'volleyball.html#vw-tournaments';
+        li.appendChild(a);
+      } else if (cover) {
         var a = el('a', 'record-action is-plain', t('volley.viewImage'));
         a.href = 'academic/' + cover.replace(/^academic\//, '');
         a.target = '_blank';
