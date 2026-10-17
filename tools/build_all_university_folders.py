@@ -105,7 +105,7 @@ def generate_folders():
 
 Во вложении:
 1. Копия загранпаспорта
-2. Резюме (CV)
+2. Резюме на русском языке (CV)
 3. Все сертификаты (включая Русский дом, DataCamp, NASBA, AI) — 19 документов
 4. {project_desc}
 • Портфолио: https://hus-bassi.vercel.app
