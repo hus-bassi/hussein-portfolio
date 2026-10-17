@@ -148,6 +148,9 @@
         body.appendChild(take);
       }
 
+      /* Actions container: spacious gap between buttons */
+      var actions = el('div', 'vw-tcard-actions');
+
       /* View Album Button — opens full tournament photo gallery */
       if (r.images && r.images.length) {
         var albumBtn = el('button', 'btn btn-outline vw-album-btn');
@@ -155,7 +158,7 @@
         albumBtn.setAttribute('aria-haspopup', 'dialog');
         albumBtn.appendChild(el('span', null, '📷 ' + t('vp.viewGallery') + ' (' + r.images.length + ' ' + t('vp.photos') + ')'));
         albumBtn.addEventListener('click', function () { openGallery(r); });
-        body.appendChild(albumBtn);
+        actions.appendChild(albumBtn);
       }
 
       /* a real tournament certificate is a document, not a claim: when the
@@ -165,8 +168,10 @@
         cert.href = mediaPath(r.certificate);
         cert.target = '_blank';
         cert.rel = 'noopener noreferrer';
-        body.appendChild(cert);
+        actions.appendChild(cert);
       }
+
+      if (actions.childNodes.length) body.appendChild(actions);
       li.appendChild(body);
 
       list.appendChild(li);

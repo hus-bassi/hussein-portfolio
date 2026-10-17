@@ -25,11 +25,15 @@ body[data-page="volleyball"] {
 
   --violet:   #FF9448;
   --violet-d: #E4551B;
+  --azure:    #FFA75E;
+  --azure-d:  #E4551B;
 
   --night-1: rgba(16, 11, 8, .80);
   --night-2: rgba(11, 8, 6, .86);
   --night-3: #171009;
   --night-4: #201510;
+
+  --edge: linear-gradient(180deg, var(--night-3), var(--night-4));
 
   --glass:   rgba(233, 213, 190, .10);
   --glass-2: rgba(233, 213, 190, .17);
@@ -630,23 +634,19 @@ html[lang="ru"] .vw-kicker { font-family: var(--font-ltr); letter-spacing: .12em
   grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
   gap: var(--s-5);
   padding: var(--s-5);
-  border: 1px solid transparent;
-  background-image: var(--edge), var(--spectrum);
-  background-size: var(--edge-size);
-  background-position: var(--edge-rest);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  border: 1px solid rgba(255, 138, 61, .28);
   border-radius: 2px;
+  background: linear-gradient(180deg, #171009 0%, #100b06 100%);
   box-shadow: 0 26px 50px -34px rgba(0, 0, 0, .95);
   transition: opacity var(--motion-slow) var(--ease),
               translate var(--motion-slow) var(--ease-out),
               filter var(--motion-slow) var(--ease),
-              background-position var(--motion-slow) var(--ease),
+              border-color var(--motion-slow) var(--ease),
               box-shadow var(--motion-slow) var(--ease);
 }
 .vw-tcard:hover {
   translate: 0 -3px;
-  background-position: var(--edge-hi);
+  border-color: rgba(255, 138, 61, .6);
   box-shadow: 0 0 0 1px rgba(255, 138, 61, .30),
               0 22px 40px -26px rgba(228, 85, 27, .55);
   transition-duration: var(--motion-normal);
@@ -697,7 +697,19 @@ html[lang="ru"] .vw-kicker { font-family: var(--font-ltr); letter-spacing: .12em
   opacity: .5;
 }
 .vw-ttext { color: var(--fg-2); line-height: 1.9; margin-block-end: var(--s-3); }
-.vw-tbody .record-action { margin-block-start: var(--s-2); }
+
+/* Tournament card actions row: proper flex gap between buttons */
+.vw-tcard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  align-items: center;
+  margin-block-start: var(--s-4);
+}
+.vw-tcard-actions .vw-album-btn,
+.vw-tcard-actions .record-action {
+  margin: 0;
+}
 
 /* Tournament club/center badge */
 .vw-tbadge {
@@ -946,7 +958,6 @@ html[lang="ar"] .vw-takeaway-lbl {
    9.5 Tournament Photo Gallery Modal & Video Series Banner
    --------------------------------------------------------------- */
 .vw-album-btn {
-  margin-block-start: var(--s-3);
   width: fit-content;
   cursor: pointer;
   display: inline-flex;

@@ -42,9 +42,9 @@ const volleyballData = [
     type: 'volleyball',
     badge: { en: 'Al-Taawoon', ar: 'نادي التعاون', ru: 'Ат-Тааун' },
     title: {
-      en: 'My First Friendly Volleyball Tournament',
-      ar: 'أول بطولة ودية للكرة الطائرة',
-      ru: 'Мой первый товарищеский волейбольный турнир',
+      en: 'My First Friendly Volleyball Festival',
+      ar: 'أول مهرجان ودي للكرة الطائرة',
+      ru: 'Мой первый товарищеский волейбольный фестиваль',
     },
     role: {
       en: 'Middle Blocker',
@@ -74,14 +74,14 @@ const volleyballData = [
       ru: '3-е место',
     },
     description: {
-      en: 'My first competitive volleyball experience — a friendly tournament during Ramadan, where I played as a Middle Blocker and earned 3rd place.',
-      ar: 'أول تجربة تنافسية في الكرة الطائرة — بطولة ودية في رمضان، لعبت فيها كحاجز مركزي وحصلنا على المركز الثالث.',
-      ru: 'Мой первый соревновательный опыт в волейболе — товарищеский турнир в Рамадан, где я играл центральным блокирующим и занял 3-е место.',
+      en: 'My first competitive volleyball experience — a friendly festival during Ramadan, where I played as a Middle Blocker and our team earned 3rd place.',
+      ar: 'أول تجربة تنافسية في الكرة الطائرة — مهرجان ودي في رمضان، شاركت فيه كحاجز مركزي وحصلنا على المركز الثالث.',
+      ru: 'Мой первый соревновательный опыт в волейболе — товарищеский фестиваль в Рамадан, где я играл центральным блокирующим и занял 3-е место.',
     },
     whatIDid: {
-      en: 'Played as a Middle Blocker, contributed to the team\'s defensive and offensive blocks, and helped the team achieve 3rd place in the tournament.',
-      ar: 'لعبتُ كحاجز مركزي، وساهمتُ في الدفاع والهجوم بالحجب مع الفريق، وساعدتُ الفريق في الحصول على المركز الثالث في البطولة.',
-      ru: 'Играл центральным блокирующим, вносил вклад в оборонительные и атакующие блоки команды и помог команде занять 3-е место на турнире.',
+      en: 'Played as a Middle Blocker, contributed to the team\'s defensive and offensive blocks, and helped the team achieve 3rd place in the festival.',
+      ar: 'لعبتُ كحاجز مركزي، وساهمتُ في الدفاع والهجوم بالحجب مع الفريق، وساعدتُ الفريق في الحصول على المركز الثالث في المهرجان.',
+      ru: 'Играл центральным блокирующим, вносил вклад в оборонительные и атакующие блоки команды и помог команде занять 3-е место на фестивале.',
     },
     whatILearned: {
       en: 'The value of teamwork under pressure, reading opponents\' attacks, and staying composed during competitive play.',

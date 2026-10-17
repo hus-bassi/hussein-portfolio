@@ -384,16 +384,16 @@ never as an accomplishment.
 
 ## Volleyball
 
-### 1. First Friendly Tournament
+### 1. First Friendly Festival
 - **Date:** Ramadan 2023
 - **Location:** Engineering Syndicate Club, Cairo
 - **Club:** Al-Taawoon Sporting Club — Al-Haram (نادي التعاون الرياضي بالهرم)
 - **Position:** Middle Blocker (حائط الصد)
 - **Result:** 3rd place (المركز الثالث)
 - **Photos:** 10 images in `academic/assets/volleyball/tournaments/first-friendly-tournament/`
-- **EN:** First competitive volleyball experience — a friendly tournament during Ramadan, played as Middle Blocker, 3rd place.
-- **AR:** أول تجربة تنافسية في الكرة الطائرة — بطولة ودية في رمضان، لعبت فيها كحاجز مركزي وحصلنا على المركز الثالث.
-- **RU:** Первый соревновательный опыт в волейболе — товарищеский турнир в Рамадан, играл центральным блокирующим, 3-е место.
+- **EN:** First competitive volleyball experience — a friendly festival during Ramadan, played as Middle Blocker, 3rd place.
+- **AR:** أول تجربة تنافسية في الكرة الطائرة — مهرجان ودي في رمضان، لعبت فيه كحاجز مركزي وحصلنا على المركز الثالث.
+- **RU:** Первый соревновательный опыт в волейболе — товарищеский фестиваль в Рамадан, играл центральным блокирующим, 3-е место.
 
 ### 2. Activation Tournament 2023
 - **Date:** Thursday, 19 October 2023 (الخميس 19 أكتوبر 2023)
@@ -500,6 +500,4 @@ Whenever something is added, record it here so the history stays auditable.
 | 2026-10-17 | Google Sheets Fundamentals verification URL confirmed | Added official DataCamp Statement of Accomplishment URL (`https://www.datacamp.com/statement-of-accomplishment/track/3cee210eb30f190f056caaf9324a87e9185cdc46`) to Certificate #16 in CV ledger and `academic/data/certificates.js`. |
 | 2026-10-17 | AI Career Readiness Training (ASEAN Foundation & LinkedIn) added | Certificate #17, from the Certificate of Completion image Hussein supplied. Completed Oct 16, 2026, signed by Dr. Piti Srisangnam, Executive Director, ASEAN Foundation. Program: ASEAN AHEAD via ASEAN Digital Academy (ada.aseanfoundation.org). Covers 5 modules: career clarity, personal branding, LinkedIn optimization, smart job search, and AI-assisted CV/interview preparation. Media placed in `academic/assets/certificates/ai-career-readiness.{jpg,png}`. Filed under `ai` and `career` tags. Full trilingual entry recorded. |
 | 2026-10-17 | Introduction to Python (DataCamp) added | Certificate #18, from the Statement of Accomplishment PDF and image Hussein supplied. Credential #47,542,030, completed Oct 17, 2026, 4 hrs, signed Jonathan Cornelissen. 3,900 XP recorded in ledger. Official verification link confirmed. Covers Python basics, lists, functions/packages, and NumPy 2D array statistics. Media placed in `academic/assets/certificates/introduction-to-python.{pdf,jpg}`. Filed under `python` and `data` tags. Full trilingual entry recorded. |
-
-
-
+| 2026-10-18 | Ramadan 2023 event terminology updated to Friendly Festival | Updated Event #1 under Volleyball from "Tournament" to "Friendly Festival" (مهرجان ودي للكرة الطائرة / Friendly Volleyball Festival / Товарищеский волейбольный фестиваль) per Hussein's clarification that it was a grassroots friendly festival/gathering rather than a formal championship tournament. Synced across `CV.md` and `academic/data/volleyball.js`. |
