@@ -78,6 +78,11 @@
       if (r.image) {
         var fig = el('figure', 'vw-tcover');
         fig.appendChild(img(mediaPath(r.image), tv(r.title)));
+        if (r.images && r.images.length) {
+          fig.style.cursor = 'pointer';
+          fig.setAttribute('title', t('vp.viewGallery'));
+          fig.addEventListener('click', function () { openGallery(r); });
+        }
         li.appendChild(fig);
       }
 
@@ -163,21 +168,6 @@
         body.appendChild(cert);
       }
       li.appendChild(body);
-
-      /* Preview of tournament photos — clicking opens the full album modal */
-      if (r.images && r.images.length) {
-        var gal = el('div', 'vw-tgal');
-        gal.style.cursor = 'pointer';
-        gal.setAttribute('title', t('vp.viewGallery'));
-        gal.addEventListener('click', function () { openGallery(r); });
-        r.images.slice(0, 4).forEach(function (g) {
-          var f = el('figure');
-          f.appendChild(img(mediaPath(g.src), tv(g.caption)));
-          f.appendChild(el('figcaption', null, tv(g.caption)));
-          gal.appendChild(f);
-        });
-        li.appendChild(gal);
-      }
 
       list.appendChild(li);
     });

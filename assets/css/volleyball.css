@@ -699,21 +699,6 @@ html[lang="ru"] .vw-kicker { font-family: var(--font-ltr); letter-spacing: .12em
 .vw-ttext { color: var(--fg-2); line-height: 1.9; margin-block-end: var(--s-3); }
 .vw-tbody .record-action { margin-block-start: var(--s-2); }
 
-/* Tournament gallery */
-.vw-tgal {
-  grid-column: 1 / -1;
-  display: grid; gap: var(--s-4);
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  margin-block-start: var(--s-2);
-}
-.vw-tgal figure { margin: 0; }
-.vw-tgal img {
-  display: block; width: 100%; aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 2px; border: 1px solid var(--glass);
-}
-.vw-tgal figcaption { font-size: .84rem; color: var(--fg-3); margin-block-start: var(--s-2); }
-
 /* Tournament club/center badge */
 .vw-tbadge {
   display: inline-block;
